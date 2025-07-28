@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard - LUDIK</title>
+</head>
+<body>
+    <div class="container">
+<header>
+    <h1>LUDIK - Panel de Control</h1>
+    <div class="user-info">
+        <span>Bienvenido: <span id="user-name"></span></span>
+        <span>Rol: <span id="user-role"></span></span>
+        <button class="logout-btn" onclick="Logout()">Cerrar Sesión</button>
+    </div>
+</header>
+<nav>
+    <div id="navigation-menu">
+    <!-- El menú se genera dinámicamente según el rol -->
+    </div>
+</nav>
+    <main>
+    <!-- SECCIÓN ADMINISTRADOR -->
+    <div class="role-section" id="administrador-section">
+    <h2>Panel de Administrador</h2>
+    <div class="content-section" id="admin-users">
+    <h3>Gestión de Usuarios</h3>
+        <button onclick="ShowSection('register-user')">Registrar Nuevo Usuario</button>
+        <button onclick="ShowSection('list-users')">Ver Todos los Usuarios</button>
+    <div class="subsection" id="register-user">
+    <h4>Registrar Usuario</h4>
+        <form id="userForm">
+    <div class="form-group">
+        <label for="UserName">Nombre completo:</label>
+        <input id="UserName" required="" type="text"/>
+    </div>
+    <div class="form-group">
+        <label for="UserEmail">Email:</label>
+        <input id="UserEmail" required="" type="email"/>
+    </div>
+    <div class="form-group">
+        <label for="UserRole">Rol:</label>
+        <select id="UserRole" required="">
+        <option value="">Seleccionar rol</option>
+        <option value="estudiante">Estudiante</option>
+        <option value="docente">Docente</option>
+        <option value="padre">Padre/Acudiente</option>
+        <option value="administrador">Administrador</option>
+    </select>
+</div>
+    <div class="form-group">
+        <label for="UserPassword">Contraseña temporal:</label>
+        <input id="UserPassword" required="" type="password"/>
+</div>
+    <button type="submit">Registrar Usuario</button>
+    </form>
+</div>
+<div class="subsection" id="list-users">
+    <h4>Lista de Usuarios</h4>
+    <table id="users-table">
+    <thead>
+    <tr>
+<th>Nombre</th>
+<th>Email</th>
+<th>Rol</th>
+<th>Estado</th>
+<th>Acciones</th>
+    </tr>
+    </thead>
+<tbody id="users-tbody">
+    <!-- Los usuarios se cargan dinámicamente -->
+</tbody>
+    </table>
+    </div>
+     nbm
+    </div>
+        <div class="content-section" id="admin-students">
+        <h3>Expedientes de Estudiantes</h3>
+    <div class="search-box">
+        <input id="StudentSearch" onkeyup="SearchStudents()" placeholder="Buscar estudiante por nombre..." type="text"/>
+    </div>
+    <div id="students-expedients">
+    <!-- Los expedientes se cargan aquí -->
+        </div>
+
+        </div>
+<div class="content-section" id="admin-reports">
+<h3>Crear Reporte Confidencial</h3>
+<form id="confidentialReportForm">
+<div class="form-group">
+<label for="ReportStudent">Estudiante:</label>
+<select id="ReportStudent" required="">
+<option value="">Seleccionar estudiante</option>
+</select>
+</div>
+<div class="form-group">
+<label for="ReportType">Tipo de Reporte:</label>
+<select id="ReportType" required="">
+<option value="">Seleccionar tipo</option>
+<option value="medico">Médico</option>
+<option value="psicologico">Psicológico</option>
+<option value="academico">Académico</option>
+<option value="disciplinario">Disciplinario</option>
+<option value="familiar">Familiar</option>
+</select>
+</div>
+<div class="form-group">
+<label for="ReportContent">Contenido del Reporte:</label>
+<textarea id="ReportContent" placeholder="Escriba el reporte confidencial aquí..." required=""></textarea>
+</div>
+<div class="form-group">
+<label for="ReportDate">Fecha:</label>
+<input id="ReportDate" required="" type="date"/>
+</div>
+<button type="submit">Guardar Reporte Confidencial</button>
+</form>
+</div>
+</div>
+<!-- SECCIÓN DOCENTE -->
+<div class="role-section" id="docente-section">
+<h2>Panel de Docente</h2>
+<div class="content-section" id="docente-activities">
+<h3>Gestión de Actividades</h3>
+<button onclick="ShowSection('create-activity')">Crear Nueva Actividad</button>
+<button onclick="ShowSection('my-activities')">Mis Actividades</button>
+<div class="subsection" id="create-activity">
+<h4>Crear Actividad</h4>
+<form id="activityForm">
+<div class="form-group">
+<label for="ActivityTitle">Título de la actividad:</label>
+<input id="ActivityTitle" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="ActivityDescription">Descripción:</label>
+<textarea id="ActivityDescription" required=""></textarea>
+</div>
+<div class="form-group">
+<label for="ActivityType">Tipo de discapacidad objetivo:</label>
+<select id="ActivityType" required="">
+<option value="">Seleccionar tipo</option>
+<option value="visual">Discapacidad Visual</option>
+<option value="auditiva">Discapacidad Auditiva</option>
+<option value="cognitiva">Discapacidad Cognitiva</option>
+<option value="motora">Discapacidad Motora</option>
+<option value="tdah">TDAH</option>
+<option value="general">General</option>
+</select>
+</div>
+<div class="form-group">
+<label for="ActivityFile">Archivo de la actividad:</label>
+<input id="ActivityFile" type="file"/>
+</div>
+<div class="form-group">
+<label for="AssignedStudents">Asignar a estudiantes:</label>
+<select id="AssignedStudents" multiple="">
+<!-- Los estudiantes se cargan dinámicamente -->
+</select>
+</div>
+<button type="submit">Crear Actividad</button>
+</form>
+</div>
+</div>
+<div class="content-section" id="docente-reports">
+<h3>Crear Reporte de Estudiante</h3>
+<form id="teacherReportForm">
+<div class="form-group">
+<label for="TeacherReportStudent">Estudiante:</label>
+<select id="TeacherReportStudent" required="">
+<option value="">Seleccionar estudiante</option>
+</select>
+</div>
+<div class="form-group">
+<label for="TeacherReportType">Tipo de Reporte:</label>
+<select id="TeacherReportType" required="">
+<option value="">Seleccionar tipo</option>
+<option value="progreso">Progreso Académico</option>
+<option value="comportamiento">Comportamiento</option>
+<option value="participacion">Participación en Clase</option>
+<option value="recomendaciones">Recomendaciones</option>
+</select>
+</div>
+<div class="form-group">
+<label for="TeacherReportContent">Contenido del Reporte:</label>
+<textarea id="TeacherReportContent" placeholder="Escriba el reporte del estudiante aquí..." required=""></textarea>
+</div>
+<div class="form-group">
+<label for="TeacherReportDate">Fecha:</label>
+<input id="TeacherReportDate" required="" type="date"/>
+</div>
+<button type="submit">Guardar Reporte</button>
+</form>
+</div>
+<div class="content-section" id="docente-progress">
+<h3>Seguimiento de Progreso</h3>
+<div id="students-progress">
+<!-- El progreso de los estudiantes se muestra aquí -->
+</div>
+</div>
+</div>
+<!-- SECCIÓN PADRE -->
+<div class="role-section" id="padre-section">
+<h2>Panel de Padre/Acudiente</h2>
+<div class="content-section" id="padre-search">
+<h3>Buscar Mi Hijo</h3>
+<div class="form-group">
+<label for="ChildSearchInput">Nombre del hijo:</label>
+<input id="ChildSearchInput" placeholder="Escriba el nombre completo de su hijo" type="text"/>
+<button onclick="SearchMyChild()">Buscar</button>
+</div>
+<div class="alert" id="child-found" style="display: none;">
+<h4>Hijo Encontrado:</h4>
+<div id="child-info"></div>
+</div>
+</div>
+<div class="content-section" id="padre-reports">
+<h3>Reportes de Mi Hijo</h3>
+<div class="form-group">
+<label for="ChildReportSelect">Seleccionar hijo:</label>
+<select id="ChildReportSelect" onchange="LoadChildReports()">
+<option value="">Seleccionar hijo</option>
+</select>
+</div>
+<div id="child-reports-list">
+<!-- Los reportes se cargan aquí -->
+</div>
+</div>
+<div class="content-section" id="padre-progress">
+<h3>Progreso Académico</h3>
+<div class="form-group">
+<label for="ChildProgressSelect">Seleccionar hijo:</label>
+<select id="ChildProgressSelect" onchange="LoadChildProgress()">
+<option value="">Seleccionar hijo</option>
+</select>
+</div>
+<div id="child-progress">
+<!-- El progreso del hijo seleccionado se muestra aquí -->
+</div>
+</div>
+<div class="content-section" id="padre-communication">
+<h3>Comunicación con Docentes</h3>
+<form id="messageForm">
+<div class="form-group">
+<label for="MessageTo">Para:</label>
+<select id="MessageTo">
+<option value="">Seleccionar docente</option>
+</select>
+</div>
+<div class="form-group">
+<label for="MessageContent">Mensaje:</label>
+<textarea id="MessageContent" required=""></textarea>
+</div>
+<button type="submit">Enviar Mensaje</button>
+</form>
+</div>
+</div>
+<!-- SECCIÓN ESTUDIANTE -->
+
+</main>
+</div>
+<script>
+        let CurrentUserRole = '';
+        let CurrentUserEmail = '';
+        let IsLoggedIn = false;
+        let Users = [];
+        let Activities = [];
+        let Students = [
+            { 
+                id: 1, 
+                name: 'Sebastián Ramírez', 
+                grade: '6A', 
+                disability: 'Discapacidad Auditiva', 
+                progress: 72,
+                condition: 'Sordera parcial',
+                parent: 'Laura Ramírez',
+                parentEmail: 'laura.ramirez@email.com'
+            },
+            { 
+                id: 2, 
+                name: 'Valentina Gómez', 
+                grade: '7B', 
+                disability: 'Discapacidad Cognitiva', 
+                progress: 68,
+                condition: 'Dificultades específicas de aprendizaje',
+                parent: 'Carlos Gómez',
+                parentEmail: 'carlos.gomez@email.com'
+            },
+            { 
+                id: 3, 
+                name: 'Mateo Torres', 
+                grade: '9C', 
+                disability: 'Condición Médica Crónica', 
+                progress: 80,
+                condition: 'Diabetes Tipo 1',
+                parent: 'Andrea Torres',
+                parentEmail: 'andrea.torres@email.com'
+            },
+            { 
+                id: 4, 
+                name: 'Isabela Martínez', 
+                grade: '10A', 
+                disability: 'Discapacidad Motora', 
+                progress: 77,
+                condition: 'Parálisis parcial en extremidades inferiores',
+                parent: 'Luis Martínez',
+                parentEmail: 'luis.martinez@email.com'
+            },
+            { 
+                id: 5, 
+                name: 'Tomás Herrera', 
+                grade: '11B', 
+                disability: 'TDAH', 
+                progress: 74,
+                condition: 'Trastorno por Déficit de Atención e Hiperactividad',
+                parent: 'Patricia Herrera',
+                parentEmail: 'patricia.herrera@email.com'
+            }
+        ];
+
+        let Teachers = [
+            { id: 1, name: 'Prof. Ana Ruiz', email: 'ana.ruiz@colegio.edu.co' },
+            { id: 2, name: 'Prof. Pedro Gómez', email: 'pedro.gomez@colegio.edu.co' },
+            { id: 3, name: 'Prof. Laura Vega', email: 'laura.vega@colegio.edu.co' }
+        ];
+
+        // Verificar autenticación al cargar la página
+        window.onload = function() {
+            CheckAuthentication();
+            LoadUserInterface();
+            LoadDemoData();
+            SetCurrentDate();
+        }
+
+        function CheckAuthentication() {
+            IsLoggedIn = JSON.parse(localStorage.getItem('IsLoggedIn')) || false;
+            CurrentUserRole = localStorage.getItem('UserRole') || '';
+            CurrentUserEmail = localStorage.getItem('UserEmail') || '';
+            
+            if (!IsLoggedIn) {
+                window.location.href = 'Inicio_sesion.html';
+                return;
+            }
+            
+            document.getElementById('user-name').textContent = CurrentUserEmail;
+            document.getElementById('user-role').textContent = CurrentUserRole.charAt(0).toUpperCase() + CurrentUserRole.slice(1);
+        }
+
+        function LoadUserInterface() {
+            // Ocultar todas las secciones
+            let AllSections = document.querySelectorAll('.role-section');
+            AllSections.forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Mostrar solo la sección correspondiente al rol
+            let CurrentSection = document.getElementById(CurrentUserRole + '-section');
+            if (CurrentSection) {
+                CurrentSection.style.display = 'block';
+            }
+            
+            GenerateNavigationMenu();
+        }
+
+        function GenerateNavigationMenu() {
+            let MenuHTML = '';
+            
+            switch(CurrentUserRole) {
+                case 'administrador':
+                    MenuHTML = `
+                        <button onclick="ShowMainSection('admin-users')">Gestión de Usuarios</button>
+                        <button onclick="ShowMainSection('admin-students')">Expedientes Estudiantes</button>
+                        <button onclick="ShowMainSection('admin-reports')">Crear Reporte Confidencial</button>
+                    `;
+                    break;
+                case 'docente':
+                    MenuHTML = `
+                        <button onclick="ShowMainSection('docente-activities')">Actividades</button>
+                        <button onclick="ShowMainSection('docente-reports')">Crear Reporte</button>
+                        <button onclick="ShowMainSection('docente-progress')">Progreso</button>
+                    `;
+                    break;
+                case 'padre':
+                    MenuHTML = `
+                        <button onclick="ShowMainSection('padre-search')">Buscar Mi Hijo</button>
+                        <button onclick="ShowMainSection('padre-reports')">Ver Reportes</button>
+                        <button onclick="ShowMainSection('padre-progress')">Ver Progreso</button>
+                        <button onclick="ShowMainSection('padre-communication')">Mensajes</button>
+                    `;
+                    break;
+                case 'estudiante':
+                    MenuHTML = `
+                        <button onclick="ShowMainSection('estudiante-activities')">Mis Actividades</button>
+                        <button onclick="ShowMainSection('estudiante-progress')">Mi Progreso</button>
+                        <button onclick="ShowMainSection('estudiante-achievements')">Logros</button>
+                    `;
+                    break;
+            }
+            
+            document.getElementById('navigation-menu').innerHTML = MenuHTML;
+        }
+
+        function ShowMainSection(SectionId) {
+            // Ocultar todas las secciones de contenido
+            let AllContentSections = document.querySelectorAll('.content-section');
+            AllContentSections.forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Mostrar la sección seleccionada
+            let SelectedSection = document.getElementById(SectionId);
+            if (SelectedSection) {
+                SelectedSection.style.display = 'block';
+            }
+
+            // Cargar datos específicos según la sección
+            if (SectionId === 'admin-students') {
+                LoadStudentsExpedients();
+            }
+        }
+
+        function ShowSection(SectionId) {
+            // Ocultar todas las subsecciones
+            let AllSubsections = document.querySelectorAll('.subsection');
+            AllSubsections.forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Mostrar la subsección seleccionada
+            let SelectedSubsection = document.getElementById(SectionId);
+            if (SelectedSubsection) {
+                SelectedSubsection.style.display = 'block';
+            }
+        }
+
+        function LoadDemoData() {
+            // Cargar estudiantes en los selectores
+            LoadStudentsInSelectors();
+            // Cargar usuarios en la tabla
+            LoadUsersTable();
+            // Cargar progreso de estudiantes
+            LoadStudentsProgress();
+            // Cargar docentes
+            LoadTeachers();
+            // Cargar datos específicos para padres
+            if (CurrentUserRole === 'padre') {
+                LoadParentChildren();
+            }
+        }
+
+        function LoadStudentsInSelectors() {
+            let StudentSelects = document.querySelectorAll('#ReportStudent, #TeacherReportStudent, #ChildReportSelect, #ChildProgressSelect, #AssignedStudents');
+            StudentSelects.forEach(select => {
+                // Limpiar opciones existentes (excepto la primera)
+                while (select.children.length > 1) {
+                    select.removeChild(select.lastChild);
+                }
+                
+                Students.forEach(student => {
+                    let Option = document.createElement('option');
+                    Option.value = student.id;
+                    Option.textContent = student.name + ' - ' + student.grade;
+                    select.appendChild(Option);
+                });
+            });
+        }
+
+        function LoadTeachers() {
+            let TeacherSelect = document.getElementById('MessageTo');
+            if (TeacherSelect) {
+                Teachers.forEach(teacher => {
+                    let Option = document.createElement('option');
+                    Option.value = teacher.id;
+                    Option.textContent = teacher.name;
+                    TeacherSelect.appendChild(Option);
+                });
+            }
+        }
+
+        function LoadParentChildren() {
+            // Simular que el padre actual tiene hijos específicos
+            let ParentChildren = Students.filter(student => student.parentEmail === CurrentUserEmail);
+            
+            let ChildSelects = document.querySelectorAll('#ChildReportSelect, #ChildProgressSelect');
+            ChildSelects.forEach(select => {
+                ParentChildren.forEach(child => {
+                    let Option = document.createElement('option');
+                    Option.value = child.id;
+                    Option.textContent = child.name + ' - ' + child.grade;
+                    select.appendChild(Option);
+                });
+            });
+        }
+
+        function LoadUsersTable() {
+            let DemoUsers = [
+                { name: 'Juan Pérez', email: 'juan@colegio.edu.co', role: 'estudiante', status: 'Activo' },
+                { name: 'María García', email: 'maria@colegio.edu.co', role: 'estudiante', status: 'Activo' },
+                { name: 'Prof. Ana Martínez', email: 'ana@colegio.edu.co', role: 'docente', status: 'Activo' }
+            ];
+            
+            let TableBody = document.getElementById('users-tbody');
+            if (TableBody) {
+                TableBody.innerHTML = '';
+                DemoUsers.forEach(user => {
+                    let Row = TableBody.insertRow();
+                    Row.innerHTML = `
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${user.role}</td>
+                        <td>${user.status}</td>
+                        <td>
+                            <button onclick="EditUser('${user.email}')">Editar</button>
+                            <button onclick="DeleteUser('${user.email}')">Eliminar</button>
+                        </td>
+                    `;
+                });
+            }
+        }
+
+        function LoadStudentsProgress() {
+            let ProgressDiv = document.getElementById('students-progress');
+            if (ProgressDiv) {
+                let ProgressHTML = '';
+                Students.forEach(student => {
+                    ProgressHTML += `
+                        <div class="student-card">
+                            <h4>${student.name}</h4>
+                            <p>Grado: ${student.grade}</p>
+                            <p>Tipo de necesidad: ${student.disability}</p>
+                            <p>Progreso: ${student.progress}%</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${student.progress}%"></div>
+                            </div>
+                            <button onclick="ViewStudentDetail(${student.id})">Ver Detalle</button>
+                        </div>
+                    `;
+                });
+                ProgressDiv.innerHTML = ProgressHTML;
+            }
+        }
+
+        function LoadStudentsExpedients() {
+            let ExpedientsDiv = document.getElementById('students-expedients');
+            if (ExpedientsDiv) {
+                let ExpedientsHTML = '';
+                Students.forEach(student => {
+                    ExpedientsHTML += `
+                        <div class="student-card">
+                            <h4>${student.name}</h4>
+                            <p><strong>Grado:</strong> ${student.grade}</p>
+                            <p><strong>Discapacidad/Condición:</strong> ${student.disability}</p>
+                            <p><strong>Descripción:</strong> ${student.condition}</p>
+                            <p><strong>Progreso Actual:</strong> ${student.progress}%</p>
+                            <p><strong>Padre/Acudiente:</strong> ${student.parent}</p>
+                            <p><strong>Email del Acudiente:</strong> ${student.parentEmail}</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${student.progress}%"></div>
+                            </div>
+                            <button onclick="ViewFullExpedient(${student.id})">Ver Expediente Completo</button>
+                            <button onclick="CreateConfidentialReport(${student.id})">Crear Reporte</button>
+                        </div>
+                    `;
+                });
+                ExpedientsDiv.innerHTML = ExpedientsHTML;
+            }
+        }
+
+        function SearchStudents() {
+            let SearchTerm = document.getElementById('StudentSearch').value.toLowerCase();
+            let StudentCards = document.querySelectorAll('#students-expedients .student-card');
+            
+            StudentCards.forEach(card => {
+                let StudentName = card.querySelector('h4').textContent.toLowerCase();
+                if (StudentName.includes(SearchTerm) || SearchTerm === '') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function SearchMyChild() {
+            let SearchInput = document.getElementById('ChildSearchInput').value.trim().toLowerCase();
+            let ChildFound = Students.find(student => 
+                student.name.toLowerCase().includes(SearchInput) && 
+                student.parentEmail === CurrentUserEmail
+            );
+            
+            let ChildFoundDiv = document.getElementById('child-found');
+            let ChildInfoDiv = document.getElementById('child-info');
+            
+            if (ChildFound && SearchInput !== '') {
+                ChildInfoDiv.innerHTML = `
+                    <p><strong>Nombre:</strong> ${ChildFound.name}</p>
+                    <p><strong>Grado:</strong> ${ChildFound.grade}</p>
+                    <p><strong>Condición:</strong> ${ChildFound.disability}</p>
+                    <p><strong>Progreso:</strong> ${ChildFound.progress}%</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${ChildFound.progress}%"></div>
+                    </div>
+                `;
+                ChildFoundDiv.style.display = 'block';
+            } else if (SearchInput !== '') {
+                ChildInfoDiv.innerHTML = '<p>No se encontró ningún hijo con ese nombre o no tiene permisos para verlo.</p>';
+                ChildFoundDiv.style.display = 'block';
+            } else {
+                ChildFoundDiv.style.display = 'none';
+            }
+        }
+
+        function LoadChildReports() {
+            let ChildId = document.getElementById('ChildReportSelect').value;
+            let ReportsDiv = document.getElementById('child-reports-list');
+            
+            if (ChildId) {
+                let Child = Students.find(s => s.id == ChildId);
+                // Simular reportes (en producción vendrían de la base de datos)
+                ReportsDiv.innerHTML = `
+                    <div class="report-area">
+                        <h4>Reportes de ${Child.name}</h4>
+                        <div class="student-card">
+                            <h5>Reporte de Progreso - Marzo 2024</h5>
+                            <p><strong>Docente:</strong> Prof. Ana Ruiz</p>
+                            <p><strong>Materia:</strong> Matemáticas</p>
+                            <p>El estudiante muestra mejoras significativas en el área de matemáticas. Ha logrado adaptarse bien a las metodologías inclusivas implementadas.</p>
+                        </div>
+                        <div class="student-card">
+                            <h5>Reporte de Comportamiento - Febrero 2024</h5>
+                            <p><strong>Docente:</strong> Prof. Pedro Gómez</p>
+                            <p><strong>Materia:</strong> Educación Física</p>
+                            <p>Excelente participación en las actividades adaptadas. Muestra liderazgo y colaboración con sus compañeros.</p>
+                        </div>
+                        <p><em>Nota: Estos son reportes de demostración. En el sistema real se mostrarán los reportes reales del estudiante.</em></p>
+                    </div>
+                `;
+            } else {
+                ReportsDiv.innerHTML = '';
+            }
+        }
+
+        function LoadChildProgress() {
+            let ChildId = document.getElementById('ChildProgressSelect').value;
+            let ProgressDiv = document.getElementById('child-progress');
+            
+            if (ChildId) {
+                let Child = Students.find(s => s.id == ChildId);
+                ProgressDiv.innerHTML = `
+                    <div class="report-area">
+                        <h4>Progreso Académico de ${Child.name}</h4>
+                        <div class="student-card">
+                            <h5>Progreso General: ${Child.progress}%</h5>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${Child.progress}%"></div>
+                            </div>
+                        </div>
+                        <div class="student-card">
+                            <h5>Desglose por Materias:</h5>
+                            <p><strong>Matemáticas:</strong> 80% <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div></p>
+                            <p><strong>Español:</strong> 75% <div class="progress-bar"><div class="progress-fill" style="width: 75%"></div></div></p>
+                            <p><strong>Ciencias:</strong> 70% <div class="progress-bar"><div class="progress-fill" style="width: 70%"></div></div></p>
+                            <p><strong>Educación Física:</strong> 85% <div class="progress-bar"><div class="progress-fill" style="width: 85%"></div></div></p>
+                        </div>
+                        <div class="student-card">
+                            <h5>Observaciones:</h5>
+                            <p>Su hijo ${Child.name} está progresando adecuadamente. Las adaptaciones curriculares han sido efectivas para su tipo de necesidad educativa (${Child.disability}).</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                ProgressDiv.innerHTML = '';
+            }
+        }
+
+        function SetCurrentDate() {
+            let Today = new Date().toISOString().split('T')[0];
+            let DateInputs = document.querySelectorAll('#ReportDate, #TeacherReportDate');
+            DateInputs.forEach(input => {
+                if (input) input.value = Today;
+            });
+        }
+
+        function ViewFullExpedient(StudentId) {
+            let Student = Students.find(s => s.id === StudentId);
+            if (Student) {
+                alert(`EXPEDIENTE COMPLETO - ${Student.name}\n\n` +
+                      `Información Personal:\n` +
+                      `- Grado: ${Student.grade}\n` +
+                      `- Discapacidad: ${Student.disability}\n` +
+                      `- Condición específica: ${Student.condition}\n` +
+                      `- Progreso actual: ${Student.progress}%\n\n` +
+                      `Información Familiar:\n` +
+                      `- Acudiente: ${Student.parent}\n` +
+                      `- Email: ${Student.parentEmail}\n\n` +
+                      `Nota: En el sistema real se mostraría información detallada médica, psicológica y académica.`);
+            }
+        }
+
+        function CreateConfidentialReport(StudentId) {
+            let Student = Students.find(s => s.id === StudentId);
+            if (Student) {
+                // Llenar automáticamente el formulario de reporte
+                ShowMainSection('admin-reports');
+                document.getElementById('ReportStudent').value = StudentId;
+            }
+        }
+
+        // Funciones específicas por rol
+        function EditUser(Email) {
+            alert('Función de edición - Usuario: ' + Email + '\n\nEn el sistema real aquí se abriría un formulario para editar la información del usuario.');
+        }
+
+        function DeleteUser(Email) {
+            if (confirm('¿Estás seguro de que quieres eliminar este usuario: ' + Email + '?')) {
+                alert('Usuario eliminado: ' + Email + '\n\nEn el sistema real se eliminaría de la base de datos.');
+            }
+        }
+
+        function ViewStudentDetail(StudentId) {
+            let Student = Students.find(s => s.id === StudentId);
+            if (Student) {
+                alert('DETALLE DEL ESTUDIANTE\n\n' + 
+                      'Nombre: ' + Student.name + '\n' +
+                      'Grado: ' + Student.grade + '\n' +
+                      'Necesidad educativa: ' + Student.disability + '\n' +
+                      'Condición específica: ' + Student.condition + '\n' +
+                      'Progreso: ' + Student.progress + '%\n' +
+                      'Acudiente: ' + Student.parent);
+            }
+        }
+
+        // Event Listeners para formularios
+        document.getElementById('userForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let UserName = document.getElementById('UserName').value;
+            let UserEmail = document.getElementById('UserEmail').value;
+            let UserRole = document.getElementById('UserRole').value;
+            
+            alert('Usuario registrado exitosamente:\n\n' + 
+                  'Nombre: ' + UserName + '\n' +
+                  'Email: ' + UserEmail + '\n' +
+                  'Rol: ' + UserRole + '\n\n' +
+                  'En el sistema real se guardaría en la base de datos.');
+            
+            this.reset();
+        });
+
+        document.getElementById('activityForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let ActivityTitle = document.getElementById('ActivityTitle').value;
+            let ActivityType = document.getElementById('ActivityType').value;
+            let ActivityDescription = document.getElementById('ActivityDescription').value;
+            
+            alert('Actividad creada exitosamente:\n\n' + 
+                  'Título: ' + ActivityTitle + '\n' +
+                  'Tipo: ' + ActivityType + '\n' +
+                  'Descripción: ' + ActivityDescription + '\n\n' +
+                  'En el sistema real se guardaría en la base de datos y se notificaría a los estudiantes asignados.');
+            
+            this.reset();
+        });
+
+        document.getElementById('confidentialReportForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let StudentId = document.getElementById('ReportStudent').value;
+            let ReportType = document.getElementById('ReportType').value;
+            let ReportContent = document.getElementById('ReportContent').value;
+            let ReportDate = document.getElementById('ReportDate').value;
+            
+            let Student = Students.find(s => s.id == StudentId);
+            let StudentName = Student ? Student.name : 'Desconocido';
+            
+            alert('Reporte Confidencial Guardado:\n\n' +
+                  'Estudiante: ' + StudentName + '\n' +
+                  'Tipo: ' + ReportType + '\n' +
+                  'Fecha: ' + ReportDate + '\n' +
+                  'Contenido: ' + ReportContent.substring(0, 100) + '...\n\n' +
+                  'En el sistema real se guardaría de forma segura y confidencial.');
+            
+            this.reset();
+            SetCurrentDate();
+        });
+
+        document.getElementById('teacherReportForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let StudentId = document.getElementById('TeacherReportStudent').value;
+            let ReportType = document.getElementById('TeacherReportType').value;
+            let ReportContent = document.getElementById('TeacherReportContent').value;
+            let ReportDate = document.getElementById('TeacherReportDate').value;
+            
+            let Student = Students.find(s => s.id == StudentId);
+            let StudentName = Student ? Student.name : 'Desconocido';
+            
+            alert('Reporte de Docente Guardado:\n\n' +
+                  'Estudiante: ' + StudentName + '\n' +
+                  'Tipo: ' + ReportType + '\n' +
+                  'Fecha: ' + ReportDate + '\n' +
+                  'Contenido: ' + ReportContent.substring(0, 100) + '...\n\n' +
+                  'En el sistema real se guardaría y se notificaría al acudiente.');
+            
+            this.reset();
+            SetCurrentDate();
+        });
+
+        document.getElementById('messageForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let TeacherId = document.getElementById('MessageTo').value;
+            let MessageContent = document.getElementById('MessageContent').value;
+            
+            let Teacher = Teachers.find(t => t.id == TeacherId);
+            let TeacherName = Teacher ? Teacher.name : 'Desconocido';
+            
+            alert('Mensaje enviado exitosamente a: ' + TeacherName + '\n\n' +
+                  'Contenido: ' + MessageContent + '\n\n' +
+                  'En el sistema real se enviaría por el sistema de mensajería interna.');
+            
+            this.reset();
+        });
+
+        function Logout() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                localStorage.removeItem('IsLoggedIn');
+                localStorage.removeItem('UserRole');
+                localStorage.removeItem('UserEmail');
+                window.location.href = 'Inicio_sesion.html';
+            }
+        }
+
+        // Cargar actividades para estudiantes
+        function LoadStudentActivities() {
+            let ActivitiesDiv = document.getElementById('assigned-activities');
+            if (ActivitiesDiv && CurrentUserRole === 'estudiante') {
+                ActivitiesDiv.innerHTML = `
+                    <div class="student-card">
+                        <h4>Actividad de Matemáticas Adaptada</h4>
+                        <p><strong>Docente:</strong> Prof. Ana Ruiz</p>
+                        <p><strong>Descripción:</strong> Ejercicios de suma y resta con material manipulativo adaptado para discapacidad visual.</p>
+                        <p><strong>Estado:</strong> Pendiente</p>
+                        <button onclick="StartActivity(1)">Comenzar Actividad</button>
+                    </div>
+                    <div class="student-card">
+                        <h4>Lectura Comprensiva</h4>
+                        <p><strong>Docente:</strong> Prof. Laura Vega</p>
+                        <p><strong>Descripción:</strong> Lectura de texto con preguntas de comprensión adaptadas.</p>
+                        <p><strong>Estado:</strong> Completada</p>
+                        <button onclick="ViewActivity(2)">Ver Resultados</button>
+                    </div>
+                    <p><em>En el sistema real se mostrarían las actividades específicamente asignadas al estudiante.</em></p>
+                `;
+            }
+        }
+
+        function LoadStudentProgress() {
+            let ProgressDiv = document.getElementById('my-progress');
+            if (ProgressDiv && CurrentUserRole === 'estudiante') {
+                ProgressDiv.innerHTML = `
+                    <div class="student-card">
+                        <h4>Mi Progreso General</h4>
+                        <p>Progreso actual: 78%</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    <div class="student-card">
+                        <h5>Progreso por Materias:</h5>
+                        <p><strong>Matemáticas:</strong> 80%</p>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
+                        <p><strong>Español:</strong> 75%</p>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 75%"></div></div>
+                        <p><strong>Ciencias:</strong> 70%</p>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 70%"></div></div>
+                    </div>
+                `;
+            }
+        }
+
+        function LoadStudentAchievements() {
+            let AchievementsDiv = document.getElementById('achievements');
+            if (AchievementsDiv && CurrentUserRole === 'estudiante') {
+                AchievementsDiv.innerHTML = `
+                    <div class="student-card">
+                        <h4>🏆 Logros Obtenidos</h4>
+                        <div class="student-card">
+                            <h5>🌟 Estudiante Destacado</h5>
+                            <p>Por excelente desempeño en matemáticas - Marzo 2024</p>
+                        </div>
+                        <div class="student-card">
+                            <h5>📚 Lector Activo</h5>
+                            <p>Por completar 5 actividades de lectura - Febrero 2024</p>
+                        </div>
+                        <div class="student-card">
+                            <h5>🤝 Compañero Colaborativo</h5>
+                            <p>Por ayudar a otros estudiantes - Enero 2024</p>
+                        </div>
+                    </div>
+                    <p><em>En el sistema real se mostrarían los logros reales del estudiante basados en su progreso y actividades completadas.</em></p>
+                `;
+            }
+        }
+
+        function StartActivity(ActivityId) {
+            alert('Iniciando actividad ' + ActivityId + '\n\nEn el sistema real se abriría la interfaz de la actividad específica.');
+        }
+
+        function ViewActivity(ActivityId) {
+            alert('Mostrando resultados de actividad ' + ActivityId + '\n\nEn el sistema real se mostrarían las calificaciones y retroalimentación detallada.');
+        }
+
+        // Cargar contenido específico cuando se muestre una sección de estudiante
+        function LoadStudentContent() {
+            if (CurrentUserRole === 'estudiante') {
+                LoadStudentActivities();
+                LoadStudentProgress();
+                LoadStudentAchievements();
+            }
+        }
+
+        // Ejecutar carga de contenido de estudiante después de que se cargue la interfaz
+        setTimeout(LoadStudentContent, 500);
+    </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - LUDIK</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LUDIK</h1>
+            <button onclick="GoBack()">← Volver al inicio</button>
+        </header>
+
+        <main>
+            <h2>Iniciar Sesión</h2>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="UserRole">Selecciona tu rol:</label>
+                    <select id="UserRole" name="UserRole" required>
+                        <option value="">-- Selecciona una opción --</option>
+                        <option value="administrador">Administrador</option>
+                        <option value="docente">Docente</option>
+                        <option value="padre">Padre/Acudiente</option>
+                        <option value="estudiante">Estudiante</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="Email">Correo electrónico:</label>
+                    <input type="email" id="Email" name="Email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Password">Contraseña:</label>
+                    <input type="password" id="Password" name="Password" required>
+                </div>
+
+                <button type="submit">Iniciar Sesión</button>
+                <button type="button" onclick="ShowForgotPassword()">¿Olvidaste tu contraseña?</button>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        function GoBack() {
+            window.location.href = 'Index.html';
+        }
+
+        function ShowForgotPassword() {
+            const Email = prompt('Ingresa tu correo electrónico para recuperar la contraseña:');
+            if (Email) {
+                alert('Se ha enviado un correo de recuperación a: ' + Email);
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const Email = document.getElementById('Email').value;
+            const Password = document.getElementById('Password').value;
+            const Role = document.getElementById('UserRole').value;
+
+            if (!Role) {
+                alert("Por favor selecciona un rol antes de iniciar sesión.");
+                return;
+            }
+
+            // Guardar en localStorage para simular login
+            localStorage.setItem('UserEmail', Email);
+            localStorage.setItem('UserRole', Role);
+            localStorage.setItem('IsLoggedIn', 'true');
+
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>
