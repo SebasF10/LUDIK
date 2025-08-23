@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz</title>
+    <link rel="stylesheet" href="Css\Interfaz.css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="left-section">
+            <label class="burger" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <div class="title">LUDIK</div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-buttons">
+            <button class="menu-button">Perfil</button>
+            <button class="menu-button">Estudiantes</button>
+            <button class="menu-button" id="btnCrearCuentas">Crear Cuentas</button>
+            <button class="menu-button">Actividades</button>
+            <button class="menu-button">Comunicate</button>
+            <button class="menu-button">Ayuda</button>
+        </div>
+        <div class="menu-bottom">
+            <button class="menu-button close-session">Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Contenido principal aquí -->
+    </div>
+
+    <!-- SCRIPT INLINE SÚPER SIMPLE -->
+    <script>
+        // VERIFICAR ROL INMEDIATAMENTE
+        const rol = localStorage.getItem('rol');
+        console.log('Rol en localStorage:', rol);
+
+        // Si NO es admin, eliminar el botón AHORA MISMO
+        if (rol !== 'admin') {
+            const botonCrear = document.getElementById('btnCrearCuentas');
+            if (botonCrear) {
+                botonCrear.style.display = 'none';
+                console.log('Botón ocultado para rol:', rol);
+            }
+        }
+    </script>
+
+    <script src="Js\Interfaz_Lojica.js"></script>
+</body>
+
+</html>

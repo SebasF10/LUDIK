@@ -1,0 +1,170 @@
+/* CSS específico para Interfaz.html - Página principal con menú lateral */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f5f5f5;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Burger menu styles */
+.burger {
+    position: relative;
+    width: 40px;
+    height: 30px;
+    background: transparent;
+    cursor: pointer;
+    display: block;
+}
+
+.burger input {
+    display: none;
+}
+
+.burger span {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background: black;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+}
+
+.burger span:nth-of-type(1) {
+    top: 0px;
+    transform-origin: left center;
+}
+
+.burger span:nth-of-type(2) {
+    top: 50%;
+    transform: translateY(-50%);
+    transform-origin: left center;
+}
+
+.burger span:nth-of-type(3) {
+    top: 100%;
+    transform-origin: left center;
+    transform: translateY(-100%);
+}
+
+.burger input:checked~span:nth-of-type(1) {
+    transform: rotate(45deg);
+    top: 0px;
+    left: 5px;
+}
+
+.burger input:checked~span:nth-of-type(2) {
+    width: 0%;
+    opacity: 0;
+}
+
+.burger input:checked~span:nth-of-type(3) {
+    transform: rotate(-45deg);
+    top: 28px;
+    left: 5px;
+}
+
+/* Menu lateral */
+.side-menu {
+    position: fixed;
+    top: 70px;
+    left: -300px;
+    width: 300px;
+    height: calc(100vh - 70px);
+    background-color: #333;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.side-menu.active {
+    left: 0;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.menu-button {
+    padding: 20px 30px;
+    background: transparent;
+    color: white;
+    border: none;
+    border-bottom: 1px solid #555;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.3s;
+}
+
+.menu-button:hover {
+    background-color: #555;
+}
+
+/* Overlay para cerrar menu */
+.overlay {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 70px);
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 999;
+}
+
+.overlay.active {
+    display: block;
+}
+
+/* Content area */
+.content {
+    padding: 20px;
+}
+
+/* Menu bottom section */
+.menu-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.menu-button.close-session {
+    background-color: #d32f2f;
+    color: white;
+    border-top: 1px solid #555;
+}
+
+.menu-button.close-session:hover {
+    background-color: #b71c1c;
+}

@@ -1,0 +1,178 @@
+/* CSS específico para Form_Crear_cuentas.html - Formulario de creación de cuentas */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #d7d7d7;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    min-height: 100vh;
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Encabezado */
+.header h1 {
+    color: #7c3aed;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Botones de roles */
+.roles {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.roles .role-btn {
+    width: 130px;
+    height: 44px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+/* Estilo según rol (reutilizando tu paleta) */
+.roles .role-btn:nth-child(1) {
+    background: #a5b4fc;
+    /* Admin */
+    color: #222;
+}
+
+.roles .role-btn:nth-child(1):hover {
+    background: #818cf8;
+    transform: scale(1.07);
+    box-shadow: 0 4px 16px rgba(165, 180, 252, 0.18);
+}
+
+.roles .role-btn:nth-child(2) {
+    background: #bbf7d0;
+    /* Profesor */
+    color: #222;
+}
+
+.roles .role-btn:nth-child(2):hover {
+    background: #4ade80;
+    transform: scale(1.07);
+    box-shadow: 0 4px 16px rgba(187, 247, 208, 0.18);
+}
+
+.roles .role-btn:nth-child(3) {
+    background: #fed7aa;
+    /* Acudiente */
+    color: #222;
+}
+
+.roles .role-btn:nth-child(3):hover {
+    background: #fdba74;
+    transform: scale(1.07);
+    box-shadow: 0 4px 16px rgba(254, 215, 170, 0.18);
+}
+
+/* Formularios */
+.formularios {
+    width: 100%;
+}
+
+.form {
+    display: none;
+    /* Ocultos por defecto */
+    width: 90%;
+    margin: 0 auto 18px auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    background: #f9fafb;
+}
+
+.form h2 {
+    font-size: 1.3rem;
+    color: #4c1d95;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Campos del formulario */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #c4b5fd;
+    background: #f3f4f6;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border: 1.5px solid #7c3aed;
+}
+
+/* Botón general */
+.btn {
+    width: 100%;
+    padding: 10px;
+    background: #4c1d95;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+    background: #7c3aed;
+    transform: scale(1.04);
+}
+
+/* Mensajes */
+.mensaje {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #7c3aed;
+    margin-bottom: 15px;
+}
+
+.hidden {
+    display: none !important;
+}
