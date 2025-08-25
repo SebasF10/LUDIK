@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuentas</title>
+    <link rel="stylesheet" href="Css\Crear_cuentas.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Título -->
+        <header class="header">
+            <h1>Crear Nueva Cuenta</h1>
+        </header>
+
+        <!-- Botones de selección -->
+        <nav class="roles">
+            <button class="role-btn" onclick="mostrarFormulario('admin')">Administrador</button>
+            <button class="role-btn" onclick="mostrarFormulario('profesor')">Profesor</button>
+            <button class="role-btn" onclick="mostrarFormulario('acudiente')">Acudiente</button>
+        </nav>
+
+        <!-- Mensaje inicial -->
+        <div id="mensaje_cuenta" class="mensaje">
+            <p>Elige un rol para crear la cuenta</p>
+        </div>
+
+        <!-- Formularios -->
+        <section class="formularios">
+            <!-- Formulario Administrador -->
+            <form id="form_admin" class="form" method="POST" action="php/Crear_cuentas.php">
+                <h2>Crear cuenta de Administrador</h2>
+                <input type="hidden" name="rol" value="admin">
+
+                <div class="form-group">
+                    <label>Nombre completo</label>
+                    <input type="text" name="nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" name="contrasena" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmar contraseña</label>
+                    <input type="password" name="confirmar_contrasena" required>
+                </div>
+
+                <button type="submit" class="btn">Crear Cuenta</button>
+            </form>
+
+            <!-- Formulario Profesor -->
+            <form id="form_profesor" class="form" method="POST" action="php/Crear_cuentas.php">
+                <h2>Crear cuenta de Profesor</h2>
+                <input type="hidden" name="rol" value="profesor">
+
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Apellidos</label>
+                    <input type="text" name="apellidos" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" name="correo" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Documento de identidad</label>
+                    <input type="text" name="doc_identidad" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" name="contrasena" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmar contraseña</label>
+                    <input type="password" name="confirmar_contrasena" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Sede</label>
+                    <select name="id_sede" required>
+                        <option value="">Seleccionar sede</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Materia</label>
+                    <select name="id_materia" required>
+                        <option value="">Seleccionar materia</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">Crear Cuenta</button>
+            </form>
+
+            <!-- Formulario Acudiente -->
+            <form id="form_acudiente" class="form" method="POST" action="php/Crear_cuentas.php">
+                <h2>Crear cuenta de Acudiente</h2>
+                <input type="hidden" name="rol" value="acudiente">
+
+                <div class="form-group">
+                    <label>Nombre completo</label>
+                    <input type="text" name="nombre_completo" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Nivel educativo</label>
+                    <select name="nivel_educativo" required>
+                        <option value="">Nivel educativo</option>
+                        <option value="Primaria">Primaria</option>
+                        <option value="Secundaria">Secundaria</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Parentesco</label>
+                    <select name="parentesco" required>
+                        <option value="">Parentesco</option>
+                        <option value="Padre">Padre</option>
+                        <option value="Madre">Madre</option>
+                        <option value="Abuelo/a">Abuelo/a</option>
+                        <option value="Tío/a">Tío/a</option>
+                        <option value="Hermano/a">Hermano/a</option>
+                        <option value="Tutor legal">Tutor legal</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" name="telefono" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" name="contrasena" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmar contraseña</label>
+                    <input type="password" name="confirmar_contrasena" required>
+                </div>
+
+                <button type="submit" class="btn">Crear Cuenta</button>
+            </form>
+        </section>
+
+        <!-- Mensaje de resultado -->
+        <div id="mensaje_resultado" class="mensaje" style="display: none;">
+            <p id="texto_resultado"></p>
+        </div>
+    </div>
+
+    <script src="Js/Form_cuentas.js"></script>
+</body>
+
+</html>
