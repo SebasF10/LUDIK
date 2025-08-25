@@ -6,19 +6,26 @@ $email = $_POST['email'];
 $contrasena = $_POST['contrasena'];
 $rol = $_POST['rol']; // admin, profesor, acudiente
 
-$sql = "";
+$stmt = null;
 if ($rol === "admin") {
     // Tabla admin → campo email
-    $sql = "SELECT * FROM admin WHERE email='$email' AND contrasena='$contrasena'";
+    $stmt = $conexion->prepare("SELECT * FROM admin WHERE email=? AND contrasena=?");
+    $stmt->bind_param("ss", $email, $contrasena);
 } elseif ($rol === "profesor") {
     // Tabla docente → campo correo y contraseña
-    $sql = "SELECT * FROM docente WHERE correo='$email' AND contraseña='$contrasena'";
+    $stmt = $conexion->prepare("SELECT * FROM docente WHERE correo=? AND contraseña=?");
+    $stmt->bind_param("ss", $email, $contrasena);
 } elseif ($rol === "acudiente") {
     // Tabla cuidador → campo email
-    $sql = "SELECT * FROM cuidador WHERE email='$email' AND contrasena='$contrasena'";
+    $stmt = $conexion->prepare("SELECT * FROM cuidador WHERE email=? AND contrasena=?");
+    $stmt->bind_param("ss", $email, $contrasena);
 }
 
-$result = mysqli_query($conexion, $sql);
+$result = null;
+if ($stmt) {
+    $stmt->execute();
+    $result = $stmt->get_result();
+}
 
 if ($result && mysqli_num_rows($result) > 0) {
     // ✅ Login correcto → guardar en sesión PHP y localStorage
