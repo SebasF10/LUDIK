@@ -76,6 +76,9 @@ document.addEventListener('click', function (e) {
             case 'Actividades':
                 window.location.href = 'actividades.html';
                 break;
+            case 'Registrar un nuevo estudiante':
+                window.location.href = 'Form_Registrar_estudiante.html';
+                break;
             case 'Comunicate':
                 window.location.href = 'comunicacion.html';
                 break;

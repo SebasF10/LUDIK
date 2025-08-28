@@ -17,7 +17,7 @@ body {
 }
 
 #form_admin,
-#form_profesor,
+#form_docente,
 #form_acudiente {
     display: none;
 }
@@ -147,7 +147,7 @@ body {
     background: #a5b4fc; /* Azul claro */
 }
 
-#form_profesor {
+#form_docente {
     background: #bbf7d0; /* Verde claro */
 }
 

@@ -1,5 +1,5 @@
 <?php
-$conexion = mysqli_connect('localhost', 'root', '', 'ludick');
+$conexion = mysqli_connect('localhost', 'root', '', 'ludik');
 if ($conexion) {
     echo "Conexión exitosa";
 } else {

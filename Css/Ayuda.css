@@ -1,0 +1,83 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    background: #f4f6f9;
+    color: #333;
+}
+
+header {
+    background: #005f99;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+h1,
+h2 {
+    margin-bottom: 1rem;
+}
+
+/* Preguntas frecuentes */
+#faq {
+    padding: 2rem;
+    max-width: 800px;
+    margin: auto;
+}
+
+.faq-item {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+}
+
+.faq-question {
+    background: #007acc;
+    color: white;
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    text-align: left;
+    font-size: 1.1rem;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.3s;
+}
+
+.faq-question:hover {
+    background: #005f99;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    background: #e9f5ff;
+    padding: 0 1rem;
+}
+
+.faq-answer p,
+.faq-answer ul {
+    margin: 1rem 0;
+}
+
+/* Contacto */
+#contacto {
+    text-align: center;
+    padding: 2rem;
+    background: #f9fafc;
+}
+
+#contacto .logo {
+    margin-top: 1rem;
+    width: 120px;
+}
+
+footer {
+    margin-top: 1.5rem;
+    background: linear-gradient(90deg, #005f99, #007acc);
+    color: white;
+    padding: 1rem;
+    font-size: 0.9rem;
+}

@@ -10,9 +10,11 @@ if (!isset($_GET['tipo'])) {
 $tipo = $_GET['tipo'];
 
 if ($tipo === "sedes") {
-    $sql = "SELECT id_sede AS id, sede_nombre AS nombre FROM sede";
+    $sql = "SELECT id_sede AS id, sede AS nombre FROM sede";
 } elseif ($tipo === "materias") {
-    $sql = "SELECT id_materia AS id, nombre AS nombre FROM materia";
+    $sql = "SELECT id_asignatura AS id, nombre_asig AS nombre FROM asignatura";
+} elseif ($tipo === "grupos") {
+    $sql = "SELECT id_grupo AS id, grupo AS nombre FROM grupo";
 } else {
     echo json_encode(["error" => "Tipo no válido"]);
     exit;

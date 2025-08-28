@@ -11,9 +11,9 @@ if ($rol === "admin") {
     // Tabla admin → campo email
     $stmt = $conexion->prepare("SELECT * FROM admin WHERE email=? AND contrasena=?");
     $stmt->bind_param("ss", $email, $contrasena);
-} elseif ($rol === "profesor") {
+} elseif ($rol === "docente") {
     // Tabla docente → campo correo y contraseña
-    $stmt = $conexion->prepare("SELECT * FROM docente WHERE correo=? AND contraseña=?");
+    $stmt = $conexion->prepare("SELECT * FROM docente WHERE email=? AND contrasena=?");
     $stmt->bind_param("ss", $email, $contrasena);
 } elseif ($rol === "acudiente") {
     // Tabla cuidador → campo email
