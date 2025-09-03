@@ -83,6 +83,27 @@ document.addEventListener('click', function (e) {
         const texto = e.target.textContent.trim();
         console.log("Click en:", texto);
 
+
+        if (texto.toLowerCase().includes('perfil')) {
+            window.location.href = 'perfil.html';
+        } else if (texto.toLowerCase().includes('estudiantes')) {
+            window.location.href = 'Estudiantes.html';
+        } else if (texto.toLowerCase().includes('crear cuentas')) {
+            window.location.href = 'Crear_cuentas.html';
+        } else if (texto.toLowerCase().includes('actividades')) {
+            window.location.href = 'Actividades.html';
+        } else if (texto.toLowerCase().includes('registrar un nuevo estudiante')) {
+            window.location.href = 'Registrar_estudiante.html';
+        } else if (texto.toLowerCase().includes('comunicate')) {
+            window.location.href = 'Comunicacion.html';
+        } else if (texto.toLowerCase().includes('ayuda')) {
+            window.location.href = 'Ayuda.html';
+        } else if (texto.toLowerCase().includes('cerrar sesion') || texto.toLowerCase().includes('cerrar sesión')) {
+            if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
+                localStorage.removeItem('rol');
+                window.location.href = 'Inicio_sesion.html';
+            }
+
         switch (texto) {
             case 'Perfil':
                 window.location.href = 'perfil.html';
@@ -112,6 +133,7 @@ document.addEventListener('click', function (e) {
                     window.location.href = 'Inicio_sesion.html';
                 }
                 break;
+
         }
 
         // Cerrar menú
@@ -120,4 +142,5 @@ document.addEventListener('click', function (e) {
         overlay.classList.remove('active');
         document.body.style.overflow = 'auto';
     }
+
 });

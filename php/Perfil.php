@@ -40,7 +40,11 @@ switch ($rol) {
         break;
 
     case "acudiente":
-        $tabla = "cuidador";
+
+        $tabla = "acudiente";
+
+        
+
         $campo_nombre = "nombre_completo";
         $foto = "img\logoacudiente.webp";
         break;

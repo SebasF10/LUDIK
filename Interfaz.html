@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interfaz</title>
+    <title>LUDIK - Panel Principal</title>
     <link rel="stylesheet" href="Css\Interfaz.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -19,12 +20,48 @@
             </label>
             <div class="title">LUDIK</div>
         </div>
+        <div class="right-section">
+            <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+        </div>
     </div>
 
     <div class="overlay" id="overlay"></div>
 
     <div class="side-menu" id="sideMenu">
+        <div class="menu-header">
+            <div class="menu-title">Panel de Control</div>
+        </div>
         <div class="menu-buttons">
+
+            <button class="menu-button">
+                <span class="menu-icon">👤</span>
+            Perfil
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">👥</span>
+                Estudiantes
+            </button>
+            <button class="menu-button" id="btnCrearCuentas">
+                <span class="menu-icon">➕</span>
+                Crear Cuentas
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📚</span>
+                Actividades
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📝</span>
+                Registrar un nuevo estudiante
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">💬</span>
+                Comunicate
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">❓</span>
+                Ayuda
+            </button>
+
             <button class="menu-button">Perfil</button>
             <button class="menu-button">Estudiantes</button>
             <button class="menu-button" id="btnCrearCuentas">Crear Cuentas</button>
@@ -32,14 +69,76 @@
             <button class="menu-button">Registrar un nuevo estudiante</button>
             <button class="menu-button">Comunicate</button>
             <button class="menu-button">Ayuda</button>
+
         </div>
         <div class="menu-bottom">
-            <button class="menu-button close-session">Cerrar Sesión</button>
+            <button class="menu-button close-session">
+                <span class="menu-icon">🚪</span>
+                Cerrar Sesión
+            </button>
         </div>
     </div>
 
     <div class="content">
-        <!-- Contenido principal aquí -->
+        <div class="welcome-section">
+            <h1>Bienvenido a LUDIK</h1>
+            <p class="subtitle">Plataforma educativa inclusiva para el Colegio San José de Guanentá</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-content">
+                        <h3>Estudiantes</h3>
+                        <p class="stat-number">350+</p>
+                        <p class="stat-desc">Estudiantes activos</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-content">
+                        <h3>Actividades</h3>
+                        <p class="stat-number">25+</p>
+                        <p class="stat-desc">Actividades disponibles</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-content">
+                        <h3>Inclusión</h3>
+                        <p class="stat-number">33%</p>
+                        <p class="stat-desc">Estudiantes con atención especial</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <h2>Acciones Rápidas</h2>
+                <div class="actions-grid">
+                    <div class="action-card">
+                        <div class="action-icon">📝</div>
+                        <h3>Crear Actividad</h3>
+                        <p>Diseña nuevas actividades adaptadas</p>
+                        <button class="action-btn">Comenzar</button>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">📊</div>
+                        <h3>Ver Reportes</h3>
+                        <p>Consulta el progreso estudiantil</p>
+                        <button class="action-btn">Ver Datos</button>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">💬</div>
+                        <h3>Mensajes</h3>
+                        <p>Comunícate con padres y estudiantes</p>
+                        <button class="action-btn">Abrir Chat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- SCRIPT INLINE SÚPER SIMPLE -->
@@ -58,7 +157,10 @@
         }
     </script>
 
-    <script src="Js\Interfaz.js"></script>
+
+    <script src="Js/Interfaz.js"></script>
+
+
 </body>
 
 </html>

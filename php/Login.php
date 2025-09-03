@@ -50,8 +50,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     elseif ($rol === "acudiente") {
-        // cuidador
-        $query = "SELECT * FROM cuidador WHERE email='$email' AND contrasena='$contrasena'";
+        // acudiente
+        $query = "SELECT * FROM acudiente WHERE email='$email' AND contrasena='$contrasena'";
+
         $resultado = $conexion->query($query);
         if ($resultado && $resultado->num_rows > 0) {
             $usuario = $resultado->fetch_assoc();
