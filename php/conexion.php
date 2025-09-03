@@ -3,7 +3,7 @@
 DEFINE('USER', 'root');
 DEFINE('PW', '');
 DEFINE('HOST', 'localhost');
-DEFINE('BD', 'ludick');
+DEFINE('BD', 'ludik');
 
 // Conexión con la BD
 $conexion = mysqli_connect(HOST, USER, PW, BD);
