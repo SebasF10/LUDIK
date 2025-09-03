@@ -33,7 +33,7 @@ switch ($rol) {
         $stmt->execute([
             ':nombre' => $_POST['nombre'],
             ':email' => $_POST['email'],
-            ':contrasena' => ($_POST['contrasena']),
+            ':contrasena' => password_hash($_POST['contrasena'], PASSWORD_BCRYPT),
         ]);
         echo "Cuenta de administrador creada correctamente.";
         break;
@@ -46,25 +46,27 @@ switch ($rol) {
         $stmt->execute([
             ':nombre'     => $_POST['nombre'],
             ':email'      => $_POST['email'],
-            ':contrasena' => $_POST['contrasena'],
+            ':contrasena' => password_hash($_POST['contrasena'], PASSWORD_DEFAULT),
             ':telefono'   => $_POST['telefono'],
             ':es_director'=> $_POST['es_director'],
         ]);
         $id_docente = $pdo->lastInsertId();
 
         // Guardar asignaturas y grupos seleccionados
+        // Asumiendo que cada materia corresponde a un grupo por el mismo índice
         if (!empty($_POST['id_materia']) && !empty($_POST['id_grupo'])) {
-            foreach ($_POST['id_materia'] as $id_asignatura) {
-                foreach ($_POST['id_grupo'] as $id_grupo) {
-                    $sql2 = "INSERT INTO asignatura_docente_grupo (id_docente, id_grupo, id_asignatura) 
-                             VALUES (:id_docente, :id_grupo, :id_asignatura)";
-                    $stmt2 = $pdo->prepare($sql2);
-                    $stmt2->execute([
-                        ':id_docente'   => $id_docente,
-                        ':id_grupo'     => $id_grupo,
-                        ':id_asignatura'=> $id_asignatura,
-                    ]);
-                }
+            $materias = $_POST['id_materia'];
+            $grupos = $_POST['id_grupo'];
+            $count = min(count($materias), count($grupos));
+            for ($i = 0; $i < $count; $i++) {
+                $sql2 = "INSERT INTO asignatura_docente_grupo (id_docente, id_grupo, id_asignatura) 
+                         VALUES (:id_docente, :id_grupo, :id_asignatura)";
+                $stmt2 = $pdo->prepare($sql2);
+                $stmt2->execute([
+                    ':id_docente'   => $id_docente,
+                    ':id_grupo'     => $grupos[$i],
+                    ':id_asignatura'=> $materias[$i],
+                ]);
             }
         }
 
@@ -91,7 +93,7 @@ switch ($rol) {
             ':nombre'    => $_POST['nombre'],
             ':cargo'     => $_POST['cargo'],
             ':email'     => $_POST['email'],
-            ':contrasena'=> ($_POST['contrasena']),
+            ':contrasena'=> password_hash($_POST['contrasena'], PASSWORD_BCRYPT),
         ]);
         echo "Cuenta de directivo creada correctamente.";
         break;
