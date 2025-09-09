@@ -1,0 +1,229 @@
+/* filepath: c:\xampp\htdocs\LUDIK\Css\registrar_estudiante.css */
+
+/* Estilos específicos para la página de registro de estudiantes */
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #2c3e50;
+    font-family: 'Inter', Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.08);
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+
+.encabezado-ludik {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.logo-institucion {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+    margin-right: 15px;
+}
+
+.titulo-ludik {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.input,
+.select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.input:focus,
+.select:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+}
+
+.button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 70vh;
+}
+
+.section {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.12);
+    padding: 40px 32px 32px 32px;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.section h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.section h2 {
+    font-size: 1.2rem;
+    color: #764ba2;
+    margin-top: 32px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    border-left: 4px solid #667eea;
+    padding-left: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f8fafc;
+    transition: border-color 0.2s;
+}
+
+input:focus,
+select:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 8px rgba(102, 126, 234, 0.15);
+}
+
+.btn-login,
+button[type="submit"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 14px 0;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    margin-top: 18px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.10);
+}
+
+.btn-login:hover,
+button[type="submit"]:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.18);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+footer.pie-pagina {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.95rem;
+    color: #64748b;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 18px 0;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -2px 12px rgba(102, 126, 234, 0.07);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .section {
+        padding: 24px 10px;
+        max-width: 98vw;
+    }
+
+    .main-content {
+        padding: 0 6px;
+    }
+
+    .encabezado-ludik {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .titulo-ludik {
+        font-size: 1.5rem;
+    }
+}
