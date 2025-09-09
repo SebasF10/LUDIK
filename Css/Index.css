@@ -1,12 +1,10 @@
+/* CSS para Index.html - Página de información con estética moderna */
 
 /* Reset y configuración base */
 * {
-    font-family: Arial, sans-serif;
-    background: #f4f8fb;
-    color: #333;
     margin: 0;
     padding: 0;
-    scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 
 body {
@@ -18,54 +16,15 @@ body {
     scroll-behavior: smooth;
 }
 
-/* Fuentes personalizadas */
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 300;
-  font-display: swap;
-  src: url('fonts/inter/Inter-300.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('fonts/inter/Inter-400.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('fonts/inter/Inter-500.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('fonts/inter/Inter-600.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('fonts/inter/Inter-700.woff2') format('woff2');
-}
-
-/* Header mejorado */
+/* Header mejorado - SOLUCIONADO el problema del scroll */
 header {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    position: sticky;
+    position: fixed; /* Cambio de sticky a fixed */
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 1000;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
@@ -77,6 +36,8 @@ header {
     padding: 20px 40px;
     max-width: 1400px;
     margin: 0 auto;
+    /* Evitar que se aplique transform */
+    transform: none !important;
 }
 
 .lado-izq, .lado-der {
@@ -157,7 +118,7 @@ header {
     position: relative;
 }
 
-.navbar a:hover {
+.navbar a:hover, .navbar a.active {
     color: #667eea;
     background: rgba(102, 126, 234, 0.1);
     transform: translateY(-2px);
@@ -181,10 +142,11 @@ header {
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
 }
 
-/* Contenido principal */
+/* Contenido principal - Ajuste para el header fijo */
 .main-content {
     background: white;
     margin: 40px auto;
+    margin-top: 160px; /* Espacio para el header fijo */
     max-width: 1200px;
     border-radius: 24px;
     overflow: hidden;
@@ -194,6 +156,8 @@ header {
 .section {
     padding: 60px 50px;
     position: relative;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .section:not(:last-child) {
@@ -308,7 +272,7 @@ ul li::before {
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
 }
 
-/* Imagen grande (Colegio) - basada en la imagen real que es grande */
+/* Imagen grande (Colegio) */
 .imagen-colegio {
     display: block;
     margin: 20px auto;
@@ -317,11 +281,11 @@ ul li::before {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
-/* Imagen mediana (Inclusión) - imagen colorida más pequeña */
+/* Imagen mediana (Inclusión) */
 .imagen-mediana {
     display: block;
     margin: 20px auto;
-    max-width: 250px !important;
+    max-width: 300px !important;
     border-radius: 16px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
@@ -330,7 +294,7 @@ ul li::before {
 .imagen-logo {
     display: block;
     margin: 15px auto;
-    max-width: 100px !important;
+    max-width: 120px !important;
     background: white;
     padding: 15px;
     border-radius: 16px;
@@ -373,16 +337,13 @@ ul li::before {
     }
 }
 
-.section {
-    animation: slideInUp 0.8s ease-out;
-}
-
-.section:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.section:nth-child(3) {
-    animation-delay: 0.4s;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Responsive Design */
@@ -395,6 +356,7 @@ ul li::before {
 
     .titulo-ludik {
         font-size: 2rem;
+        letter-spacing: 2px;
     }
 
     .navbar {
@@ -422,6 +384,7 @@ ul li::before {
 
     .main-content {
         margin: 20px 15px;
+        margin-top: 200px; /* Más espacio en mobile */
         border-radius: 16px;
     }
 
@@ -435,211 +398,61 @@ ul li::before {
     }
 
     .imagen-mediana {
+        max-width: 250px !important;
+    }
+
+    .imagen-logo {
+        max-width: 100px !important;
+    }
+
+    .especialidad {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo-ludik {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+    }
+
+    .section {
+        padding: 30px 20px;
+    }
+
+    .section h1 {
+        font-size: 1.8rem;
+    }
+
+    .section p {
+        font-size: 1rem;
+    }
+
+    .navbar ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-login {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .main-content {
+        margin-top: 220px; /* Aún más espacio en pantallas muy pequeñas */
+    }
+
+    .imagen-mediana {
         max-width: 200px !important;
     }
 
     .imagen-logo {
         max-width: 80px !important;
     }
-=======
-header {
-    background: #2a5d9f;
-    padding: 10px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 20px;
-}
-
-.navbar a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
-
-.navbar a:hover {
-    color: #cce0ff;
-}
-
-.btn-login {
-    background: #ff5722;
-    color: #fff !important;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-decoration: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.btn-login:hover {
-    background: #e64a19;
-    transform: scale(1.05);
-}
-
-.section {
-    padding: 60px 20px;
-    max-width: 1000px;
-    margin: auto;
-    text-align: left;
-}
-
-.section h1 {
-    font-size: 2rem;
-    color: #2a5d9f;
-    margin-bottom: 20px;
-}
-
-.section h3 {
-    color: #1a3c6e;
-    margin-top: 20px;
-}
-
-p,
-li {
-    font-size: 1.1rem;
-    line-height: 1.6;
-}
-
-.highlight {
-    font-weight: bold;
-    color: #1a3c6e;
-}
-
-ul {
-    margin-left: 20px;
-}
-
-.image-space {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.image-space img {
-    max-width: 70%;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Imagen grande (Colegio) */
-.imagen-colegio {
-    display: block;
-    margin: 20px auto;
-    max-width: 600px;
-    /* la dejamos grande pero no tanto */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Imagen mediana (Inclusión) */
-.imagen-mediana {
-    display: block;
-    margin: 20px auto;
-    max-width: 200px !important;
-    /* más pequeño y con !important */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.imagen-logo {
-    display: block;
-    margin: 15px auto;
-    max-width: 80px !important;
-    /* más pequeño y con !important */
-    border-radius: 6px;
-    box-shadow: none;
-}
-
-/* Botón Inicio Sesión */
-.btn-login {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #007BFF;
-    color: white;
-    padding: 12px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: 0.3s ease;
-    z-index: 1000;
-}
-
-.btn-login:hover {
-    background-color: #0056b3;
-}
-
-.encabezado-ludik {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #eaf2fb;
-    padding: 18px 30px;
-    border-bottom: 2px solid #2a5d9f;
-    margin-bottom: 0;
-}
-
-.lado-izq, .lado-der {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.logo-institucion {
-    max-width: 60px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-}
-
-.especialidad {
-    font-size: 1rem;
-    color: #1a3c6e;
-    font-weight: bold;
-}
-
-.logo-ludik {
-    max-width: 60px;
-    border-radius: 8px;
-}
-
-.centro {
-    flex: 1;
-    text-align: center;
-}
-
-.titulo-ludik {
-    font-size: 2.2rem;
-    font-weight: bold;
-    color: #2a5d9f;
-    letter-spacing: 2px;
-}
-
-/* Pie de página centrado */
-.pie-pagina {
-    width: 100%;
-    text-align: center;
-    background: #2a5d9f;
-    color: #fff;
-    padding: 18px 0;
-    font-size: 1rem;
-    margin-top: 40px;
-    letter-spacing: 1px;
+    ul li {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
 }
