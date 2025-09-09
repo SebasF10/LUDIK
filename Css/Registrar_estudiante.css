@@ -9,6 +9,7 @@ body {
     min-height: 100vh;
 }
 
+/* ===== HEADER ===== */
 header {
     background: rgba(255, 255, 255, 0.95);
     box-shadow: 0 4px 16px rgba(102, 126, 234, 0.08);
@@ -16,11 +17,24 @@ header {
     margin-bottom: 30px;
 }
 
-.encabezado-ludik {
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header-left {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 20px;
+    gap: 15px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
 }
 
 .logo-institucion {
@@ -28,7 +42,7 @@ header {
     height: 60px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
-    margin-right: 15px;
+    object-fit: contain;
 }
 
 .titulo-ludik {
@@ -39,75 +53,10 @@ header {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     letter-spacing: 2px;
+    margin: 0;
 }
 
-.container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.input,
-.select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 1rem;
-}
-
-.input:focus,
-.select:focus {
-    border-color: #667eea;
-    outline: none;
-    box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
-}
-
-.button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 25px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-}
-
-.button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
-}
-
-.footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #64748b;
-}
-
+/* ===== CONTENIDO PRINCIPAL ===== */
 .main-content {
     display: flex;
     justify-content: center;
@@ -143,6 +92,44 @@ h1 {
     padding-left: 10px;
 }
 
+/* ===== INDICADOR DE PROGRESO ===== */
+.progress-indicator {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.step-indicator {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    border: 2px solid #e9ecef;
+}
+
+.step-indicator.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    transform: scale(1.1);
+}
+
+.step-indicator.completed {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+/* ===== FORMULARIOS ===== */
 label {
     display: block;
     margin-bottom: 6px;
@@ -155,6 +142,7 @@ input[type="date"],
 input[type="tel"],
 input[type="email"],
 input[type="password"],
+input[type="number"],
 select {
     width: 100%;
     padding: 10px 14px;
@@ -164,6 +152,7 @@ select {
     font-size: 1rem;
     background: #f8fafc;
     transition: border-color 0.2s;
+    box-sizing: border-box;
 }
 
 input:focus,
@@ -173,6 +162,66 @@ select:focus {
     box-shadow: 0 0 8px rgba(102, 126, 234, 0.15);
 }
 
+/* ===== BOTONES DE NAVEGACIÓN ===== */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-nav {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.btn-anterior {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-anterior:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+}
+
+.btn-siguiente {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-siguiente:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.btn-inicio {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-inicio:hover {
+    background-color: #1e7e34;
+    transform: translateY(-1px);
+}
+
+.btn-registrar {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-registrar:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Botón de login (compatibilidad) */
 .btn-login,
 button[type="submit"] {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -196,6 +245,7 @@ button[type="submit"]:hover {
     background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
 }
 
+/* ===== FOOTER ===== */
 footer.pie-pagina {
     text-align: center;
     margin-top: 40px;
@@ -207,23 +257,93 @@ footer.pie-pagina {
     box-shadow: 0 -2px 12px rgba(102, 126, 234, 0.07);
 }
 
-/* Responsive */
-@media (max-width: 700px) {
+/* ===== CAMPOS CONDICIONALES ===== */
+#victima_tipo_container,
+#etnico_tipo_container {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    /* Header responsive */
+    .header-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .header-left,
+    .header-center,
+    .header-right {
+        justify-self: center;
+    }
+    
+    .header-left {
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .titulo-ludik {
+        font-size: 1.8rem;
+    }
+    
+    .logo-institucion {
+        width: 50px;
+        height: 50px;
+    }
+    
+    /* Contenido responsive */
     .section {
-        padding: 24px 10px;
+        padding: 24px 16px;
         max-width: 98vw;
+        margin: 0 10px;
     }
 
     .main-content {
         padding: 0 6px;
     }
-
-    .encabezado-ludik {
+    
+    /* Botones responsive */
+    .navigation-buttons {
         flex-direction: column;
         gap: 10px;
     }
+    
+    .btn-nav {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    /* Indicadores responsive */
+    .progress-indicator {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .step-indicator {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+}
 
+@media (max-width: 480px) {
     .titulo-ludik {
         font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+    
+    .section h1 {
+        font-size: 1.6rem;
+    }
+    
+    .section {
+        padding: 20px 12px;
     }
 }

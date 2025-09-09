@@ -94,6 +94,8 @@ document.addEventListener('click', function (e) {
             window.location.href = 'Actividades.html';
         } else if (texto.toLowerCase().includes('registrar un nuevo estudiante')) {
             window.location.href = 'Registrar_estudiante.html';
+        } else if (texto.toLowerCase().includes('registrar datos del estudiante')) {
+            window.location.href = 'Descripción_general.html';
         } else if (texto.toLowerCase().includes('comunicate')) {
             window.location.href = 'Comunicacion.html';
         } else if (texto.toLowerCase().includes('ayuda')) {

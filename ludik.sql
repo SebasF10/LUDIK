@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-08-2025 a las 20:29:54
+-- Tiempo de generación: 09-09-2025 a las 13:13:46
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,32 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `ludik`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `acudiente`
+--
+
+CREATE TABLE `acudiente` (
+  `id_acudiente` int(10) UNSIGNED NOT NULL,
+  `nombre_completo` varchar(150) NOT NULL,
+  `nivel_educativo` varchar(100) DEFAULT NULL,
+  `parentesco` varchar(100) DEFAULT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `contrasena` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `acudiente`
+--
+
+INSERT INTO `acudiente` (`id_acudiente`, `nombre_completo`, `nivel_educativo`, `parentesco`, `email`, `telefono`, `contrasena`) VALUES
+(1, 'Gustavo Petro', 'Profesional Universitario', 'Papá de los pollitos', 'cuidador@gmail.com', '3211234567', '12345'),
+(2, 'eytngf', 'wrnh', 'enhfg', 'uh,', 'shfnmz', 'szrywnhas'),
+(3, '3', '3', '3', '3@gmail.com', '3', '3'),
+(4, '3', '3', '3', '3@gmail.com', '3', '3');
 
 -- --------------------------------------------------------
 
@@ -185,29 +211,6 @@ INSERT INTO `capacidad` (`id_capacidad`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `cuidador`
---
-
-CREATE TABLE `cuidador` (
-  `id_cuidador` int(10) UNSIGNED NOT NULL,
-  `nombre_completo` varchar(150) NOT NULL,
-  `nivel_educativo` varchar(100) DEFAULT NULL,
-  `parentesco` varchar(100) DEFAULT NULL,
-  `email` varchar(150) DEFAULT NULL,
-  `telefono` varchar(20) DEFAULT NULL,
-  `contrasena` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `cuidador`
---
-
-INSERT INTO `cuidador` (`id_cuidador`, `nombre_completo`, `nivel_educativo`, `parentesco`, `email`, `telefono`, `contrasena`) VALUES
-(1, 'Gustavo Petro', 'Profesional Universitario', 'Papá de los pollitos', 'cuidador@gmail.com', '3211234567', '12345');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `descripcion_general`
 --
 
@@ -218,15 +221,9 @@ CREATE TABLE `descripcion_general` (
   `id_expectativa` int(10) UNSIGNED DEFAULT NULL,
   `id_expectativa_familia` int(10) UNSIGNED DEFAULT NULL,
   `id_red_apoyo` int(10) UNSIGNED DEFAULT NULL,
-  `id_otra_descripcion` int(10) UNSIGNED DEFAULT NULL
+  `id_otra_descripcion` int(10) UNSIGNED DEFAULT NULL,
+  `id_estudiante` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `descripcion_general`
---
-
-INSERT INTO `descripcion_general` (`id_descripcion_general`, `id_capacidad`, `id_gusto_e_interes`, `id_expectativa`, `id_expectativa_familia`, `id_red_apoyo`, `id_otra_descripcion`) VALUES
-(1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -255,16 +252,17 @@ CREATE TABLE `directivo` (
   `nombre` varchar(150) NOT NULL,
   `email` varchar(150) NOT NULL,
   `contrasena` varchar(255) NOT NULL,
-  `cargo` varchar(100) DEFAULT NULL
+  `cargo` varchar(100) DEFAULT NULL,
+  `telefono` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `directivo`
 --
 
-INSERT INTO `directivo` (`id_directivo`, `nombre`, `email`, `contrasena`, `cargo`) VALUES
-(1, 'santiago plata torradinho', 'directivo@gmail.com', '12345', 'coordinador'),
-(2, 'Liliana Ayala', 'layala@gmail.com', '1234', 'Coordinadora técnica');
+INSERT INTO `directivo` (`id_directivo`, `nombre`, `email`, `contrasena`, `cargo`, `telefono`) VALUES
+(1, 'santiago plata torradinho', 'directivo@gmail.com', '12345', 'coordinador', ''),
+(2, 'Liliana Ayala', 'layala@gmail.com', '1234', 'Coordinadora técnica', '');
 
 -- --------------------------------------------------------
 
@@ -307,15 +305,16 @@ CREATE TABLE `docente_apoyo` (
   `nombre` varchar(150) NOT NULL,
   `email` varchar(150) DEFAULT NULL,
   `contrasena` varchar(255) DEFAULT NULL,
-  `profesion` varchar(100) DEFAULT NULL
+  `profesion` varchar(100) DEFAULT NULL,
+  `telefono` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `docente_apoyo`
 --
 
-INSERT INTO `docente_apoyo` (`id_docente_apoyo`, `nombre`, `email`, `contrasena`, `profesion`) VALUES
-(1, 'Rocio', 'profeapoyo@gmail.com', '12345', 'magister');
+INSERT INTO `docente_apoyo` (`id_docente_apoyo`, `nombre`, `email`, `contrasena`, `profesion`, `telefono`) VALUES
+(1, 'Rocio', 'profeapoyo@gmail.com', '12345', 'magister', '');
 
 -- --------------------------------------------------------
 
@@ -446,16 +445,17 @@ CREATE TABLE `estudiante` (
   `afiliacion_salud` varchar(100) DEFAULT NULL,
   `id_madre` int(10) UNSIGNED DEFAULT NULL,
   `id_padre` int(10) UNSIGNED DEFAULT NULL,
-  `id_cuidador` int(10) UNSIGNED DEFAULT NULL,
-  `id_descripcion_general` int(10) UNSIGNED DEFAULT NULL
+  `id_cuidador` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `estudiante`
 --
 
-INSERT INTO `estudiante` (`id_estudiante`, `nombre`, `apellidos`, `tipo_documento`, `no_documento`, `lugar_nacimiento`, `fecha_nacimiento`, `sector`, `direccion`, `telefono`, `correo`, `contrasena`, `victima_conflicto`, `registro_victima`, `centro_proteccion`, `grupo_etnico`, `no_hermanos`, `lugar_que_ocupa`, `con_quien_vive`, `quien_apoya_crianza`, `afiliacion_salud`, `id_madre`, `id_padre`, `id_cuidador`, `id_descripcion_general`) VALUES
-(1, 'Max', 'Henriquez Pimiento', 'TI', NULL, 'San Gil, Santander', '2007-06-09', 'Urbano', 'Calle 1 #5-12', '3124567890', 'max@gmail.com', '12345', 'No', NULL, 'No', 'Albino', 1, '1', 'Padre, madre, hermana, gatos.', 'Madre, padre', 'Si', 1, 1, 1, 1);
+INSERT INTO `estudiante` (`id_estudiante`, `nombre`, `apellidos`, `tipo_documento`, `no_documento`, `lugar_nacimiento`, `fecha_nacimiento`, `sector`, `direccion`, `telefono`, `correo`, `contrasena`, `victima_conflicto`, `registro_victima`, `centro_proteccion`, `grupo_etnico`, `no_hermanos`, `lugar_que_ocupa`, `con_quien_vive`, `quien_apoya_crianza`, `afiliacion_salud`, `id_madre`, `id_padre`, `id_cuidador`) VALUES
+(1, 'Max', 'Henriquez Pimiento', 'TI', NULL, 'San Gil, Santander', '2007-06-09', 'Urbano', 'Calle 1 #5-12', '3124567890', 'max@gmail.com', '12345', 'No', NULL, 'No', 'Albino', 1, '1', 'Padre, madre, hermana, gatos.', 'Madre, padre', 'Si', 1, 1, 1),
+(2, 'tysnhrg', 'wrnhsgf', 'TI', '134', ',kfjmgh', '1999-05-14', 'Rural', 'jyhrsgf', '765324312', 'ethsnmj', '12345', 'No', 'No', 'No', 'No', 3, '2', ',rydjmh', 'wnths', 'No', 4, 4, 2),
+(4, '4', '4', 'TI', '4', '4', '2004-04-04', 'Urbano', '4', '4', '4@gmail.com', '4', 'No', 'Si', 'No', 'No', 3, '2', '4', '4', 'Si', 6, 6, 4);
 
 -- --------------------------------------------------------
 
@@ -592,16 +592,21 @@ CREATE TABLE `madre` (
   `nivel_educativo` varchar(100) DEFAULT NULL,
   `ocupacion` varchar(100) DEFAULT NULL,
   `email` varchar(150) DEFAULT NULL,
-  `contrasena` varchar(255) DEFAULT NULL
+  `contrasena` varchar(255) DEFAULT NULL,
+  `telefono` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `madre`
 --
 
-INSERT INTO `madre` (`id_madre`, `nombre_completo`, `nivel_educativo`, `ocupacion`, `email`, `contrasena`) VALUES
-(1, 'Fernanda Cabal', 'Primaria', 'Senadora', 'fcabal@gmail.com', '1234'),
-(2, 'madreprueba', 'doctora', 'ingeniera', 'madre@gmail.com', '12345');
+INSERT INTO `madre` (`id_madre`, `nombre_completo`, `nivel_educativo`, `ocupacion`, `email`, `contrasena`, `telefono`) VALUES
+(1, 'Fernanda Cabal', 'Primaria', 'Senadora', 'fcabal@gmail.com', '1234', ''),
+(2, 'madreprueba', 'doctora', 'ingeniera', 'madre@gmail.com', '12345', ''),
+(3, '111', '1111', '1111', '1111', '1111', ''),
+(4, '1554', 'hgfbdvs', 'hnbf', 'fbsvd', 'hfnargw', ''),
+(5, '1', '1', '1', '1@gmail.com', '1', ''),
+(6, '1', '1', '1', '1@gmail.com', '1', '');
 
 -- --------------------------------------------------------
 
@@ -654,16 +659,21 @@ CREATE TABLE `padre` (
   `nivel_educativo` varchar(100) DEFAULT NULL,
   `ocupacion` varchar(100) DEFAULT NULL,
   `email` varchar(150) DEFAULT NULL,
-  `contrasena` varchar(255) DEFAULT NULL
+  `contrasena` varchar(255) DEFAULT NULL,
+  `telefono` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `padre`
 --
 
-INSERT INTO `padre` (`id_padre`, `nombre_completo`, `nivel_educativo`, `ocupacion`, `email`, `contrasena`) VALUES
-(1, 'Alvaro Uribe', 'Primaria', 'Preso', 'auribe@gmail.com', '1234'),
-(2, 'padreprueba', 'bachiller', 'mecanico', 'padre@gmail.com', '12345');
+INSERT INTO `padre` (`id_padre`, `nombre_completo`, `nivel_educativo`, `ocupacion`, `email`, `contrasena`, `telefono`) VALUES
+(1, 'Alvaro Uribe', 'Primaria', 'Preso', 'auribe@gmail.com', '1234', ''),
+(2, 'padreprueba', 'bachiller', 'mecanico', 'padre@gmail.com', '12345', ''),
+(3, '22222', '2222', '2222', '2222', '2222', ''),
+(4, 'thrgdv', 'trgm', 'etnrngd', 'tharbsf', 'w5htrbg', ''),
+(5, '2', '2', '2', '2@gmail.com', '2', ''),
+(6, '2', '2', '2', '2@gmail.com', '2', '');
 
 -- --------------------------------------------------------
 
@@ -765,6 +775,12 @@ CREATE TABLE `valoracion_pedagogica` (
 --
 
 --
+-- Indices de la tabla `acudiente`
+--
+ALTER TABLE `acudiente`
+  ADD PRIMARY KEY (`id_acudiente`);
+
+--
 -- Indices de la tabla `admin`
 --
 ALTER TABLE `admin`
@@ -798,12 +814,6 @@ ALTER TABLE `capacidad`
   ADD PRIMARY KEY (`id_capacidad`);
 
 --
--- Indices de la tabla `cuidador`
---
-ALTER TABLE `cuidador`
-  ADD PRIMARY KEY (`id_cuidador`);
-
---
 -- Indices de la tabla `descripcion_general`
 --
 ALTER TABLE `descripcion_general`
@@ -813,7 +823,8 @@ ALTER TABLE `descripcion_general`
   ADD KEY `id_expectativa` (`id_expectativa`),
   ADD KEY `id_expectativa_familia` (`id_expectativa_familia`),
   ADD KEY `id_red_apoyo` (`id_red_apoyo`),
-  ADD KEY `id_otra_descripcion` (`id_otra_descripcion`);
+  ADD KEY `id_otra_descripcion` (`id_otra_descripcion`),
+  ADD KEY `id_estudiante` (`id_estudiante`);
 
 --
 -- Indices de la tabla `diagnostico_medico`
@@ -879,8 +890,7 @@ ALTER TABLE `estudiante`
   ADD PRIMARY KEY (`id_estudiante`),
   ADD KEY `id_madre` (`id_madre`),
   ADD KEY `id_padre` (`id_padre`),
-  ADD KEY `id_cuidador` (`id_cuidador`),
-  ADD KEY `id_descripcion_general` (`id_descripcion_general`);
+  ADD KEY `id_cuidador` (`id_cuidador`);
 
 --
 -- Indices de la tabla `expectativa`
@@ -991,6 +1001,12 @@ ALTER TABLE `valoracion_pedagogica`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `acudiente`
+--
+ALTER TABLE `acudiente`
+  MODIFY `id_acudiente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de la tabla `admin`
 --
 ALTER TABLE `admin`
@@ -1019,12 +1035,6 @@ ALTER TABLE `atencion_medica`
 --
 ALTER TABLE `capacidad`
   MODIFY `id_capacidad` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT de la tabla `cuidador`
---
-ALTER TABLE `cuidador`
-  MODIFY `id_cuidador` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `descripcion_general`
@@ -1072,7 +1082,7 @@ ALTER TABLE `entorno_salud`
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `id_estudiante` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_estudiante` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `expectativa`
@@ -1108,7 +1118,7 @@ ALTER TABLE `gusto_interes`
 -- AUTO_INCREMENT de la tabla `madre`
 --
 ALTER TABLE `madre`
-  MODIFY `id_madre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_madre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `medicamento`
@@ -1126,7 +1136,7 @@ ALTER TABLE `otra_descripcion`
 -- AUTO_INCREMENT de la tabla `padre`
 --
 ALTER TABLE `padre`
-  MODIFY `id_padre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_padre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `piar`
@@ -1179,7 +1189,8 @@ ALTER TABLE `descripcion_general`
   ADD CONSTRAINT `descripcion_general_ibfk_3` FOREIGN KEY (`id_expectativa`) REFERENCES `expectativa` (`id_expectativa`),
   ADD CONSTRAINT `descripcion_general_ibfk_4` FOREIGN KEY (`id_expectativa_familia`) REFERENCES `expectativa_familia` (`id_expectativa_familia`),
   ADD CONSTRAINT `descripcion_general_ibfk_5` FOREIGN KEY (`id_red_apoyo`) REFERENCES `red_apoyo` (`id_red_apoyo`),
-  ADD CONSTRAINT `descripcion_general_ibfk_6` FOREIGN KEY (`id_otra_descripcion`) REFERENCES `otra_descripcion` (`id_otra_descripcion`);
+  ADD CONSTRAINT `descripcion_general_ibfk_6` FOREIGN KEY (`id_otra_descripcion`) REFERENCES `otra_descripcion` (`id_otra_descripcion`),
+  ADD CONSTRAINT `descripcion_general_ibfk_7` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `diagnostico_medico`
@@ -1216,8 +1227,7 @@ ALTER TABLE `entorno_salud`
 ALTER TABLE `estudiante`
   ADD CONSTRAINT `estudiante_ibfk_1` FOREIGN KEY (`id_madre`) REFERENCES `madre` (`id_madre`),
   ADD CONSTRAINT `estudiante_ibfk_2` FOREIGN KEY (`id_padre`) REFERENCES `padre` (`id_padre`),
-  ADD CONSTRAINT `estudiante_ibfk_3` FOREIGN KEY (`id_cuidador`) REFERENCES `cuidador` (`id_cuidador`),
-  ADD CONSTRAINT `estudiante_ibfk_4` FOREIGN KEY (`id_descripcion_general`) REFERENCES `descripcion_general` (`id_descripcion_general`);
+  ADD CONSTRAINT `estudiante_ibfk_3` FOREIGN KEY (`id_cuidador`) REFERENCES `acudiente` (`id_acudiente`);
 
 --
 -- Filtros para la tabla `grupo`

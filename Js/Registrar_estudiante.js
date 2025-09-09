@@ -1,10 +1,24 @@
-// filepath: registro-estudiante-app/registro-estudiante-app/Js/registrar_estudiante.js
-
 // Registrar_estudiante.js
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('registro-multi-paso');
     let pasoActual = 1;
     const totalPasos = 4;
+    
+    // Función para actualizar indicadores de progreso
+    function actualizarIndicadores() {
+        for (let i = 1; i <= totalPasos; i++) {
+            const indicator = document.getElementById(`indicator-${i}`);
+            if (indicator) {
+                indicator.classList.remove('active', 'completed');
+                
+                if (i < pasoActual) {
+                    indicator.classList.add('completed');
+                } else if (i === pasoActual) {
+                    indicator.classList.add('active');
+                }
+            }
+        }
+    }
     
     // Función para mostrar un paso específico
     function mostrarPaso(numeroPaso) {
@@ -31,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         pasoActual = numeroPaso;
+        actualizarIndicadores();
     }
     
     // Función para determinar el ID del paso
@@ -57,14 +72,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const pasoVisible = document.getElementById(getPasoId(pasoActual));
         const camposRequeridos = pasoVisible.querySelectorAll('[required]');
         let esValido = true;
+        let primerCampoInvalido = null;
         
         camposRequeridos.forEach(campo => {
             if (!campo.value.trim()) {
-                campo.focus();
+                if (!primerCampoInvalido) {
+                    primerCampoInvalido = campo;
+                }
                 esValido = false;
-                return false;
             }
         });
+        
+        if (!esValido && primerCampoInvalido) {
+            primerCampoInvalido.focus();
+            alert('Por favor, complete todos los campos requeridos.');
+        }
         
         return esValido;
     }
@@ -90,6 +112,33 @@ document.addEventListener('DOMContentLoaded', function() {
             mostrarPaso(4);
         }
     });
+    
+    // Event listeners para botones "Anterior"
+    document.getElementById('btn-anterior-padre').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarPaso(1);
+    });
+    
+    document.getElementById('btn-anterior-cuidador').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarPaso(2);
+    });
+    
+    document.getElementById('btn-anterior-estudiante').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarPaso(3);
+    });
+    
+    // Event listener para botón "Ir a Inicio"
+    const btnInicio = document.getElementById('btn-inicio');
+    if (btnInicio) {
+        btnInicio.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('¿Está seguro que desea ir al inicio? Se perderán los datos no guardados.')) {
+                window.location.href = 'interfaz.html';
+            }
+        });
+    }
     
     // Manejar campos condicionales
     document.getElementById('victima_conflicto').addEventListener('change', function() {
@@ -137,9 +186,29 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
+        // Validación adicional completa del formulario
+        if (!validateForm()) {
+            e.preventDefault();
+            return false;
+        }
+        
         // El formulario se enviará normalmente si llega aquí
         console.log('Enviando formulario...');
     });
+    
+    // Función de validación completa del formulario
+    function validateForm() {
+        const estudianteNombre = document.getElementById('estudiante_nombre').value;
+        const madreNombre = document.getElementById('madre_nombre').value;
+        const padreNombre = document.getElementById('padre_nombre').value;
+        const cuidadorNombre = document.getElementById('cuidador_nombre').value;
+
+        if (!estudianteNombre || !madreNombre || !padreNombre || !cuidadorNombre) {
+            alert('Por favor, complete todos los campos requeridos en todos los pasos.');
+            return false;
+        }
+        return true;
+    }
     
     // Inicializar mostrando el primer paso
     mostrarPaso(1);
@@ -152,50 +221,3 @@ function mostrarCamposRequeridos() {
         console.log(`- ${campo.name}: ${campo.value}`);
     });
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('registro-multi-paso');
-    const submitButton = form.querySelector('button[type="submit"]');
-
-    submitButton.addEventListener('click', function (event) {
-        event.preventDefault();
-        if (validateForm()) {
-            form.submit();
-        }
-    });
-
-    function validateForm() {
-        const estudianteNombre = document.getElementById('estudiante_nombre').value;
-        const madreNombre = document.getElementById('madre_nombre').value;
-        const padreNombre = document.getElementById('padre_nombre').value;
-        const cuidadorNombre = document.getElementById('cuidador_nombre').value;
-
-        if (!estudianteNombre || !madreNombre || !padreNombre || !cuidadorNombre) {
-            alert('Por favor, complete todos los campos requeridos.');
-            return false;
-        }
-        return true;
-    }
-
-    // Botones para avanzar
-    document.getElementById('btn-siguiente-madre').onclick = function () {
-        document.getElementById('paso-madre').style.display = 'none';
-        document.getElementById('paso-padre').style.display = 'block';
-    };
-    document.getElementById('btn-siguiente-padre').onclick = function () {
-        document.getElementById('paso-padre').style.display = 'none';
-        document.getElementById('paso-cuidador').style.display = 'block';
-    };
-    document.getElementById('btn-siguiente-cuidador').onclick = function () {
-        document.getElementById('paso-cuidador').style.display = 'none';
-        document.getElementById('paso-estudiante').style.display = 'block';
-    };
-
-    // Mostrar campos condicionales
-    document.getElementById('victima_conflicto').onchange = function () {
-        document.getElementById('victima_tipo_container').style.display = this.value === 'Si' ? 'block' : 'none';
-    };
-    document.getElementById('grupo_etnico').onchange = function () {
-        document.getElementById('etnico_tipo_container').style.display = this.value === 'Si' ? 'block' : 'none';
-    };
-});
