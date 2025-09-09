@@ -1,3 +1,4 @@
+/* CSS para Inicio_sesion.html - Página de login con estética moderna */
 
 * {
     margin: 0;
@@ -12,30 +13,25 @@ body {
     color: #2c3e50;
     line-height: 1.6;
     scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-
-
 
 /* Contenido principal */
 .main-content {
     background: white;
-    margin: 60px auto;
+    margin: 40px auto;
     max-width: 600px;
     border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Ocultar formularios inicialmente */
-    display: block;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    min-height: 100vh;
-    width: 100vw;
-    background-color: #d7d7d7;
-}
-
 #form_admin,
 #form_docente,
 #form_acudiente {
@@ -93,36 +89,10 @@ body {
 }
 
 /* Logo mejorado */
-    max-width: 430px;
-    margin: 40px auto;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
-    padding: 30px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* título de inicio de sesión */
-.titulo {
-    color: #7c3aed;
-    font-size: 2.5rem;
-    font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-align: center;
-    margin-bottom: 20px;
-    text-shadow: 0 2px 8px rgba(124, 58, 237, 0.15);
-}
-
-/* logo de ludik */
-
 .Cont_logo {
     display: flex;
     justify-content: center;
     align-items: center;
-
     margin-bottom: 40px;
 }
 
@@ -155,43 +125,13 @@ body {
 
 .Botones_usuarios button {
     width: 150px;
-    height: 60px;
+    height: 80px;
     font-size: 0.9rem;
     font-family: 'Inter', Arial, sans-serif;
     font-weight: 600;
-
-    margin-bottom: 25px;
-}
-
-.Cont_logo img {
-    background: rgba(124, 58, 237, 0.10);
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.10);
-    opacity: 0.85;
-    transition: opacity 0.3s;
-}
-
-/* Botones de selección de usuario */
-.Botones_usuarios {
-    display: flex;
-    justify-content: center;
-    gap: 18px;
-    margin-bottom: 30px;
-}
-
-.Botones_usuarios button {
-    width: 130px;
-    height: 44px;
-    font-size: 1rem;
-    font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-weight: bold;
-
     border: none;
     outline: none;
     cursor: pointer;
-    margin: 0;
-
     transition: all 0.3s ease;
     border-radius: 16px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -199,7 +139,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 8px;
     position: relative;
     overflow: hidden;
 }
@@ -219,8 +159,13 @@ body {
     left: 100%;
 }
 
+.Botones_usuarios button.active {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
 .btn-icon {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .btn_adm {
@@ -271,72 +216,12 @@ body {
     padding: 40px 30px;
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-}
-
-.btn_adm {
-    background: #a5b4fc;
-    color: #222;
-}
-
-.btn_adm:hover {
-    background: #818cf8;
-    transform: scale(1.07);
-    box-shadow: 0 4px 16px rgba(165, 180, 252, 0.18);
-}
-
-.btn_prof {
-    background: #bbf7d0;
-    color: #222;
-}
-
-.btn_prof:hover {
-    background: #4ade80;
-    transform: scale(1.07);
-    box-shadow: 0 4px 16px rgba(187, 247, 208, 0.18);
-}
-
-.btn_padr {
-    background: #fed7aa;
-    color: #222;
-}
-
-.btn_padr:hover {
-    background: #fdba74;
-    transform: scale(1.07);
-    box-shadow: 0 4px 16px rgba(254, 215, 170, 0.18);
-}
-
-/* Mensaje de rol */
-#mensaje_rol p {
-    font-size: 0.98rem;
-    color: #7c3aed;
-    text-align: center;
-    margin-bottom: 18px;
-    font-weight: 500;
-    letter-spacing: 1px;
-}
-
-/* Contenedor general de formularios */
-.Formularios_sesion > div[id^="form_"] {
-    width: 320px;
-    margin: 0 auto 18px auto;
-    padding: 28px 24px 22px 24px;
-    border-radius: 18px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-
+    transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Colores de fondo actualizados */
+/* Colores de fondo según rol */
 #form_admin {
     background: linear-gradient(135deg, rgba(165, 180, 252, 0.9) 0%, rgba(129, 140, 248, 0.8) 100%);
 }
@@ -363,6 +248,7 @@ body {
 /* Contenedor de icono mejorado */
 .form-icon-container {
     margin-bottom: 25px;
+    text-align: center;
 }
 
 .form-icon-container img {
@@ -459,7 +345,13 @@ body {
     transform: translateY(-1px);
 }
 
-/* Footer (copiado de Info.css) */
+.login-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Footer */
 .pie-pagina {
     background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
     color: white;
@@ -467,7 +359,8 @@ body {
     padding: 30px 20px;
     font-size: 0.95rem;
     letter-spacing: 0.5px;
-    margin-top: 0;
+    margin-top: 40px;
+    width: 100%;
 }
 
 /* Animaciones */
@@ -486,12 +379,23 @@ body {
     animation: slideInUp 0.8s ease-out;
 }
 
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.Formularios_sesion > div[id^="form_"] {
+    animation: fadeInScale 0.5s ease-out;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
-    .titulo-ludik {
-        font-size: 2rem;
-    }
-
     .main-content {
         margin: 20px 15px;
         border-radius: 16px;
@@ -513,6 +417,7 @@ body {
 
     .Botones_usuarios button {
         width: 200px;
+        height: 70px;
     }
 
     .Cont_logo img {
@@ -525,81 +430,33 @@ body {
         height: 100px;
     }
 
+    .Formularios_sesion > div[id^="form_"] {
+        padding: 30px 20px;
+    }
 }
 
-/* Colores de fondo según rol */
-#form_admin {
-    background: #a5b4fc; /* Azul claro */
-}
-
-#form_docente {
-    background: #bbf7d0; /* Verde claro */
-}
-
-#form_acudiente {
-    background: #fed7aa; /* Naranja claro */
-}
-
-/* Título de login */
-.Formularios_sesion h3 {
-    color: #4c1d95; /* Morado oscuro */
-    font-size: 1.3rem;
-    font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-weight: bold;
-    margin-bottom: 12px;
-    text-align: center;
-    letter-spacing: 1px;
-}
-
-/* Imagen circular */
-.Formularios_sesion img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 110px;
-    height: 110px;
-    object-fit: cover;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
-    margin-bottom: 16px;
-    border: 4px solid #7c3aed22;
-}
-
-/* Inputs */
-.Formularios_sesion input[type="text"],
-.Formularios_sesion input[type="password"] {
-    width: 90%;
-    padding: 8px 12px;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    border: 1px solid #c4b5fd;
-    font-size: 1rem;
-    background: #f3f4f6;
-    outline: none;
-    transition: border 0.2s;
-}
-
-.Formularios_sesion input:focus {
-    border: 1.5px solid #7c3aed;
-}
-
-/* Botón de login */
-.login-btn {
-    width: 95%;
-    padding: 10px 0;
-    background: #4c1d95; /* Morado oscuro */
-    color: #fff;
-    font-size: 1.08rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: background 0.2s, transform 0.2s;
-}
-
-.login-btn:hover {
-    background: #7c3aed;
-    transform: scale(1.04);
+@media (max-width: 480px) {
+    .titulo {
+        font-size: 1.8rem;
+    }
+    
+    .Botones_usuarios button {
+        width: 180px;
+        height: 65px;
+        font-size: 0.85rem;
+    }
+    
+    .btn-icon {
+        font-size: 1.3rem;
+    }
+    
+    .input-group input {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+    
+    .login-btn {
+        padding: 12px 0;
+        font-size: 1rem;
+    }
 }

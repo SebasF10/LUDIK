@@ -1,18 +1,14 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>LUDIK - Inicio de Sesión</title>
     <link rel="stylesheet" href="Css\Inicio_sesion.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-
-
     <!-- Contenido principal con la nueva estética -->
     <main class="main-content">
         <div class="Inicio_sesion">
@@ -51,7 +47,7 @@
                 <div id="form_admin" class="formulario_admin">
                     <h3>Acceso Administrador</h3>
                     <div class="form-icon-container">
-                        <img src="img\logoadmin.png" alt="Logo de administrador" width="120" height="120">
+                        <img src="img/logoadmin.png" alt="Logo de administrador" width="120" height="120">
                     </div>
                     <form method="POST" action="php/Login.php">
                         <input type="hidden" name="rol" value="admin">
@@ -69,7 +65,7 @@
                 <div id="form_docente" class="formulario_docente">
                     <h3>Acceso Docente</h3>
                     <div class="form-icon-container">
-                        <img src="img\logoprofe.png" alt="Logo de docente" width="120" height="120">
+                        <img src="img/logoprofe.png" alt="Logo de docente" width="120" height="120">
                     </div>
                     <form method="POST" action="php/Login.php">
                         <input type="hidden" name="rol" value="docente">
@@ -87,7 +83,7 @@
                 <div id="form_acudiente" class="formulario_acudiente">
                     <h3>Acceso Acudiente</h3>
                     <div class="form-icon-container">
-                        <img src="img\logopadre.png" alt="Logo de acudiente" width="120" height="120">
+                        <img src="img/logopadre.png" alt="Logo de acudiente" width="120" height="120">
                     </div>
                     <form method="POST" action="php/Login.php">
                         <input type="hidden" name="rol" value="acudiente">
@@ -108,75 +104,82 @@
         Copyright © 2025 Todos los derechos reservados | Sistemas 11 | Colegio San José de Guanentá
     </footer>
 
-    <script src="Js/Inicio_sesion.js"></script>
-</body>
+    <script>
+        // Función para mostrar formulario según rol seleccionado
+        function mostrarFormulario(rol) {
+            // Ocultar mensaje inicial
+            document.getElementById('mensaje_rol').style.display = 'none';
+            
+            // Ocultar todos los formularios
+            document.getElementById('form_admin').style.display = 'none';
+            document.getElementById('form_docente').style.display = 'none';
+            document.getElementById('form_acudiente').style.display = 'none';
+            
+            // Remover clase active de todos los botones
+            document.querySelectorAll('.Botones_usuarios button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Mostrar el formulario correspondiente y activar botón
+            if (rol === 'admin') {
+                document.getElementById('form_admin').style.display = 'block';
+                document.querySelector('.btn_adm').classList.add('active');
+            } else if (rol === 'docente') {
+                document.getElementById('form_docente').style.display = 'block';
+                document.querySelector('.btn_prof').classList.add('active');
+            } else if (rol === 'acudiente') {
+                document.getElementById('form_acudiente').style.display = 'block';
+                document.querySelector('.btn_padr').classList.add('active');
+            }
+        }
 
+        // Animación de entrada para los elementos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animar elementos al cargar
+            const elements = document.querySelectorAll('.titulo, .subtitulo, .logo-container, .btn_adm, .btn_prof, .btn_padr');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+
+        // Efecto hover mejorado para los botones
+        document.querySelectorAll('.Botones_usuarios button').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('active')) {
+                    this.style.transform = 'translateY(0) scale(1)';
+                }
+            });
+        });
+
+        // Validación de formularios
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const email = this.querySelector('input[name="email"]').value;
+                const password = this.querySelector('input[name="contrasena"]').value;
+                
+                if (!email || !password) {
+                    e.preventDefault();
+                    alert('Por favor, completa todos los campos');
+                    return false;
+                }
+                
+                // Mostrar indicador de carga
+                const submitBtn = this.querySelector('.login-btn');
+                submitBtn.textContent = 'Iniciando...';
+                submitBtn.disabled = true;
+            });
+        });
+    </script>
+</body>
 </html>
-
-    <title>Ludik</title>
-    <link rel="stylesheet" href="Css\Inicio_sesion.css">
-</head>
-
-<body>
-    <div class="Inicio_sesion">
-        <div class="Sesion_titulo">
-            <p class="titulo">Inicio de sesión</p>
-        </div>
-
-        <div class="Cont_logo">
-            <img src="img/Ludik2.png" alt="Logo de LUDIK" width="300" height="300">
-        </div>
-
-        <div class="Botones_usuarios">
-            <button class="btn_adm" onclick="mostrarFormulario('admin')">Administrador</button>
-            <button class="btn_prof" onclick="mostrarFormulario('docente')">Docente</button>
-            <button class="btn_padr" onclick="mostrarFormulario('acudiente')">Acudiente</button>
-        </div>
-
-        <div class="Formularios_sesion">
-            <div id="mensaje_rol">
-                <p>Elige un rol para iniciar sesion</p>
-            </div>
-            <!-- Formulario Administrador -->
-            <div id="form_admin" class="formulario_admin">
-                <h3>Login Administrador</h3>
-                <img src="img\logoadmin.png" alt="Logo de administrador" width="200" height="200">
-                <br>
-                <form method="POST" action="php/Login.php">
-                    <input type="hidden" name="rol" value="admin">
-                    <input type="text" name="email" placeholder="Usuario o Email" required><br>
-                    <input type="password" name="contrasena" placeholder="Contraseña" required><br>
-                    <button class="login-btn" type="submit">Iniciar Sesión</button>
-                </form>
-            </div>
-
-            <!-- Formulario Docente -->
-            <div id="form_docente" class="formulario_docente">
-                <h3>Login Docente</h3>
-                <img src="img\logoprofe.png" alt="Logo de docente" width="200" height="200">
-                <br>
-                <form method="POST" action="php/Login.php">
-                    <input type="hidden" name="rol" value="docente">
-                    <input type="text" name="email" placeholder="Usuario o Email" required><br>
-                    <input type="password" name="contrasena" placeholder="Contraseña" required><br>
-                    <button class="login-btn" type="submit">Iniciar Sesión</button>
-                </form>
-            </div>
-
-            <!-- Formulario Acudiente -->
-            <div id="form_acudiente" class="formulario_acudiente">
-                <h3>Login Acudiente</h3>
-                <img src="img\logopadre.png" alt="Logo de acudiente" width="200" height="200">
-                <br>
-                <form method="POST" action="php/Login.php">
-                    <input type="hidden" name="rol" value="acudiente">
-                    <input type="text" name="email" placeholder="Usuario o Email" required><br>
-                    <input type="password" name="contrasena" placeholder="Contraseña" required><br>
-                    <button class="login-btn" type="submit">Iniciar Sesión</button>
-                </form>
-            </div>
-        </div>
-
-    </div>
-    <script src="Js/Inicio_sesion.js"></script>
-</body>
