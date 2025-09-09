@@ -10,10 +10,13 @@
 
 <body>
     <header>
-        <div class="encabezado-ludik">
-            <div class="lado-izq">
+        <div class="header-container">
+            <div class="header-left">
                 <img src="img/Ludik2.png" alt="Logo Institución" class="logo-institucion">
                 <h1 class="titulo-ludik">Registro de Estudiante</h1>
+            </div>
+            <div class="header-right">
+                <button type="button" class="btn-nav btn-inicio" id="btn-inicio">Ir a Inicio</button>
             </div>
         </div>
     </header>
@@ -21,6 +24,15 @@
     <main class="main-content">
         <section class="section">
             <h1>Formulario de Registro</h1>
+            
+            <!-- Indicador de progreso -->
+            <div class="progress-indicator">
+                <div class="step-indicator active" id="indicator-1">1</div>
+                <div class="step-indicator" id="indicator-2">2</div>
+                <div class="step-indicator" id="indicator-3">3</div>
+                <div class="step-indicator" id="indicator-4">4</div>
+            </div>
+            
             <form id="registro-multi-paso" action="php/registrar_estudiante.php" method="POST">
                 <!-- Paso 1: Madre -->
                 <div class="form-step" id="paso-madre">
@@ -37,8 +49,13 @@
                     <input type="password" id="madre_contrasena" name="madre_contrasena" required>
                     <label for="madre_telefono">Teléfono:</label>
                     <input type="tel" id="madre_telefono" name="madre_telefono" required>
-                    <button type="button" class="btn-login" id="btn-siguiente-madre">Siguiente</button>
+                    
+                    <div class="navigation-buttons">
+                        <div></div> <!-- Espacio vacío para alineación -->
+                        <button type="button" class="btn-nav btn-siguiente" id="btn-siguiente-madre">Siguiente</button>
+                    </div>
                 </div>
+                
                 <!-- Paso 2: Padre -->
                 <div class="form-step" id="paso-padre" style="display:none;">
                     <h2>Datos del Padre</h2>
@@ -54,8 +71,13 @@
                     <input type="password" id="padre_contrasena" name="padre_contrasena" required>
                     <label for="padre_telefono">Teléfono:</label>
                     <input type="tel" id="padre_telefono" name="padre_telefono" required>
-                    <button type="button" class="btn-login" id="btn-siguiente-padre">Siguiente</button>
+                    
+                    <div class="navigation-buttons">
+                        <button type="button" class="btn-nav btn-anterior" id="btn-anterior-padre">Anterior</button>
+                        <button type="button" class="btn-nav btn-siguiente" id="btn-siguiente-padre">Siguiente</button>
+                    </div>
                 </div>
+                
                 <!-- Paso 3: Cuidador -->
                 <div class="form-step" id="paso-cuidador" style="display:none;">
                     <h2>Datos del Acudiente/Cuidador</h2>
@@ -73,8 +95,13 @@
                     <input type="password" id="cuidador_contrasena" name="cuidador_contrasena" required>
                     <label for="cuidador_telefono">Teléfono:</label>
                     <input type="tel" id="cuidador_telefono" name="cuidador_telefono" required>
-                    <button type="button" class="btn-login" id="btn-siguiente-cuidador">Siguiente</button>
+                    
+                    <div class="navigation-buttons">
+                        <button type="button" class="btn-nav btn-anterior" id="btn-anterior-cuidador">Anterior</button>
+                        <button type="button" class="btn-nav btn-siguiente" id="btn-siguiente-cuidador">Siguiente</button>
+                    </div>
                 </div>
+                
                 <!-- Paso 4: Estudiante -->
                 <div class="form-step" id="paso-estudiante" style="display:none;">
                     <h2>Datos del Estudiante</h2>
@@ -156,7 +183,11 @@
                         <option value="Si">Sí</option>
                         <option value="No">No</option>
                     </select>
-                    <button type="submit" class="btn-login">Registrar Estudiante</button>
+                    
+                    <div class="navigation-buttons">
+                        <button type="button" class="btn-nav btn-anterior" id="btn-anterior-estudiante">Anterior</button>
+                        <button type="submit" class="btn-nav btn-registrar">Registrar Estudiante</button>
+                    </div>
                 </div>
             </form>
         </section>
