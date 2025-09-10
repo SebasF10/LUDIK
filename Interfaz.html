@@ -34,7 +34,7 @@
         <div class="menu-buttons">
             <button class="menu-button">
                 <span class="menu-icon">👤</span>
-                Perfil
+            Perfil
             </button>
             <button class="menu-button">
                 <span class="menu-icon">👥</span>
@@ -135,12 +135,13 @@
         </div>
     </div>
 
+    <!-- SCRIPT INLINE SÚPER SIMPLE -->
     <script>
         // VERIFICAR ROL INMEDIATAMENTE
-        const rol = localStorage.getItem('rol') || 'user';
+        const rol = localStorage.getItem('rol');
         console.log('Rol en localStorage:', rol);
 
-        // Si NO es admin, ocultar el botón
+        // Si NO es admin, eliminar el botón AHORA MISMO
         if (rol !== 'admin') {
             const botonCrear = document.getElementById('btnCrearCuentas');
             if (botonCrear) {
@@ -148,58 +149,9 @@
                 console.log('Botón ocultado para rol:', rol);
             }
         }
-
-        // Funcionalidad del menú hamburguesa
-        const burger = document.getElementById('burger');
-        const sideMenu = document.getElementById('sideMenu');
-        const overlay = document.getElementById('overlay');
-
-        function toggleMenu() {
-            const isActive = sideMenu.classList.contains('active');
-            
-            if (isActive) {
-                sideMenu.classList.remove('active');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            } else {
-                sideMenu.classList.add('active');
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        // Event listeners
-        burger.addEventListener('change', toggleMenu);
-        overlay.addEventListener('click', () => {
-            burger.checked = false;
-            toggleMenu();
-        });
-
-        // Cerrar menú al hacer clic en un botón del menú
-        document.querySelectorAll('.menu-button:not(.close-session)').forEach(button => {
-            button.addEventListener('click', () => {
-                burger.checked = false;
-                toggleMenu();
-            });
-        });
-
-        // Funcionalidad para cerrar sesión
-        document.querySelector('.close-session').addEventListener('click', () => {
-            if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
-                localStorage.clear();
-                window.location.href = 'login.html';
-            }
-        });
-
-        // Cerrar menú con tecla Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && sideMenu.classList.contains('active')) {
-                burger.checked = false;
-                toggleMenu();
-            }
-        });
     </script>
 
+    <script src="Js/Interfaz.js"></script>
 </body>
 
 </html>
