@@ -22,25 +22,22 @@
             </div>
             <div class="lado-der">
                 <img src="img/Ludik2.png" alt="Logo Ludik" class="logo-ludik">
-            </div>
-        </div>
-
-        <nav class="navbar">
-            <div class="nav-content">
-                <ul>
-                    <li><a href="#colegio">Colegio</a></li>
-                    <li><a href="#inclusion">Inclusión en Colombia</a></li>
-                    <li><a href="#ludik">Proyecto LUDIK</a></li>
-                </ul>
                 <a href="Inicio_sesion.html" class="btn-login">Iniciar Sesión</a>
             </div>
-        </nav>
+        </div>
     </header>
 
     <!-- Contenido principal -->
     <main class="main-content">
+        <!-- Navegación interna -->
+        <div class="nav-interno">
+            <button class="nav-btn active" data-section="colegio">Colegio</button>
+            <button class="nav-btn" data-section="inclusion">Inclusión en Colombia</button>
+            <button class="nav-btn" data-section="ludik">Proyecto LUDIK</button>
+        </div>
+
         <!-- Sección Colegio -->
-        <section id="colegio" class="section">
+        <section id="colegio" class="section active">
             <h1>Colegio San José de Guanentá</h1>
             <p>
                 El <span class="highlight">Colegio San José de Guanentá</span> es una institución educativa con más de
@@ -139,27 +136,22 @@
     </footer>
 
     <script>
-        // Smooth scroll para los enlaces de navegación
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    // Ajuste para el header fijo
-                    const headerHeight = document.querySelector('header').offsetHeight;
-                    const targetPosition = target.offsetTop - headerHeight - 20;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
+        // Navegación interna por pestañas
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetSection = this.getAttribute('data-section');
+                
+                // Remover clase active de todos los botones y secciones
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+                
+                // Añadir clase active al botón clickeado y su sección correspondiente
+                this.classList.add('active');
+                document.getElementById(targetSection).classList.add('active');
             });
         });
 
-        // REMOVIDO: Efecto parallax del header que causaba el problema
-
-        // Animación de entrada para las secciones al hacer scroll
+        // Animación de entrada para las secciones
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -178,32 +170,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => {
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(30px)';
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
                 section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
                 observer.observe(section);
-            });
-
-            // Resaltar enlace activo en la navegación
-            const navLinks = document.querySelectorAll('.navbar a[href^="#"]');
-            const headerHeight = document.querySelector('header').offsetHeight;
-            
-            window.addEventListener('scroll', () => {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - headerHeight - 50;
-                    const sectionHeight = section.clientHeight;
-                    if (scrollY >= sectionTop) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${current}`) {
-                        link.classList.add('active');
-                    }
-                });
             });
         });
 
