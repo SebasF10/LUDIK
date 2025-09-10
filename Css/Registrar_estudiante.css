@@ -69,7 +69,7 @@ header {
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(102, 126, 234, 0.12);
     padding: 40px 32px 32px 32px;
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
     margin: 0 auto;
 }
@@ -143,7 +143,8 @@ input[type="tel"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
-select {
+select,
+textarea {
     width: 100%;
     padding: 10px 14px;
     margin-bottom: 18px;
@@ -153,10 +154,19 @@ select {
     background: #f8fafc;
     transition: border-color 0.2s;
     box-sizing: border-box;
+    font-family: inherit;
+}
+
+/* Estilos específicos para textarea */
+textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.4;
 }
 
 input:focus,
-select:focus {
+select:focus,
+textarea:focus {
     border-color: #667eea;
     outline: none;
     box-shadow: 0 0 8px rgba(102, 126, 234, 0.15);
@@ -259,13 +269,29 @@ footer.pie-pagina {
 
 /* ===== CAMPOS CONDICIONALES ===== */
 #victima_tipo_container,
-#etnico_tipo_container {
+#etnico_tipo_container,
+#vinculado_detalles_container,
+#no_vinculado_razon_container,
+#modalidad_proveniente_container {
     margin-top: 10px;
     margin-bottom: 20px;
     padding: 15px;
     background-color: #f8f9fa;
     border-radius: 8px;
     border: 1px solid #e9ecef;
+    border-left: 4px solid #667eea;
+}
+
+/* Estilos específicos para los contenedores condicionales */
+#vinculado_detalles_container,
+#no_vinculado_razon_container {
+    background-color: #f0f8ff;
+    border-left-color: #007bff;
+}
+
+#modalidad_proveniente_container {
+    background-color: #f8fff0;
+    border-left-color: #28a745;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
@@ -330,6 +356,16 @@ footer.pie-pagina {
         width: 35px;
         height: 35px;
         font-size: 14px;
+        margin: 0 2px;
+    }
+    
+    /* Campos condicionales responsive */
+    #victima_tipo_container,
+    #etnico_tipo_container,
+    #vinculado_detalles_container,
+    #no_vinculado_razon_container,
+    #modalidad_proveniente_container {
+        padding: 12px;
     }
 }
 
@@ -345,5 +381,11 @@ footer.pie-pagina {
     
     .section {
         padding: 20px 12px;
+    }
+    
+    .step-indicator {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
     }
 }
