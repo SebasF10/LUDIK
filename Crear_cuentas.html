@@ -82,14 +82,18 @@
                     <label>Teléfono</label>
                     <input type="text" name="telefono">
                 </div>
+
+                <!-- Selección de grupos -->
                 <div class="form-group">
-                    <label>Asignaturas</label>
-                    <div id="checkbox_materias" class="checkbox-list"></div>
-                </div>
-                <div class="form-group">
-                    <label>Grupos</label>
+                    <label>Grupos a los que dicta clases</label>
                     <div id="checkbox_grupos" class="checkbox-list"></div>
                 </div>
+
+                <!-- Contenedor para asignaturas por grupo -->
+                <div id="asignaturas_por_grupo" class="asignaturas-container" style="display:none;">
+                    <h3>Selecciona las asignaturas para cada grupo:</h3>
+                </div>
+
                 <div class="form-group">
                     <label>¿Es director de grupo?</label>
                     <select name="es_director" id="es_director" required onchange="mostrarSelectorGrupoDirector()">
@@ -97,12 +101,14 @@
                         <option value="1">Sí</option>
                     </select>
                 </div>
+                
                 <div class="form-group" id="grupo_director_container" style="display:none;">
                     <label>Grupo que dirige</label>
                     <select name="grupo_director" id="grupo_director">
                         <!-- Opciones se llenan dinámicamente -->
                     </select>
                 </div>
+
                 <button type="submit" class="btn">Crear cuenta</button>
             </form>
 
