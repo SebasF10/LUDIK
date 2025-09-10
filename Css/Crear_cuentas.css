@@ -16,6 +16,7 @@ body {
     scroll-behavior: smooth;
 }
 
+
 /* Header - Idéntico al Index.css */
 header {
     background: rgba(255, 255, 255, 0.95);
@@ -144,6 +145,10 @@ header {
 /* Contenido principal */
 .main-content {
     background: white;
+
+/* Contenedor principal */
+.container {
+    max-width: 600px;
     margin: 40px auto;
     margin-top: 160px;
     max-width: 1000px;
@@ -652,4 +657,55 @@ header {
         padding: 6px 10px;
         font-size: 0.85rem;
     }
+=======
+.checkbox-item input[type="checkbox"] {
+    accent-color: #7c3aed;
+    margin-right: 6px;
+}
+
+/* Estilos para las asignaturas por grupo */
+.asignaturas-container {
+    margin-top: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 15px;
+    background: #ffffff;
+}
+
+.asignaturas-container h3 {
+    color: #4c1d95;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.grupo-asignaturas {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.grupo-asignaturas h4 {
+    color: #374151;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    background: #e5e7eb;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.grupo-asignaturas .checkbox-list {
+    margin-top: 10px;
+}
+
+.grupo-asignaturas .checkbox-item {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+}
+
+.grupo-asignaturas .checkbox-item:hover {
+    border-color: #7c3aed;
 }
