@@ -1,4 +1,5 @@
 <?php
+// cargar_grupos.php
 header('Content-Type: application/json; charset=utf-8');
 
 // Configuración de la base de datos
@@ -19,34 +20,40 @@ try {
     // Configurar charset
     $conn->set_charset("utf8");
     
-    // Consulta para obtener estudiantes
-    $sql = "SELECT id_estudiante, nombre, apellidos, no_documento 
-            FROM estudiante 
-            ORDER BY apellidos, nombre";
+    // Consulta para obtener grupos con información del grado
+    $sql = "SELECT g.id_grupo, g.grupo, gr.grado 
+            FROM grupo g 
+            INNER JOIN grado gr ON g.id_grado = gr.id_grado 
+            ORDER BY gr.id_grado, g.grupo";
     
     $result = $conn->query($sql);
     
-    $estudiantes = array();
+    if (!$result) {
+        throw new Exception("Error en la consulta: " . $conn->error);
+    }
     
-    if ($result && $result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $estudiantes[] = array(
-                'id_estudiante' => $row['id_estudiante'],
-                'nombre' => $row['nombre'],
-                'apellidos' => $row['apellidos'],
-                'no_documento' => $row['no_documento']
-            );
-        }
+    $grupos = array();
+    
+    while ($row = $result->fetch_assoc()) {
+        $grupos[] = array(
+            'id_grupo' => $row['id_grupo'],
+            'grupo' => $row['grupo'],
+            'grado' => $row['grado']
+        );
     }
     
     // Cerrar conexión
     $conn->close();
     
-    // Devolver JSON
-    echo json_encode($estudiantes);
+    // Devolver los grupos en formato JSON
+    echo json_encode($grupos);
     
 } catch (Exception $e) {
-    // En caso de error, devolver array vacío con mensaje
+    // En caso de error
+    if (isset($conn)) {
+        $conn->close();
+    }
+    
     http_response_code(500);
     echo json_encode(array(
         'error' => true,

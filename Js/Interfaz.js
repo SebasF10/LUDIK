@@ -83,7 +83,6 @@ document.addEventListener('click', function (e) {
         const texto = e.target.textContent.trim();
         console.log("Click en:", texto);
 
-
         if (texto.toLowerCase().includes('perfil')) {
             window.location.href = 'perfil.html';
         } else if (texto.toLowerCase().includes('estudiantes')) {
@@ -94,8 +93,8 @@ document.addEventListener('click', function (e) {
             window.location.href = 'Actividades.html';
         } else if (texto.toLowerCase().includes('registrar un nuevo estudiante')) {
             window.location.href = 'Registrar_estudiante.html';
-        } else if (texto.toLowerCase().includes('registrar datos del estudiante')) {
-            window.location.href = 'Descripción_general.html';
+        } else if (texto.toLowerCase().includes('registrar un piar')) {
+            window.location.href = 'Registrar_PIAR.html';
         } else if (texto.toLowerCase().includes('comunicate')) {
             window.location.href = 'Comunicacion.html';
         } else if (texto.toLowerCase().includes('ayuda')) {
@@ -105,37 +104,6 @@ document.addEventListener('click', function (e) {
                 localStorage.removeItem('rol');
                 window.location.href = 'Inicio_sesion.html';
             }
-
-        switch (texto) {
-            case 'Perfil':
-                window.location.href = 'perfil.html';
-                break;
-            case 'Estudiantes':
-                window.location.href = 'Estudiantes.html';
-                break;
-            case 'Crear Cuentas':
-                window.location.href = 'Crear_cuentas.html';
-                break;
-            case 'Actividades':
-                window.location.href = 'Actividades.html';
-                break;
-            case 'Registrar un nuevo estudiante':
-                window.location.href = 'Registrar_estudiante.html';
-                break;
-            case 'Comunicate':
-                window.location.href = 'Comunicacion.html';
-                break;
-            case 'Ayuda':
-                window.location.href = 'Ayuda.html';
-                break;
-            case 'Cerrar Sesion':
-            case 'Cerrar Sesión':
-                if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
-                    localStorage.removeItem('rol');
-                    window.location.href = 'Inicio_sesion.html';
-                }
-                break;
-
         }
 
         // Cerrar menú
@@ -144,5 +112,4 @@ document.addEventListener('click', function (e) {
         overlay.classList.remove('active');
         document.body.style.overflow = 'auto';
     }
-
 });

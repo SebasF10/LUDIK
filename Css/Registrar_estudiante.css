@@ -1,140 +1,208 @@
-/* filepath: c:\xampp\htdocs\LUDIK\Css\registrar_estudiante.css */
+/* ESTILOS REGISTRO COMPLETO - LUDIK */
 
-/* Estilos específicos para la página de registro de estudiantes */
-
-body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #2c3e50;
-    font-family: 'Inter', Arial, sans-serif;
-    min-height: 100vh;
+/* === RESET Y CONFIGURACIÓN BASE === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* ===== HEADER ===== */
+body {
+    font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+/* === HEADER === */
 header {
     background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.08);
-    padding: 20px 0;
-    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.1);
+    padding: 1.2rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    margin-bottom: 2rem;
 }
 
 .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
-}
-
-.header-left {
+    padding: 0 2rem;
     display: flex;
     align-items: center;
-    gap: 15px;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .logo-institucion {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
-    object-fit: contain;
+    object-fit: cover;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .titulo-ludik {
-    font-size: 2.2rem;
-    font-weight: 700;
+    font-size: 2.1rem;
+    font-weight: 800;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     letter-spacing: 2px;
+    text-transform: uppercase;
     margin: 0;
 }
 
-/* ===== CONTENIDO PRINCIPAL ===== */
+/* === CONTENIDO PRINCIPAL === */
 .main-content {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 70vh;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
 }
 
 .section {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.12);
-    padding: 40px 32px 32px 32px;
-    max-width: 600px;
-    width: 100%;
-    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 2rem;
 }
 
 .section h1 {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.2rem;
     color: #667eea;
-    margin-bottom: 24px;
     text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    position: relative;
 }
 
-.section h2 {
-    font-size: 1.2rem;
-    color: #764ba2;
-    margin-top: 32px;
-    margin-bottom: 12px;
-    font-weight: 600;
-    border-left: 4px solid #667eea;
-    padding-left: 10px;
+.section h1::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    margin: 10px auto;
+    border-radius: 2px;
 }
 
-/* ===== INDICADOR DE PROGRESO ===== */
+/* === INDICADOR DE PROGRESO === */
 .progress-indicator {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
-    gap: 10px;
+    align-items: center;
+    margin-bottom: 3rem;
+    gap: 0.3rem;
+    flex-wrap: wrap;
 }
 
 .step-indicator {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #e9ecef;
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
     color: #6c757d;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 5px;
-    font-weight: bold;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    border: 2px solid #e9ecef;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    border: 3px solid transparent;
+    cursor: pointer;
+}
+
+.step-indicator::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .step-indicator.active {
-    background-color: #007bff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    border-color: #007bff;
-    transform: scale(1.1);
+    transform: scale(1.15);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.step-indicator.active::before {
+    opacity: 1;
 }
 
 .step-indicator.completed {
-    background-color: #28a745;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     color: white;
-    border-color: #28a745;
+    transform: scale(1.05);
 }
 
-/* ===== FORMULARIOS ===== */
+.step-indicator.completed::after {
+    content: '✓';
+    position: absolute;
+    font-size: 0.7rem;
+    font-weight: 900;
+}
+
+/* === PASOS DEL FORMULARIO === */
+.form-step {
+    display: none;
+    animation: slideIn 0.5s ease-out;
+}
+
+.form-step.active {
+    display: block;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.form-step h2 {
+    font-size: 1.6rem;
+    color: #495057;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+    position: relative;
+}
+
+.form-step h2::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+/* === CAMPOS DE FORMULARIO === */
 label {
     display: block;
-    margin-bottom: 6px;
-    font-weight: 500;
-    color: #2c3e50;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
 }
 
 input[type="text"],
@@ -143,207 +211,324 @@ input[type="tel"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
-select {
+select,
+textarea {
     width: 100%;
-    padding: 10px 14px;
-    margin-bottom: 18px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
     font-size: 1rem;
-    background: #f8fafc;
-    transition: border-color 0.2s;
+    font-family: inherit;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    margin-bottom: 1.2rem;
     box-sizing: border-box;
 }
 
+textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.4;
+}
+
 input:focus,
-select:focus {
-    border-color: #667eea;
+select:focus,
+textarea:focus {
     outline: none;
-    box-shadow: 0 0 8px rgba(102, 126, 234, 0.15);
+    border-color: #667eea;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
 }
 
-/* ===== BOTONES DE NAVEGACIÓN ===== */
-.navigation-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 20px;
+textarea::placeholder {
+    color: #adb5bd;
+    font-style: italic;
 }
 
-.btn-nav {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
+select {
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    min-width: 120px;
 }
 
-.btn-anterior {
-    background-color: #6c757d;
-    color: white;
-}
-
-.btn-anterior:hover {
-    background-color: #5a6268;
-    transform: translateY(-1px);
-}
-
-.btn-siguiente {
-    background-color: #007bff;
-    color: white;
-}
-
-.btn-siguiente:hover {
-    background-color: #0056b3;
-    transform: translateY(-1px);
-}
-
-.btn-inicio {
-    background-color: #28a745;
-    color: white;
-}
-
-.btn-inicio:hover {
-    background-color: #1e7e34;
-    transform: translateY(-1px);
-}
-
-.btn-registrar {
-    background-color: #dc3545;
-    color: white;
-}
-
-.btn-registrar:hover {
-    background-color: #c82333;
-    transform: translateY(-1px);
-}
-
-/* Botón de login (compatibilidad) */
-.btn-login,
-button[type="submit"] {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-    padding: 14px 0;
-    border: none;
-    border-radius: 25px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    width: 100%;
-    margin-top: 18px;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.10);
-}
-
-.btn-login:hover,
-button[type="submit"]:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.18);
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-}
-
-/* ===== FOOTER ===== */
-footer.pie-pagina {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 0.95rem;
-    color: #64748b;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 18px 0;
-    border-top: 1px solid #e5e7eb;
-    box-shadow: 0 -2px 12px rgba(102, 126, 234, 0.07);
-}
-
-/* ===== CAMPOS CONDICIONALES ===== */
-#victima_tipo_container,
-#etnico_tipo_container {
+/* === CAMPOS CONDICIONALES === */
+.conditional-container {
     margin-top: 10px;
     margin-bottom: 20px;
     padding: 15px;
-    background-color: #f8f9fa;
+    background-color: #f0f8ff;
     border-radius: 8px;
     border: 1px solid #e9ecef;
+    border-left: 4px solid #667eea;
+    display: none;
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* === BOTONES DE NAVEGACIÓN === */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+.btn-nav {
+    padding: 0.9rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    min-width: 140px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-nav:hover::before {
+    left: 100%;
+}
+
+.btn-anterior {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+}
+
+.btn-anterior:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+}
+
+.btn-siguiente {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-siguiente:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-registrar {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    flex: 1;
+}
+
+.btn-registrar:hover {
+    background: linear-gradient(135deg, #218838 0%, #1abc9c 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+    animation: pulse 2s infinite;
+}
+
+.btn-nav:active {
+    transform: translateY(0);
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* === GRUPO ESTUDIANTIL === */
+.grupo-section {
+    background-color: #f8fff0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    border-left: 4px solid #28a745;
+}
+
+.grupo-section h3 {
+    color: #28a745;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+/* === FOOTER === */
+.pie-pagina {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    margin-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pie-pagina p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* === MENSAJES DE ALERTA === */
+.alert {
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    border-left: 4px solid;
+}
+
+.alert-success {
+    background: rgba(40, 167, 69, 0.1);
+    color: #155724;
+    border-left-color: #28a745;
+}
+
+.alert-error {
+    background: rgba(220, 53, 69, 0.1);
+    color: #721c24;
+    border-left-color: #dc3545;
+}
+
+/* === ESTADO DE CARGA === */
+.loading {
+    pointer-events: none;
+    opacity: 0.7;
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* === RESPONSIVE DESIGN === */
 @media (max-width: 768px) {
-    /* Header responsive */
-    .header-container {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-        gap: 15px;
-        text-align: center;
-    }
-    
-    .header-left,
-    .header-center,
-    .header-right {
-        justify-self: center;
-    }
-    
-    .header-left {
-        justify-content: center;
-        gap: 10px;
-    }
-    
-    .titulo-ludik {
-        font-size: 1.8rem;
-    }
-    
-    .logo-institucion {
-        width: 50px;
-        height: 50px;
-    }
-    
-    /* Contenido responsive */
     .section {
-        padding: 24px 16px;
-        max-width: 98vw;
-        margin: 0 10px;
+        padding: 1.5rem;
+        margin: 1rem;
+        border-radius: 15px;
     }
 
-    .main-content {
-        padding: 0 6px;
-    }
-    
-    /* Botones responsive */
-    .navigation-buttons {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .btn-nav {
-        width: 100%;
-        min-width: auto;
-    }
-    
-    /* Indicadores responsive */
-    .progress-indicator {
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-    
-    .step-indicator {
-        width: 35px;
-        height: 35px;
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 480px) {
     .titulo-ludik {
         font-size: 1.5rem;
         letter-spacing: 1px;
     }
-    
+
     .section h1 {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
-    
+
+    .form-step h2 {
+        font-size: 1.3rem;
+    }
+
+    .progress-indicator {
+        gap: 0.2rem;
+    }
+
+    .step-indicator {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+
+    .navigation-buttons {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .btn-nav {
+        width: 100%;
+        min-width: auto;
+    }
+
+    input,
+    select,
+    textarea {
+        padding: 0.8rem;
+    }
+
+    .main-content {
+        margin: 1rem auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-container {
+        padding: 0 1rem;
+    }
+
+    .titulo-ludik {
+        font-size: 1.2rem;
+    }
+
     .section {
-        padding: 20px 12px;
+        padding: 1rem;
     }
+
+    .section h1 {
+        font-size: 1.5rem;
+    }
+
+    .step-indicator {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+    }
+}
+
+/* === SCROLLBAR PERSONALIZADA === */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #5a6fd8, #6a4190);
 }

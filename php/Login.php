@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </script>";
         exit;
     } else {
-        echo "<script>alert('Credenciales incorrectas'); window.location.href='../Index2.html';</script>";
+        echo "<script>alert('Credenciales incorrectas'); window.location.href='../Inicio_sesion.html';</script>";
     }
 }
 ?>
