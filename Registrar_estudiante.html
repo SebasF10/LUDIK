@@ -22,17 +22,10 @@
 
             <!-- Indicador de progreso -->
             <div class="progress-indicator">
-                <div class="step-indicator active" id="step1">1</div>
-                <div class="step-indicator" id="step2">2</div>
-                <div class="step-indicator" id="step3">3</div>
-                <div class="step-indicator" id="step4">4</div>
-                <div class="step-indicator" id="step5">5</div>
-                <div class="step-indicator" id="step6">6</div>
-                <div class="step-indicator" id="step7">7</div>
-                <div class="step-indicator" id="step8">8</div>
-                <div class="step-indicator" id="step9">9</div>
-                <div class="step-indicator" id="step10">10</div>
-                <div class="step-indicator" id="step11">11</div>
+                <div class="step-indicator active" id="indicator-1">1</div>
+                <div class="step-indicator" id="indicator-2">2</div>
+                <div class="step-indicator" id="indicator-3">3</div>
+                <div class="step-indicator" id="indicator-4">4</div>
             </div>
 
             <form id="formulario-completo" method="POST">
@@ -251,15 +244,10 @@
                         <option value="Si">Sí</option>
                         <option value="No">No</option>
                     </select>
-
-                    <!-- SECCIÓN DE GRUPO ESTUDIANTIL -->
-                    <div class="grupo-section">
-                        <h3>Asignación de Grupo</h3>
-                        <label for="id_grupo">Grupo *</label>
-                        <select id="id_grupo" name="id_grupo" required>
-                            <option value="">Seleccione un grupo</option>
-                            <!-- Se llenarán dinámicamente desde la base de datos -->
-                        </select>
+                    
+                    <div class="navigation-buttons">
+                        <button type="button" class="btn-nav btn-anterior" id="btn-anterior-estudiante">Anterior</button>
+                        <button type="submit" class="btn-nav btn-registrar">Registrar Estudiante</button>
                     </div>
                 </div>
 
@@ -351,7 +339,7 @@
         <p>&copy; 2025 LUDIK - Sistema de Gestión Educativa Inclusiva</p>
     </footer>
 
-    <script src="Js\Registrar_estudiante.js"></script>
+    <script src="Js/Registrar_estudiante.js"></script>
 </body>
 
 </html>
