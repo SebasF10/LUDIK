@@ -93,6 +93,10 @@ document.addEventListener('click', function (e) {
             window.location.href = 'Actividades.html';
         } else if (texto.toLowerCase().includes('registrar un nuevo estudiante')) {
             window.location.href = 'Registrar_estudiante.html';
+
+        } else if (texto.toLowerCase().includes('registrar un piar')) {
+            window.location.href = 'Registrar_PIAR.html';
+
         } else if (texto.toLowerCase().includes('descripción general')) {
             window.location.href = 'Descripción_general.html';
         } else if (texto.toLowerCase().includes('comunicate')) {

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro PIAR - LUDIK</title>
+    <link rel="stylesheet" href="Css/Registrar_PIAR.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <img src="img/Ludik2.png" alt="Logo Institución" class="logo-institucion">
+                <h1 class="titulo-ludik">LUDIK</h1>
+            </div>
+            <div class="header-right">
+                <span>Sistema de Gestión Educativa</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="section">
+            <h1>Registro de PIAR y Diagnóstico Médico</h1>
+            
+            <!-- Indicador de progreso -->
+            <div class="progress-indicator">
+                <div class="step-indicator active" id="step1">1</div>
+                <div class="step-indicator" id="step2">2</div>
+                <div class="step-indicator" id="step3">3</div>
+                <div class="step-indicator" id="step4">4</div>
+            </div>
+
+            <!-- Mensaje de estado -->
+            <div id="mensaje" class="mensaje" style="display: none;"></div>
+
+            <!-- PASO 1: Selección de Estudiante y Registro PIAR -->
+            <form id="form-piar" class="form-step active">
+                <h2>Paso 1: Información del PIAR</h2>
+                
+                <label for="id_estudiante">Estudiante:</label>
+                <select id="id_estudiante" name="id_estudiante" required>
+                    <option value="">Seleccionar estudiante...</option>
+                </select>
+
+                <label for="fecha_piar">Fecha del PIAR:</label>
+                <input type="date" id="fecha_piar" name="fecha" required>
+
+                <label for="ajuste">Ajuste:</label>
+                <textarea id="ajuste" name="ajuste" rows="4" placeholder="Describa los ajustes necesarios..." required></textarea>
+
+                <label for="apoyo">Apoyo:</label>
+                <textarea id="apoyo" name="apoyo" rows="4" placeholder="Describa los apoyos requeridos..." required></textarea>
+
+                <label for="barrera">Barrera:</label>
+                <textarea id="barrera" name="barrera" rows="4" placeholder="Describa las barreras identificadas..." required></textarea>
+
+                <div class="navigation-buttons">
+                    <button type="button" class="btn-nav btn-inicio" onclick="window.location.href='Interfaz.html'">Inicio</button>
+                    <button type="button" class="btn-nav btn-siguiente" onclick="registrarPIAR()">Siguiente</button>
+                </div>
+            </form>
+
+            <!-- PASO 2: Registro de Tratamientos -->
+            <form id="form-tratamiento" class="form-step">
+                <h2>Paso 2: Tratamientos</h2>
+                
+                <div id="tratamientos-container">
+                    <div class="tratamiento-item">
+                        <label for="descripcion_tratamiento_1">Descripción del Tratamiento:</label>
+                        <textarea id="descripcion_tratamiento_1" name="descripcion_tratamiento[]" rows="3" placeholder="Describa el tratamiento..."></textarea>
+                        
+                        <label for="frecuencia_tratamiento_1">Frecuencia:</label>
+                        <input type="text" id="frecuencia_tratamiento_1" name="frecuencia_tratamiento[]" placeholder="Ej: Una vez por semana">
+                    </div>
+                </div>
+
+                <button type="button" class="btn-agregar" onclick="agregarTratamiento()">+ Agregar Tratamiento</button>
+
+                <div class="navigation-buttons">
+                    <button type="button" class="btn-nav btn-anterior" onclick="mostrarPaso(1)">Anterior</button>
+                    <button type="button" class="btn-nav btn-siguiente" onclick="registrarTratamientos()">Siguiente</button>
+                </div>
+            </form>
+
+            <!-- PASO 3: Registro de Medicamentos y Atención Médica -->
+            <form id="form-medicamentos" class="form-step">
+                <h2>Paso 3: Medicamentos y Atención Médica</h2>
+                
+                <h3>Medicamentos</h3>
+                <div id="medicamentos-container">
+                    <div class="medicamento-item">
+                        <label for="descripcion_medicamento_1">Descripción del Medicamento:</label>
+                        <textarea id="descripcion_medicamento_1" name="descripcion_medicamento[]" rows="2" placeholder="Nombre y detalles del medicamento..."></textarea>
+                        
+                        <label for="frecuencia_medicamento_1">Frecuencia/Horario:</label>
+                        <input type="text" id="frecuencia_medicamento_1" name="frecuencia_medicamento[]" placeholder="Ej: Cada 8 horas">
+                    </div>
+                </div>
+                
+                <button type="button" class="btn-agregar" onclick="agregarMedicamento()">+ Agregar Medicamento</button>
+
+                <h3>Atención Médica</h3>
+                <div id="atencion-container">
+                    <div class="atencion-item">
+                        <label for="descripcion_atencion_1">Descripción de la Atención:</label>
+                        <textarea id="descripcion_atencion_1" name="descripcion_atencion[]" rows="2" placeholder="Tipo de atención médica..."></textarea>
+                        
+                        <label for="frecuencia_atencion_1">Frecuencia:</label>
+                        <input type="text" id="frecuencia_atencion_1" name="frecuencia_atencion[]" placeholder="Ej: Cada 3 meses">
+                    </div>
+                </div>
+
+                <button type="button" class="btn-agregar" onclick="agregarAtencion()">+ Agregar Atención</button>
+
+                <div class="navigation-buttons">
+                    <button type="button" class="btn-nav btn-anterior" onclick="mostrarPaso(2)">Anterior</button>
+                    <button type="button" class="btn-nav btn-siguiente" onclick="registrarMedicamentosYAtencion()">Siguiente</button>
+                </div>
+            </form>
+
+            <!-- PASO 4: Diagnóstico Médico -->
+            <form id="form-diagnostico" class="form-step">
+                <h2>Paso 4: Diagnóstico Médico</h2>
+                
+                <label for="dx_descripcion">Descripción del Diagnóstico (DX):</label>
+                <textarea id="dx_descripcion" name="DX" rows="4" placeholder="Descripción detallada del diagnóstico..." required></textarea>
+
+                <label for="apoyos_tecnicos">Apoyos Técnicos:</label>
+                <textarea id="apoyos_tecnicos" name="apoyos_tecnicos" rows="3" placeholder="Describa los apoyos técnicos necesarios..."></textarea>
+
+                <label for="url_soporte_dx">URL Soporte Diagnóstico (opcional):</label>
+                <input type="url" id="url_soporte_dx" name="url_soporte_dx" placeholder="https://...">
+
+                <label for="diagnosticos_cie10">Diagnósticos CIE-10:</label>
+                <div id="diagnosticos-cie10-container" class="checkboxes-container">
+                    <!-- Los diagnósticos se cargarán dinámicamente -->
+                </div>
+
+                <div class="navigation-buttons">
+                    <button type="button" class="btn-nav btn-anterior" onclick="mostrarPaso(3)">Anterior</button>
+                    <button type="button" class="btn-nav btn-registrar" onclick="registrarDiagnostico()">Completar Registro</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="pie-pagina">
+        <p>&copy; 2025 LUDIK - Sistema de Gestión Educativa. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="js/Registrar_PIAR.js"></script>
+</body>
+</html>

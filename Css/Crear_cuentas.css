@@ -1,4 +1,4 @@
-/* CSS para Crear_cuentas.html - Estilo moderno basado en Index.css */
+
 
 /* Reset y configuración base */
 * {
@@ -15,9 +15,8 @@ body {
     line-height: 1.6;
     scroll-behavior: smooth;
 }
-
-
 /* Header - Idéntico al Index.css */
+
 header {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
@@ -161,10 +160,238 @@ header {
 .container {
     padding: 60px 50px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    transform: none !important;
+}
+.lado-izq, .lado-der {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.lado-der {
+    justify-content: flex-end;
+}
+
+.logo-institucion, .logo-ludik {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.logo-institucion:hover, .logo-ludik:hover {
+    transform: scale(1.05);
+}
+
+.especialidad {
+    font-size: 0.9rem;
+    color: #6366f1;
+    font-weight: 500;
+    background: rgba(99, 102, 241, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+.centro {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
+.titulo-ludik {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 3px;
+}
+
+.btn-login {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+
+/* Contenido principal - Ajuste para el header fijo */
+.main-content {
+    background: white;
+    margin: 40px auto;
+    margin-top: 120px; /* Espacio para el header fijo */
+    max-width: 1200px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+/* Navegación interna mejorada */
+.nav-interno {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 30px 40px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.nav-btn {
+    background: transparent;
+    color: #64748b;
+    border: 2px solid #e2e8f0;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+.nav-btn:hover, .nav-btn.active {
+    color: white;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.nav-btn:hover::before, .nav-btn.active::before {
+    left: 0;
+}
+
+/* Secciones mejoradas */
+.section {
+    padding: 50px 50px;
+    position: relative;
+    opacity: 1;
+    transform: translateY(0);
+    display: none; /* Ocultar por defecto */
+    transition: all 0.5s ease;
+}
+
+.section.active {
+    display: block; /* Mostrar solo la sección activa */
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.section:not(:last-child) {
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.section:hover::before {
+    opacity: 1;
+}
+
+.section h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.section h1::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+}
+
+.section h3 {
+    color: #475569;
+    margin: 30px 0 15px 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.section p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    color: #64748b;
+}
+
+.highlight {
+    color: #667eea;
+    font-weight: 600;
+    background: rgba(102, 126, 234, 0.1);
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+/* Listas mejoradas */
+ul {
+    margin: 20px 0;
+    padding-left: 0;
+}
+
+ul li {
+    list-style: none;
+    margin: 12px 0;
+    padding: 15px 20px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+    font-size: 1rem;
+    color: #475569;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+ul li:hover {
+    background: rgba(102, 126, 234, 0.05);
+    transform: translateX(5px);
 /* Header de la sección */
 .header-section {
     text-align: center;
@@ -657,55 +884,220 @@ header {
         padding: 6px 10px;
         font-size: 0.85rem;
     }
-=======
 .checkbox-item input[type="checkbox"] {
     accent-color: #7c3aed;
     margin-right: 6px;
 }
 
-/* Estilos para las asignaturas por grupo */
-.asignaturas-container {
-    margin-top: 20px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 15px;
-    background: #ffffff;
+ul li::before {
+    content: '→';
+    color: #667eea;
+    font-weight: bold;
+    margin-right: 10px;
 }
 
-.asignaturas-container h3 {
-    color: #4c1d95;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
+/* Imágenes mejoradas */
+.image-space {
+    margin: 40px 0;
     text-align: center;
+    position: relative;
 }
 
-.grupo-asignaturas {
-    margin-bottom: 20px;
+.image-space img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.image-space img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagen grande (Colegio) */
+.imagen-colegio {
+    display: block;
+    margin: 20px auto;
+    max-width: 80%;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* Imagen mediana (Inclusión) */
+.imagen-mediana {
+    display: block;
+    margin: 20px auto;
+    max-width: 300px !important;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* Imagen logo (pequeña con fondo blanco para iconos) */
+.imagen-logo {
+    display: block;
+    margin: 15px auto;
+    max-width: 120px !important;
+    background: white;
     padding: 15px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    background: #f8f9fa;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.grupo-asignaturas h4 {
-    color: #374151;
-    font-size: 1rem;
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    background: #e5e7eb;
-    border-radius: 6px;
+/* Footer mejorado */
+.pie-pagina {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
     text-align: center;
+    padding: 30px 20px;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    margin-top: 0;
 }
 
-.grupo-asignaturas .checkbox-list {
-    margin-top: 10px;
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.grupo-asignaturas .checkbox-item {
-    background: #ffffff;
-    border: 1px solid #d1d5db;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
-.grupo-asignaturas .checkbox-item:hover {
-    border-color: #7c3aed;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .encabezado-ludik {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .titulo-ludik {
+        font-size: 2rem;
+        letter-spacing: 2px;
+    }
+
+    .lado-izq, .lado-der {
+        justify-content: center;
+        flex: none;
+    }
+
+    .centro {
+        order: -1;
+    }
+
+    .nav-interno {
+        flex-direction: column;
+        gap: 15px;
+        padding: 25px 20px;
+    }
+
+    .nav-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .section {
+        padding: 40px 30px;
+    }
+
+    .section h1 {
+        font-size: 2rem;
+    }
+
+    .main-content {
+        margin: 20px 15px;
+        margin-top: 160px; /* Más espacio en mobile */
+        border-radius: 16px;
+    }
+
+    .logo-institucion, .logo-ludik {
+        width: 40px;
+        height: 40px;
+    }
+
+    .imagen-colegio {
+        max-width: 95%;
+    }
+
+    .imagen-mediana {
+        max-width: 250px !important;
+    }
+
+    .imagen-logo {
+        max-width: 100px !important;
+    }
+
+    .especialidad {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+
+    .btn-login {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo-ludik {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+    }
+
+    .section {
+        padding: 30px 20px;
+    }
+
+    .section h1 {
+        font-size: 1.8rem;
+    }
+
+    .section p {
+        font-size: 1rem;
+    }
+
+    .btn-login {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .main-content {
+        margin-top: 180px; /* Aún más espacio en pantallas muy pequeñas */
+    }
+
+    .imagen-mediana {
+        max-width: 200px !important;
+    }
+
+    .imagen-logo {
+        max-width: 80px !important;
+    }
+
+    ul li {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+
+    .nav-interno {
+        padding: 20px 15px;
+    }
+
+    .nav-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
 }
