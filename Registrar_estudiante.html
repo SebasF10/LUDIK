@@ -33,6 +33,11 @@
                 <div class="step-indicator" id="step9">9</div>
                 <div class="step-indicator" id="step10">10</div>
                 <div class="step-indicator" id="step11">11</div>
+                <div class="step-indicator active" id="indicator-1">1</div>
+                <div class="step-indicator" id="indicator-2">2</div>
+                <div class="step-indicator" id="indicator-3">3</div>
+                <div class="step-indicator" id="indicator-4">4</div>
+                <div class="step-indicator" id="indicator-5">5</div>
             </div>
 
             <form id="formulario-completo" method="POST">
@@ -252,6 +257,7 @@
                         <option value="No">No</option>
                     </select>
 
+
                     <!-- SECCIÓN DE GRUPO ESTUDIANTIL -->
                     <div class="grupo-section">
                         <h3>Asignación de Grupo</h3>
@@ -260,6 +266,71 @@
                             <option value="">Seleccione un grupo</option>
                             <!-- Se llenarán dinámicamente desde la base de datos -->
                         </select>
+
+                    
+                    <div class="navigation-buttons">
+                        <button type="button" class="btn-nav btn-anterior" id="btn-anterior-estudiante">Anterior</button>
+                        <button type="button" class="btn-nav btn-siguiente" id="btn-siguiente-estudiante">Siguiente</button>
+                    </div>
+                </div>
+                
+                <!-- Paso 5: Entorno Educativo -->
+                <div class="form-step" id="paso-entorno-educativo" style="display:none;">
+                    <h2>Entorno Educativo</h2>
+                    
+                    <label for="estado">Estado:</label>
+                    <select id="estado" name="estado" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Aprobado">Aprobado</option>
+                        <option value="Sin aprobar">Sin aprobar</option>
+                    </select>
+                    
+                    <label for="ultimo_grado_cursado">Último grado cursado:</label>
+                    <input type="text" id="ultimo_grado_cursado" name="ultimo_grado_cursado" required>
+                    
+                    <label for="vinculado_otra_inst">¿Ha estado vinculado en otra institución educativa, fundación o bajo otra modalidad de educación?</label>
+                    <select id="vinculado_otra_inst" name="vinculado_otra_inst" required>
+                        <option value="">Seleccione...</option>
+                        <option value="No">No</option>
+                        <option value="Si">Sí</option>
+                    </select>
+                    
+                    <div id="vinculado_detalles_container" style="display:none;">
+                        <label for="vinculado_detalles">¿Cuáles? (Detalle las instituciones o modalidades):</label>
+                        <textarea id="vinculado_detalles" name="vinculado_detalles" rows="3" placeholder="Describa las instituciones o modalidades..."></textarea>
+                    </div>
+                    
+                    <div id="no_vinculado_razon_container" style="display:none;">
+                        <label for="no_vinculado_razon">¿Por qué no ha estado vinculado?</label>
+                        <textarea id="no_vinculado_razon" name="no_vinculado_razon" rows="3" placeholder="Explique las razones..."></textarea>
+                    </div>
+                    
+                    <label for="informe_pedagogico">¿Se recibe informe pedagógico cualitativo o certificado que describa el proceso de desarrollo y aprendizaje del estudiante y/o PIAR?</label>
+                    <select id="informe_pedagogico" name="informe_pedagogico" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Si">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                    
+                    <div id="modalidad_proveniente_container" style="display:none;">
+                        <label for="modalidad_proveniente">¿De qué institución o modalidad proviene el informe?</label>
+                        <input type="text" id="modalidad_proveniente" name="modalidad_proveniente" placeholder="Nombre de la institución o modalidad">
+                    </div>
+                    
+                    <label for="asiste_programas_complementarios">¿Está asistiendo en la actualidad a programas complementarios?</label>
+                    <select id="asiste_programas_complementarios" name="asiste_programas_complementarios" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Si">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                    
+                    <label for="observacion">Observaciones (incluir motivos del cambio de modalidad o institución educativa):</label>
+                    <textarea id="observacion" name="observacion" rows="4" placeholder="Escriba sus observaciones aquí..."></textarea>
+                    
+                    <div class="navigation-buttons">
+                        <button type="button" class="btn-nav btn-anterior" id="btn-anterior-entorno">Anterior</button>
+                        <button type="submit" class="btn-nav btn-registrar">Registrar Estudiante</button>
+
                     </div>
                 </div>
 
@@ -352,6 +423,294 @@
     </footer>
 
     <script src="Js\Registrar_estudiante.js"></script>
+    <script>
+// Registrar_estudiante.js
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registro-multi-paso');
+    let pasoActual = 1;
+    const totalPasos = 5; // Actualizado a 5 pasos
+    
+    // Función para actualizar indicadores de progreso
+    function actualizarIndicadores() {
+        for (let i = 1; i <= totalPasos; i++) {
+            const indicator = document.getElementById(`indicator-${i}`);
+            if (indicator) {
+                indicator.classList.remove('active', 'completed');
+                
+                if (i < pasoActual) {
+                    indicator.classList.add('completed');
+                } else if (i === pasoActual) {
+                    indicator.classList.add('active');
+                }
+            }
+        }
+    }
+    
+    // Función para mostrar un paso específico
+    function mostrarPaso(numeroPaso) {
+        // Ocultar todos los pasos
+        document.querySelectorAll('.form-step').forEach(paso => {
+            paso.style.display = 'none';
+            // IMPORTANTE: Remover required de campos ocultos
+            paso.querySelectorAll('input, select, textarea').forEach(campo => {
+                campo.removeAttribute('required');
+            });
+        });
+        
+        // Mostrar el paso actual
+        const pasoVisible = document.getElementById(getPasoId(numeroPaso));
+        if (pasoVisible) {
+            pasoVisible.style.display = 'block';
+            // IMPORTANTE: Agregar required solo a campos visibles
+            pasoVisible.querySelectorAll('input, select, textarea').forEach(campo => {
+                const esRequerido = debeSerRequerido(campo);
+                if (esRequerido) {
+                    campo.setAttribute('required', 'required');
+                }
+            });
+        }
+        
+        pasoActual = numeroPaso;
+        actualizarIndicadores();
+    }
+    
+    // Función para determinar el ID del paso
+    function getPasoId(numero) {
+        const pasos = ['paso-madre', 'paso-padre', 'paso-cuidador', 'paso-estudiante', 'paso-entorno-educativo'];
+        return pasos[numero - 1];
+    }
+    
+    // Función para determinar si un campo debe ser requerido
+    function debeSerRequerido(campo) {
+        // Campos que no deben ser required por defecto
+        const camposOpcionales = [
+            'victima_tipo', 
+            'etnico_tipo',
+            'vinculado_detalles',
+            'no_vinculado_razon',
+            'modalidad_proveniente',
+            'observacion'
+        ];
+        
+        if (camposOpcionales.includes(campo.name)) {
+            return false;
+        }
+        
+        // Todos los demás campos son requeridos
+        return true;
+    }
+    
+    // Función para validar el paso actual
+    function validarPasoActual() {
+        const pasoVisible = document.getElementById(getPasoId(pasoActual));
+        const camposRequeridos = pasoVisible.querySelectorAll('[required]');
+        let esValido = true;
+        let primerCampoInvalido = null;
+        
+        camposRequeridos.forEach(campo => {
+            if (!campo.value.trim()) {
+                if (!primerCampoInvalido) {
+                    primerCampoInvalido = campo;
+                }
+                esValido = false;
+            }
+        });
+        
+        if (!esValido && primerCampoInvalido) {
+            primerCampoInvalido.focus();
+            alert('Por favor, complete todos los campos requeridos.');
+        }
+        
+        return esValido;
+    }
+    
+    // Event listeners para botones "Siguiente"
+    document.getElementById('btn-siguiente-madre').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (validarPasoActual()) {
+            mostrarPaso(2);
+        }
+    });
+    
+    document.getElementById('btn-siguiente-padre').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (validarPasoActual()) {
+            mostrarPaso(3);
+        }
+    });
+    
+    document.getElementById('btn-siguiente-cuidador').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (validarPasoActual()) {
+            mostrarPaso(4);
+        }
+    });
+    
+    document.getElementById('btn-siguiente-estudiante').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (validarPasoActual()) {
+            mostrarPaso(5);
+        }
+    });
+    
+    // Event listeners para botones "Anterior"
+    document.getElementById('btn-anterior-padre').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarPaso(1);
+    });
+    
+    document.getElementById('btn-anterior-cuidador').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarPaso(2);
+    });
+    
+    document.getElementById('btn-anterior-estudiante').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarPaso(3);
+    });
+    
+    document.getElementById('btn-anterior-entorno').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarPaso(4);
+    });
+    
+    // Event listener para botón "Ir a Inicio"
+    const btnInicio = document.getElementById('btn-inicio');
+    if (btnInicio) {
+        btnInicio.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('¿Está seguro que desea ir al inicio? Se perderán los datos no guardados.')) {
+                window.location.href = 'interfaz.html';
+            }
+        });
+    }
+    
+    // Manejar campos condicionales - Estudiante
+    document.getElementById('victima_conflicto').addEventListener('change', function() {
+        const container = document.getElementById('victima_tipo_container');
+        const campoTipo = document.getElementById('victima_tipo');
+        
+        if (this.value === 'Si') {
+            container.style.display = 'block';
+            campoTipo.setAttribute('required', 'required');
+        } else {
+            container.style.display = 'none';
+            campoTipo.removeAttribute('required');
+            campoTipo.value = '';
+        }
+    });
+    
+    document.getElementById('grupo_etnico').addEventListener('change', function() {
+        const container = document.getElementById('etnico_tipo_container');
+        const campoTipo = document.getElementById('etnico_tipo');
+        
+        if (this.value === 'Si') {
+            container.style.display = 'block';
+            campoTipo.setAttribute('required', 'required');
+        } else {
+            container.style.display = 'none';
+            campoTipo.removeAttribute('required');
+            campoTipo.value = '';
+        }
+    });
+    
+    // Manejar campos condicionales - Entorno Educativo
+    document.getElementById('vinculado_otra_inst').addEventListener('change', function() {
+        const detallesContainer = document.getElementById('vinculado_detalles_container');
+        const razonContainer = document.getElementById('no_vinculado_razon_container');
+        const campoDetalles = document.getElementById('vinculado_detalles');
+        const campoRazon = document.getElementById('no_vinculado_razon');
+        
+        if (this.value === 'Si') {
+            detallesContainer.style.display = 'block';
+            razonContainer.style.display = 'none';
+            campoDetalles.setAttribute('required', 'required');
+            campoRazon.removeAttribute('required');
+            campoRazon.value = '';
+        } else if (this.value === 'No') {
+            detallesContainer.style.display = 'none';
+            razonContainer.style.display = 'block';
+            campoRazon.setAttribute('required', 'required');
+            campoDetalles.removeAttribute('required');
+            campoDetalles.value = '';
+        } else {
+            detallesContainer.style.display = 'none';
+            razonContainer.style.display = 'none';
+            campoDetalles.removeAttribute('required');
+            campoRazon.removeAttribute('required');
+            campoDetalles.value = '';
+            campoRazon.value = '';
+        }
+    });
+    
+    document.getElementById('informe_pedagogico').addEventListener('change', function() {
+        const container = document.getElementById('modalidad_proveniente_container');
+        const campo = document.getElementById('modalidad_proveniente');
+        
+        if (this.value === 'Si') {
+            container.style.display = 'block';
+            campo.setAttribute('required', 'required');
+        } else {
+            container.style.display = 'none';
+            campo.removeAttribute('required');
+            campo.value = '';
+        }
+    });
+    
+    // Validación antes del envío del formulario
+    form.addEventListener('submit', function(e) {
+        // Asegurarse de que solo los campos visibles tengan required
+        document.querySelectorAll('.form-step').forEach(paso => {
+            if (paso.style.display === 'none') {
+                paso.querySelectorAll('input, select, textarea').forEach(campo => {
+                    campo.removeAttribute('required');
+                });
+            }
+        });
+        
+        // Validar el último paso
+        if (!validarPasoActual()) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Validación adicional completa del formulario
+        if (!validateForm()) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // El formulario se enviará normalmente si llega aquí
+        console.log('Enviando formulario...');
+    });
+    
+    // Función de validación completa del formulario
+    function validateForm() {
+        const estudianteNombre = document.getElementById('estudiante_nombre').value;
+        const madreNombre = document.getElementById('madre_nombre').value;
+        const padreNombre = document.getElementById('padre_nombre').value;
+        const cuidadorNombre = document.getElementById('cuidador_nombre').value;
+        const estado = document.getElementById('estado').value;
+
+        if (!estudianteNombre || !madreNombre || !padreNombre || !cuidadorNombre || !estado) {
+            alert('Por favor, complete todos los campos requeridos en todos los pasos.');
+            return false;
+        }
+        return true;
+    }
+    
+    // Inicializar mostrando el primer paso
+    mostrarPaso(1);
+});
+
+// Función adicional para debugging
+function mostrarCamposRequeridos() {
+    console.log('Campos requeridos actualmente:');
+    document.querySelectorAll('[required]').forEach(campo => {
+        console.log(`- ${campo.name}: ${campo.value}`);
+    });
+}
+    </script>
 </body>
 
 </html>
