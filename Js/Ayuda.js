@@ -1,5 +1,4 @@
-
-// Script para desplegar preguntas frecuentes
+// Script para desplegar preguntas frecuentes - Funcionalidad original mantenida
 const questions = document.querySelectorAll(".faq-question");
 questions.forEach(q => {
     q.addEventListener("click", () => {
