@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,7 +43,7 @@
                 <div id="mensaje_rol" class="mensaje-inicial">
                     <p>Selecciona tu rol para acceder al sistema</p>
                 </div>
-                
+
                 <!-- Formulario Administrador -->
                 <div id="form_admin" class="formulario_admin">
                     <h3>Acceso Administrador</h3>
@@ -99,6 +100,11 @@
             </div>
         </div>
     </main>
+    <!-- Botón regresar -->
+    <button class="back-btn" onclick="goBackOrRedirect('Index.html')">
+        ⬅ Regresar
+    </button>
+
 
     <footer class="pie-pagina">
         Copyright © 2025 Todos los derechos reservados | Sistemas 11 | Colegio San José de Guanentá
@@ -109,17 +115,17 @@
         function mostrarFormulario(rol) {
             // Ocultar mensaje inicial
             document.getElementById('mensaje_rol').style.display = 'none';
-            
+
             // Ocultar todos los formularios
             document.getElementById('form_admin').style.display = 'none';
             document.getElementById('form_docente').style.display = 'none';
             document.getElementById('form_acudiente').style.display = 'none';
-            
+
             // Remover clase active de todos los botones
             document.querySelectorAll('.Botones_usuarios button').forEach(btn => {
                 btn.classList.remove('active');
             });
-            
+
             // Mostrar el formulario correspondiente y activar botón
             if (rol === 'admin') {
                 document.getElementById('form_admin').style.display = 'block';
@@ -134,13 +140,13 @@
         }
 
         // Animación de entrada para los elementos
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Animar elementos al cargar
             const elements = document.querySelectorAll('.titulo, .subtitulo, .logo-container, .btn_adm, .btn_prof, .btn_padr');
             elements.forEach((element, index) => {
                 element.style.opacity = '0';
                 element.style.transform = 'translateY(30px)';
-                
+
                 setTimeout(() => {
                     element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                     element.style.opacity = '1';
@@ -151,11 +157,11 @@
 
         // Efecto hover mejorado para los botones
         document.querySelectorAll('.Botones_usuarios button').forEach(button => {
-            button.addEventListener('mouseenter', function() {
+            button.addEventListener('mouseenter', function () {
                 this.style.transform = 'translateY(-3px) scale(1.05)';
             });
-            
-            button.addEventListener('mouseleave', function() {
+
+            button.addEventListener('mouseleave', function () {
                 if (!this.classList.contains('active')) {
                     this.style.transform = 'translateY(0) scale(1)';
                 }
@@ -164,22 +170,31 @@
 
         // Validación de formularios
         document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', function (e) {
                 const email = this.querySelector('input[name="email"]').value;
                 const password = this.querySelector('input[name="contrasena"]').value;
-                
+
                 if (!email || !password) {
                     e.preventDefault();
                     alert('Por favor, completa todos los campos');
                     return false;
                 }
-                
+
                 // Mostrar indicador de carga
                 const submitBtn = this.querySelector('.login-btn');
                 submitBtn.textContent = 'Iniciando...';
                 submitBtn.disabled = true;
             });
         });
+
+        function goBackOrRedirect(ruta) {
+            if (ruta && ruta.trim() !== '') {
+                window.location.href = ruta;   // Ir a la ruta que pongas
+            } else {
+                window.history.back();         // Si está vacío, volver atrás
+            }
+        }
     </script>
 </body>
+
 </html>

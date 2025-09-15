@@ -12,11 +12,11 @@ window.onload = function () {
     cargarGrupos();
     updateButtons();
     setupEventListeners();
-    
+
     // Configurar required attributes desde el inicio
     manageRequiredAttributes();
     updateProgressBar();
-    
+
     // Agregar novalidate al formulario para evitar validación automática del navegador
     document.getElementById('formulario-completo').setAttribute('novalidate', '');
 };
@@ -28,7 +28,7 @@ function setupEventListeners() {
     document.getElementById('grupo_etnico').addEventListener('change', handleGrupoEtnico);
 
     // Prevenir envío accidental con Enter
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
         if (event.key === 'Enter' && event.target.tagName !== 'TEXTAREA' && event.target.type !== 'submit') {
             event.preventDefault();
             if (event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') {
@@ -45,7 +45,7 @@ function setupEventListeners() {
             this.style.height = this.scrollHeight + 'px';
         });
 
-        textarea.addEventListener('keydown', function(event) {
+        textarea.addEventListener('keydown', function (event) {
             if (event.key === 'Enter' && event.ctrlKey) {
                 event.preventDefault();
                 nextStep();
@@ -75,7 +75,7 @@ function setupEventListeners() {
 function validateField(field) {
     const isRequired = field.hasAttribute('required') || field.hasAttribute('data-originally-required');
     const isEmpty = !field.value.trim();
-    
+
     if (isRequired && isEmpty) {
         field.classList.add('invalid');
         field.classList.remove('valid');
@@ -90,11 +90,11 @@ function validateField(field) {
 // Gestionar atributos required dinámicamente
 function manageRequiredAttributes() {
     const allSteps = document.querySelectorAll('.form-step');
-    
+
     allSteps.forEach((step, index) => {
         const stepNumber = index + 1;
         const fields = step.querySelectorAll('input, select, textarea');
-        
+
         fields.forEach(field => {
             if (stepNumber === currentStep) {
                 // Paso activo: restaurar required original
@@ -280,9 +280,9 @@ function registerStudentPhase1() {
                 isPhase1Complete = true;
                 estudianteRegistradoId = data.id_estudiante;
                 estudianteRegistradoNombre = data.data.nombre_completo;
-                
+
                 showAlert(`¡Estudiante registrado exitosamente! ID: ${data.id_estudiante}. Ahora puede proceder con la descripción general.`, 'success');
-                
+
                 // Avanzar al paso 5
                 document.getElementById('form-step-' + currentStep).classList.remove('active');
                 document.getElementById('step' + currentStep).classList.remove('active');
@@ -316,7 +316,7 @@ function registerStudentPhase1() {
 // Función para configurar el paso de descripción
 function setupDescripcionStep() {
     const selectEstudiante = document.getElementById('id_estudiante_descripcion');
-    
+
     if (isPhase1Complete && estudianteRegistradoNombre) {
         selectEstudiante.innerHTML = `<option value="${estudianteRegistradoId}">${estudianteRegistradoNombre} (Recién registrado)</option>`;
         selectEstudiante.value = estudianteRegistradoId;
@@ -440,7 +440,7 @@ function validateSteps1to4() {
     for (let step = 1; step <= 4; step++) {
         const stepElement = document.getElementById('form-step-' + step);
         const fields = stepElement.querySelectorAll('[data-originally-required], [required]');
-        
+
         for (let field of fields) {
             if (!field.value.trim()) {
                 if (!firstInvalidStep) {
@@ -468,7 +468,7 @@ function validateAllDescriptionSteps() {
     for (let step = 5; step <= totalSteps; step++) {
         const stepElement = document.getElementById('form-step-' + step);
         const fields = stepElement.querySelectorAll('[data-originally-required], [required]');
-        
+
         for (let field of fields) {
             if (!field.value.trim()) {
                 if (!firstInvalidStep) {
@@ -491,7 +491,7 @@ function validateAllDescriptionSteps() {
 // Ir a un paso específico
 function goToStep(targetStep) {
     if (targetStep < 1 || targetStep > totalSteps) return;
-    
+
     // No permitir ir a pasos anteriores si ya se completó la fase 1
     if (isPhase1Complete && targetStep < 5) {
         showAlert('No puede retroceder una vez que el estudiante ha sido registrado en la base de datos.', 'warning');
@@ -690,7 +690,7 @@ function handleKeyNavigation(event) {
 }
 
 // Asignar el manejador de eventos al formulario cuando se carga
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('formulario-completo');
     if (form) {
         form.addEventListener('submit', handleFormSubmit);
@@ -704,14 +704,22 @@ function debugInfo() {
     console.log('Total de pasos:', totalSteps);
     console.log('ID estudiante registrado:', estudianteRegistradoId);
     console.log('Fase 1 completa:', isPhase1Complete);
-    
+
     const gruposSelect = document.getElementById('id_grupo');
     console.log('Grupos cargados:', gruposSelect ? gruposSelect.options.length - 1 : 0);
-    
+
     // Mostrar campos con required
     const requiredFields = document.querySelectorAll('[required]');
     console.log('Campos required activos:', requiredFields.length);
-    
+
     const originallyRequired = document.querySelectorAll('[data-originally-required]');
     console.log('Campos originally required:', originallyRequired.length);
+}
+
+function goBackOrRedirect(ruta) {
+    if (ruta && ruta.trim() !== '') {
+        window.location.href = ruta;   // Ir a la ruta que pongas
+    } else {
+        window.history.back();         // Si está vacío, volver atrás
+    }
 }

@@ -38,19 +38,19 @@ function cargarGrupos() {
             const contenedor = document.getElementById('checkbox_grupos');
             contenedor.innerHTML = '';
             if (data.error) return;
-            
+
             gruposData = data;
-            
+
             data.forEach(grupo => {
                 const label = document.createElement('label');
                 label.className = 'checkbox-item';
-                
+
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.name = 'grupos_seleccionados[]';
                 checkbox.value = grupo.id;
                 checkbox.addEventListener('change', manejarSeleccionGrupo);
-                
+
                 label.appendChild(checkbox);
                 label.appendChild(document.createTextNode(' ' + grupo.nombre));
                 contenedor.appendChild(label);
@@ -63,22 +63,22 @@ function cargarGrupos() {
 function manejarSeleccionGrupo() {
     const gruposSeleccionados = document.querySelectorAll('input[name="grupos_seleccionados[]"]:checked');
     const contenedorAsignaturas = document.getElementById('asignaturas_por_grupo');
-    
+
     // Limpiar contenedor
     contenedorAsignaturas.innerHTML = '<h3>Selecciona las asignaturas para cada grupo:</h3>';
-    
+
     if (gruposSeleccionados.length > 0) {
         contenedorAsignaturas.style.display = 'block';
-        
+
         gruposSeleccionados.forEach(grupoCheckbox => {
             const grupoId = grupoCheckbox.value;
             const grupo = gruposData.find(g => g.id == grupoId);
-            
+
             if (grupo) {
                 crearSelectorAsignaturasPorGrupo(grupo);
             }
         });
-        
+
         // Actualizar selector de director de grupo
         actualizarSelectorDirectorGrupo();
     } else {
@@ -90,32 +90,32 @@ function manejarSeleccionGrupo() {
 // Función para crear el selector de asignaturas para un grupo específico
 function crearSelectorAsignaturasPorGrupo(grupo) {
     const contenedorAsignaturas = document.getElementById('asignaturas_por_grupo');
-    
+
     const grupoDiv = document.createElement('div');
     grupoDiv.className = 'grupo-asignaturas';
     grupoDiv.setAttribute('data-grupo-id', grupo.id);
-    
+
     const titulo = document.createElement('h4');
     titulo.textContent = `Asignaturas para ${grupo.nombre}`;
     grupoDiv.appendChild(titulo);
-    
+
     const checkboxList = document.createElement('div');
     checkboxList.className = 'checkbox-list';
-    
+
     materiasData.forEach(materia => {
         const label = document.createElement('label');
         label.className = 'checkbox-item';
-        
+
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.name = `asignaturas_grupo_${grupo.id}[]`;
         checkbox.value = materia.id;
-        
+
         label.appendChild(checkbox);
         label.appendChild(document.createTextNode(' ' + materia.nombre));
         checkboxList.appendChild(label);
     });
-    
+
     grupoDiv.appendChild(checkboxList);
     contenedorAsignaturas.appendChild(grupoDiv);
 }
@@ -124,7 +124,7 @@ function crearSelectorAsignaturasPorGrupo(grupo) {
 function mostrarSelectorGrupoDirector() {
     const esDirector = document.getElementById('es_director').value;
     const container = document.getElementById('grupo_director_container');
-    
+
     if (esDirector === "1") {
         container.style.display = 'block';
         actualizarSelectorDirectorGrupo();
@@ -138,13 +138,13 @@ function mostrarSelectorGrupoDirector() {
 function actualizarSelectorDirectorGrupo() {
     const gruposSeleccionados = document.querySelectorAll('input[name="grupos_seleccionados[]"]:checked');
     const select = document.getElementById('grupo_director');
-    
+
     select.innerHTML = '<option value="">Seleccione un grupo</option>';
-    
+
     gruposSeleccionados.forEach(grupoCheckbox => {
         const grupoId = grupoCheckbox.value;
         const grupo = gruposData.find(g => g.id == grupoId);
-        
+
         if (grupo) {
             const option = document.createElement('option');
             option.value = grupo.id;
@@ -167,24 +167,24 @@ function validarFormulario(form) {
     // Validación específica para docentes
     if (form.id === 'form_docente') {
         const gruposSeleccionados = form.querySelectorAll('input[name="grupos_seleccionados[]"]:checked');
-        
+
         if (gruposSeleccionados.length === 0) {
             alert('Debe seleccionar al menos un grupo');
             return false;
         }
-        
+
         // Verificar que cada grupo tenga al menos una asignatura seleccionada
         for (let grupoCheckbox of gruposSeleccionados) {
             const grupoId = grupoCheckbox.value;
             const asignaturasGrupo = form.querySelectorAll(`input[name="asignaturas_grupo_${grupoId}[]"]:checked`);
-            
+
             if (asignaturasGrupo.length === 0) {
                 const grupo = gruposData.find(g => g.id == grupoId);
                 alert(`Debe seleccionar al menos una asignatura para el grupo ${grupo.nombre}`);
                 return false;
             }
         }
-        
+
         // Si es director, verificar que haya seleccionado un grupo
         const esDirector = form.querySelector('#es_director').value;
         if (esDirector === "1") {
@@ -246,5 +246,13 @@ function limpiarFormulario(formularioId) {
             document.getElementById('asignaturas_por_grupo').style.display = 'none';
             document.getElementById('asignaturas_por_grupo').innerHTML = '<h3>Selecciona las asignaturas para cada grupo:</h3>';
         }
+    }
+}
+
+function goBackOrRedirect(ruta) {
+    if (ruta && ruta.trim() !== '') {
+        window.location.href = ruta;   // Ir a la ruta que pongas
+    } else {
+        window.history.back();         // Si está vacío, volver atrás
     }
 }
