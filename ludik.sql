@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-09-2025 a las 00:55:50
+-- Tiempo de generación: 15-09-2025 a las 05:04:28
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -47,7 +47,10 @@ INSERT INTO `acudiente` (`id_acudiente`, `nombre_completo`, `nivel_educativo`, `
 (3, '3', '3', '3', '3@gmail.com', '3', '3'),
 (4, '3', '3', '3', '3@gmail.com', '3', '3'),
 (5, '30', '30', '30', '30@gmial.com', '30', '30'),
-(6, 'Fernando', 'Postgrado', 'Tío', 'f@gmail.com', '3145859876', '1234');
+(6, 'Fernando', 'Postgrado', 'Tío', 'f@gmail.com', '3145859876', '1234'),
+(7, 'Capitán Ámerica', 'Profesional', 'Tío', 'ca@gmail.com', '3336664444', '1234'),
+(14, 'Loky', 'Doctorado', 'Tío', 'lk@gmail.com', '3461856454', '1234'),
+(15, 'Angela Aguilar', 'Bachillerato', 'Ninguni', 'aa@gmail.com', '3013417332', '1234');
 
 -- --------------------------------------------------------
 
@@ -187,7 +190,20 @@ INSERT INTO `asignatura_docente_grupo` (`id_asig_doc_grup`, `id_docente`, `id_gr
 (69, 11, 111, 5, '2025'),
 (70, 11, 113, 1, '2025'),
 (71, 11, 115, 1, '2025'),
-(72, 11, 115, 5, '2025');
+(72, 11, 115, 5, '2025'),
+(73, 12, 111, 1, '2025'),
+(74, 12, 111, 2, '2025'),
+(75, 12, 111, 3, '2025'),
+(76, 12, 112, 1, '2025'),
+(77, 12, 112, 2, '2025'),
+(78, 12, 112, 3, '2025'),
+(79, 12, 113, 4, '2025'),
+(80, 12, 113, 5, '2025'),
+(81, 12, 113, 6, '2025'),
+(82, 12, 114, 4, '2025'),
+(83, 12, 114, 5, '2025'),
+(84, 12, 114, 6, '2025'),
+(85, 12, 115, 1, '2025');
 
 -- --------------------------------------------------------
 
@@ -206,7 +222,19 @@ CREATE TABLE `atencion_medica` (
 --
 
 INSERT INTO `atencion_medica` (`id_atencion`, `descripcion`, `frecuencia`) VALUES
-(890284, 'CONSULTA DE PRIMERA VEZ POR ESPECIALISTA EN PSIQUIATRIA', 'cada 3 meses');
+(890284, 'CONSULTA DE PRIMERA VEZ POR ESPECIALISTA EN PSIQUIATRIA', 'cada 3 meses'),
+(890285, 'ahdfcmvh j', '<eshj'),
+(890286, 'ahdfcmvh j', '<eshj'),
+(890287, 'ahdfcmvh j', '<eshj'),
+(890288, 'ejtyhnew', 'rjhwh'),
+(890289, 'syrj', 'jyrs'),
+(890290, 'hteabg', 'hgrb'),
+(890291, 'qwertyuiop', 'asdfghjklñ'),
+(890292, 'ftgyhujiko', 'tfgyhujikol'),
+(890293, 'ftgyhujklftgyhuj', 'tgybhnm,'),
+(890294, 'rcvtybn', 'crtvybn'),
+(890295, 'jyhtgrf', 'jnyhbtgvrfc'),
+(890296, 'fghjkl', 'fghjkl');
 
 -- --------------------------------------------------------
 
@@ -225,7 +253,9 @@ CREATE TABLE `capacidad` (
 
 INSERT INTO `capacidad` (`id_capacidad`, `descripcion`) VALUES
 (1, 'Dibujo'),
-(2, 'g3ravfartbgaznrag');
+(2, 'g3ravfartbgaznrag'),
+(3, 'qwertyuiop'),
+(10, 'qwertyuiop');
 
 -- --------------------------------------------------------
 
@@ -249,7 +279,8 @@ CREATE TABLE `descripcion_general` (
 --
 
 INSERT INTO `descripcion_general` (`id_descripcion_general`, `id_capacidad`, `id_gusto_e_interes`, `id_expectativa`, `id_expectativa_familia`, `id_red_apoyo`, `id_otra_descripcion`, `id_estudiante`) VALUES
-(2, 2, 2, 2, 2, 2, 2, 1);
+(2, 2, 2, 2, 2, 2, 2, 1),
+(4, 10, 9, 9, 9, 9, 9, 15);
 
 -- --------------------------------------------------------
 
@@ -260,9 +291,24 @@ INSERT INTO `descripcion_general` (`id_descripcion_general`, `id_capacidad`, `id
 CREATE TABLE `diagnostico_dx_cie10` (
   `id_diagnostico_dx_cie10` int(11) NOT NULL,
   `id_cie10` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `id_diag_med` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id_diag_med` int(11) NOT NULL,
   `anio` year(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `diagnostico_dx_cie10`
+--
+
+INSERT INTO `diagnostico_dx_cie10` (`id_diagnostico_dx_cie10`, `id_cie10`, `id_diag_med`, `anio`) VALUES
+(0, 'F 840', 2, '2025'),
+(0, 'G 409', 3, '2025'),
+(0, 'F 639', 4, '2025'),
+(0, 'F 708', 4, '2025'),
+(0, 'F 711', 4, '2025'),
+(0, 'F 799', 4, '2025'),
+(0, 'F 708', 5, '2025'),
+(0, 'F 711', 5, '2025'),
+(0, 'F 799', 5, '2025');
 
 -- --------------------------------------------------------
 
@@ -271,13 +317,23 @@ CREATE TABLE `diagnostico_dx_cie10` (
 --
 
 CREATE TABLE `diagnostico_medico` (
-  `id_diag_med` varchar(10) NOT NULL,
+  `id_diag_med` int(11) NOT NULL,
   `id_piar` int(10) UNSIGNED NOT NULL,
   `DX` text DEFAULT NULL,
   `apoyos_tecnicos` text DEFAULT NULL,
   `url_soporte_dx` varchar(255) DEFAULT NULL,
   `id_entorno_salud` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `diagnostico_medico`
+--
+
+INSERT INTO `diagnostico_medico` (`id_diag_med`, `id_piar`, `DX`, `apoyos_tecnicos`, `url_soporte_dx`, `id_entorno_salud`) VALUES
+(2, 9, 'vbnm,cvbn', 'cfvgbhnjmk,l', NULL, 9),
+(3, 11, 'excrtvybnm', 'xctvybn', NULL, 10),
+(4, 12, 'nybtvc', 'u6hyg5tfrd', NULL, 11),
+(5, 13, 'dfghjkop', 'tcyvghbjk', NULL, 12);
 
 -- --------------------------------------------------------
 
@@ -332,7 +388,8 @@ INSERT INTO `docente` (`id_docente`, `nombre_completo`, `email`, `contrasena`, `
 (8, 'Johanna Martinez', 'jmartinez@gmail.com', '1234', '3478569874', 1),
 (9, 'Johanna Martinez', 'jmartinez@gmail.com', '1234', '3478569874', 1),
 (10, 'Metisileno', 'msileno@gmail.com', '1234', '3214567890', 1),
-(11, 'Mesitileno Galvis', 'mgalvis@gmail.com', '1234', '1234567890', 1);
+(11, 'Mesitileno Galvis', 'mgalvis@gmail.com', '1234', '1234567890', 1),
+(12, 'Dona Rmando', 'dona@gmail.com', '1234', '3216547897', 1);
 
 -- --------------------------------------------------------
 
@@ -379,7 +436,8 @@ INSERT INTO `docente_grupo` (`id_docente_grupo`, `id_docente`, `id_grupo`, `anio
 (3, 8, 113, '2025'),
 (4, 9, 113, '2025'),
 (5, 10, 113, '2025'),
-(6, 11, 111, '2025');
+(6, 11, 111, '2025'),
+(7, 12, 113, '2025');
 
 -- --------------------------------------------------------
 
@@ -449,7 +507,8 @@ CREATE TABLE `entorno_educativo` (
 --
 
 INSERT INTO `entorno_educativo` (`id_entorno_edu`, `estado`, `ultimo_grado_cursado`, `vinculado_otra_inst`, `informe_pedagogico`, `modalidad_proveniente`, `asiste_programas_complementarios`, `observacion`, `id_estudiante`) VALUES
-(2, 0, '10', 'Si - Detalles: Colegio privado', 0, NULL, 'No', 'Hello world', 6);
+(2, 0, '10', 'Si - Detalles: Colegio privado', 0, NULL, 'No', 'Hello world', 6),
+(3, NULL, NULL, NULL, 0, NULL, NULL, NULL, 7);
 
 -- --------------------------------------------------------
 
@@ -463,6 +522,24 @@ CREATE TABLE `entorno_salud` (
   `id_medicamento` int(10) UNSIGNED DEFAULT NULL,
   `id_atencion` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `entorno_salud`
+--
+
+INSERT INTO `entorno_salud` (`id_entorno_salud`, `id_tratamiento`, `id_medicamento`, `id_atencion`) VALUES
+(1, 3, 4, 890285),
+(2, 3, 5, 890286),
+(3, 4, 6, 890287),
+(4, 5, 7, 890288),
+(5, 6, 8, 890289),
+(6, 7, 9, 890290),
+(7, 8, 10, 890291),
+(8, 9, 11, 890292),
+(9, 10, 12, 890293),
+(10, 11, 13, 890294),
+(11, 12, 14, 890295),
+(12, 13, 15, 890296);
 
 -- --------------------------------------------------------
 
@@ -506,7 +583,10 @@ INSERT INTO `estudiante` (`id_estudiante`, `nombre`, `apellidos`, `tipo_document
 (2, 'tysnhrg', 'wrnhsgf', 'TI', '134', ',kfjmgh', '1999-05-14', 'Rural', 'jyhrsgf', '765324312', 'ethsnmj', '12345', 'No', 'No', 'No', 'No', 3, '2', ',rydjmh', 'wnths', 'No', 4, 4, 2),
 (4, '4', '4', 'TI', '4', '4', '2004-04-04', 'Urbano', '4', '4', '4@gmail.com', '4', 'No', 'Si', 'No', 'No', 3, '2', '4', '4', 'Si', 6, 6, 4),
 (5, '6', '6', 'TI', '6', '6', '1999-02-20', 'Urbano', '123456', '1234567890', 'gmail@gmail.com', '123', 'No', 'No', 'No', 'No', 3, '2', 'na', 'na', 'Si', 7, 7, 5),
-(6, 'Sebastian', 'Feo Murillo', 'TI', '11017433478', 'Cosorro', '2009-12-04', 'Urbano', 'Altamira', '3549871245', 'feo@gmail.com', '1234', 'No', 'No', 'No', 'No', 2, '1', 'Familia', 'Familia', 'Si', 8, 8, 6);
+(6, 'Sebastian', 'Feo Murillo', 'TI', '11017433478', 'Cosorro', '2009-12-04', 'Urbano', 'Altamira', '3549871245', 'feo@gmail.com', '1234', 'No', 'No', 'No', 'No', 2, '1', 'Familia', 'Familia', 'Si', 8, 8, 6),
+(7, 'Xileno', 'Benzaldehído', 'CE', '5845657891', 'Washington', '2005-04-01', 'Urbano', 'San Camilo', '3407894125', 'xi@gmail.com', '1234', 'No', 'No', 'No', 'No', 3, '2', 'Familia', 'Familia', 'No', 9, 9, 7),
+(14, 'Hela', 'Merlano', 'TI', '11025468645', 'Hospital', '2005-12-04', 'Urbano', 'no se', '345251515451', 'noce@gmail.com', '1234', 'No', 'No', 'No', 'No', 2, '1', 'No c', 'No c', 'Si', 16, 16, 14),
+(15, 'Benzoico', 'Carboxilico', 'PAS', '993498357814', 'Bogota', '2003-03-03', 'Urbano', 'San Camilo', '3115874987', 'benzo@gmail.com', '1234', 'No', 'No', 'No', 'No', 4, '2', 'na', 'Familia', 'Si', 17, 17, 15);
 
 -- --------------------------------------------------------
 
@@ -525,7 +605,8 @@ CREATE TABLE `expectativa` (
 
 INSERT INTO `expectativa` (`id_expectativa`, `descripcion`) VALUES
 (1, 'Estudiar\r\n'),
-(2, 'yrjmnhtebgsr');
+(2, 'yrjmnhtebgsr'),
+(9, 'qwertyuip');
 
 -- --------------------------------------------------------
 
@@ -544,7 +625,8 @@ CREATE TABLE `expectativa_familia` (
 
 INSERT INTO `expectativa_familia` (`id_expectativa_familia`, `descripcion`) VALUES
 (1, 'Que estudie'),
-(2, 'hgfl thkutj h');
+(2, 'hgfl thkutj h'),
+(9, 'qwertyuiop');
 
 -- --------------------------------------------------------
 
@@ -602,6 +684,15 @@ CREATE TABLE `grupo_estudiante` (
   `anio` year(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `grupo_estudiante`
+--
+
+INSERT INTO `grupo_estudiante` (`id_grupo_estudiante`, `id_grupo`, `id_estudiante`, `anio`) VALUES
+(1, 113, 7, '2025'),
+(8, 113, 14, '2025'),
+(9, 111, 15, '2025');
+
 -- --------------------------------------------------------
 
 --
@@ -632,7 +723,8 @@ CREATE TABLE `gusto_interes` (
 
 INSERT INTO `gusto_interes` (`id_gusto_e_interes`, `descripcion`) VALUES
 (1, 'Dibujos animados\r\n'),
-(2, 'ñoyli.k,ujfmnhdbg svc');
+(2, 'ñoyli.k,ujfmnhdbg svc'),
+(9, 'qwertyuiop');
 
 -- --------------------------------------------------------
 
@@ -662,7 +754,10 @@ INSERT INTO `madre` (`id_madre`, `nombre_completo`, `nivel_educativo`, `ocupacio
 (5, '1', '1', '1', '1@gmail.com', '1', ''),
 (6, '1', '1', '1', '1@gmail.com', '1', ''),
 (7, '10', '10', '10', '10@gmail.com', '12340', ''),
-(8, 'Leticia', 'Bachiller', 'ama de casa', 'l@gmail.com', '1234', '3214567890');
+(8, 'Leticia', 'Bachiller', 'ama de casa', 'l@gmail.com', '1234', '3214567890'),
+(9, 'Marylin Cote', 'Doctorado', 'Neuropsicologa', 'mcote@gmail.com', '1234', '3214567890'),
+(16, 'Catalina', 'Profesional', 'Trabajadora social', 'cata@gmail.com', '1324', '321564668454'),
+(17, 'Paquita', 'Profesional', 'Cantante', 'pq@gmail.com', '1234', '3145738738');
 
 -- --------------------------------------------------------
 
@@ -683,7 +778,19 @@ CREATE TABLE `medicamento` (
 INSERT INTO `medicamento` (`id_medicamento`, `descripcion`, `frecuencia_horario`) VALUES
 (1, 'Clorazepam', 'Cada 12 horas'),
 (2, 'Paracetamol', 'cada 6 horas'),
-(3, 'insulina', 'cada 3 horas');
+(3, 'insulina', 'cada 3 horas'),
+(4, 'arwnjetzxyucv', 'wh<rsdfjtgf lhk-j'),
+(5, 'arwnjetzxyucv', 'wh<rsdfjtgf lhk-j'),
+(6, 'arwnjetzxyucv', 'wh<rsdfjtgf lhk-j'),
+(7, 'rgjwryh', 'wjqr'),
+(8, 'hetbdgvc', 'the'),
+(9, 'qhte', 'qht'),
+(10, 'qwertyuiop', 'asdfghjklñ'),
+(11, 'ftgyhjkolpñ', 'rftghyujiklpñ'),
+(12, 'tvfybunm,.', 'ftgyhujkñ.'),
+(13, 'rctvybunm,', 'excrtvybnm'),
+(14, 'u7n6bytvgrfc', 'nhbtgvrfce'),
+(15, 'fghjkl', 'fghjkl');
 
 -- --------------------------------------------------------
 
@@ -702,7 +809,8 @@ CREATE TABLE `otra_descripcion` (
 
 INSERT INTO `otra_descripcion` (`id_otra_descripcion`, `descripcion`) VALUES
 (1, 'Burrito'),
-(2, 'uetnbgrsvf');
+(2, 'uetnbgrsvf'),
+(9, 'qwertyuiop');
 
 -- --------------------------------------------------------
 
@@ -732,7 +840,10 @@ INSERT INTO `padre` (`id_padre`, `nombre_completo`, `nivel_educativo`, `ocupacio
 (5, '2', '2', '2', '2@gmail.com', '2', ''),
 (6, '2', '2', '2', '2@gmail.com', '2', ''),
 (7, '20', '20', '20', '20@gmail.com', '22220', ''),
-(8, 'Alberto', 'Tecnologo', 'Analista de redes', 'albert@gmail.com', '1234', '3222555674');
+(8, 'Alberto', 'Tecnologo', 'Analista de redes', 'albert@gmail.com', '1234', '3222555674'),
+(9, 'Fenotriol', 'Especialización', 'Químico|', 'feno@gmail.com', '1234', '3114567890'),
+(16, 'Hermes', 'Profesional', 'Contador', 'hm@gmail.com', '1234', '32156456445'),
+(17, 'Vicente', 'Profesional', 'cantante', 'vf@gmail.com', '1234', '3224672882');
 
 -- --------------------------------------------------------
 
@@ -748,6 +859,22 @@ CREATE TABLE `piar` (
   `apoyo` text DEFAULT NULL,
   `barrera` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `piar`
+--
+
+INSERT INTO `piar` (`id_piar`, `id_estudiante`, `fecha`, `ajuste`, `apoyo`, `barrera`) VALUES
+(4, 6, '2025-09-11', 'bvc', 'iuytgrfvd', 'unytbrgfve'),
+(5, 6, '2025-09-11', 'EDNHANR', 'ANGshg', 'qeh'),
+(6, 7, '2025-09-11', 'qwertyuiop', 'qwertyuiop', 'qwertyuiop'),
+(7, 7, '2025-09-11', 'qawsedfrgthyujik', 'awsedfrgthyuj', 'awsedfrgthyuj\r\n'),
+(8, 7, '2025-09-11', 'zfrghjk', 'sedfrgthyujikl', 'dfrgthyujik'),
+(9, 7, '2025-09-11', 'zsxcfvgbhjnmk', 'cfvgbhnjmk', 'cvgbnmk,'),
+(10, 2, '2025-09-11', 'erfbnm,', 'zwxgtvbhynjmk,', 'ecrvbnm'),
+(11, 5, '2025-09-12', 'xdfcgvhbjnkm', 'cvgbhjnmk,l', 'cvbhjnmk'),
+(12, 7, '2025-09-11', 'iuybtvcde', 'mjnyhbtgvrfc', 'mjnhbgrvf'),
+(13, 15, '2025-09-15', 'qawsedfrgthyujik', 'awsedfrgthyuj', 'awsedfrgthyuj\r\n');
 
 -- --------------------------------------------------------
 
@@ -766,7 +893,8 @@ CREATE TABLE `red_apoyo` (
 
 INSERT INTO `red_apoyo` (`id_red_apoyo`, `descripcion`) VALUES
 (1, 'Familia'),
-(2, 'mjryenthbsgrvfec');
+(2, 'mjryenthbsgrvfec'),
+(9, 'qwertyuiop');
 
 -- --------------------------------------------------------
 
@@ -809,7 +937,18 @@ CREATE TABLE `tratamiento` (
 
 INSERT INTO `tratamiento` (`id_tratamiento`, `descripcion`, `frecuencia`) VALUES
 (1, 'Terapias de control de temperamento', 'Una vez a la semana'),
-(2, 'manejo de ansiedad', 'cada 10 horas');
+(2, 'manejo de ansiedad', 'cada 10 horas'),
+(3, 'zsxrdctfvygbuhnijmok', 'cdsvfdbgfnhgmj,k.l'),
+(4, 'zsxrdctfvygbuhnijmok', 'cdsvfdbgfnhgmj,k.l'),
+(5, 'jryhjwnq4ryjn', 'rjqwjry'),
+(6, 'hfngbv', ''),
+(7, 'hqt', 'qth'),
+(8, 'qwertyuiop', 'asdfghjklñ'),
+(9, 'fghyujiklp', 'dfrgthyujikol'),
+(10, 'rvbnmrtvybnm', 'xcvbhjnkm,l.'),
+(11, 'cvybnm,', 'xcvgbhjnmk'),
+(12, 'n6b5gtvf4cd3x', '6nuyb5tv4rc'),
+(13, 'qwertyuio', 'sdfgh');
 
 -- --------------------------------------------------------
 
@@ -829,6 +968,13 @@ CREATE TABLE `valoracion_pedagogica` (
   `apoyo_requerido` text DEFAULT NULL,
   `seguimiento` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `valoracion_pedagogica`
+--
+
+INSERT INTO `valoracion_pedagogica` (`id_valoracion_pedagogica`, `id_piar`, `id_asignatura`, `periodo`, `anio`, `objetivo`, `barrera`, `tipo_ajuste`, `apoyo_requerido`, `seguimiento`) VALUES
+(1, 13, 1, '4', '2025', '1234567890', 'qwertyuiop', 'asdfghjklñ', 'zxcvbnm,.-', 'wawsdfrgthyujik');
 
 --
 -- Índices para tablas volcadas
@@ -1070,7 +1216,7 @@ ALTER TABLE `valoracion_pedagogica`
 -- AUTO_INCREMENT de la tabla `acudiente`
 --
 ALTER TABLE `acudiente`
-  MODIFY `id_acudiente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_acudiente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `admin`
@@ -1088,25 +1234,31 @@ ALTER TABLE `asignatura`
 -- AUTO_INCREMENT de la tabla `asignatura_docente_grupo`
 --
 ALTER TABLE `asignatura_docente_grupo`
-  MODIFY `id_asig_doc_grup` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id_asig_doc_grup` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT de la tabla `atencion_medica`
 --
 ALTER TABLE `atencion_medica`
-  MODIFY `id_atencion` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=890285;
+  MODIFY `id_atencion` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=890297;
 
 --
 -- AUTO_INCREMENT de la tabla `capacidad`
 --
 ALTER TABLE `capacidad`
-  MODIFY `id_capacidad` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_capacidad` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `descripcion_general`
 --
 ALTER TABLE `descripcion_general`
-  MODIFY `id_descripcion_general` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_descripcion_general` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `diagnostico_medico`
+--
+ALTER TABLE `diagnostico_medico`
+  MODIFY `id_diag_med` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `directivo`
@@ -1118,7 +1270,7 @@ ALTER TABLE `directivo`
 -- AUTO_INCREMENT de la tabla `docente`
 --
 ALTER TABLE `docente`
-  MODIFY `id_docente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_docente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `docente_apoyo`
@@ -1130,43 +1282,43 @@ ALTER TABLE `docente_apoyo`
 -- AUTO_INCREMENT de la tabla `docente_grupo`
 --
 ALTER TABLE `docente_grupo`
-  MODIFY `id_docente_grupo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_docente_grupo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `entorno_educativo`
 --
 ALTER TABLE `entorno_educativo`
-  MODIFY `id_entorno_edu` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_entorno_edu` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `entorno_salud`
 --
 ALTER TABLE `entorno_salud`
-  MODIFY `id_entorno_salud` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_entorno_salud` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `id_estudiante` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_estudiante` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `expectativa`
 --
 ALTER TABLE `expectativa`
-  MODIFY `id_expectativa` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_expectativa` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `expectativa_familia`
 --
 ALTER TABLE `expectativa_familia`
-  MODIFY `id_expectativa_familia` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_expectativa_familia` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `grupo_estudiante`
 --
 ALTER TABLE `grupo_estudiante`
-  MODIFY `id_grupo_estudiante` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_grupo_estudiante` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `grupo_sede`
@@ -1178,43 +1330,43 @@ ALTER TABLE `grupo_sede`
 -- AUTO_INCREMENT de la tabla `gusto_interes`
 --
 ALTER TABLE `gusto_interes`
-  MODIFY `id_gusto_e_interes` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_gusto_e_interes` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `madre`
 --
 ALTER TABLE `madre`
-  MODIFY `id_madre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_madre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `medicamento`
 --
 ALTER TABLE `medicamento`
-  MODIFY `id_medicamento` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_medicamento` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `otra_descripcion`
 --
 ALTER TABLE `otra_descripcion`
-  MODIFY `id_otra_descripcion` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_otra_descripcion` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `padre`
 --
 ALTER TABLE `padre`
-  MODIFY `id_padre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_padre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `piar`
 --
 ALTER TABLE `piar`
-  MODIFY `id_piar` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_piar` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `red_apoyo`
 --
 ALTER TABLE `red_apoyo`
-  MODIFY `id_red_apoyo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_red_apoyo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `sede`
@@ -1226,13 +1378,13 @@ ALTER TABLE `sede`
 -- AUTO_INCREMENT de la tabla `tratamiento`
 --
 ALTER TABLE `tratamiento`
-  MODIFY `id_tratamiento` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_tratamiento` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `valoracion_pedagogica`
 --
 ALTER TABLE `valoracion_pedagogica`
-  MODIFY `id_valoracion_pedagogica` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_valoracion_pedagogica` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -1262,8 +1414,8 @@ ALTER TABLE `descripcion_general`
 -- Filtros para la tabla `diagnostico_dx_cie10`
 --
 ALTER TABLE `diagnostico_dx_cie10`
-  ADD CONSTRAINT `diagnostico_dx_cie10_ibfk_1` FOREIGN KEY (`id_diag_med`) REFERENCES `diagnostico_medico` (`id_diag_med`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `diagnostico_dx_cie10_ibfk_2` FOREIGN KEY (`id_cie10`) REFERENCES `dx_cie10` (`id_cie10`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `diagnostico_dx_cie10_ibfk_2` FOREIGN KEY (`id_cie10`) REFERENCES `dx_cie10` (`id_cie10`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `diagnostico_dx_cie10_ibfk_3` FOREIGN KEY (`id_diag_med`) REFERENCES `diagnostico_medico` (`id_diag_med`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `diagnostico_medico`
