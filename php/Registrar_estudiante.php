@@ -1,11 +1,9 @@
 <?php
-// Registrar_estudiante.php - CORRECTED VERSION
+// Registrar_estudiante.php - MODIFIED VERSION USING conexion.php
 header('Content-Type: application/json; charset=utf-8');
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "ludik";
+// Incluir archivo de conexión universal
+require_once 'conexion.php';
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -15,11 +13,10 @@ try {
     // Check if this is Phase 1 (Student + Family) or Phase 2 (Description)
     $phase = $_POST['phase'] ?? '1';
     
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        throw new Exception("Error de conexión: " . $conn->connect_error);
-    }
-    $conn->set_charset("utf8");
+    // Usar la conexión del archivo incluido
+    $conn = $conexion;
+    
+    // Establecer autocommit para transacciones
     $conn->autocommit(false);
     
     if ($phase === '1') {
@@ -45,11 +42,8 @@ try {
         'message' => $e->getMessage(),
         'error_code' => $e->getCode()
     ]);
-} finally {
-    if (isset($conn) && $conn->connect_errno === 0) {
-        $conn->close();
-    }
 }
+// Nota: No cerramos la conexión aquí ya que se maneja en conexion.php
 
 function registerStudentAndFamily($conn) {
     // STEP 1: Register Mother

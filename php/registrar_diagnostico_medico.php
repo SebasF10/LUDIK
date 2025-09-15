@@ -1,26 +1,19 @@
 <?php
 // filepath: php/registrar_diagnostico_medico.php
 
+// Incluir el archivo de conexión
+require_once 'conexion.php';
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
-
-// Configuración de la base de datos
-$servidor = "127.0.0.1";
-$usuario = "root";
-$password = "";
-$base_datos = "ludik";
 
 try {
     // Verificar que sea una petición POST
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         throw new Exception('Método no permitido');
     }
-    
-    // Conectar a la base de datos
-    $conexion = new PDO("mysql:host=$servidor;dbname=$base_datos;charset=utf8mb4", $usuario, $password);
-    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Obtener datos JSON del cuerpo de la petición
     $input = file_get_contents('php://input');
@@ -42,79 +35,97 @@ try {
         throw new Exception('PIAR ID, descripción del diagnóstico y al menos un diagnóstico CIE-10 son obligatorios');
     }
     
-    // Verificar que el PIAR existe
-    $stmt_verificar = $conexion->prepare("SELECT id_piar FROM piar WHERE id_piar = ?");
-    $stmt_verificar->execute([$piar_id]);
+    // Escapar datos para prevenir inyección SQL
+    $piar_id = mysqli_real_escape_string($conexion, $piar_id);
+    $DX = mysqli_real_escape_string($conexion, $DX);
+    $apoyos_tecnicos = $apoyos_tecnicos ? mysqli_real_escape_string($conexion, $apoyos_tecnicos) : null;
+    $url_soporte_dx = $url_soporte_dx ? mysqli_real_escape_string($conexion, $url_soporte_dx) : null;
+    $entorno_salud_id = $entorno_salud_id ? mysqli_real_escape_string($conexion, $entorno_salud_id) : null;
     
-    if ($stmt_verificar->rowCount() === 0) {
+    // Verificar que el PIAR existe
+    $sql_verificar = "SELECT id_piar FROM piar WHERE id_piar = '$piar_id'";
+    $result_verificar = mysqli_query($conexion, $sql_verificar);
+    
+    if (!$result_verificar) {
+        throw new Exception('Error al verificar el PIAR: ' . mysqli_error($conexion));
+    }
+    
+    if (mysqli_num_rows($result_verificar) === 0) {
         throw new Exception('El PIAR especificado no existe');
     }
     
     // Iniciar transacción
-    $conexion->beginTransaction();
+    mysqli_autocommit($conexion, FALSE);
     
-    // Insertar diagnóstico médico (sin especificar id_diag_med, se genera automáticamente)
+    // Preparar valores para insertar diagnóstico médico
+    $apoyos_value = $apoyos_tecnicos ? "'$apoyos_tecnicos'" : 'NULL';
+    $url_value = $url_soporte_dx ? "'$url_soporte_dx'" : 'NULL';
+    $entorno_value = $entorno_salud_id ? "'$entorno_salud_id'" : 'NULL';
+    
+    // Insertar diagnóstico médico
     $consulta_diag = "INSERT INTO diagnostico_medico 
                       (id_piar, DX, apoyos_tecnicos, url_soporte_dx, id_entorno_salud) 
-                      VALUES (?, ?, ?, ?, ?)";
+                      VALUES ('$piar_id', '$DX', $apoyos_value, $url_value, $entorno_value)";
     
-    $stmt_diag = $conexion->prepare($consulta_diag);
-    
-    $stmt_diag->execute([
-        $piar_id,
-        $DX,
-        $apoyos_tecnicos ?: null,
-        $url_soporte_dx ?: null,
-        $entorno_salud_id
-    ]);
+    if (!mysqli_query($conexion, $consulta_diag)) {
+        throw new Exception('Error al insertar diagnóstico médico: ' . mysqli_error($conexion));
+    }
     
     // Obtener el ID generado automáticamente
-    $id_diag_med = $conexion->lastInsertId();
+    $id_diag_med = mysqli_insert_id($conexion);
     
     // Insertar relaciones con todos los diagnósticos CIE-10 seleccionados
-    $consulta_relacion = "INSERT INTO diagnostico_dx_cie10 
-                          (id_diag_med, id_cie10, anio) 
-                          VALUES (?, ?, ?)";
-    
-    $stmt_relacion = $conexion->prepare($consulta_relacion);
     $anio_actual = date('Y');
     
     foreach ($diagnosticos_cie10 as $cie10_id) {
-        // Verificar que el diagnóstico CIE-10 existe
-        $stmt_verificar_cie = $conexion->prepare("SELECT id_cie10 FROM dx_cie10 WHERE id_cie10 = ?");
-        $stmt_verificar_cie->execute([$cie10_id]);
+        // Escapar el ID CIE-10
+        $cie10_id = mysqli_real_escape_string($conexion, $cie10_id);
         
-        if ($stmt_verificar_cie->rowCount() === 0) {
+        // Verificar que el diagnóstico CIE-10 existe
+        $sql_verificar_cie = "SELECT id_cie10 FROM dx_cie10 WHERE id_cie10 = '$cie10_id'";
+        $result_verificar_cie = mysqli_query($conexion, $sql_verificar_cie);
+        
+        if (!$result_verificar_cie) {
+            throw new Exception('Error al verificar el diagnóstico CIE-10: ' . mysqli_error($conexion));
+        }
+        
+        if (mysqli_num_rows($result_verificar_cie) === 0) {
             throw new Exception("El diagnóstico CIE-10 '$cie10_id' no existe");
         }
         
-        $stmt_relacion->execute([$id_diag_med, $cie10_id, $anio_actual]);
+        // Insertar relación
+        $consulta_relacion = "INSERT INTO diagnostico_dx_cie10 
+                              (id_diag_med, id_cie10, anio) 
+                              VALUES ('$id_diag_med', '$cie10_id', '$anio_actual')";
+        
+        if (!mysqli_query($conexion, $consulta_relacion)) {
+            throw new Exception('Error al insertar relación CIE-10: ' . mysqli_error($conexion));
+        }
     }
     
     // Confirmar transacción
-    $conexion->commit();
+    mysqli_commit($conexion);
+    mysqli_autocommit($conexion, TRUE);
     
     echo json_encode([
         'success' => true,
         'message' => 'Diagnóstico médico registrado exitosamente',
-        'id_diag_med' => (int)$id_diag_med, // Convertir a entero para la respuesta
+        'id_diag_med' => (int)$id_diag_med,
         'diagnosticos_asociados' => count($diagnosticos_cie10)
     ]);
     
-} catch (PDOException $e) {
-    if (isset($conexion)) {
-        $conexion->rollBack();
-    }
-    http_response_code(500);
-    echo json_encode([
-        'success' => false,
-        'message' => 'Error de base de datos: ' . $e->getMessage()
-    ]);
 } catch (Exception $e) {
-    if (isset($conexion)) {
-        $conexion->rollBack();
+    // Revertir transacción en caso de error
+    mysqli_rollback($conexion);
+    mysqli_autocommit($conexion, TRUE);
+    
+    // Determinar el código de respuesta HTTP
+    if (strpos($e->getMessage(), 'Error al') === 0 || strpos($e->getMessage(), 'mysql') !== false) {
+        http_response_code(500);
+    } else {
+        http_response_code(400);
     }
-    http_response_code(400);
+    
     echo json_encode([
         'success' => false,
         'message' => $e->getMessage()

@@ -1,25 +1,30 @@
 <?php
 // filepath: php/config_db.php
 
-// Configuración de la base de datos
-define('DB_HOST', '127.0.0.1');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'ludik');
+// Incluir el archivo de conexión
+require_once 'conexion.php';
 
-// Función para obtener conexión a la base de datos
+// Función para obtener conexión a la base de datos (usa la conexión ya establecida)
 function obtenerConexion() {
-    try {
-        $conexion = new PDO(
-            "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4", 
-            DB_USER, 
-            DB_PASS
-        );
-        $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $conexion;
-    } catch (PDOException $e) {
-        throw new Exception('Error de conexión a la base de datos: ' . $e->getMessage());
-    }
+    global $conexion;
+    return $conexion;
+}
+
+// Función para iniciar transacción
+function iniciarTransaccion($conexion) {
+    mysqli_autocommit($conexion, FALSE);
+}
+
+// Función para confirmar transacción
+function confirmarTransaccion($conexion) {
+    mysqli_commit($conexion);
+    mysqli_autocommit($conexion, TRUE);
+}
+
+// Función para revertir transacción
+function revertirTransaccion($conexion) {
+    mysqli_rollback($conexion);
+    mysqli_autocommit($conexion, TRUE);
 }
 
 // Función para enviar respuesta JSON
@@ -39,11 +44,13 @@ function enviarRespuesta($success, $message, $data = null) {
 
 // Función para manejar errores
 function manejarError($e, $conexion = null) {
-    if ($conexion && $conexion->inTransaction()) {
-        $conexion->rollBack();
+    if ($conexion) {
+        // Revertir transacción si está activa
+        revertirTransaccion($conexion);
     }
     
-    if ($e instanceof PDOException) {
+    // Verificar si es un error de mysqli o general
+    if (strpos($e->getMessage(), 'mysql') !== false || mysqli_error($conexion)) {
         http_response_code(500);
         enviarRespuesta(false, 'Error de base de datos: ' . $e->getMessage());
     } else {
@@ -63,5 +70,55 @@ function configurarHeaders() {
         http_response_code(200);
         exit;
     }
+}
+
+// Función para escapar cadenas (helper para mysqli)
+function escaparCadena($cadena) {
+    global $conexion;
+    return mysqli_real_escape_string($conexion, $cadena);
+}
+
+// Función para validar entrada
+function validarEntrada($input, $tipo = 'string') {
+    switch ($tipo) {
+        case 'int':
+            return filter_var($input, FILTER_VALIDATE_INT);
+        case 'email':
+            return filter_var($input, FILTER_VALIDATE_EMAIL);
+        case 'string':
+        default:
+            return escaparCadena(trim(strip_tags($input)));
+    }
+}
+
+// Función para ejecutar consulta de manera segura
+function ejecutarConsulta($sql) {
+    global $conexion;
+    
+    $result = mysqli_query($conexion, $sql);
+    
+    if (!$result) {
+        throw new Exception("Error en la consulta: " . mysqli_error($conexion));
+    }
+    
+    return $result;
+}
+
+// Función para obtener un solo resultado
+function obtenerUno($sql) {
+    $result = ejecutarConsulta($sql);
+    return mysqli_fetch_assoc($result);
+}
+
+// Función para obtener múltiples resultados
+function obtenerTodos($sql) {
+    $result = ejecutarConsulta($sql);
+    $datos = [];
+    
+    while ($row = mysqli_fetch_assoc($result)) {
+        $datos[] = $row;
+    }
+    
+    return $datos;
 }
 ?>

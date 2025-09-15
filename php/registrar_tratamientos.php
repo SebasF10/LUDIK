@@ -1,16 +1,13 @@
 <?php
-// filepath: php/registrar_tratamientos.php
+// filepath: php/registrar_tratamientos.php - MODIFIED VERSION USING conexion.php
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Configuración de la base de datos
-$servidor = "127.0.0.1";
-$usuario = "root";
-$password = "";
-$base_datos = "ludik";
+// Incluir archivo de conexión universal
+require_once 'conexion.php';
 
 try {
     // Verificar que sea una petición POST
@@ -18,9 +15,8 @@ try {
         throw new Exception('Método no permitido');
     }
     
-    // Conectar a la base de datos
-    $conexion = new PDO("mysql:host=$servidor;dbname=$base_datos;charset=utf8mb4", $usuario, $password);
-    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Usar la conexión MySQLi del archivo incluido
+    $conn = $conexion;
     
     // Obtener datos JSON del cuerpo de la petición
     $input = file_get_contents('php://input');
@@ -36,53 +32,82 @@ try {
         throw new Exception('Debe proporcionar al menos un tratamiento');
     }
     
+    // Validar estructura de datos
+    foreach ($tratamientos as $index => $tratamiento) {
+        if (!is_array($tratamiento)) {
+            throw new Exception("Tratamiento en posición $index no es válido");
+        }
+        if (!isset($tratamiento['descripcion'])) {
+            throw new Exception("Falta descripción en tratamiento en posición $index");
+        }
+    }
+    
     // Iniciar transacción
-    $conexion->beginTransaction();
+    $conn->autocommit(false);
     
     $tratamientos_ids = [];
     
-    // Insertar cada tratamiento
+    // Preparar consulta para insertar tratamientos
     $consulta = "INSERT INTO tratamiento (descripcion, frecuencia) VALUES (?, ?)";
-    $stmt = $conexion->prepare($consulta);
+    $stmt = $conn->prepare($consulta);
     
-    foreach ($tratamientos as $tratamiento) {
-        $descripcion = trim($tratamiento['descripcion']);
-        $frecuencia = trim($tratamiento['frecuencia']);
-        
-        if (empty($descripcion)) {
-            throw new Exception('La descripción del tratamiento no puede estar vacía');
-        }
-        
-        $stmt->execute([$descripcion, $frecuencia]);
-        $tratamientos_ids[] = $conexion->lastInsertId();
+    if (!$stmt) {
+        throw new Exception('Error preparando la consulta: ' . $conn->error);
     }
     
+    // Insertar cada tratamiento
+    foreach ($tratamientos as $index => $tratamiento) {
+        $descripcion = trim($tratamiento['descripcion']);
+        $frecuencia = isset($tratamiento['frecuencia']) ? trim($tratamiento['frecuencia']) : '';
+        
+        if (empty($descripcion)) {
+            throw new Exception("La descripción del tratamiento en posición $index no puede estar vacía");
+        }
+        
+        // Bind parameters
+        $stmt->bind_param("ss", $descripcion, $frecuencia);
+        
+        if (!$stmt->execute()) {
+            throw new Exception('Error insertando tratamiento: ' . $stmt->error);
+        }
+        
+        $tratamientos_ids[] = $conn->insert_id;
+    }
+    
+    $stmt->close();
+    
     // Confirmar transacción
-    $conexion->commit();
+    $conn->commit();
+    
+    // Restaurar autocommit
+    $conn->autocommit(true);
     
     echo json_encode([
         'success' => true,
         'message' => 'Tratamientos registrados exitosamente',
-        'tratamientos_ids' => $tratamientos_ids
+        'tratamientos_ids' => $tratamientos_ids,
+        'total_insertados' => count($tratamientos_ids)
     ]);
     
-} catch (PDOException $e) {
-    if (isset($conexion)) {
-        $conexion->rollBack();
-    }
-    http_response_code(500);
-    echo json_encode([
-        'success' => false,
-        'message' => 'Error de base de datos: ' . $e->getMessage()
-    ]);
 } catch (Exception $e) {
-    if (isset($conexion)) {
-        $conexion->rollBack();
+    // Rollback en caso de error
+    if (isset($conn) && $conn->connect_errno === 0) {
+        $conn->rollback();
+        $conn->autocommit(true);
     }
-    http_response_code(400);
+    
+    // Determinar código de estado HTTP apropiado
+    $status_code = (strpos($e->getMessage(), 'Error de base de datos') !== false || 
+                   strpos($e->getMessage(), 'Error preparando') !== false || 
+                   strpos($e->getMessage(), 'Error insertando') !== false) ? 500 : 400;
+    
+    http_response_code($status_code);
     echo json_encode([
         'success' => false,
         'message' => $e->getMessage()
     ]);
 }
+
+// Nota: La conexión se cierra automáticamente al finalizar el script
+// o se puede cerrar desde conexion.php si es necesario
 ?>
