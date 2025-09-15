@@ -11,3 +11,11 @@ questions.forEach(q => {
         }
     });
 });
+
+function goBackOrRedirect(ruta) {
+    if (ruta && ruta.trim() !== '') {
+        window.location.href = ruta;   // Ir a la ruta que pongas
+    } else {
+        window.history.back();         // Si está vacío, volver atrás
+    }
+}

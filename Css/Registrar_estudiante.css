@@ -148,6 +148,7 @@ header {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -362,6 +363,7 @@ textarea {
         opacity: 0;
         transform: translateX(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -411,8 +413,13 @@ textarea {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-text {
@@ -439,39 +446,39 @@ textarea {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .titulo-ludik {
         font-size: 2rem;
     }
-    
+
     .section {
         padding: 1.5rem;
         margin: 1rem;
     }
-    
+
     .progress-indicator {
         gap: 0.25rem;
     }
-    
+
     .step-indicator {
         width: 35px;
         height: 35px;
         font-size: 0.8rem;
     }
-    
+
     .step-indicator:not(:last-child)::after {
         width: 15px;
     }
-    
+
     .form-step h2 {
         font-size: 1.5rem;
     }
-    
+
     .navigation-buttons {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .btn-nav {
         width: 100%;
         max-width: 250px;
@@ -483,21 +490,21 @@ textarea {
         flex-wrap: wrap;
         max-width: 100%;
     }
-    
+
     .step-indicator {
         width: 30px;
         height: 30px;
         font-size: 0.7rem;
     }
-    
+
     .step-indicator:not(:last-child)::after {
         display: none;
     }
-    
+
     .titulo-ludik {
         font-size: 1.5rem;
     }
-    
+
     .section h1 {
         font-size: 1.8rem;
     }
@@ -505,6 +512,7 @@ textarea {
 
 /* Mejoras de accesibilidad */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -519,21 +527,21 @@ textarea {
     body {
         background: linear-gradient(135deg, #2c3e50 0%, #4a6741 100%);
     }
-    
+
     .section {
         background: rgba(52, 58, 64, 0.95);
         color: #f8f9fa;
     }
-    
+
     .section h1,
     .form-step h2 {
         color: #f8f9fa;
     }
-    
+
     label {
         color: #ced4da;
     }
-    
+
     input[type="text"],
     input[type="email"],
     input[type="tel"],
@@ -546,7 +554,7 @@ textarea {
         border-color: #495057;
         color: #f8f9fa;
     }
-    
+
     input[type="text"]:focus,
     input[type="email"]:focus,
     input[type="tel"]:focus,
@@ -640,15 +648,38 @@ input[type="password"] {
 }
 
 /* Mejoras en la tipografía */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     font-weight: 600;
 }
 
 /* Estilos para pantallas de alta densidad */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
     .logo-institucion {
         image-rendering: -webkit-optimize-contrast;
         image-rendering: crisp-edges;
     }
+}
+
+.back-btn {
+    position: fixed;
+    left: 18px;
+    bottom: 18px;
+    padding: 10px 16px;
+    background-color: #0b74da;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background 0.2s ease;
+    z-index: 1000;
+}
+
+.back-btn:hover {
+    background-color: #095bb5;
 }

@@ -209,7 +209,7 @@ body {
 }
 
 /* Contenedor general de formularios mejorado */
-.Formularios_sesion > div[id^="form_"] {
+.Formularios_sesion>div[id^="form_"] {
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
@@ -369,6 +369,7 @@ body {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -384,13 +385,14 @@ body {
         opacity: 0;
         transform: scale(0.9);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
     }
 }
 
-.Formularios_sesion > div[id^="form_"] {
+.Formularios_sesion>div[id^="form_"] {
     animation: fadeInScale 0.5s ease-out;
 }
 
@@ -430,7 +432,7 @@ body {
         height: 100px;
     }
 
-    .Formularios_sesion > div[id^="form_"] {
+    .Formularios_sesion>div[id^="form_"] {
         padding: 30px 20px;
     }
 }
@@ -439,24 +441,44 @@ body {
     .titulo {
         font-size: 1.8rem;
     }
-    
+
     .Botones_usuarios button {
         width: 180px;
         height: 65px;
         font-size: 0.85rem;
     }
-    
+
     .btn-icon {
         font-size: 1.3rem;
     }
-    
+
     .input-group input {
         padding: 12px 15px;
         font-size: 0.95rem;
     }
-    
+
     .login-btn {
         padding: 12px 0;
         font-size: 1rem;
     }
+}
+
+.back-btn {
+    position: fixed;
+    left: 18px;
+    bottom: 18px;
+    padding: 10px 16px;
+    background-color: #0b74da;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background 0.2s ease;
+    z-index: 1000;
+}
+
+.back-btn:hover {
+    background-color: #095bb5;
 }

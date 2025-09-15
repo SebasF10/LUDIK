@@ -195,6 +195,7 @@ header {
         opacity: 0;
         transform: translateX(20px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -508,8 +509,13 @@ header {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* ===== FOOTER ===== */
@@ -532,53 +538,53 @@ footer.pie-pagina {
         gap: 15px;
         text-align: center;
     }
-    
+
     .titulo-ludik {
         font-size: 1.8rem;
     }
-    
+
     .logo-institucion {
         width: 50px;
         height: 50px;
     }
-    
+
     .section {
         padding: 24px 16px;
         margin: 0 10px;
     }
-    
+
     .navigation-buttons {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .btn-nav {
         width: 100%;
         min-width: auto;
     }
-    
+
     .progress-indicator {
         gap: 15px;
     }
-    
+
     .step-indicator {
         width: 45px;
         height: 45px;
         font-size: 16px;
     }
-    
+
     .grupo-cards,
     .asignatura-cards,
     .estudiante-cards {
         grid-template-columns: 1fr;
         gap: 15px;
     }
-    
+
     .form-grid {
         grid-template-columns: 1fr;
         gap: 15px;
     }
-    
+
     .info-grid {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -590,27 +596,47 @@ footer.pie-pagina {
         font-size: 1.5rem;
         letter-spacing: 1px;
     }
-    
+
     .section h1 {
         font-size: 1.8rem;
     }
-    
+
     .section {
         padding: 20px 12px;
         border-radius: 15px;
     }
-    
+
     .step-indicator {
         width: 40px;
         height: 40px;
         font-size: 14px;
     }
-    
+
     .progress-indicator {
         gap: 10px;
     }
-    
+
     .card {
         padding: 15px;
     }
+}
+
+.back-btn {
+    position: fixed;
+    left: 18px;
+    bottom: 18px;
+    padding: 10px 16px;
+    background-color: #0b74da;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background 0.2s ease;
+    z-index: 1000;
+}
+
+.back-btn:hover {
+    background-color: #095bb5;
 }

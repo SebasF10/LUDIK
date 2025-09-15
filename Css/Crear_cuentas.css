@@ -248,3 +248,23 @@ body {
 .grupo-asignaturas .checkbox-item:hover {
     border-color: #7c3aed;
 }
+
+.back-btn {
+    position: fixed;
+    left: 18px;
+    bottom: 18px;
+    padding: 10px 16px;
+    background-color: #0b74da;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background 0.2s ease;
+    z-index: 1000;
+}
+
+.back-btn:hover {
+    background-color: #095bb5;
+}

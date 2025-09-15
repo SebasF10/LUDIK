@@ -8,7 +8,7 @@ let contadorMedicamentos = 1;
 let contadorAtencion = 1;
 
 // Inicializar cuando se carga la página
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     cargarEstudiantes();
     cargarDiagnosticosCIE10();
     configurarFechaActual();
@@ -26,10 +26,10 @@ async function cargarEstudiantes() {
     try {
         const response = await fetch('php/obtener_estudiantes.php');
         const estudiantes = await response.json();
-        
+
         const select = document.getElementById('id_estudiante');
         select.innerHTML = '<option value="">Seleccionar estudiante...</option>';
-        
+
         estudiantes.forEach(estudiante => {
             const option = document.createElement('option');
             option.value = estudiante.id_estudiante;
@@ -46,14 +46,14 @@ async function cargarDiagnosticosCIE10() {
     try {
         const response = await fetch('php/obtener_diagnosticos_cie10.php');
         const diagnosticos = await response.json();
-        
+
         const container = document.getElementById('diagnosticos-cie10-container');
         container.innerHTML = '';
-        
+
         diagnosticos.forEach(diagnostico => {
             const div = document.createElement('div');
             div.className = 'checkbox-item';
-            
+
             div.innerHTML = `
                 <input type="checkbox" id="cie10_${diagnostico.id_cie10}" 
                        name="diagnosticos_cie10[]" value="${diagnostico.id_cie10}">
@@ -61,7 +61,7 @@ async function cargarDiagnosticosCIE10() {
                     <strong>${diagnostico.id_cie10}</strong> - ${diagnostico.descripcion}
                 </label>
             `;
-            
+
             container.appendChild(div);
         });
     } catch (error) {
@@ -73,20 +73,20 @@ async function cargarDiagnosticosCIE10() {
 async function registrarPIAR() {
     const form = document.getElementById('form-piar');
     const formData = new FormData(form);
-    
+
     if (!validarFormulario(form)) {
         mostrarMensaje('Por favor complete todos los campos requeridos', 'error');
         return;
     }
-    
+
     try {
         const response = await fetch('php/Registrar_PIAR.php', {
             method: 'POST',
             body: formData
         });
-        
+
         const resultado = await response.json();
-        
+
         if (resultado.success) {
             piarId = resultado.piar_id;
             mostrarMensaje('PIAR registrado exitosamente', 'exito');
@@ -104,11 +104,11 @@ async function registrarPIAR() {
 async function registrarTratamientos() {
     const tratamientos = [];
     const items = document.querySelectorAll('.tratamiento-item');
-    
+
     items.forEach((item, index) => {
         const descripcion = item.querySelector('textarea[name="descripcion_tratamiento[]"]').value;
         const frecuencia = item.querySelector('input[name="frecuencia_tratamiento[]"]').value;
-        
+
         if (descripcion.trim()) {
             tratamientos.push({
                 descripcion: descripcion,
@@ -116,12 +116,12 @@ async function registrarTratamientos() {
             });
         }
     });
-    
+
     if (tratamientos.length === 0) {
         mostrarMensaje('Debe agregar al menos un tratamiento', 'error');
         return;
     }
-    
+
     try {
         const response = await fetch('php/registrar_tratamientos.php', {
             method: 'POST',
@@ -130,9 +130,9 @@ async function registrarTratamientos() {
             },
             body: JSON.stringify({ tratamientos: tratamientos })
         });
-        
+
         const resultado = await response.json();
-        
+
         if (resultado.success) {
             mostrarMensaje('Tratamientos registrados exitosamente', 'exito');
             marcarPasoCompletado(2);
@@ -149,13 +149,13 @@ async function registrarTratamientos() {
 async function registrarMedicamentosYAtencion() {
     const medicamentos = [];
     const atencionMedica = [];
-    
+
     // Recopilar medicamentos
     const medicamentoItems = document.querySelectorAll('.medicamento-item');
     medicamentoItems.forEach(item => {
         const descripcion = item.querySelector('textarea[name="descripcion_medicamento[]"]').value;
         const frecuencia = item.querySelector('input[name="frecuencia_medicamento[]"]').value;
-        
+
         if (descripcion.trim()) {
             medicamentos.push({
                 descripcion: descripcion,
@@ -163,13 +163,13 @@ async function registrarMedicamentosYAtencion() {
             });
         }
     });
-    
+
     // Recopilar atención médica
     const atencionItems = document.querySelectorAll('.atencion-item');
     atencionItems.forEach(item => {
         const descripcion = item.querySelector('textarea[name="descripcion_atencion[]"]').value;
         const frecuencia = item.querySelector('input[name="frecuencia_atencion[]"]').value;
-        
+
         if (descripcion.trim()) {
             atencionMedica.push({
                 descripcion: descripcion,
@@ -177,26 +177,26 @@ async function registrarMedicamentosYAtencion() {
             });
         }
     });
-    
+
     if (medicamentos.length === 0 && atencionMedica.length === 0) {
         mostrarMensaje('Debe agregar al menos un medicamento o una atención médica', 'error');
         return;
     }
-    
+
     try {
         const response = await fetch('php/registrar_medicamentos_atencion.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 medicamentos: medicamentos,
                 atencion_medica: atencionMedica
             })
         });
-        
+
         const resultado = await response.json();
-        
+
         if (resultado.success) {
             entornoSaludId = resultado.entorno_salud_id;
             mostrarMensaje('Medicamentos y atención médica registrados exitosamente', 'exito');
@@ -213,24 +213,24 @@ async function registrarMedicamentosYAtencion() {
 // Registrar diagnóstico médico
 async function registrarDiagnostico() {
     const form = document.getElementById('form-diagnostico');
-    
+
     if (!validarFormulario(form)) {
         mostrarMensaje('Por favor complete todos los campos requeridos', 'error');
         return;
     }
-    
+
     // Obtener diagnósticos CIE-10 seleccionados
     const diagnosticosSeleccionados = [];
     const checkboxes = document.querySelectorAll('input[name="diagnosticos_cie10[]"]:checked');
     checkboxes.forEach(checkbox => {
         diagnosticosSeleccionados.push(checkbox.value);
     });
-    
+
     if (diagnosticosSeleccionados.length === 0) {
         mostrarMensaje('Debe seleccionar al menos un diagnóstico CIE-10', 'error');
         return;
     }
-    
+
     const datos = {
         piar_id: piarId,
         entorno_salud_id: entornoSaludId,
@@ -239,7 +239,7 @@ async function registrarDiagnostico() {
         url_soporte_dx: document.getElementById('url_soporte_dx').value,
         diagnosticos_cie10: diagnosticosSeleccionados
     };
-    
+
     try {
         const response = await fetch('php/registrar_diagnostico_medico.php', {
             method: 'POST',
@@ -248,13 +248,13 @@ async function registrarDiagnostico() {
             },
             body: JSON.stringify(datos)
         });
-        
+
         const resultado = await response.json();
-        
+
         if (resultado.success) {
             mostrarMensaje('¡Registro completo! PIAR y diagnóstico médico registrados exitosamente', 'exito');
             marcarPasoCompletado(4);
-            
+
             // Opcional: redirigir después de un tiempo
             setTimeout(() => {
                 if (confirm('¿Desea registrar otro PIAR?')) {
@@ -277,13 +277,13 @@ function mostrarPaso(numeroPaso) {
     document.querySelectorAll('.form-step').forEach(form => {
         form.classList.remove('active');
     });
-    
+
     // Mostrar el formulario del paso actual
     const pasoActivo = document.getElementById(`form-${obtenerNombrePaso(numeroPaso)}`);
     if (pasoActivo) {
         pasoActivo.classList.add('active');
     }
-    
+
     // Actualizar indicador de progreso
     document.querySelectorAll('.step-indicator').forEach((step, index) => {
         step.classList.remove('active');
@@ -291,7 +291,7 @@ function mostrarPaso(numeroPaso) {
             step.classList.add('active');
         }
     });
-    
+
     pasoActual = numeroPaso;
 }
 
@@ -317,7 +317,7 @@ function marcarPasoCompletado(numeroPaso) {
 function agregarTratamiento() {
     contadorTratamientos++;
     const container = document.getElementById('tratamientos-container');
-    
+
     const div = document.createElement('div');
     div.className = 'tratamiento-item';
     div.innerHTML = `
@@ -332,14 +332,14 @@ function agregarTratamiento() {
                name="frecuencia_tratamiento[]" 
                placeholder="Ej: Una vez por semana">
     `;
-    
+
     container.appendChild(div);
 }
 
 function agregarMedicamento() {
     contadorMedicamentos++;
     const container = document.getElementById('medicamentos-container');
-    
+
     const div = document.createElement('div');
     div.className = 'medicamento-item';
     div.innerHTML = `
@@ -354,14 +354,14 @@ function agregarMedicamento() {
                name="frecuencia_medicamento[]" 
                placeholder="Ej: Cada 8 horas">
     `;
-    
+
     container.appendChild(div);
 }
 
 function agregarAtencion() {
     contadorAtencion++;
     const container = document.getElementById('atencion-container');
-    
+
     const div = document.createElement('div');
     div.className = 'atencion-item';
     div.innerHTML = `
@@ -376,7 +376,7 @@ function agregarAtencion() {
                name="frecuencia_atencion[]" 
                placeholder="Ej: Cada 3 meses">
     `;
-    
+
     container.appendChild(div);
 }
 
@@ -384,7 +384,7 @@ function agregarAtencion() {
 function eliminarElemento(boton, tipo) {
     const item = boton.parentElement;
     const container = item.parentElement;
-    
+
     // Solo eliminar si hay más de un elemento
     const items = container.querySelectorAll(`.${tipo}-item`);
     if (items.length > 1) {
@@ -398,7 +398,7 @@ function eliminarElemento(boton, tipo) {
 function validarFormulario(form) {
     const camposRequeridos = form.querySelectorAll('[required]');
     let valido = true;
-    
+
     camposRequeridos.forEach(campo => {
         if (!campo.value.trim()) {
             campo.style.borderColor = '#dc3545';
@@ -407,7 +407,7 @@ function validarFormulario(form) {
             campo.style.borderColor = '#e5e7eb';
         }
     });
-    
+
     return valido;
 }
 
@@ -417,14 +417,22 @@ function mostrarMensaje(mensaje, tipo) {
     div.textContent = mensaje;
     div.className = `mensaje ${tipo}`;
     div.style.display = 'block';
-    
+
     // Auto-ocultar después de 5 segundos si es éxito
     if (tipo === 'exito') {
         setTimeout(() => {
             div.style.display = 'none';
         }, 5000);
     }
-    
+
     // Scroll hacia arriba para mostrar el mensaje
     div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function goBackOrRedirect(ruta) {
+    if (ruta && ruta.trim() !== '') {
+        window.location.href = ruta;   // Ir a la ruta que pongas
+    } else {
+        window.history.back();         // Si está vacío, volver atrás
+    }
 }

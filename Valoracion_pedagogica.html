@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Valoración Pedagógica - LUDIK</title>
     <link rel="stylesheet" href="Css/Valoracion_pedagogica.css">
 </head>
+
 <body>
     <!-- Header -->
     <header>
@@ -24,7 +26,7 @@
     <main class="main-content">
         <div class="section">
             <h1>Registro de Valoración Pedagógica</h1>
-            
+
             <!-- Indicador de Progreso -->
             <div class="progress-indicator">
                 <div class="step-indicator active" id="step1">1</div>
@@ -40,7 +42,7 @@
             <div id="paso1" class="form-step active">
                 <h2>Paso 1: Seleccionar Grupo</h2>
                 <p class="step-description">Selecciona el grupo para el cual deseas crear la valoración pedagógica.</p>
-                
+
                 <div class="grupo-cards" id="grupoCards">
                     <!-- Los grupos se cargan dinámicamente -->
                 </div>
@@ -50,7 +52,7 @@
             <div id="paso2" class="form-step">
                 <h2>Paso 2: Seleccionar Asignatura</h2>
                 <p class="step-description">Selecciona la asignatura para la cual crearás la valoración.</p>
-                
+
                 <div class="asignatura-cards" id="asignaturaCards">
                     <!-- Las asignaturas se cargan dinámicamente -->
                 </div>
@@ -60,7 +62,7 @@
             <div id="paso3" class="form-step">
                 <h2>Paso 3: Seleccionar Estudiante</h2>
                 <p class="step-description">Selecciona el estudiante para crear su valoración pedagógica.</p>
-                
+
                 <div class="estudiante-cards" id="estudianteCards">
                     <!-- Los estudiantes se cargan dinámicamente -->
                 </div>
@@ -69,7 +71,7 @@
             <!-- Paso 4: Formulario de Valoración -->
             <div id="paso4" class="form-step">
                 <h2>Paso 4: Crear Valoración Pedagógica</h2>
-                
+
                 <form id="formValoracion">
                     <div class="info-seleccion">
                         <h3>Información Seleccionada</h3>
@@ -114,27 +116,33 @@
 
                     <div class="form-group">
                         <label for="objetivo">Objetivo:</label>
-                        <textarea id="objetivo" name="objetivo" placeholder="Describe el objetivo pedagógico específico para este estudiante..." required></textarea>
+                        <textarea id="objetivo" name="objetivo"
+                            placeholder="Describe el objetivo pedagógico específico para este estudiante..."
+                            required></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="barrera">Barreras Identificadas:</label>
-                        <textarea id="barrera" name="barrera" placeholder="Describe las barreras de aprendizaje identificadas..." required></textarea>
+                        <textarea id="barrera" name="barrera"
+                            placeholder="Describe las barreras de aprendizaje identificadas..." required></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="tipo_ajuste">Tipo de Ajuste:</label>
-                        <textarea id="tipo_ajuste" name="tipo_ajuste" placeholder="Especifica los ajustes curriculares necesarios..." required></textarea>
+                        <textarea id="tipo_ajuste" name="tipo_ajuste"
+                            placeholder="Especifica los ajustes curriculares necesarios..." required></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="apoyo_requerido">Apoyo Requerido:</label>
-                        <textarea id="apoyo_requerido" name="apoyo_requerido" placeholder="Describe los apoyos necesarios para el estudiante..." required></textarea>
+                        <textarea id="apoyo_requerido" name="apoyo_requerido"
+                            placeholder="Describe los apoyos necesarios para el estudiante..." required></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="seguimiento">Seguimiento:</label>
-                        <textarea id="seguimiento" name="seguimiento" placeholder="Establece el plan de seguimiento y evaluación..." required></textarea>
+                        <textarea id="seguimiento" name="seguimiento"
+                            placeholder="Establece el plan de seguimiento y evaluación..." required></textarea>
                     </div>
                 </form>
             </div>
@@ -154,6 +162,10 @@
         </div>
     </main>
 
+    <button class="back-btn" onclick="goBackOrRedirect('Interfaz.html')">
+        ⬅ Regresar
+    </button>
+
     <!-- Footer -->
     <footer class="pie-pagina">
         <p>&copy; 2025 Sistema LUDIK - Gestión Educativa Inclusiva</p>
@@ -161,4 +173,5 @@
 
     <script src="js/Valoracion_pedagogica.js"></script>
 </body>
+
 </html>
