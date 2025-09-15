@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Estudiantes - LUDIK</title>
+    <link rel="stylesheet" href="Css\Estudiantes.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="encabezado-ludik">
+            <div class="lado-izq">
+                <img src="img\colegio.jpg" alt="Logo Institución" class="logo-institucion">
+                <div class="especialidad">EDUCACIÓN INCLUSIVA</div>
+            </div>
+            <div class="centro">
+                <h1 class="titulo-ludik">LUDIK</h1>
+            </div>
+            <div class="lado-der">
+                <img src="img\Ludik2.png" alt="Logo LUDIK" class="logo-ludik">
+                <a href="Index.html" class="btn-home">Inicio</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <div class="main-content">
+        <!-- Navegación interna -->
+        <div class="nav-interno">
+            <button class="nav-btn active" data-section="buscar">Buscar Estudiantes</button>
+            <button class="nav-btn" data-section="lista">Lista Completa</button>
+        </div>
+
+        <!-- Sección de Búsqueda -->
+        <section id="buscar" class="section active">
+            <h1>Buscar Estudiantes</h1>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Buscar por nombre, apellidos o documento...">
+                    <button id="searchBtn" class="btn-search">Buscar</button>
+                </div>
+
+                <div class="filters">
+                    <select id="gradoFilter">
+                        <option value="">Todos los grados</option>
+                    </select>
+                    <select id="grupoFilter">
+                        <option value="">Todos los grupos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="search-results" id="searchResults">
+                <!-- Aquí se mostrarán los resultados de búsqueda -->
+            </div>
+        </section>
+
+        <!-- Sección de Lista Completa -->
+        <section id="lista" class="section">
+            <h1>Lista de Estudiantes</h1>
+
+            <div class="pagination-controls">
+                <button id="prevPage" class="btn-pagination">Anterior</button>
+                <span id="pageInfo">Página 1 de 1</span>
+                <button id="nextPage" class="btn-pagination">Siguiente</button>
+            </div>
+
+            <div class="students-grid" id="studentsGrid">
+                <!-- Aquí se mostrará la lista de estudiantes -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal para mostrar información detallada del estudiante -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalTitle">Información del Estudiante</h2>
+            </div>
+            <div class="modal-body">
+                <!-- Pestañas del modal -->
+                <div class="modal-tabs">
+                    <button class="modal-tab active" data-tab="personal">Datos Personales</button>
+                    <button class="modal-tab" data-tab="academico">Información Académica</button>
+                    <button class="modal-tab" data-tab="familia">Información Familiar</button>
+                    <button class="modal-tab" data-tab="medico">Información Médica</button>
+                    <button class="modal-tab" data-tab="piar">PIAR</button>
+                </div>
+
+                <!-- Contenido de las pestañas -->
+                <div id="personalTab" class="tab-content active">
+                    <div class="info-section">
+                        <h3>Datos Básicos</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="label">Nombre Completo:</span>
+                                <span class="value" id="nombreCompleto"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Documento:</span>
+                                <span class="value" id="documento"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Fecha de Nacimiento:</span>
+                                <span class="value" id="fechaNacimiento"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Lugar de Nacimiento:</span>
+                                <span class="value" id="lugarNacimiento"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Sector:</span>
+                                <span class="value" id="sector"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Dirección:</span>
+                                <span class="value" id="direccion"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Teléfono:</span>
+                                <span class="value" id="telefono"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Correo:</span>
+                                <span class="value" id="correo"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Información Social</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="label">Víctima de Conflicto:</span>
+                                <span class="value" id="victimaConflicto"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Grupo Étnico:</span>
+                                <span class="value" id="grupoEtnico"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Con quien Vive:</span>
+                                <span class="value" id="conQuienVive"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Afiliación de Salud:</span>
+                                <span class="value" id="afiliacionSalud"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="academicoTab" class="tab-content">
+                    <div class="info-section">
+                        <h3>Información Académica</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="label">Grado Actual:</span>
+                                <span class="value" id="gradoActual"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Grupo:</span>
+                                <span class="value" id="grupoActual"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Entorno Educativo</h3>
+                        <div class="info-grid" id="entornoEducativo">
+                            <!-- Se llenará dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="familiaTab" class="tab-content">
+                    <div class="info-section">
+                        <h3>Información de la Madre</h3>
+                        <div class="info-grid" id="infoMadre">
+                            <!-- Se llenará dinámicamente -->
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Información del Padre</h3>
+                        <div class="info-grid" id="infoPadre">
+                            <!-- Se llenará dinámicamente -->
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Información del Acudiente</h3>
+                        <div class="info-grid" id="infoAcudiente">
+                            <!-- Se llenará dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="medicoTab" class="tab-content">
+                    <div class="info-section">
+                        <h3>Información Médica</h3>
+                        <div class="medical-info" id="infoMedica">
+                            <!-- Se llenará dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="piarTab" class="tab-content">
+                    <div class="info-section">
+                        <h3>Plan Individual de Ajustes Razonables (PIAR)</h3>
+                        <div class="piar-info" id="infoPiar">
+                            <!-- Se llenará dinámicamente -->
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Valoraciones Pedagógicas</h3>
+                        <div class="valoraciones-list" id="valoracionesList">
+                            <!-- Se llenará dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+    </div>
+
+    <script src="Js\Estudiantes.js"></script>
+</body>
+
+</html>
