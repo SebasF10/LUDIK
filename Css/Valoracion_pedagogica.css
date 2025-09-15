@@ -1,0 +1,616 @@
+/* valoracion_pedagogica.css */
+
+/* Estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #2c3e50;
+    font-family: 'Inter', Arial, sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* ===== HEADER ===== */
+header {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.08);
+    padding: 20px 0;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.logo-institucion {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.logo-institucion:hover {
+    transform: scale(1.05);
+}
+
+.titulo-ludik {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+/* ===== CONTENIDO PRINCIPAL ===== */
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 70vh;
+    padding: 0 20px;
+}
+
+.section {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.12);
+    padding: 40px;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.section h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.section h2 {
+    font-size: 1.4rem;
+    color: #764ba2;
+    margin-bottom: 10px;
+    font-weight: 600;
+    border-left: 4px solid #667eea;
+    padding-left: 15px;
+}
+
+.step-description {
+    color: #64748b;
+    margin-bottom: 25px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* ===== INDICADOR DE PROGRESO ===== */
+.progress-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 20px;
+    position: relative;
+}
+
+.progress-indicator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e5e7eb;
+    z-index: 1;
+}
+
+.step-indicator {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #e5e7eb;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    border: 3px solid #e5e7eb;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.step-indicator.active {
+    background-color: #667eea;
+    color: white;
+    border-color: #667eea;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.step-indicator.completed {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+/* ===== PASOS DEL FORMULARIO ===== */
+.form-step {
+    display: none;
+    min-height: 400px;
+}
+
+.form-step.active {
+    display: block;
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ===== TARJETAS DE SELECCIÓN ===== */
+.grupo-cards,
+.asignatura-cards,
+.estudiante-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.card:hover::before {
+    transform: scaleX(1);
+}
+
+.card.selected {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+}
+
+.card.selected::before {
+    transform: scaleX(1);
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.card-subtitle {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin-bottom: 12px;
+}
+
+.card-info {
+    font-size: 0.9rem;
+    color: #475569;
+}
+
+/* ===== INFORMACIÓN SELECCIONADA ===== */
+.info-seleccion {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-left: 4px solid #667eea;
+}
+
+.info-seleccion h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #475569;
+    min-width: 80px;
+}
+
+.info-item span:last-child {
+    color: #667eea;
+    font-weight: 500;
+}
+
+/* ===== FORMULARIO ===== */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f8fafc;
+    transition: all 0.2s;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    line-height: 1.6;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 12px rgba(102, 126, 234, 0.15);
+    background: #fff;
+}
+
+/* ===== MENSAJES ===== */
+#mensaje-container {
+    margin-bottom: 20px;
+}
+
+.mensaje {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: 500;
+    border-left: 4px solid;
+}
+
+.mensaje.exito {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+}
+
+.mensaje.error {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+}
+
+.mensaje.info {
+    background-color: #d1ecf1;
+    border-color: #17a2b8;
+    color: #0c5460;
+}
+
+/* ===== BOTONES DE NAVEGACIÓN ===== */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.btn-nav {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    min-width: 140px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-nav::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%);
+}
+
+.btn-nav:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-anterior {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-anterior:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(108, 117, 125, 0.25);
+}
+
+.btn-siguiente {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+}
+
+.btn-siguiente:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.25);
+}
+
+.btn-registrar {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.btn-registrar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.25);
+}
+
+/* ===== ESTADOS ESPECIALES ===== */
+.no-data {
+    text-align: center;
+    color: #64748b;
+    font-style: italic;
+    padding: 40px 20px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px dashed #cbd5e0;
+}
+
+.piar-status {
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.piar-status.tiene-piar {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.piar-status.sin-piar {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* ===== LOADING ===== */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e5e7eb;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== FOOTER ===== */
+footer.pie-pagina {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 0.95rem;
+    color: #64748b;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px 0;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -2px 12px rgba(102, 126, 234, 0.07);
+    backdrop-filter: blur(10px);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .titulo-ludik {
+        font-size: 1.8rem;
+    }
+    
+    .logo-institucion {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .section {
+        padding: 24px 16px;
+        margin: 0 10px;
+    }
+    
+    .navigation-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-nav {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .progress-indicator {
+        gap: 15px;
+    }
+    
+    .step-indicator {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+    }
+    
+    .grupo-cards,
+    .asignatura-cards,
+    .estudiante-cards {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo-ludik {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+    
+    .section h1 {
+        font-size: 1.8rem;
+    }
+    
+    .section {
+        padding: 20px 12px;
+        border-radius: 15px;
+    }
+    
+    .step-indicator {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+    
+    .progress-indicator {
+        gap: 10px;
+    }
+    
+    .card {
+        padding: 15px;
+    }
+}

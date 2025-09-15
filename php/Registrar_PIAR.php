@@ -1,16 +1,13 @@
 <?php
-// filepath: php/registrar_piar.php
+// filepath: php/registrar_piar.php - MODIFIED VERSION USING conexion.php
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Configuración de la base de datos
-$servidor = "127.0.0.1";
-$usuario = "root";
-$password = "";
-$base_datos = "ludik";
+// Incluir archivo de conexión universal
+require_once 'conexion.php';
 
 try {
     // Verificar que sea una petición POST
@@ -18,9 +15,10 @@ try {
         throw new Exception('Método no permitido');
     }
     
-    // Conectar a la base de datos
-    $conexion = new PDO("mysql:host=$servidor;dbname=$base_datos;charset=utf8mb4", $usuario, $password);
-    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Usar la conexión del archivo incluido (convertir MySQLi a PDO para consistencia)
+    // Si prefieres mantener MySQLi, podemos modificar el código para usarlo
+    $pdo_conn = new PDO("mysql:host=" . HOST . ";dbname=" . BD . ";charset=utf8mb4", USER, PW);
+    $pdo_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Obtener datos del formulario
     $id_estudiante = $_POST['id_estudiante'] ?? null;
@@ -35,7 +33,7 @@ try {
     }
     
     // Verificar que el estudiante existe
-    $stmt_verificar = $conexion->prepare("SELECT id_estudiante FROM estudiante WHERE id_estudiante = ?");
+    $stmt_verificar = $pdo_conn->prepare("SELECT id_estudiante FROM estudiante WHERE id_estudiante = ?");
     $stmt_verificar->execute([$id_estudiante]);
     
     if ($stmt_verificar->rowCount() === 0) {
@@ -46,10 +44,10 @@ try {
     $consulta = "INSERT INTO piar (id_estudiante, fecha, ajuste, apoyo, barrera) 
                  VALUES (?, ?, ?, ?, ?)";
     
-    $stmt = $conexion->prepare($consulta);
+    $stmt = $pdo_conn->prepare($consulta);
     $stmt->execute([$id_estudiante, $fecha, $ajuste, $apoyo, $barrera]);
     
-    $piar_id = $conexion->lastInsertId();
+    $piar_id = $pdo_conn->lastInsertId();
     
     echo json_encode([
         'success' => true,

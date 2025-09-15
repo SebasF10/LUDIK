@@ -81,33 +81,53 @@ window.addEventListener('focus', eliminarBotonesPorRol);
 document.addEventListener('click', function (e) {
     if (e.target.classList.contains('menu-button')) {
         const texto = e.target.textContent.trim();
-        console.log("Click en:", texto);
+        const textoLower = texto.toLowerCase();
+        
+        console.log("=== DEBUG CLICK ===");
+        console.log("Texto original:", `"${texto}"`);
+        console.log("Texto lowercase:", `"${textoLower}"`);
+        console.log("Caracteres del texto:", Array.from(textoLower).map(c => `${c}(${c.charCodeAt(0)})`));
+        console.log("==================");
 
-        if (texto.toLowerCase().includes('perfil')) {
+        if (textoLower.includes('perfil')) {
+            console.log("-> Redirigiendo a perfil");
             window.location.href = 'perfil.html';
-        } else if (texto.toLowerCase().includes('estudiantes')) {
+        } else if (textoLower.includes('estudiantes')) {
+            console.log("-> Redirigiendo a estudiantes");
             window.location.href = 'Estudiantes.html';
-        } else if (texto.toLowerCase().includes('crear cuentas')) {
+        } else if (textoLower.includes('crear cuentas')) {
+            console.log("-> Redirigiendo a crear cuentas");
             window.location.href = 'Crear_cuentas.html';
-        } else if (texto.toLowerCase().includes('actividades')) {
+        } else if (textoLower.includes('actividades')) {
+            console.log("-> Redirigiendo a actividades");
             window.location.href = 'Actividades.html';
-        } else if (texto.toLowerCase().includes('registrar un nuevo estudiante')) {
+        } else if (textoLower.includes('registrar un nuevo estudiante')) {
+            console.log("-> Redirigiendo a registrar estudiante");
             window.location.href = 'Registrar_estudiante.html';
-
-        } else if (texto.toLowerCase().includes('registrar un piar')) {
+        } else if (textoLower.includes('registrar un piar')) {
+            console.log("-> Redirigiendo a registrar PIAR");
             window.location.href = 'Registrar_PIAR.html';
-
-        } else if (texto.toLowerCase().includes('descripción general')) {
+        } else if (textoLower.includes('descripción general')) {
+            console.log("-> Redirigiendo a descripción general");
             window.location.href = 'Descripción_general.html';
-        } else if (texto.toLowerCase().includes('comunicate')) {
+        } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
+            console.log("-> ¡ENCONTRADO! Redirigiendo a valoración pedagógica");
+            window.location.href = 'valoracion_pedagogica.html';
+        } else if (textoLower.includes('comunicate')) {
+            console.log("-> Redirigiendo a comunicación");
             window.location.href = 'Comunicacion.html';
-        } else if (texto.toLowerCase().includes('ayuda')) {
+        } else if (textoLower.includes('ayuda')) {
+            console.log("-> Redirigiendo a ayuda");
             window.location.href = 'Ayuda.html';
-        } else if (texto.toLowerCase().includes('cerrar sesion') || texto.toLowerCase().includes('cerrar sesión')) {
+        } else if (textoLower.includes('cerrar sesion') || textoLower.includes('cerrar sesión')) {
+            console.log("-> Cerrando sesión");
             if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
                 localStorage.removeItem('rol');
                 window.location.href = 'Inicio_sesion.html';
             }
+        } else {
+            console.log("-> ❌ NO SE ENCONTRÓ COINCIDENCIA");
+            console.log("Texto a comparar:", `"${textoLower}"`);
         }
 
         // Cerrar menú

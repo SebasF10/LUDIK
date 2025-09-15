@@ -1,10 +1,19 @@
 <?php
 // Parámetros BD local
+
 DEFINE('USER', 'root');
 DEFINE('PW', '');
 DEFINE('HOST', 'localhost');
 DEFINE('BD', 'ludik');
 
+
+// Parámetros BD remota (InfinityFree)
+/*
+define('USER', 'if0_39848338');
+define('PW', 'iLov3Window5');
+define('HOST', 'sql113.infinityfree.com');
+define('BD', 'if0_39848338_ludik');
+*/
 // Conexión con la BD
 $conexion = mysqli_connect(HOST, USER, PW, BD);
 
