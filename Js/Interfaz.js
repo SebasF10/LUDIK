@@ -24,35 +24,57 @@ overlay.addEventListener('click', function () {
     document.body.style.overflow = 'auto';
 });
 
-// 🔹 Nueva función: eliminar botones restringidos
+// 🔹 Función mejorada: eliminar botones según rol específico
 function eliminarBotonesPorRol() {
     const rol = localStorage.getItem("rol");
     console.log("Verificando rol:", rol);
 
-    if (rol !== "admin") {
-        // Buscar TODOS los botones del menú
-        const todosLosBotones = document.querySelectorAll('.menu-button');
-        console.log("Botones encontrados:", todosLosBotones.length);
+    // Buscar TODOS los botones del menú
+    const todosLosBotones = document.querySelectorAll('.menu-button');
+    console.log("Botones encontrados:", todosLosBotones.length);
 
-        todosLosBotones.forEach(function (boton, index) {
-            const textoDelBoton = boton.textContent.trim().toLowerCase();
-            console.log(`Botón ${index}: "${textoDelBoton}"`);
+    todosLosBotones.forEach(function (boton, index) {
+        const textoDelBoton = boton.textContent.trim().toLowerCase();
+        console.log(`Botón ${index}: "${textoDelBoton}"`);
 
-            // Ocultar "Crear Cuentas"
+        // Lógica según el rol
+        if (rol === "admin") {
+            // Admin: puede ver todos los botones
+            console.log("Usuario es admin, todos los botones visibles");
+            
+        } else if (rol === "docente_apoyo") {
+            // Docente de apoyo: ocultar solo "Crear Cuentas"
             if (textoDelBoton.includes("crear cuenta")) {
-                console.log("¡Eliminando botón Crear Cuentas!");
+                console.log("¡Eliminando botón Crear Cuentas para docente_apoyo!");
                 boton.remove();
             }
-
-            // Ocultar "Registrar un nuevo estudiante"
+            
+        } else if (rol === "docente") {
+            // Docente regular: ocultar "Crear Cuentas", "Registrar PIAR" y "Registrar estudiante"
+            if (textoDelBoton.includes("crear cuenta")) {
+                console.log("¡Eliminando botón Crear Cuentas para docente!");
+                boton.remove();
+            }
             if (textoDelBoton.includes("registrar un nuevo estudiante")) {
-                console.log("¡Eliminando botón Registrar un nuevo estudiante!");
+                console.log("¡Eliminando botón Registrar un nuevo estudiante para docente!");
                 boton.remove();
             }
-        });
-    } else {
-        console.log("Usuario es admin, botones visibles");
-    }
+            if (textoDelBoton.includes("registrar un piar")) {
+                console.log("¡Eliminando botón Registrar un PIAR para docente!");
+                boton.remove();
+            }
+            
+        } else {
+            // Rol desconocido o sin rol: comportamiento por defecto (ocultar botones administrativos)
+            console.log("Rol desconocido o sin rol, aplicando restricciones por defecto");
+            if (textoDelBoton.includes("crear cuenta") || 
+                textoDelBoton.includes("registrar un nuevo estudiante") || 
+                textoDelBoton.includes("registrar un piar")) {
+                console.log("¡Eliminando botón restringido para usuario sin rol definido!");
+                boton.remove();
+            }
+        }
+    });
 }
 
 // Ejecutar cuando cargue todo
