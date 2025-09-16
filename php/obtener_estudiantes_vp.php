@@ -3,8 +3,9 @@
 session_start();
 header('Content-Type: application/json');
 
-// Verificar que el docente esté logueado
-if (!isset($_SESSION['usuario']['id_docente']) || !isset($_SESSION['rol']) || $_SESSION['rol'] !== 'docente') {
+// Verificar que el usuario esté logueado y tenga rol autorizado
+if (!isset($_SESSION['usuario']) || !isset($_SESSION['rol']) || 
+    !in_array($_SESSION['rol'], ['docente', 'admin', 'docente_apoyo'])) {
     echo json_encode(['success' => false, 'message' => 'No autorizado']);
     exit;
 }
@@ -17,54 +18,86 @@ if (!isset($_GET['id_grupo']) || empty($_GET['id_grupo'])) {
 
 require_once 'conexion.php';
 
-$id_docente = $_SESSION['usuario']['id_docente'];
+$rol = $_SESSION['rol'];
 $id_grupo = intval($_GET['id_grupo']);
 
 try {
-    // Verificar que el docente tiene acceso a este grupo
-    $query_verificacion = "
-        SELECT COUNT(*) as count 
-        FROM asignatura_docente_grupo adg 
-        WHERE adg.id_docente = ? AND adg.id_grupo = ?
-    ";
-    
-    $stmt_verificacion = mysqli_prepare($conexion, $query_verificacion);
-    mysqli_stmt_bind_param($stmt_verificacion, "ii", $id_docente, $id_grupo);
-    mysqli_stmt_execute($stmt_verificacion);
-    $result_verificacion = mysqli_stmt_get_result($stmt_verificacion);
-    $row_verificacion = mysqli_fetch_assoc($result_verificacion);
-    
-    if ($row_verificacion['count'] == 0) {
-        echo json_encode(['success' => false, 'message' => 'No tienes acceso a este grupo']);
-        exit;
+    if ($rol === 'admin' || $rol === 'docente_apoyo') {
+        // Admin y docente_apoyo pueden ver TODOS los estudiantes del grupo sin verificación de acceso
+        $query = "
+            SELECT 
+                e.id_estudiante,
+                e.nombre,
+                e.apellidos,
+                e.tipo_documento,
+                e.no_documento,
+                e.correo,
+                e.telefono,
+                CASE 
+                    WHEN p.id_piar IS NOT NULL THEN 1 
+                    ELSE 0 
+                END as tiene_piar,
+                p.id_piar
+            FROM estudiante e
+            INNER JOIN grupo_estudiante ge ON e.id_estudiante = ge.id_estudiante
+            LEFT JOIN piar p ON e.id_estudiante = p.id_estudiante
+            WHERE ge.id_grupo = ? AND (ge.anio = YEAR(CURDATE()) OR ge.anio IS NULL)
+            ORDER BY e.apellidos, e.nombre
+        ";
+        
+        $stmt = mysqli_prepare($conexion, $query);
+        mysqli_stmt_bind_param($stmt, "i", $id_grupo);
+        
+    } else {
+        // Docente normal: verificar acceso y mostrar estudiantes del grupo
+        $id_docente = $_SESSION['usuario']['id_docente'];
+        
+        // Verificar que el docente tiene acceso a este grupo
+        $query_verificacion = "
+            SELECT COUNT(*) as count 
+            FROM asignatura_docente_grupo adg 
+            WHERE adg.id_docente = ? AND adg.id_grupo = ?
+        ";
+        
+        $stmt_verificacion = mysqli_prepare($conexion, $query_verificacion);
+        mysqli_stmt_bind_param($stmt_verificacion, "ii", $id_docente, $id_grupo);
+        mysqli_stmt_execute($stmt_verificacion);
+        $result_verificacion = mysqli_stmt_get_result($stmt_verificacion);
+        $row_verificacion = mysqli_fetch_assoc($result_verificacion);
+        
+        if ($row_verificacion['count'] == 0) {
+            echo json_encode(['success' => false, 'message' => 'No tienes acceso a este grupo']);
+            exit;
+        }
+        
+        mysqli_stmt_close($stmt_verificacion);
+        
+        // Consulta para obtener los estudiantes del grupo
+        $query = "
+            SELECT 
+                e.id_estudiante,
+                e.nombre,
+                e.apellidos,
+                e.tipo_documento,
+                e.no_documento,
+                e.correo,
+                e.telefono,
+                CASE 
+                    WHEN p.id_piar IS NOT NULL THEN 1 
+                    ELSE 0 
+                END as tiene_piar,
+                p.id_piar
+            FROM estudiante e
+            INNER JOIN grupo_estudiante ge ON e.id_estudiante = ge.id_estudiante
+            LEFT JOIN piar p ON e.id_estudiante = p.id_estudiante
+            WHERE ge.id_grupo = ? AND (ge.anio = YEAR(CURDATE()) OR ge.anio IS NULL)
+            ORDER BY e.apellidos, e.nombre
+        ";
+        
+        $stmt = mysqli_prepare($conexion, $query);
+        mysqli_stmt_bind_param($stmt, "i", $id_grupo);
     }
     
-    mysqli_stmt_close($stmt_verificacion);
-    
-    // Consulta para obtener los estudiantes del grupo con información de PIAR
-    $query = "
-        SELECT 
-            e.id_estudiante,
-            e.nombre,
-            e.apellidos,
-            e.tipo_documento,
-            e.no_documento,
-            e.correo,
-            e.telefono,
-            CASE 
-                WHEN p.id_piar IS NOT NULL THEN 1 
-                ELSE 0 
-            END as tiene_piar,
-            p.id_piar
-        FROM estudiante e
-        INNER JOIN grupo_estudiante ge ON e.id_estudiante = ge.id_estudiante
-        LEFT JOIN piar p ON e.id_estudiante = p.id_estudiante
-        WHERE ge.id_grupo = ? AND (ge.anio = YEAR(CURDATE()) OR ge.anio IS NULL)
-        ORDER BY e.apellidos, e.nombre
-    ";
-    
-    $stmt = mysqli_prepare($conexion, $query);
-    mysqli_stmt_bind_param($stmt, "i", $id_grupo);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     
