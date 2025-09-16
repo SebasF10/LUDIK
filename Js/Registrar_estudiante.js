@@ -1,4 +1,4 @@
-// JAVASCRIPT PARA REGISTRO COMPLETO - LUDIK (CORREGIDO)
+// JAVASCRIPT PARA REGISTRO COMPLETO - LUDIK (MODIFICADO CON SKIP)
 
 // Variables globales
 let currentStep = 1;
@@ -6,6 +6,8 @@ const totalSteps = 11;
 let estudianteRegistradoId = null;
 let estudianteRegistradoNombre = '';
 let isPhase1Complete = false;
+let madreSkipped = false;
+let padreSkipped = false;
 
 // Inicialización cuando se carga la página
 window.onload = function () {
@@ -21,7 +23,184 @@ window.onload = function () {
     document.getElementById('formulario-completo').setAttribute('novalidate', '');
 };
 
-// Configurar event listeners
+// ==================== FUNCIONES PARA MANEJO DE SKIP ====================
+
+function showSkipOptions(type) {
+    const options = document.getElementById(type + '-skip-options');
+    options.classList.add('active');
+}
+
+function cancelSkip(type) {
+    const options = document.getElementById(type + '-skip-options');
+    options.classList.remove('active');
+    // Limpiar radio buttons
+    const radios = document.querySelectorAll(`input[name="${type}_skip_reason"]`);
+    radios.forEach(radio => radio.checked = false);
+}
+
+function confirmSkip(type) {
+    const selectedReason = document.querySelector(`input[name="${type}_skip_reason"]:checked`);
+    
+    if (!selectedReason) {
+        alert('Por favor seleccione una razón para omitir el registro.');
+        return;
+    }
+
+    const reason = selectedReason.value;
+    const reasonText = selectedReason.nextElementSibling.textContent;
+
+    // Validación mejorada: permitir que ambos padres no estén presentes, pero asegurar acudiente
+    if (type === 'madre' && padreSkipped) {
+        const padreReason = document.getElementById('padre_skip_reason_value').value;
+        if (reason === 'no_presente' && padreReason === 'no_presente') {
+            // Ambos padres no presentes es válido, pero recordar sobre el acudiente
+            showAlert('Ambos padres marcados como no presentes. Asegúrese de registrar correctamente los datos del acudiente en el paso 3.', 'warning');
+        }
+    }
+    
+    if (type === 'padre' && madreSkipped) {
+        const madreReason = document.getElementById('madre_skip_reason_value').value;
+        if (reason === 'no_presente' && madreReason === 'no_presente') {
+            // Ambos padres no presentes es válido, pero recordar sobre el acudiente
+            showAlert('Ambos padres marcados como no presentes. Asegúrese de registrar correctamente los datos del acudiente en el paso 3.', 'warning');
+        }
+    }
+
+    // Validación para evitar contradicciones: si un padre es "es_acudiente" y el otro también
+    if (type === 'madre' && padreSkipped) {
+        const padreReason = document.getElementById('padre_skip_reason_value').value;
+        if (reason === 'es_acudiente' && padreReason === 'es_acudiente') {
+            alert('No puede marcar ambos padres como acudientes. Solo uno puede ser el acudiente principal.');
+            return;
+        }
+    }
+    
+    if (type === 'padre' && madreSkipped) {
+        const madreReason = document.getElementById('madre_skip_reason_value').value;
+        if (reason === 'es_acudiente' && madreReason === 'es_acudiente') {
+            alert('No puede marcar ambos padres como acudientes. Solo uno puede ser el acudiente principal.');
+            return;
+        }
+    }
+
+    // Marcar como omitido
+    if (type === 'madre') {
+        madreSkipped = true;
+    } else {
+        padreSkipped = true;
+    }
+
+    // Actualizar UI
+    document.getElementById(type + '-skip-options').classList.remove('active');
+    document.getElementById(type + '-skipped-info').style.display = 'block';
+    document.getElementById(type + '-skip-reason-text').textContent = reasonText;
+    document.getElementById(type + '-form-fields').classList.add('form-disabled');
+
+    // Actualizar campos ocultos
+    document.getElementById(type + '_skipped').value = 'true';
+    document.getElementById(type + '_skip_reason_value').value = reason;
+
+    // Remover required de campos del formulario
+    const formFields = document.getElementById(type + '-form-fields');
+    const requiredFields = formFields.querySelectorAll('[required]');
+    requiredFields.forEach(field => {
+        field.removeAttribute('required');
+        field.setAttribute('data-was-required', 'true');
+    });
+
+    // Mostrar mensaje informativo según la razón
+    let infoMessage = '';
+    if (reason === 'no_presente') {
+        infoMessage = `Se registrará un placeholder indicando que ${type} no está presente.`;
+    } else if (reason === 'es_acudiente') {
+        infoMessage = `Se marcará que ${type} será registrado como acudiente. Los datos se registrarán en el paso 3.`;
+        // Pre-llenar algunos campos del acudiente si es posible
+        prefillCuidadorFields(type);
+    }
+    
+    if (infoMessage) {
+        showAlert(infoMessage, 'warning');
+    }
+}
+
+function prefillCuidadorFields(parentType) {
+    // Esta función se ejecuta cuando un padre será el acudiente
+    // Podría copiar algunos datos básicos si ya se llenaron
+    const parentName = document.getElementById(`${parentType}_nombre`).value;
+    const parentEducation = document.getElementById(`${parentType}_educacion`).value;
+    const parentEmail = document.getElementById(`${parentType}_email`).value;
+    const parentPhone = document.getElementById(`${parentType}_telefono`).value;
+    const parentPassword = document.getElementById(`${parentType}_contrasena`).value;
+    
+    // Solo pre-llenar si hay datos disponibles
+    if (parentName) {
+        // Marcar que estos campos serán pre-llenados en el paso 3
+        sessionStorage.setItem('prefill_cuidador_nombre', parentName);
+        sessionStorage.setItem('prefill_cuidador_educacion', parentEducation);
+        sessionStorage.setItem('prefill_cuidador_email', parentEmail);
+        sessionStorage.setItem('prefill_cuidador_telefono', parentPhone);
+        sessionStorage.setItem('prefill_cuidador_contrasena', parentPassword);
+        sessionStorage.setItem('prefill_cuidador_parentesco', parentType === 'madre' ? 'Madre' : 'Padre');
+    }
+}
+
+function applyCuidadorPrefill() {
+    // Aplicar pre-llenado si está disponible
+    const nombre = sessionStorage.getItem('prefill_cuidador_nombre');
+    if (nombre) {
+        document.getElementById('cuidador_nombre').value = nombre;
+        document.getElementById('cuidador_educacion').value = sessionStorage.getItem('prefill_cuidador_educacion') || '';
+        document.getElementById('cuidador_email').value = sessionStorage.getItem('prefill_cuidador_email') || '';
+        document.getElementById('cuidador_telefono').value = sessionStorage.getItem('prefill_cuidador_telefono') || '';
+        document.getElementById('cuidador_contrasena').value = sessionStorage.getItem('prefill_cuidador_contrasena') || '';
+        document.getElementById('cuidador_parentesco').value = sessionStorage.getItem('prefill_cuidador_parentesco') || '';
+        
+        // Limpiar datos de sesión
+        sessionStorage.removeItem('prefill_cuidador_nombre');
+        sessionStorage.removeItem('prefill_cuidador_educacion');
+        sessionStorage.removeItem('prefill_cuidador_email');
+        sessionStorage.removeItem('prefill_cuidador_telefono');
+        sessionStorage.removeItem('prefill_cuidador_contrasena');
+        sessionStorage.removeItem('prefill_cuidador_parentesco');
+        
+        showAlert('Datos pre-llenados basados en la información del padre/madre. Verifique y complete según sea necesario.', 'success');
+    }
+}
+
+
+function undoSkip(type) {
+    // Restaurar estado
+    if (type === 'madre') {
+        madreSkipped = false;
+    } else {
+        padreSkipped = false;
+    }
+
+    // Actualizar UI
+    document.getElementById(type + '-skipped-info').style.display = 'none';
+    document.getElementById(type + '-form-fields').classList.remove('form-disabled');
+
+    // Limpiar campos ocultos
+    document.getElementById(type + '_skipped').value = 'false';
+    document.getElementById(type + '_skip_reason_value').value = '';
+
+    // Restaurar required en campos del formulario
+    const formFields = document.getElementById(type + '-form-fields');
+    const wasRequiredFields = formFields.querySelectorAll('[data-was-required]');
+    wasRequiredFields.forEach(field => {
+        field.setAttribute('required', '');
+        field.removeAttribute('data-was-required');
+    });
+
+    // Limpiar radio buttons
+    const radios = document.querySelectorAll(`input[name="${type}_skip_reason"]`);
+    radios.forEach(radio => radio.checked = false);
+    
+    showAlert(`Registro de ${type} restaurado. Debe completar los campos requeridos.`, 'success');
+}
+
+// ==================== CONFIGURACIÓN DE EVENT LISTENERS ====================
+
 function setupEventListeners() {
     // Campos condicionales
     document.getElementById('victima_conflicto').addEventListener('change', handleVictimaConflicto);
@@ -71,7 +250,8 @@ function setupEventListeners() {
     document.addEventListener('keydown', handleKeyNavigation);
 }
 
-// Función para validar un campo individual
+// ==================== FUNCIONES DE VALIDACIÓN ====================
+
 function validateField(field) {
     const isRequired = field.hasAttribute('required') || field.hasAttribute('data-originally-required');
     const isEmpty = !field.value.trim();
@@ -87,7 +267,6 @@ function validateField(field) {
     }
 }
 
-// Gestionar atributos required dinámicamente
 function manageRequiredAttributes() {
     const allSteps = document.querySelectorAll('.form-step');
 
@@ -112,7 +291,128 @@ function manageRequiredAttributes() {
     });
 }
 
-// Función para manejar campos condicionales - víctima conflicto
+function validateCurrentStep() {
+    const currentForm = document.getElementById('form-step-' + currentStep);
+    const requiredFields = currentForm.querySelectorAll('[required]');
+    let isValid = true;
+    let firstInvalidField = null;
+
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            field.classList.add('invalid');
+            field.style.borderColor = '#dc3545';
+            if (!firstInvalidField) {
+                firstInvalidField = field;
+            }
+            isValid = false;
+        } else {
+            field.classList.remove('invalid');
+            field.classList.add('valid');
+            field.style.borderColor = '#28a745';
+        }
+    });
+
+    if (!isValid) {
+        showAlert('Por favor complete todos los campos obligatorios del paso actual.', 'error');
+        if (firstInvalidField) {
+            firstInvalidField.focus();
+        }
+        return false;
+    }
+
+    // Validaciones específicas por paso
+    if (currentStep === 4) {
+        return validateStep4();
+    }
+
+    return true;
+}
+
+function validateStep4() {
+    // Validar documento único
+    const documento = document.getElementById('no_documento').value;
+    if (documento && documento.length < 6) {
+        showAlert('El número de documento debe tener al menos 6 caracteres.', 'error');
+        document.getElementById('no_documento').focus();
+        return false;
+    }
+
+    // Validar fecha de nacimiento
+    const fechaNac = new Date(document.getElementById('fecha_nacimiento').value);
+    const hoy = new Date();
+    const edad = hoy.getFullYear() - fechaNac.getFullYear();
+
+    if (edad < 5 || edad > 25) {
+        showAlert('La edad del estudiante debe estar entre 5 y 25 años.', 'error');
+        document.getElementById('fecha_nacimiento').focus();
+        return false;
+    }
+
+    return true;
+}
+
+function validateSteps1to4() {
+    let isValid = true;
+    let firstInvalidStep = null;
+
+    for (let step = 1; step <= 4; step++) {
+        const stepElement = document.getElementById('form-step-' + step);
+        
+        // Skip validation for skipped parents
+        if ((step === 1 && madreSkipped) || (step === 2 && padreSkipped)) {
+            continue;
+        }
+        
+        const fields = stepElement.querySelectorAll('[data-originally-required], [required]');
+
+        for (let field of fields) {
+            if (!field.value.trim()) {
+                if (!firstInvalidStep) {
+                    firstInvalidStep = step;
+                }
+                isValid = false;
+                break;
+            }
+        }
+    }
+
+    if (!isValid && firstInvalidStep) {
+        goToStep(firstInvalidStep);
+        showAlert(`Por favor complete todos los campos obligatorios en el paso ${firstInvalidStep}.`, 'error');
+    }
+
+    return isValid;
+}
+
+function validateAllDescriptionSteps() {
+    let isValid = true;
+    let firstInvalidStep = null;
+
+    for (let step = 5; step <= totalSteps; step++) {
+        const stepElement = document.getElementById('form-step-' + step);
+        const fields = stepElement.querySelectorAll('[data-originally-required], [required]');
+
+        for (let field of fields) {
+            if (!field.value.trim()) {
+                if (!firstInvalidStep) {
+                    firstInvalidStep = step;
+                }
+                isValid = false;
+                break;
+            }
+        }
+    }
+
+    if (!isValid && firstInvalidStep) {
+        goToStep(firstInvalidStep);
+        showAlert(`Por favor complete todos los campos obligatorios en el paso ${firstInvalidStep}.`, 'error');
+    }
+
+    return isValid;
+}
+
+// ==================== MANEJO DE CAMPOS CONDICIONALES ====================
+
 function handleVictimaConflicto() {
     const container = document.getElementById('victima_tipo_container');
     const campo = document.getElementById('victima_tipo');
@@ -128,7 +428,6 @@ function handleVictimaConflicto() {
     }
 }
 
-// Función para manejar campos condicionales - grupo étnico
 function handleGrupoEtnico() {
     const container = document.getElementById('etnico_tipo_container');
     const campo = document.getElementById('etnico_tipo');
@@ -144,7 +443,8 @@ function handleGrupoEtnico() {
     }
 }
 
-// Función para cargar grupos desde la base de datos
+// ==================== CARGA DE DATOS ====================
+
 function cargarGrupos() {
     fetch('php/Cargar_grupos.php')
         .then(response => {
@@ -184,7 +484,8 @@ function cargarGrupos() {
         });
 }
 
-// Función para avanzar al siguiente paso
+// ==================== NAVEGACIÓN ENTRE PASOS ====================
+
 function nextStep() {
     if (validateCurrentStep()) {
         // Si estamos en el paso 4 y aún no se ha completado la fase 1, registrar estudiante
@@ -204,6 +505,11 @@ function nextStep() {
             document.getElementById('form-step-' + currentStep).classList.add('active');
             document.getElementById('step' + currentStep).classList.add('active');
 
+            // Si llegamos al paso 3 (acudiente), verificar y mostrar mensaje adecuado
+            if (currentStep === 3) {
+                updateCuidadorStepMessage();
+            }
+
             // Gestionar atributos required
             manageRequiredAttributes();
             updateButtons();
@@ -220,7 +526,51 @@ function nextStep() {
     }
 }
 
-// Función para retroceder al paso anterior
+function updateCuidadorStepMessage() {
+    const warningDiv = document.querySelector('#form-step-3 .warning-text');
+    const madreReason = document.getElementById('madre_skip_reason_value').value;
+    const padreReason = document.getElementById('padre_skip_reason_value').value;
+    
+    let message = '<strong>Nota:</strong> ';
+    
+    if (madreSkipped && padreSkipped) {
+        if (madreReason === 'no_presente' && padreReason === 'no_presente') {
+            message += 'Ambos padres no están presentes. Es OBLIGATORIO registrar aquí los datos del acudiente responsable del menor (abuelo/a, tío/a, hermano/a mayor, tutor legal, etc.).';
+            warningDiv.style.backgroundColor = '#fff3cd';
+            warningDiv.style.borderColor = '#ffc107';
+            warningDiv.style.color = '#856404';
+        } else if ((madreReason === 'es_acudiente' && padreReason === 'no_presente') || 
+                   (madreReason === 'no_presente' && padreReason === 'es_acudiente')) {
+            const parenteAcudiente = madreReason === 'es_acudiente' ? 'madre' : 'padre';
+            message += `La ${parenteAcudiente} actuará como acudiente. Registre aquí los datos de la ${parenteAcudiente}.`;
+            warningDiv.style.backgroundColor = '#d1ecf1';
+            warningDiv.style.borderColor = '#bee5eb';
+            warningDiv.style.color = '#0c5460';
+            
+            // Aplicar pre-llenado si está disponible
+            applyCuidadorPrefill();
+        }
+    } else if (madreSkipped) {
+        if (madreReason === 'es_acudiente') {
+            message += 'La madre actuará como acudiente. Registre aquí los datos de la madre.';
+            applyCuidadorPrefill();
+        } else {
+            message += 'La madre no está presente. Registre aquí los datos del acudiente principal del estudiante.';
+        }
+    } else if (padreSkipped) {
+        if (padreReason === 'es_acudiente') {
+            message += 'El padre actuará como acudiente. Registre aquí los datos del padre.';
+            applyCuidadorPrefill();
+        } else {
+            message += 'El padre no está presente. Registre aquí los datos del acudiente principal del estudiante.';
+        }
+    } else {
+        message += 'Este registro es obligatorio. Si la madre o el padre es el acudiente principal, registre aquí esa información.';
+    }
+    
+    warningDiv.innerHTML = message;
+}
+
 function previousStep() {
     if (currentStep > 1) {
         // No permitir retroceder más allá del paso 5 si ya se completó la fase 1
@@ -249,7 +599,35 @@ function previousStep() {
     }
 }
 
-// Función para registrar estudiante (Fase 1)
+function goToStep(targetStep) {
+    if (targetStep < 1 || targetStep > totalSteps) return;
+
+    // No permitir ir a pasos anteriores si ya se completó la fase 1
+    if (isPhase1Complete && targetStep < 5) {
+        showAlert('No puede retroceder una vez que el estudiante ha sido registrado en la base de datos.', 'warning');
+        return;
+    }
+
+    // Ocultar paso actual
+    document.getElementById('form-step-' + currentStep).classList.remove('active');
+    document.getElementById('step' + currentStep).classList.remove('active');
+
+    // Mostrar paso objetivo
+    currentStep = targetStep;
+    document.getElementById('form-step-' + currentStep).classList.add('active');
+    document.getElementById('step' + currentStep).classList.add('active');
+
+    // Gestionar required attributes
+    manageRequiredAttributes();
+    updateButtons();
+    updateProgressBar();
+
+    // Scroll suave hacia arriba
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ==================== REGISTRO DE ESTUDIANTE (FASE 1) ====================
+
 function registerStudentPhase1() {
     showLoadingOverlay();
 
@@ -281,7 +659,21 @@ function registerStudentPhase1() {
                 estudianteRegistradoId = data.id_estudiante;
                 estudianteRegistradoNombre = data.data.nombre_completo;
 
-                showAlert(`¡Estudiante registrado exitosamente! ID: ${data.id_estudiante}. Ahora puede proceder con la descripción general.`, 'success');
+                let message = `¡Estudiante registrado exitosamente! ID: ${data.id_estudiante}. `;
+                
+                // Agregar información sobre skips si hay
+                if (data.skip_info) {
+                    if (data.skip_info.madre) {
+                        message += `Madre: ${data.skip_info.madre}. `;
+                    }
+                    if (data.skip_info.padre) {
+                        message += `Padre: ${data.skip_info.padre}. `;
+                    }
+                }
+                
+                message += 'Ahora puede proceder con la descripción general.';
+                
+                showAlert(message, 'success');
 
                 // Avanzar al paso 5
                 document.getElementById('form-step-' + currentStep).classList.remove('active');
@@ -313,7 +705,6 @@ function registerStudentPhase1() {
         });
 }
 
-// Función para configurar el paso de descripción
 function setupDescripcionStep() {
     const selectEstudiante = document.getElementById('id_estudiante_descripcion');
 
@@ -327,101 +718,6 @@ function setupDescripcionStep() {
     }
 }
 
-// Función para actualizar la visibilidad de los botones
-function updateButtons() {
-    const btnAnterior = document.getElementById('btnAnterior');
-    const btnSiguiente = document.getElementById('btnSiguiente');
-    const btnRegistrar = document.getElementById('btnRegistrar');
-
-    // Mostrar/ocultar botón anterior
-    btnAnterior.style.display = currentStep > 1 ? 'inline-block' : 'none';
-
-    // Mostrar/ocultar botones siguiente y registrar
-    if (currentStep === totalSteps) {
-        btnSiguiente.style.display = 'none';
-        btnRegistrar.style.display = 'inline-block';
-        btnRegistrar.textContent = 'Completar Descripción General';
-    } else if (currentStep === 4 && !isPhase1Complete) {
-        btnSiguiente.textContent = 'Registrar Estudiante';
-    } else {
-        btnSiguiente.style.display = 'inline-block';
-        btnRegistrar.style.display = 'none';
-        btnSiguiente.textContent = 'Siguiente';
-    }
-}
-
-// Función para actualizar barra de progreso
-function updateProgressBar() {
-    const progressBar = document.getElementById('progressBar');
-    if (progressBar) {
-        const progress = (currentStep / totalSteps) * 100;
-        progressBar.style.width = progress + '%';
-    }
-}
-
-// Función para validar el paso actual
-function validateCurrentStep() {
-    const currentForm = document.getElementById('form-step-' + currentStep);
-    const requiredFields = currentForm.querySelectorAll('[required]');
-    let isValid = true;
-    let firstInvalidField = null;
-
-    requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-            field.classList.add('invalid');
-            field.style.borderColor = '#dc3545';
-            if (!firstInvalidField) {
-                firstInvalidField = field;
-            }
-            isValid = false;
-        } else {
-            field.classList.remove('invalid');
-            field.classList.add('valid');
-            field.style.borderColor = '#28a745';
-        }
-    });
-
-    if (!isValid) {
-        showAlert('Por favor complete todos los campos obligatorios del paso actual.', 'error');
-        if (firstInvalidField) {
-            firstInvalidField.focus();
-        }
-        return false;
-    }
-
-    // Validaciones específicas por paso
-    if (currentStep === 4) {
-        return validateStep4();
-    }
-
-    return true;
-}
-
-// Validaciones específicas para el paso 4
-function validateStep4() {
-    // Validar documento único
-    const documento = document.getElementById('no_documento').value;
-    if (documento && documento.length < 6) {
-        showAlert('El número de documento debe tener al menos 6 caracteres.', 'error');
-        document.getElementById('no_documento').focus();
-        return false;
-    }
-
-    // Validar fecha de nacimiento
-    const fechaNac = new Date(document.getElementById('fecha_nacimiento').value);
-    const hoy = new Date();
-    const edad = hoy.getFullYear() - fechaNac.getFullYear();
-
-    if (edad < 5 || edad > 25) {
-        showAlert('La edad del estudiante debe estar entre 5 y 25 años.', 'error');
-        document.getElementById('fecha_nacimiento').focus();
-        return false;
-    }
-
-    return true;
-}
-
-// Restaurar required para fase 1 (pasos 1-4)
 function restoreAllRequiredAttributesForPhase1() {
     for (let step = 1; step <= 4; step++) {
         const stepElement = document.getElementById('form-step-' + step);
@@ -432,91 +728,8 @@ function restoreAllRequiredAttributesForPhase1() {
     }
 }
 
-// Validar pasos 1 a 4 para fase 1
-function validateSteps1to4() {
-    let isValid = true;
-    let firstInvalidStep = null;
+// ==================== REGISTRO DE DESCRIPCIÓN (FASE 2) ====================
 
-    for (let step = 1; step <= 4; step++) {
-        const stepElement = document.getElementById('form-step-' + step);
-        const fields = stepElement.querySelectorAll('[data-originally-required], [required]');
-
-        for (let field of fields) {
-            if (!field.value.trim()) {
-                if (!firstInvalidStep) {
-                    firstInvalidStep = step;
-                }
-                isValid = false;
-                break;
-            }
-        }
-    }
-
-    if (!isValid && firstInvalidStep) {
-        goToStep(firstInvalidStep);
-        showAlert(`Por favor complete todos los campos obligatorios en el paso ${firstInvalidStep}.`, 'error');
-    }
-
-    return isValid;
-}
-
-// Validar todos los pasos para fase 2 (pasos 5-11)
-function validateAllDescriptionSteps() {
-    let isValid = true;
-    let firstInvalidStep = null;
-
-    for (let step = 5; step <= totalSteps; step++) {
-        const stepElement = document.getElementById('form-step-' + step);
-        const fields = stepElement.querySelectorAll('[data-originally-required], [required]');
-
-        for (let field of fields) {
-            if (!field.value.trim()) {
-                if (!firstInvalidStep) {
-                    firstInvalidStep = step;
-                }
-                isValid = false;
-                break;
-            }
-        }
-    }
-
-    if (!isValid && firstInvalidStep) {
-        goToStep(firstInvalidStep);
-        showAlert(`Por favor complete todos los campos obligatorios en el paso ${firstInvalidStep}.`, 'error');
-    }
-
-    return isValid;
-}
-
-// Ir a un paso específico
-function goToStep(targetStep) {
-    if (targetStep < 1 || targetStep > totalSteps) return;
-
-    // No permitir ir a pasos anteriores si ya se completó la fase 1
-    if (isPhase1Complete && targetStep < 5) {
-        showAlert('No puede retroceder una vez que el estudiante ha sido registrado en la base de datos.', 'warning');
-        return;
-    }
-
-    // Ocultar paso actual
-    document.getElementById('form-step-' + currentStep).classList.remove('active');
-    document.getElementById('step' + currentStep).classList.remove('active');
-
-    // Mostrar paso objetivo
-    currentStep = targetStep;
-    document.getElementById('form-step-' + currentStep).classList.add('active');
-    document.getElementById('step' + currentStep).classList.add('active');
-
-    // Gestionar required attributes
-    manageRequiredAttributes();
-    updateButtons();
-    updateProgressBar();
-
-    // Scroll suave hacia arriba
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Función para manejar el envío del formulario (Fase 2)
 function handleFormSubmit(event) {
     event.preventDefault();
 
@@ -577,7 +790,38 @@ function handleFormSubmit(event) {
         });
 }
 
-// Función para mostrar mensajes de alerta
+// ==================== FUNCIONES DE UI ====================
+
+function updateButtons() {
+    const btnAnterior = document.getElementById('btnAnterior');
+    const btnSiguiente = document.getElementById('btnSiguiente');
+    const btnRegistrar = document.getElementById('btnRegistrar');
+
+    // Mostrar/ocultar botón anterior
+    btnAnterior.style.display = currentStep > 1 ? 'inline-block' : 'none';
+
+    // Mostrar/ocultar botones siguiente y registrar
+    if (currentStep === totalSteps) {
+        btnSiguiente.style.display = 'none';
+        btnRegistrar.style.display = 'inline-block';
+        btnRegistrar.textContent = 'Completar Descripción General';
+    } else if (currentStep === 4 && !isPhase1Complete) {
+        btnSiguiente.textContent = 'Registrar Estudiante';
+    } else {
+        btnSiguiente.style.display = 'inline-block';
+        btnRegistrar.style.display = 'none';
+        btnSiguiente.textContent = 'Siguiente';
+    }
+}
+
+function updateProgressBar() {
+    const progressBar = document.getElementById('progressBar');
+    if (progressBar) {
+        const progress = (currentStep / totalSteps) * 100;
+        progressBar.style.width = progress + '%';
+    }
+}
+
 function showAlert(message, type = 'success') {
     // Remover alertas existentes
     const existingAlerts = document.querySelectorAll('.alert');
@@ -603,7 +847,6 @@ function showAlert(message, type = 'success') {
     alertDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-// Mostrar overlay de loading
 function showLoadingOverlay() {
     let overlay = document.getElementById('formLoading');
     if (!overlay) {
@@ -619,7 +862,6 @@ function showLoadingOverlay() {
     overlay.style.display = 'flex';
 }
 
-// Ocultar overlay de loading
 function hideLoadingOverlay() {
     const overlay = document.getElementById('formLoading');
     if (overlay) {
@@ -627,7 +869,6 @@ function hideLoadingOverlay() {
     }
 }
 
-// Función para reiniciar el formulario
 function resetForm() {
     const form = document.getElementById('formulario-completo');
     form.reset();
@@ -636,6 +877,16 @@ function resetForm() {
     estudianteRegistradoId = null;
     estudianteRegistradoNombre = '';
     isPhase1Complete = false;
+    madreSkipped = false;
+    padreSkipped = false;
+
+    // Limpiar sessionStorage de pre-llenado
+    sessionStorage.removeItem('prefill_cuidador_nombre');
+    sessionStorage.removeItem('prefill_cuidador_educacion');
+    sessionStorage.removeItem('prefill_cuidador_email');
+    sessionStorage.removeItem('prefill_cuidador_telefono');
+    sessionStorage.removeItem('prefill_cuidador_contrasena');
+    sessionStorage.removeItem('prefill_cuidador_parentesco');
 
     // Ocultar todos los pasos excepto el primero
     document.querySelectorAll('.form-step').forEach(step => {
@@ -660,6 +911,21 @@ function resetForm() {
     document.getElementById('victima_tipo_container').style.display = 'none';
     document.getElementById('etnico_tipo_container').style.display = 'none';
 
+    // Reset skip states
+    document.getElementById('madre-skipped-info').style.display = 'none';
+    document.getElementById('padre-skipped-info').style.display = 'none';
+    document.getElementById('madre-form-fields').classList.remove('form-disabled');
+    document.getElementById('padre-form-fields').classList.remove('form-disabled');
+
+    // Restaurar mensaje original del cuidador
+    const warningDiv = document.querySelector('#form-step-3 .warning-text');
+    if (warningDiv) {
+        warningDiv.innerHTML = '<strong>Nota:</strong> Este registro es obligatorio. Si la madre o el padre es el acudiente principal, registre aquí esa información.';
+        warningDiv.style.backgroundColor = '';
+        warningDiv.style.borderColor = '';
+        warningDiv.style.color = '#856404';
+    }
+
     // Reconfigurar required attributes
     manageRequiredAttributes();
     updateButtons();
@@ -669,7 +935,8 @@ function resetForm() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Función para navegación con teclado
+// ==================== NAVEGACIÓN CON TECLADO ====================
+
 function handleKeyNavigation(event) {
     if (event.ctrlKey) {
         switch (event.key) {
@@ -689,26 +956,28 @@ function handleKeyNavigation(event) {
     }
 }
 
-// Asignar el manejador de eventos al formulario cuando se carga
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('formulario-completo');
-    if (form) {
-        form.addEventListener('submit', handleFormSubmit);
-    }
-});
+// ==================== FUNCIONES DE UTILIDAD ====================
 
-// Función de utilidad para debugging
+function goBackOrRedirect(ruta) {
+    if (ruta && ruta.trim() !== '') {
+        window.location.href = ruta;
+    } else {
+        window.history.back();
+    }
+}
+
 function debugInfo() {
     console.log('Estado actual del formulario:');
     console.log('Paso actual:', currentStep);
     console.log('Total de pasos:', totalSteps);
     console.log('ID estudiante registrado:', estudianteRegistradoId);
     console.log('Fase 1 completa:', isPhase1Complete);
+    console.log('Madre omitida:', madreSkipped);
+    console.log('Padre omitido:', padreSkipped);
 
     const gruposSelect = document.getElementById('id_grupo');
     console.log('Grupos cargados:', gruposSelect ? gruposSelect.options.length - 1 : 0);
 
-    // Mostrar campos con required
     const requiredFields = document.querySelectorAll('[required]');
     console.log('Campos required activos:', requiredFields.length);
 
@@ -716,10 +985,11 @@ function debugInfo() {
     console.log('Campos originally required:', originallyRequired.length);
 }
 
-function goBackOrRedirect(ruta) {
-    if (ruta && ruta.trim() !== '') {
-        window.location.href = ruta;   // Ir a la ruta que pongas
-    } else {
-        window.history.back();         // Si está vacío, volver atrás
+// ==================== INICIALIZACIÓN ====================
+
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('formulario-completo');
+    if (form) {
+        form.addEventListener('submit', handleFormSubmit);
     }
-}
+});

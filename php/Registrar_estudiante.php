@@ -1,5 +1,5 @@
 <?php
-// Registrar_estudiante.php - MODIFIED VERSION USING conexion.php
+// Registrar_estudiante.php - MODIFIED VERSION WITH SKIP FUNCTIONALITY
 header('Content-Type: application/json; charset=utf-8');
 
 // Incluir archivo de conexión universal
@@ -46,53 +46,119 @@ try {
 // Nota: No cerramos la conexión aquí ya que se maneja en conexion.php
 
 function registerStudentAndFamily($conn) {
-    // STEP 1: Register Mother
-    $madre_data = [
-        'nombre_completo' => trim($_POST['madre_nombre'] ?? ''),
-        'nivel_educativo' => trim($_POST['madre_educacion'] ?? ''),
-        'ocupacion' => trim($_POST['madre_ocupacion'] ?? ''),
-        'email' => trim($_POST['madre_email'] ?? ''),
-        'telefono' => trim($_POST['madre_telefono'] ?? ''),
-        'contrasena' => trim($_POST['madre_contrasena'] ?? '')
-    ];
+    $ids = [];
     
-    if (empty($madre_data['nombre_completo']) || empty($madre_data['nivel_educativo']) || empty($madre_data['ocupacion'])) {
-        throw new Exception("Faltan datos obligatorios de la madre");
+    // STEP 1: Register Mother (with skip handling)
+    $madre_skipped = $_POST['madre_skipped'] ?? 'false';
+    
+    if ($madre_skipped === 'true') {
+        $skip_reason = $_POST['madre_skip_reason_value'] ?? '';
+        
+        if ($skip_reason === 'no_presente') {
+            // Insert placeholder record for mother not present
+            $stmt = $conn->prepare("INSERT INTO madre (nombre_completo, nivel_educativo, ocupacion, email, telefono, contrasena) VALUES (?, ?, ?, ?, ?, ?)");
+            $placeholder_data = ['NO_REGISTRADA', 'N/A', 'No presente', '', '', ''];
+            $stmt->bind_param("ssssss", ...$placeholder_data);
+            
+            if (!$stmt->execute()) {
+                throw new Exception("Error insertando placeholder madre: " . $stmt->error);
+            }
+            $id_madre = $conn->insert_id;
+            $stmt->close();
+            
+        } elseif ($skip_reason === 'es_acudiente') {
+            // Insert marker record indicating mother will be the caregiver
+            $stmt = $conn->prepare("INSERT INTO madre (nombre_completo, nivel_educativo, ocupacion, email, telefono, contrasena) VALUES (?, ?, ?, ?, ?, ?)");
+            $marker_data = ['REGISTRADA_COMO_ACUDIENTE', 'Ver acudiente', 'Ver datos de acudiente', '', '', ''];
+            $stmt->bind_param("ssssss", ...$marker_data);
+            
+            if (!$stmt->execute()) {
+                throw new Exception("Error insertando marker madre: " . $stmt->error);
+            }
+            $id_madre = $conn->insert_id;
+            $stmt->close();
+        }
+    } else {
+        // Normal mother registration
+        $madre_data = [
+            'nombre_completo' => trim($_POST['madre_nombre'] ?? ''),
+            'nivel_educativo' => trim($_POST['madre_educacion'] ?? ''),
+            'ocupacion' => trim($_POST['madre_ocupacion'] ?? ''),
+            'email' => trim($_POST['madre_email'] ?? ''),
+            'telefono' => trim($_POST['madre_telefono'] ?? ''),
+            'contrasena' => trim($_POST['madre_contrasena'] ?? '')
+        ];
+        
+        if (empty($madre_data['nombre_completo']) || empty($madre_data['nivel_educativo']) || empty($madre_data['ocupacion'])) {
+            throw new Exception("Faltan datos obligatorios de la madre");
+        }
+        
+        $stmt = $conn->prepare("INSERT INTO madre (nombre_completo, nivel_educativo, ocupacion, email, telefono, contrasena) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $madre_data['nombre_completo'], $madre_data['nivel_educativo'], $madre_data['ocupacion'], $madre_data['email'], $madre_data['telefono'], $madre_data['contrasena']);
+        
+        if (!$stmt->execute()) {
+            throw new Exception("Error insertando madre: " . $stmt->error);
+        }
+        $id_madre = $conn->insert_id;
+        $stmt->close();
     }
     
-    $stmt = $conn->prepare("INSERT INTO madre (nombre_completo, nivel_educativo, ocupacion, email, telefono, contrasena) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $madre_data['nombre_completo'], $madre_data['nivel_educativo'], $madre_data['ocupacion'], $madre_data['email'], $madre_data['telefono'], $madre_data['contrasena']);
+    // STEP 2: Register Father (with skip handling)
+    $padre_skipped = $_POST['padre_skipped'] ?? 'false';
     
-    if (!$stmt->execute()) {
-        throw new Exception("Error insertando madre: " . $stmt->error);
+    if ($padre_skipped === 'true') {
+        $skip_reason = $_POST['padre_skip_reason_value'] ?? '';
+        
+        if ($skip_reason === 'no_presente') {
+            // Insert placeholder record for father not present
+            $stmt = $conn->prepare("INSERT INTO padre (nombre_completo, nivel_educativo, ocupacion, email, telefono, contrasena) VALUES (?, ?, ?, ?, ?, ?)");
+            $placeholder_data = ['NO_REGISTRADO', 'N/A', 'No presente', '', '', ''];
+            $stmt->bind_param("ssssss", ...$placeholder_data);
+            
+            if (!$stmt->execute()) {
+                throw new Exception("Error insertando placeholder padre: " . $stmt->error);
+            }
+            $id_padre = $conn->insert_id;
+            $stmt->close();
+            
+        } elseif ($skip_reason === 'es_acudiente') {
+            // Insert marker record indicating father will be the caregiver
+            $stmt = $conn->prepare("INSERT INTO padre (nombre_completo, nivel_educativo, ocupacion, email, telefono, contrasena) VALUES (?, ?, ?, ?, ?, ?)");
+            $marker_data = ['REGISTRADO_COMO_ACUDIENTE', 'Ver acudiente', 'Ver datos de acudiente', '', '', ''];
+            $stmt->bind_param("ssssss", ...$marker_data);
+            
+            if (!$stmt->execute()) {
+                throw new Exception("Error insertando marker padre: " . $stmt->error);
+            }
+            $id_padre = $conn->insert_id;
+            $stmt->close();
+        }
+    } else {
+        // Normal father registration
+        $padre_data = [
+            'nombre_completo' => trim($_POST['padre_nombre'] ?? ''),
+            'nivel_educativo' => trim($_POST['padre_educacion'] ?? ''),
+            'ocupacion' => trim($_POST['padre_ocupacion'] ?? ''),
+            'email' => trim($_POST['padre_email'] ?? ''),
+            'telefono' => trim($_POST['padre_telefono'] ?? ''),
+            'contrasena' => trim($_POST['padre_contrasena'] ?? '')
+        ];
+        
+        if (empty($padre_data['nombre_completo']) || empty($padre_data['nivel_educativo']) || empty($padre_data['ocupacion'])) {
+            throw new Exception("Faltan datos obligatorios del padre");
+        }
+        
+        $stmt = $conn->prepare("INSERT INTO padre (nombre_completo, nivel_educativo, ocupacion, email, telefono, contrasena) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $padre_data['nombre_completo'], $padre_data['nivel_educativo'], $padre_data['ocupacion'], $padre_data['email'], $padre_data['telefono'], $padre_data['contrasena']);
+        
+        if (!$stmt->execute()) {
+            throw new Exception("Error insertando padre: " . $stmt->error);
+        }
+        $id_padre = $conn->insert_id;
+        $stmt->close();
     }
-    $id_madre = $conn->insert_id;
-    $stmt->close();
     
-    // STEP 2: Register Father
-    $padre_data = [
-        'nombre_completo' => trim($_POST['padre_nombre'] ?? ''),
-        'nivel_educativo' => trim($_POST['padre_educacion'] ?? ''),
-        'ocupacion' => trim($_POST['padre_ocupacion'] ?? ''),
-        'email' => trim($_POST['padre_email'] ?? ''),
-        'telefono' => trim($_POST['padre_telefono'] ?? ''),
-        'contrasena' => trim($_POST['padre_contrasena'] ?? '')
-    ];
-    
-    if (empty($padre_data['nombre_completo']) || empty($padre_data['nivel_educativo']) || empty($padre_data['ocupacion'])) {
-        throw new Exception("Faltan datos obligatorios del padre");
-    }
-    
-    $stmt = $conn->prepare("INSERT INTO padre (nombre_completo, nivel_educativo, ocupacion, email, telefono, contrasena) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $padre_data['nombre_completo'], $padre_data['nivel_educativo'], $padre_data['ocupacion'], $padre_data['email'], $padre_data['telefono'], $padre_data['contrasena']);
-    
-    if (!$stmt->execute()) {
-        throw new Exception("Error insertando padre: " . $stmt->error);
-    }
-    $id_padre = $conn->insert_id;
-    $stmt->close();
-    
-    // STEP 3: Register Caregiver
+    // STEP 3: Register Caregiver (always required)
     $cuidador_data = [
         'nombre_completo' => trim($_POST['cuidador_nombre'] ?? ''),
         'nivel_educativo' => trim($_POST['cuidador_educacion'] ?? ''),
@@ -103,7 +169,7 @@ function registerStudentAndFamily($conn) {
     ];
     
     if (empty($cuidador_data['nombre_completo']) || empty($cuidador_data['nivel_educativo']) || empty($cuidador_data['parentesco'])) {
-        throw new Exception("Faltan datos obligatorios del cuidador");
+        throw new Exception("Faltan datos obligatorios del cuidador/acudiente");
     }
     
     $stmt = $conn->prepare("INSERT INTO acudiente (nombre_completo, nivel_educativo, parentesco, email, telefono, contrasena) VALUES (?, ?, ?, ?, ?, ?)");
@@ -208,11 +274,21 @@ function registerStudentAndFamily($conn) {
         $stmt->close();
     }
     
+    // Prepare response with skip information
+    $skip_info = [];
+    if ($madre_skipped === 'true') {
+        $skip_info['madre'] = $_POST['madre_skip_reason_value'] ?? '';
+    }
+    if ($padre_skipped === 'true') {
+        $skip_info['padre'] = $_POST['padre_skip_reason_value'] ?? '';
+    }
+    
     return [
         'success' => true,
         'phase' => 1,
         'id_estudiante' => $id_estudiante,
         'message' => 'Estudiante y familia registrados exitosamente. Ahora puede proceder con la descripción general.',
+        'skip_info' => $skip_info,
         'data' => [
             'id_madre' => $id_madre,
             'id_padre' => $id_padre,
