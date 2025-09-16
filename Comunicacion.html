@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunicación - Docentes</title>
+    <link rel="stylesheet" href="Css\Comunicacion.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Comunicación con Docentes</h1>
+            <p>Encuentra la información de contacto de nuestros docentes</p>
+        </header>
+
+        <div class="controls">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Buscar docente por nombre...">
+                <button id="searchBtn" class="btn btn-search">🔍 Buscar</button>
+            </div>
+            <div class="button-container">
+                <button id="showAllBtn" class="btn btn-primary">Ver Todos los Docentes</button>
+                <button id="clearBtn" class="btn btn-secondary">Limpiar Búsqueda</button>
+            </div>
+        </div>
+
+        <div class="results-info">
+            <span id="resultsCount">0</span> docentes encontrados
+        </div>
+
+        <div id="loading" class="loading">Cargando...</div>
+        <div id="error" class="error"></div>
+
+        <div id="docentesContainer" class="docentes-grid">
+            <!-- Los docentes se cargarán aquí dinámicamente -->
+        </div>
+    </div>
+
+    <script src="Js\Comunicacion.js"></script>
+</body>
+
+</html>

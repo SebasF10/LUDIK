@@ -1,0 +1,300 @@
+/* Comunicacion.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+    color: #333;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.header p {
+    color: #666;
+    font-size: 1.2em;
+}
+
+.controls {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    min-width: 250px;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.button-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn-search {
+    background: #28a745;
+    color: white;
+    min-width: 120px;
+}
+
+.btn-search:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+.results-info {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #333;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: white;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: none;
+}
+
+.error {
+    background: #dc3545;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: none;
+}
+
+.docentes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.docente-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    border-left: 5px solid #667eea;
+}
+
+.docente-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.docente-header {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.docente-nombre {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.docente-email {
+    color: #667eea;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.docente-email:hover {
+    color: #764ba2;
+}
+
+.materias-section h4 {
+    color: #333;
+    font-size: 1.1em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.materias-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.materia-tag {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.grupos-section {
+    margin-top: 15px;
+}
+
+.grupos-section h4 {
+    color: #333;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.grupos-list {
+    color: #666;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.director-badge {
+    background: #ffc107;
+    color: #333;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 10px;
+}
+
+.no-results {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.no-results h3 {
+    color: #666;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.no-results p {
+    color: #999;
+    font-size: 1.1em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .header h1 {
+        font-size: 2em;
+    }
+
+    .search-container {
+        flex-direction: column;
+    }
+
+    .button-container {
+        justify-content: center;
+    }
+
+    .docentes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .search-container .btn {
+        width: auto;
+    }
+}
