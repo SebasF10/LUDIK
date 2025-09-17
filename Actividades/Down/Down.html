@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUDIK - Actividades Interactivas</title>
+  <link rel="stylesheet" href="Down.css">
+</head>
+<body>
+  <header>
+    <h1>LUDIK</h1>
+    <p>Aprende y refuerza conocimientos de forma divertida</p>
+  </header>
+  <a href="../../Ejercicios.html" class="btn--regresar">
+    ⬅ Regresar
+  </a>
+  <!-- MENÚ PRINCIPAL -->
+  <section id="menu" class="contenedor">
+    <h2>Selecciona una categoría y modo</h2>
+    <div class="menu-opciones">
+      <div class="categoria">
+        <h3>Colores</h3>
+        <button data-categoria="colores" data-modo="practica">Práctica</button>
+        <button data-categoria="colores" data-modo="evaluacion">Evaluación</button>
+      </div>
+      <div class="categoria">
+        <h3>Animales</h3>
+        <button data-categoria="animales" data-modo="practica">Práctica</button>
+        <button data-categoria="animales" data-modo="evaluacion">Evaluación</button>
+      </div>
+      <div class="categoria">
+        <h3>Números</h3>
+        <button data-categoria="numeros" data-modo="practica">Práctica</button>
+        <button data-categoria="numeros" data-modo="evaluacion">Evaluación</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZONA DE ACTIVIDADES -->
+  <section id="actividad" class="contenedor" style="display:none;">
+    <div class="encabezado">
+      <h2 id="instruccion"></h2>
+      <div id="marcador"></div>
+    </div>
+    <div id="opciones" class="opciones"></div>
+    <div class="controles">
+      <button id="btn-repetir" disabled>Repetir Instrucción</button>
+      <button id="btn-siguiente" disabled>Siguiente</button>
+      <button id="btn-volver">Volver al Menú</button>
+    </div>
+    <div id="retro" class="retro"></div>
+  </section>
+
+  <footer>
+    <p>© 2025 LUDIK - Actividades Inclusivas</p>
+  </footer>
+
+  <script src="Down.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actividades para Disfasia</title>
+  <link rel="stylesheet" href="Disfasia.css">
+</head>
+<body>
+  <header>
+    <h1>Actividades para Disfasia</h1>
+    <p>Plataforma inclusiva para apoyar el aprendizaje</p>
+  </header>
+
+  <!-- Botón que SOLO debe mostrarse en el menú principal -->
+  <a id="btnRegresarPrincipal" href="../../Ejercicios.html" class="btn--regresar">
+    ⬅ Regresar
+  </a>
+
+  <div class="contenedor">
+    <div id="menu-principal" class="menu-opciones">
+      <div class="menu-actividades">
+        <div class="categoria">
+          <h3>Sílabas</h3>
+          <button data-actividad="silabas">Ver apartados</button>
+        </div>
+        <div class="categoria">
+          <h3>Palabras ↔ Imagen</h3>
+          <button data-actividad="palabras">Ver apartados</button>
+        </div>
+        <div class="categoria">
+          <h3>Historias</h3>
+          <button data-actividad="historias">Ver apartados</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="vista-actividad" hidden></div>
+  </div>
+
+  <footer>
+    <p>© 2025 Plataforma Inclusiva</p>
+  </footer>
+
+  <script src="Disfasia.js"></script>
+</body>
+</html>

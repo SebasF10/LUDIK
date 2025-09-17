@@ -1,0 +1,261 @@
+:root {
+  --color-fondo: #f0f4f8;
+  --color-principal: #4f46e5;
+  --color-secundario: #06b6d4;
+  --color-acento: #fbbf24;
+  --color-texto: #1f2937;
+  --color-card: #ffffff;
+  --sombra: 0 6px 16px rgba(0, 0, 0, 0.1);
+  --radio: 20px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  line-height: 1.6;
+  font-size: 18px;
+}
+
+header {
+  background: linear-gradient(90deg, var(--color-principal), var(--color-secundario));
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  box-shadow: var(--sombra);
+}
+
+header h1 {
+  font-size: 2.5rem;
+}
+
+header p {
+  font-size: 1.2rem;
+}
+
+.contenedor {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.menu-actividades {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.menu-actividades button {
+  background: var(--color-acento);
+  color: #000;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.menu-actividades button:hover {
+  background: #fcd34d;
+  transform: scale(1.05);
+}
+
+.actividad {
+  background: var(--color-card);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 20px;
+  animation: aparecer 0.5s ease forwards;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.opciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* TARJETAS BONITAS PARA NIÑOS CON SÍNDROME DE DOWN */
+.tarjeta-bonita {
+  background: linear-gradient(135deg, #fff, #f8fafc);
+  border: 3px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tarjeta-bonita:hover {
+  border-color: var(--color-secundario);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #ffffff, #e0f2fe);
+}
+
+.tarjeta-bonita:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+.tarjeta-bonita p {
+  margin-top: 10px;
+  color: var(--color-texto);
+  font-size: 20px;
+}
+
+.tarjeta {
+  background: var(--color-fondo);
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+}
+
+.tarjeta:hover {
+  border-color: var(--color-secundario);
+  transform: translateY(-3px);
+}
+
+.tarjeta.correcta {
+  border-color: var(--color-principal);
+  background: #d1fae5;
+}
+
+.tarjeta.incorrecta {
+  border-color: #ef4444;
+  background: #fee2e2;
+}
+
+/* INSTRUCCIONES MÁS VISIBLES */
+#instruccion {
+  font-size: 2rem;
+  color: var(--color-principal);
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  background: rgba(79, 70, 229, 0.1);
+  padding: 15px;
+  border-radius: 15px;
+  border-left: 5px solid var(--color-principal);
+}
+
+#marcador {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--color-secundario);
+  font-weight: bold;
+}
+
+#retro {
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold;
+  min-height: 40px;
+}
+
+/* BOTONES DE CONTROL MEJORADOS */
+.controles {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.controles button {
+  background: #06b6d4;
+  color: white;
+  border: none;
+  padding: 16px 28px;
+  margin: 8px;
+  border-radius: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+.controles button:hover:not(:disabled) {
+  background: #0ea5e9;
+  transform: scale(1.05);
+}
+
+.controles button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ESTILOS DEL MENÚ */
+.menu-opciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.categoria {
+  background: var(--color-card);
+  padding: 25px;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  text-align: center;
+}
+
+.categoria h3 {
+  font-size: 1.5rem;
+  color: var(--color-principal);
+  margin-bottom: 15px;
+}
+
+.categoria button {
+  background: var(--color-acento);
+  color: #000;
+  border: none;
+  padding: 15px 25px;
+  margin: 5px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: transform 0.2s ease, background 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.categoria button:hover {
+  background: #fcd34d;
+  transform: scale(1.05);
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--color-texto);
+  opacity: 0.7;
+}

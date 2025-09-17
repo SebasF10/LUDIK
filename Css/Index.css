@@ -39,7 +39,8 @@ header {
     transform: none !important;
 }
 
-.lado-izq, .lado-der {
+.lado-izq,
+.lado-der {
     display: flex;
     align-items: center;
     gap: 15px;
@@ -50,7 +51,8 @@ header {
     justify-content: flex-end;
 }
 
-.logo-institucion, .logo-ludik {
+.logo-institucion,
+.logo-ludik {
     width: 50px;
     height: 50px;
     object-fit: cover;
@@ -59,7 +61,8 @@ header {
     transition: transform 0.3s ease;
 }
 
-.logo-institucion:hover, .logo-ludik:hover {
+.logo-institucion:hover,
+.logo-ludik:hover {
     transform: scale(1.05);
 }
 
@@ -112,7 +115,8 @@ header {
 .main-content {
     background: white;
     margin: 40px auto;
-    margin-top: 120px; /* Espacio para el header fijo */
+    margin-top: 120px;
+    /* Espacio para el header fijo */
     max-width: 1200px;
     border-radius: 24px;
     overflow: hidden;
@@ -155,14 +159,16 @@ header {
     z-index: -1;
 }
 
-.nav-btn:hover, .nav-btn.active {
+.nav-btn:hover,
+.nav-btn.active {
     color: white;
     border-color: transparent;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
 }
 
-.nav-btn:hover::before, .nav-btn.active::before {
+.nav-btn:hover::before,
+.nav-btn.active::before {
     left: 0;
 }
 
@@ -172,12 +178,14 @@ header {
     position: relative;
     opacity: 1;
     transform: translateY(0);
-    display: none; /* Ocultar por defecto */
+    display: none;
+    /* Ocultar por defecto */
     transition: all 0.5s ease;
 }
 
 .section.active {
-    display: block; /* Mostrar solo la sección activa */
+    display: block;
+    /* Mostrar solo la sección activa */
     animation: fadeInUp 0.5s ease forwards;
 }
 
@@ -339,6 +347,7 @@ ul li::before {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -349,6 +358,7 @@ ul li::before {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -367,7 +377,8 @@ ul li::before {
         letter-spacing: 2px;
     }
 
-    .lado-izq, .lado-der {
+    .lado-izq,
+    .lado-der {
         justify-content: center;
         flex: none;
     }
@@ -397,11 +408,13 @@ ul li::before {
 
     .main-content {
         margin: 20px 15px;
-        margin-top: 160px; /* Más espacio en mobile */
+        margin-top: 160px;
+        /* Más espacio en mobile */
         border-radius: 16px;
     }
 
-    .logo-institucion, .logo-ludik {
+    .logo-institucion,
+    .logo-ludik {
         width: 40px;
         height: 40px;
     }
@@ -453,7 +466,8 @@ ul li::before {
     }
 
     .main-content {
-        margin-top: 180px; /* Aún más espacio en pantallas muy pequeñas */
+        margin-top: 180px;
+        /* Aún más espacio en pantallas muy pequeñas */
     }
 
     .imagen-mediana {
@@ -477,4 +491,20 @@ ul li::before {
         padding: 10px 20px;
         font-size: 0.9rem;
     }
+}
+
+btn-maps {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4285F4;
+    /* Azul característico de Google */
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn-maps:hover {
+    background-color: #0b66c3;
 }

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUDIK - Actividades para Ceguera</title>
+  <link rel="stylesheet" href="Ceguera.css">
+</head>
+<body>
+  <header>
+    <h1>LUDIK</h1>
+    <p>Actividades auditivas e inclusivas</p>
+  </header>
+  <a href="../../Ejercicios.html" class="btn--regresar">
+    ⬅ Regresar
+  </a>
+  <!-- MENÚ PRINCIPAL -->
+  <section id="menu" class="contenedor">
+    <h2>Selecciona una actividad</h2>
+    <div class="menu-opciones">
+      <div class="categoria">
+        <h3>Sonidos del entorno</h3>
+        <button data-actividad="entorno">Iniciar</button>
+      </div>
+      <div class="categoria">
+        <h3>Memoria auditiva</h3>
+        <button data-actividad="memoria">Iniciar</button>
+      </div>
+      <div class="categoria">
+        <h3>Historia interactiva</h3>
+        <button data-actividad="historia">Iniciar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZONA DE ACTIVIDAD -->
+  <section id="actividad" class="contenedor" style="display:none;">
+    <div class="encabezado">
+      <h2 id="instruccion"></h2>
+      <div id="marcador"></div>
+    </div>
+    <div id="opciones" class="opciones"></div>
+    <div class="controles">
+      <button id="btn-repetir" disabled>Repetir</button>
+      <button id="btn-siguiente" disabled>Siguiente</button>
+      <button id="btn-volver">Volver al Menú</button>
+    </div>
+    <div id="retro" class="retro"></div>
+  </section>
+
+  <footer>
+    <p>© 2025 LUDIK - Actividades Inclusivas</p>
+  </footer>
+
+  <script src="Ceguera.js"></script>
+</body>
+</html>

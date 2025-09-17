@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Discapacidad Motriz</title>
+  <link rel="stylesheet" href="Motriz.css">
+</head>
+<body>
+  <header>
+    <h1>Actividades Discapacidad Motriz</h1>
+    <p>Entrena coordinación, precisión y motricidad con juegos interactivos</p>
+  </header>
+  <a href="../../Ejercicios.html" class="btn--regresar">
+    ⬅ Regresar
+  </a>
+  <!-- Menú principal -->
+  <div id="menu-principal" class="menu-opciones">
+    <div class="categoria" id="cat-motrizReaccion">
+      <h3>Reacción</h3>
+      <button data-actividad="motrizReaccion" data-modo="practica">Práctica</button>
+      <button data-actividad="motrizReaccion" data-modo="evaluar">Evaluar</button>
+    </div>
+    <div class="categoria" id="cat-motrizDibujo">
+      <h3>Dibujo Guiado</h3>
+      <button data-actividad="motrizDibujo" data-modo="practica">Práctica</button>
+      <button data-actividad="motrizDibujo" data-modo="evaluar">Evaluar</button>
+    </div>
+    <div class="categoria" id="cat-motrizArrastre">
+      <h3>Arrastre</h3>
+      <button data-actividad="motrizArrastre" data-modo="practica">Práctica</button>
+      <button data-actividad="motrizArrastre" data-modo="evaluar">Evaluar</button>
+    </div>
+  </div>
+
+  <!-- Vista de actividad -->
+  <div id="vista-actividad" hidden>
+    <button class="btn-regresar">⬅ Regresar</button>
+
+    <!-- Actividades -->
+    <div id="tab-motrizReaccion" class="actividad" hidden></div>
+    <div id="tab-motrizDibujo" class="actividad" hidden></div>
+    <div id="tab-motrizArrastre" class="actividad" hidden></div>
+  </div>
+
+  <footer>
+    <p>© 2025 Actividades Inclusivas</p>
+  </footer>
+
+  <script src="Motriz.js"></script>
+</body>
+</html>

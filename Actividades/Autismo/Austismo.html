@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actividades para Autismo (TEA)</title>
+  <link rel="stylesheet" href="Autismo.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1>Actividades para Autismo (TEA)</h1>
+    <p>Plataforma inclusiva para apoyar el aprendizaje</p>
+  </header>
+  <a href="../../Ejercicios.html" class="btn--regresar">
+    ⬅ Regresar
+  </a>
+  <div class="contenedor">
+    <div id="menu-principal" class="menu-opciones">
+      <div class="menu-actividades">
+        <div class="categoria">
+          <h3>Reconocimiento de emociones</h3>
+          <button data-actividad="emociones">Iniciar actividad</button>
+        </div>
+        <div class="categoria">
+          <h3>Rutinas visuales</h3>
+          <button data-actividad="rutinas">Iniciar actividad</button>
+        </div>
+        <div class="categoria">
+          <h3>Palabra ↔ Imagen</h3>
+          <button data-actividad="pares">Iniciar actividad</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="vista-actividad" hidden>
+      <button class="btn-regresar">⬅ Regresar</button>
+      <div id="tab-emociones" class="actividad" hidden></div>
+      <div id="tab-rutinas" class="actividad" hidden></div>
+      <div id="tab-pares" class="actividad" hidden></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 LUDIK Plataforma Inclusiva</p>
+  </footer>
+
+  <script src="Autismo.js"></script>
+</body>
+
+</html>

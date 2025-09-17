@@ -1,0 +1,110 @@
+:root {
+    --color-fondo: #f0f4f8;
+    --color-principal: #4f46e5;
+    --color-secundario: #06b6d4;
+    --color-acento: #fbbf24;
+    --color-card: #ffffff;
+    --color-texto: #1f2937;
+    --sombra: 0 6px 16px rgba(0, 0, 0, 0.1);
+    --radio: 20px;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+}
+
+header {
+    background: linear-gradient(90deg, var(--color-principal), var(--color-secundario));
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--sombra);
+}
+
+header h1 {
+    font-size: 2.5rem;
+}
+
+header p {
+    font-size: 1.2rem;
+}
+
+.menu-principal {
+    max-width: 1200px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.categoria {
+    background: var(--color-card);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    text-align: center;
+    padding: 25px;
+    transition: transform 0.2s ease;
+}
+
+.categoria:hover {
+    transform: scale(1.03);
+}
+
+.categoria h3 {
+    font-size: 1.4rem;
+    color: var(--color-principal);
+    margin-bottom: 15px;
+}
+
+.tarjeta-bonita {
+    display: inline-block;
+    background: var(--color-acento);
+    color: #000;
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.tarjeta-bonita:hover {
+    background: #fcd34d;
+    transform: translateY(-5px) scale(1.05);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--color-texto);
+    opacity: 0.7;
+}
+
+.menu-principal-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.seccion-titulo {
+    font-size: 1.8rem;
+    color: var(--color-principal);
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 5px;
+}
+
+.grid-categorias {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}

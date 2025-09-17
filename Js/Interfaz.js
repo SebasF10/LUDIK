@@ -41,14 +41,14 @@ function eliminarBotonesPorRol() {
         if (rol === "admin") {
             // Admin: puede ver todos los botones
             console.log("Usuario es admin, todos los botones visibles");
-            
+
         } else if (rol === "docente_apoyo") {
             // Docente de apoyo: ocultar solo "Crear Cuentas"
             if (textoDelBoton.includes("crear cuenta")) {
                 console.log("¡Eliminando botón Crear Cuentas para docente_apoyo!");
                 boton.remove();
             }
-            
+
         } else if (rol === "docente") {
             // Docente regular: ocultar "Crear Cuentas", "Registrar PIAR" y "Registrar estudiante"
             if (textoDelBoton.includes("crear cuenta")) {
@@ -63,12 +63,12 @@ function eliminarBotonesPorRol() {
                 console.log("¡Eliminando botón Registrar un PIAR para docente!");
                 boton.remove();
             }
-            
+
         } else {
             // Rol desconocido o sin rol: comportamiento por defecto (ocultar botones administrativos)
             console.log("Rol desconocido o sin rol, aplicando restricciones por defecto");
-            if (textoDelBoton.includes("crear cuenta") || 
-                textoDelBoton.includes("registrar un nuevo estudiante") || 
+            if (textoDelBoton.includes("crear cuenta") ||
+                textoDelBoton.includes("registrar un nuevo estudiante") ||
                 textoDelBoton.includes("registrar un piar")) {
                 console.log("¡Eliminando botón restringido para usuario sin rol definido!");
                 boton.remove();
@@ -104,7 +104,7 @@ document.addEventListener('click', function (e) {
     if (e.target.classList.contains('menu-button')) {
         const texto = e.target.textContent.trim();
         const textoLower = texto.toLowerCase();
-        
+
         console.log("=== DEBUG CLICK ===");
         console.log("Texto original:", `"${texto}"`);
         console.log("Texto lowercase:", `"${textoLower}"`);
@@ -122,7 +122,7 @@ document.addEventListener('click', function (e) {
             window.location.href = 'Crear_cuentas.html';
         } else if (textoLower.includes('actividades')) {
             console.log("-> Redirigiendo a actividades");
-            window.location.href = 'Actividades.html';
+            window.location.href = 'Ejercicios.html';
         } else if (textoLower.includes('registrar un nuevo estudiante')) {
             console.log("-> Redirigiendo a registrar estudiante");
             window.location.href = 'Registrar_estudiante.html';

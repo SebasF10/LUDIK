@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividades para Dispraxia</title>
+  <link rel="stylesheet" href="Dispraxia.css">
+  <!-- Importar p5.js para la actividad de trazado -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Actividades para Dispraxia</h1>
+    <p>Ejercicios interactivos para trabajar coordinación y motricidad</p>
+  </header>
+  <a href="../../Ejercicios.html" class="btn--regresar">
+    ⬅ Regresar
+  </a>
+  <!-- Pantalla inicial deshabilitada -->
+  <div id="pantalla-inicial" hidden></div>
+
+  <!-- Vista de actividades -->
+  <div id="vista-actividad" class="contenedor"></div>
+
+  <footer>
+    <p>© 2025 Actividades Inclusivas</p>
+  </footer>
+
+  <script src="Dispraxia.js"></script>
+  <script>
+    // Iniciar directamente en Dispraxia
+    document.addEventListener("DOMContentLoaded", () => {
+      mostrarDispraxia();
+    });
+  </script>
+</body>
+</html>

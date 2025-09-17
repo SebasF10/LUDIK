@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actividades Seguras para Epilepsia</title>
+  <link rel="stylesheet" href="Epilepsia.css">
+</head>
+<body>
+  <header>
+    <h1>Actividades Inclusivas para Epilepsia</h1>
+    <p>Ejercicios tranquilos y seguros, sin destellos ni sonidos fuertes</p>
+  </header>
+
+  <!-- Botón de regreso a la página principal (solo visible en portada) -->
+  <a href="../../Ejercicios.html" class="btn---regresar">
+    ⬅ Regresar
+  </a>
+
+  <!-- ===== Pantalla del MENÚ ===== -->
+  <main id="pantalla-menu" class="pantalla visible">
+    <div class="categoria">
+      <h3>Memoria Auditiva</h3>
+      <button class="tarjeta-bonita" onclick="abrirActividad('memoria')">Iniciar Actividad</button>
+    </div>
+    <div class="categoria">
+      <h3>Relajación Guiada</h3>
+      <button class="tarjeta-bonita" onclick="abrirActividad('relajacion')">Iniciar Actividad</button>
+    </div>
+    <div class="categoria">
+      <h3>Puzzle Suave</h3>
+      <button class="tarjeta-bonita" onclick="abrirActividad('puzzle')">Iniciar Actividad</button>
+    </div>
+  </main>
+
+  <!-- ===== Pantalla de ACTIVIDAD ===== -->
+  <section id="pantalla-actividad" class="pantalla oculto">
+    <button class="btn--regresar btn-actividad" onclick="volverAlMenu()">⬅ Volver al Menú</button>
+    <div id="actividad-contenido"></div>
+  </section>
+
+  <footer>
+    <p>© 2025 Plataforma Inclusiva</p>
+  </footer>
+
+  <script src="Epilepsia.js"></script>
+</body>
+</html>

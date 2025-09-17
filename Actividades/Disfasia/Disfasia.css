@@ -1,0 +1,99 @@
+:root {
+  --color-fondo: #f0f4f8;
+  --color-principal: #4f46e5;
+  --color-secundario: #06b6d4;
+  --color-acento: #fbbf24;
+  --color-texto: #1f2937;
+  --sombra: 0 6px 16px rgba(0, 0, 0, 0.1);
+  --radio: 20px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--color-fondo); color: var(--color-texto); line-height:1.6; font-size:18px; }
+
+header { background: linear-gradient(90deg, var(--color-principal), var(--color-secundario)); color:#fff; padding:20px; text-align:center; box-shadow: var(--sombra); }
+header h1 { font-size:2.5rem; }
+header p { font-size:1.2rem; }
+
+.contenedor { max-width:1200px; margin:20px auto; padding:20px; }
+.menu-actividades { display:flex; justify-content:center; gap:12px; margin-bottom:30px; flex-wrap:wrap; }
+
+.menu-actividades button { background: var(--color-acento); color: #000; border:none; padding:12px 20px; border-radius:8px; cursor:pointer; font-size:16px; font-weight:bold; transition: transform 0.2s ease, background 0.3s ease; }
+.menu-actividades button:hover { background:#fcd34d; transform: scale(1.05); }
+
+.actividad { background: #fff; border-radius: var(--radio); box-shadow: var(--sombra); padding:20px; animation: aparecer 0.5s ease forwards; }
+@keyframes aparecer { from { opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
+
+.opciones { display:flex; flex-wrap: wrap; justify-content:center; gap:15px; margin-top:20px; }
+
+.tarjeta-bonita {
+  background: linear-gradient(135deg,#fff,#f8fafc);
+  border:3px solid #e2e8f0;
+  border-radius:20px;
+  padding:20px;
+  text-align:center;
+  cursor:pointer;
+  transition: all 0.3s ease;
+  font-weight:bold;
+  font-size:2rem;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+  min-height:120px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+.tarjeta-bonita:hover { border-color:#06b6d4; transform: translateY(-5px) scale(1.05); background: linear-gradient(135deg,#ffffff,#e0f2fe); }
+
+#instruccion { font-size:2rem; color:var(--color-principal); text-align:center; margin-bottom:20px; font-weight:bold; background: rgba(79,70,229,0.1); padding:15px; border-radius:15px; border-left:5px solid var(--color-principal); }
+#marcador { font-size:1.5rem; text-align:center; margin-bottom:20px; color:#06b6d4; font-weight:bold; }
+
+.btn-regresar, .btn--regresar {
+  display: inline-block;
+  margin:20px;
+  padding:12px 25px;
+  font-size:20px;
+  background:var(--color-principal);
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.btn-regresar:hover, .btn--regresar:hover {
+  background:var(--color-secundario);
+  transform: scale(1.05);
+}
+
+.feedback { position:fixed; top:20px; left:50%; transform: translateX(-50%); padding:15px 25px; font-size:20px; font-weight:bold; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,0.1); z-index:9999; animation: fadeInOut 1.2s ease forwards;}
+.feedback.correcto { background:#d1fae5; color:#065f46; border:2px solid #10b981; }
+.feedback.incorrecto { background:#fee2e2; color:#991b1b; border:2px solid #ef4444; }
+@keyframes fadeInOut { 0% { opacity:0; transform: translate(-50%, -20px);} 20% { opacity:1; transform: translate(-50%,0);} 80% { opacity:1;} 100% { opacity:0; transform: translate(-50%,-20px);} }
+
+footer { text-align:center; padding:15px; color:#555; margin-top:30px;}
+.menu-opciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+.categoria { background:#fff; border-radius:20px; padding:20px; text-align:center; box-shadow:var(--sombra);}
+.categoria h3 { margin-bottom:12px; color:var(--color-principal);}
+.categoria button { background: var(--color-acento); border: none; padding: 12px 20px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer;}
+.categoria button:hover { background:#fcd34d; transform: scale(1.05); }
+
+.btn-escuchar {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+.btn-escuchar:hover { background-color: #45a049; transform: scale(1.05); }
+.btn-escuchar:active { background-color: #3e8e41; transform: scale(0.95); }

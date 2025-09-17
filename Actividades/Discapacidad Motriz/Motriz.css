@@ -1,0 +1,423 @@
+:root {
+  --color-fondo: #f0f4f8;
+  --color-principal: #4f46e5;
+  --color-secundario: #06b6d4;
+  --color-acento: #fbbf24;
+  --color-texto: #1f2937;
+  --color-card: #ffffff;
+  --sombra: 0 6px 16px rgba(0, 0, 0, 0.1);
+  --radio: 20px;
+}
+
+/* RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  line-height: 1.6;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(90deg, var(--color-principal), var(--color-secundario));
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: var(--sombra);
+}
+header h1 { font-size: 2.5rem; }
+header p { font-size: 1.2rem; }
+
+/* MENÚ */
+.menu-opciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+.categoria {
+  background: var(--color-card);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+.categoria:hover { transform: scale(1.03); }
+.categoria h3 { color: var(--color-principal); margin-bottom: 10px; }
+.categoria button {
+  background: var(--color-acento);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.categoria button:hover { background: #fcd34d; }
+
+/* COMPLETADAS */
+.categoria.completada {
+  border: 3px solid #22c55e;
+  position: relative;
+}
+.categoria.completada::after {
+  content: "✔ Completado";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #22c55e;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.9em;
+}
+
+/* VISTA ACTIVIDAD */
+#vista-actividad {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: var(--color-fondo);
+  z-index: 1000;
+  display: none;
+  padding: 20px;
+  overflow-y: auto;
+}
+#vista-actividad.activa { display: block; }
+
+/* BOTÓN REGRESAR */
+.btn-regresar {
+  background: var(--color-principal);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.btn-regresar:hover { background: var(--color-secundario); }
+
+/* PROGRESO */
+.progress-container {
+  width: 100%;
+  background: #e5e7eb;
+  border-radius: 10px;
+  height: 20px;
+  margin-bottom: 20px;
+}
+#progress-bar {
+  height: 100%;
+  background: var(--color-principal);
+  border-radius: 10px;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+/* ACTIVIDAD */
+.actividad {
+  background: var(--color-card);
+  border-radius: var(--radio);
+  padding: 20px;
+  box-shadow: var(--sombra);
+}
+
+/* TARJETAS */
+.tarjeta-bonita {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.tarjeta-bonita:hover { transform: scale(1.05); }
+
+/* ZONA ARRASTRE */
+.objeto-arrastrable {
+  font-size: 2rem;
+  width: 60px; height: 60px;
+  display: flex; align-items: center; justify-content: center;
+  background: #f9fafb;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  cursor: grab;
+}
+.zona-destino {
+  min-height: 120px;
+  min-width: 80%;
+  margin: 20px auto;
+  border: 3px dashed #6366f1;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;   /* ⬅️ fila horizontal */
+  align-items: center;
+  justify-content: flex-start; /* ⬅️ se alinean de izquierda a derecha */
+  gap: 12px;             /* espacio entre objetos */
+  padding: 15px;
+  background: #f3f4f6;
+  flex-wrap: wrap;       /* si no caben, bajan a otra fila */
+}
+
+
+/* FEEDBACK */
+.feedback {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: var(--sombra);
+  animation: fadeInOut 1.2s ease forwards;
+  z-index: 2000;
+}
+.feedback.correcto { background: #d1fae5; color: #065f46; }
+.feedback.incorrecto { background: #fee2e2; color: #991b1b; }
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -20px); }
+  20% { opacity: 1; transform: translate(-50%, 0); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -20px); }
+}
+/* Cartel de misión */
+.mision-box {
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border: 2px solid #0ea5e9;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 15px auto;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #0369a1;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Zona inicial de objetos (fila horizontal) */
+.zona-inicial {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
+  margin: 20px auto;
+  padding: 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Zona destino arriba en fila */
+.zona-destino {
+  min-height: 120px;
+  min-width: 80%;
+  margin: 20px auto;
+  border: 3px dashed #6366f1;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 15px;
+  background: #f3f4f6;
+  flex-wrap: wrap;
+}
+
+/* Marcador */
+.marcador-bonito {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px auto;
+  color: #4f46e5;
+  background: #e0e7ff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+/* Cartel de misión */
+.mision-box {
+  background: linear-gradient(135deg, #fef9c3, #fde68a);
+  border: 3px solid #facc15;
+  border-radius: 18px;
+  padding: 20px;
+  margin: 15px auto;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #92400e;
+  max-width: 600px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+/* Zona destino (arriba) */
+.zona-destino {
+  min-height: 120px;
+  min-width: 80%;
+  margin: 20px auto;
+  border: 3px dashed #6366f1;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 15px;
+  background: #f3f4f6;
+  flex-wrap: wrap;
+}
+
+/* Zona inicial (fila de objetos) */
+.zona-inicial {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
+  margin: 20px auto;
+  padding: 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Marcador */
+.marcador-bonito {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px auto;
+  color: #4f46e5;
+  background: #e0e7ff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Botón nueva misión */
+.btn-nueva-mision {
+  display: block;
+  margin: 20px auto;
+  padding: 16px 28px;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: white;
+  background: #22c55e;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.btn-nueva-mision:hover {
+  background: #16a34a;
+  transform: scale(1.07);
+}
+/* === ACTIVIDAD 1: REACCIÓN === */
+.area-reaccion {
+  position: relative;
+  width: 360px;
+  height: 260px;
+  margin: 20px auto;
+  border: 3px solid var(--color-principal);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: var(--sombra);
+  overflow: hidden;
+}
+
+.objetivo {
+  position: absolute;
+  font-size: 2.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.objetivo:active {
+  transform: scale(1.3);
+  opacity: 0.7;
+}
+
+/* Barra de progreso para Actividad 1 */
+.barra-progreso {
+  width: 80%;
+  height: 18px;
+  border-radius: 10px;
+  margin: 10px auto;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+.barra-progreso .relleno {
+  height: 100%;
+  width: 0%;
+  background: var(--color-secundario);
+  transition: width 0.4s ease;
+}
+
+/* === ACTIVIDAD 2: DIBUJO === */
+.tarjeta-instruccion {
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border: 2px solid #0ea5e9;
+  border-radius: 16px;
+  padding: 12px 18px;
+  margin: 15px auto;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #0369a1;
+  max-width: 500px;
+  box-shadow: var(--sombra);
+}
+
+#pizarra {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  padding: 15px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--sombra);
+  max-width: 600px;
+}
+
+#pizarra canvas {
+  border: 2px solid var(--color-principal);
+  border-radius: 12px;
+  background: #f9fafb;
+  cursor: crosshair;
+}
+
+/* puntos en el canvas */
+.punto-dibujo {
+  animation: pop 0.3s ease forwards;
+}
+@keyframes pop {
+  0% { transform: scale(0); opacity: 0; }
+  80% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); }
+}
+/* Botón regresar */
+.btn--regresar {
+  display: inline-block;
+  margin: 20px;
+  padding: 12px 20px;
+  font-size: 18px;
+  background: var(--color-principal);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
