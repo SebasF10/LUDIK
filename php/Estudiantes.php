@@ -29,6 +29,15 @@ switch ($action) {
     case 'getFilters':
         getFilters();
         break;
+    case 'getStudentsForPDF':
+        getStudentsForPDF();
+        break;
+    case 'getStudentFullDetails':
+        getStudentFullDetails();
+        break;
+    case 'exportStudentsCSV':
+        exportStudentsCSV();
+        break;
     default:
         echo json_encode(['success' => false, 'error' => 'Acción no válida']);
         break;
@@ -258,6 +267,218 @@ function getFilters() {
 }
 
 /**
+ * Obtener estudiantes optimizado para PDF (con información completa)
+ */
+function getStudentsForPDF() {
+    global $conexion;
+    
+    try {
+        $sql = "
+            SELECT 
+                e.id_estudiante,
+                e.nombre,
+                e.apellidos,
+                e.tipo_documento,
+                e.no_documento,
+                e.fecha_nacimiento,
+                e.lugar_nacimiento,
+                e.sector,
+                e.direccion,
+                e.telefono,
+                e.correo,
+                e.victima_conflicto,
+                e.grupo_etnico,
+                e.con_quien_vive,
+                e.afiliacion_salud,
+                g.grado,
+                gr.grupo
+            FROM estudiante e
+            LEFT JOIN grupo_estudiante ge ON e.id_estudiante = ge.id_estudiante 
+                AND (ge.anio = YEAR(CURDATE()) OR ge.anio IS NULL)
+            LEFT JOIN grupo gr ON ge.id_grupo = gr.id_grupo
+            LEFT JOIN grado g ON gr.id_grado = g.id_grado
+            ORDER BY e.apellidos, e.nombre
+        ";
+        
+        $result = mysqli_query($conexion, $sql);
+        
+        if (!$result) {
+            throw new Exception("Error en la consulta: " . mysqli_error($conexion));
+        }
+        
+        $students = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $students[] = $row;
+        }
+        
+        echo json_encode([
+            'success' => true,
+            'students' => $students,
+            'total' => count($students),
+            'generated_at' => date('Y-m-d H:i:s')
+        ]);
+        
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+}
+
+/**
+ * Obtener detalles completos de un estudiante para PDF
+ */
+function getStudentFullDetails() {
+    global $conexion;
+    
+    $studentId = $_GET['id'] ?? '';
+    
+    if (empty($studentId)) {
+        echo json_encode(['success' => false, 'error' => 'ID de estudiante requerido']);
+        return;
+    }
+    
+    try {
+        // Información básica del estudiante
+        $studentData = getBasicStudentInfo($conexion, $studentId);
+        
+        if (!$studentData) {
+            echo json_encode(['success' => false, 'error' => 'Estudiante no encontrado']);
+            return;
+        }
+        
+        // Información adicional con más detalles para PDF
+        $studentData['madre'] = getParentInfo($conexion, $studentData['id_madre'], 'madre');
+        $studentData['padre'] = getParentInfo($conexion, $studentData['id_padre'], 'padre');
+        $studentData['acudiente'] = getParentInfo($conexion, $studentData['id_cuidador'], 'acudiente');
+        $studentData['entorno_educativo'] = getEducationalEnvironment($conexion, $studentId);
+        $studentData['info_medica'] = getMedicalInfoDetailed($conexion, $studentId);
+        $studentData['piar'] = getPiarInfo($conexion, $studentId);
+        $studentData['valoraciones'] = getPedagogicalEvaluations($conexion, $studentId);
+        $studentData['descripcion_general'] = getGeneralDescription($conexion, $studentId);
+        
+        // Información del grupo actual
+        $groupInfo = getCurrentGroup($conexion, $studentId);
+        if ($groupInfo) {
+            $studentData['grado'] = $groupInfo['grado'];
+            $studentData['grupo'] = $groupInfo['grupo'];
+        }
+        
+        echo json_encode([
+            'success' => true,
+            'student' => $studentData,
+            'generated_at' => date('Y-m-d H:i:s')
+        ]);
+        
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+}
+
+/**
+ * Exportar estudiantes en formato CSV
+ */
+function exportStudentsCSV() {
+    global $conexion;
+    
+    $type = $_GET['type'] ?? 'all'; // 'all' o 'search'
+    $searchTerm = $_GET['term'] ?? '';
+    
+    try {
+        $sql = "
+            SELECT 
+                e.nombre,
+                e.apellidos,
+                e.tipo_documento,
+                e.no_documento,
+                e.fecha_nacimiento,
+                e.telefono,
+                e.correo,
+                g.grado,
+                gr.grupo,
+                e.sector,
+                e.direccion,
+                e.victima_conflicto,
+                e.grupo_etnico,
+                e.afiliacion_salud
+            FROM estudiante e
+            LEFT JOIN grupo_estudiante ge ON e.id_estudiante = ge.id_estudiante 
+                AND (ge.anio = YEAR(CURDATE()) OR ge.anio IS NULL)
+            LEFT JOIN grupo gr ON ge.id_grupo = gr.id_grupo
+            LEFT JOIN grado g ON gr.id_grado = g.id_grado
+        ";
+        
+        if ($type === 'search' && !empty($searchTerm)) {
+            $searchTerm = '%' . mysqli_real_escape_string($conexion, $searchTerm) . '%';
+            $sql .= " WHERE (e.nombre LIKE '$searchTerm' OR 
+                     e.apellidos LIKE '$searchTerm' OR 
+                     e.no_documento LIKE '$searchTerm' OR
+                     CONCAT(e.nombre, ' ', e.apellidos) LIKE '$searchTerm')";
+        }
+        
+        $sql .= " ORDER BY e.apellidos, e.nombre";
+        
+        $result = mysqli_query($conexion, $sql);
+        
+        if (!$result) {
+            throw new Exception("Error en la consulta: " . mysqli_error($conexion));
+        }
+        
+        // Configurar headers para descarga de archivo
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="estudiantes_' . date('Y-m-d') . '.csv"');
+        header('Access-Control-Allow-Origin: *');
+        
+        // Crear output
+        $output = fopen('php://output', 'w');
+        
+        // Headers del CSV
+        fputcsv($output, [
+            'Nombre',
+            'Apellidos', 
+            'Tipo Documento',
+            'No. Documento',
+            'Fecha Nacimiento',
+            'Teléfono',
+            'Correo',
+            'Grado',
+            'Grupo',
+            'Sector',
+            'Dirección',
+            'Víctima Conflicto',
+            'Grupo Étnico',
+            'Afiliación Salud'
+        ]);
+        
+        // Datos
+        while ($row = mysqli_fetch_assoc($result)) {
+            fputcsv($output, [
+                $row['nombre'] ?? '',
+                $row['apellidos'] ?? '',
+                $row['tipo_documento'] ?? '',
+                $row['no_documento'] ?? '',
+                $row['fecha_nacimiento'] ?? '',
+                $row['telefono'] ?? '',
+                $row['correo'] ?? '',
+                $row['grado'] ?? '',
+                $row['grupo'] ?? '',
+                $row['sector'] ?? '',
+                $row['direccion'] ?? '',
+                $row['victima_conflicto'] ?? '',
+                $row['grupo_etnico'] ?? '',
+                $row['afiliacion_salud'] ?? ''
+            ]);
+        }
+        
+        fclose($output);
+        exit;
+        
+    } catch (Exception $e) {
+        // Si hay error, retornar JSON
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+}
+
+/**
  * Obtener información básica del estudiante
  */
 function getBasicStudentInfo($conexion, $studentId) {
@@ -421,6 +642,14 @@ function getMedicalInfo($conexion, $studentId) {
         error_log("Error obteniendo información médica: " . $e->getMessage());
         return null;
     }
+}
+
+/**
+ * Obtener información médica detallada para PDF
+ */
+function getMedicalInfoDetailed($conexion, $studentId) {
+    // Similar a getMedicalInfo pero con más detalles
+    return getMedicalInfo($conexion, $studentId);
 }
 
 /**

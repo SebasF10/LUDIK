@@ -5,8 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Estudiantes - LUDIK</title>
+    <link rel="icon" href="img/Ludik2.png" type="image/x-icon">
     <link rel="stylesheet" href="Css\Estudiantes.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Agregar jsPDF y html2canvas para generar PDFs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body>
@@ -53,6 +57,16 @@
                         <option value="">Todos los grupos</option>
                     </select>
                 </div>
+
+                <!-- Botones de descarga para búsqueda -->
+                <div class="download-controls" id="searchDownloadControls" style="display: none;">
+                    <button id="downloadSearchPDF" class="btn-download">
+                        📄 Descargar Resultados PDF
+                    </button>
+                    <button id="downloadSearchExcel" class="btn-download btn-excel">
+                        📊 Descargar Resultados Excel
+                    </button>
+                </div>
             </div>
 
             <div class="search-results" id="searchResults">
@@ -64,10 +78,22 @@
         <section id="lista" class="section">
             <h1>Lista de Estudiantes</h1>
 
-            <div class="pagination-controls">
-                <button id="prevPage" class="btn-pagination">Anterior</button>
-                <span id="pageInfo">Página 1 de 1</span>
-                <button id="nextPage" class="btn-pagination">Siguiente</button>
+            <div class="list-controls">
+                <div class="pagination-controls">
+                    <button id="prevPage" class="btn-pagination">Anterior</button>
+                    <span id="pageInfo">Página 1 de 1</span>
+                    <button id="nextPage" class="btn-pagination">Siguiente</button>
+                </div>
+
+                <!-- Botones de descarga para lista completa -->
+                <div class="download-controls">
+                    <button id="downloadAllPDF" class="btn-download">
+                        📄 Descargar Todo PDF
+                    </button>
+                    <button id="downloadAllExcel" class="btn-download btn-excel">
+                        📊 Descargar Todo Excel
+                    </button>
+                </div>
             </div>
 
             <div class="students-grid" id="studentsGrid">
@@ -82,6 +108,10 @@
             <span class="close">&times;</span>
             <div class="modal-header">
                 <h2 id="modalTitle">Información del Estudiante</h2>
+                <!-- Botón de descarga individual en el modal -->
+                <button id="downloadStudentPDF" class="btn-download-modal">
+                    📄 Descargar PDF
+                </button>
             </div>
             <div class="modal-body">
                 <!-- Pestañas del modal -->
@@ -235,6 +265,13 @@
         <div class="spinner"></div>
         <p>Cargando...</p>
     </div>
+    
+    <!-- PDF Loading spinner -->
+    <div id="pdfLoadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Generando PDF...</p>
+    </div>
+
     <button class="back-btn" onclick="goBackOrRedirect('Interfaz.html')">
         ⬅ Regresar
     </button>
