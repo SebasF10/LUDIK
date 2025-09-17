@@ -14,6 +14,16 @@ define('PW', 'iLov3Window5');
 define('HOST', 'sql113.infinityfree.com');
 define('BD', 'if0_39848338_ludik');
 */
+
+// Parametros BD remota (Hosting del colegio)
+
+/*
+DEFINE('USER', 'colegdfs_ludik');
+DEFINE('PW', '=Mw_r.tu)~g(');
+DEFINE('HOST', 'localhost');
+DEFINE('BD', 'colegdfs_ludik');
+*/
+
 // Conexión con la BD
 $conexion = mysqli_connect(HOST, USER, PW, BD);
 
