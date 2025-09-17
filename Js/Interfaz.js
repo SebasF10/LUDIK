@@ -134,7 +134,7 @@ document.addEventListener('click', function (e) {
             window.location.href = 'Descripción_general.html';
         } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
             console.log("-> ¡ENCONTRADO! Redirigiendo a valoración pedagógica");
-            window.location.href = 'valoracion_pedagogica.html';
+            window.location.href = 'Valoracion_pedagogica.html';
         } else if (textoLower.includes('comunicate')) {
             console.log("-> Redirigiendo a comunicación");
             window.location.href = 'Comunicacion.html';

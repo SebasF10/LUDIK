@@ -3,8 +3,9 @@
 session_start();
 header('Content-Type: application/json');
 
-// Verificar que el docente esté logueado
-if (!isset($_SESSION['usuario']['id_docente']) || !isset($_SESSION['rol']) || $_SESSION['rol'] !== 'docente') {
+// Verificar que el usuario esté logueado y tenga rol autorizado
+if (!isset($_SESSION['usuario']) || !isset($_SESSION['rol']) || 
+    !in_array($_SESSION['rol'], ['docente', 'admin', 'docente_apoyo'])) {
     echo json_encode(['success' => false, 'message' => 'No autorizado']);
     exit;
 }
@@ -17,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 require_once 'conexion.php';
 
-$id_docente = $_SESSION['usuario']['id_docente'];
+$rol = $_SESSION['rol'];
 
 try {
     // Obtener y validar datos del formulario
@@ -41,25 +42,31 @@ try {
         exit;
     }
     
-    // Verificar que el docente tiene acceso a esta combinación grupo-asignatura
-    $query_verificacion = "
-        SELECT COUNT(*) as count 
-        FROM asignatura_docente_grupo adg 
-        WHERE adg.id_docente = ? AND adg.id_grupo = ? AND adg.id_asignatura = ?
-    ";
-    
-    $stmt_verificacion = mysqli_prepare($conexion, $query_verificacion);
-    mysqli_stmt_bind_param($stmt_verificacion, "iii", $id_docente, $id_grupo, $id_asignatura);
-    mysqli_stmt_execute($stmt_verificacion);
-    $result_verificacion = mysqli_stmt_get_result($stmt_verificacion);
-    $row_verificacion = mysqli_fetch_assoc($result_verificacion);
-    
-    if ($row_verificacion['count'] == 0) {
-        echo json_encode(['success' => false, 'message' => 'No tienes acceso a esta asignatura en este grupo']);
-        exit;
+    // Verificar permisos según el rol
+    if ($rol === 'docente') {
+        // Solo para docentes: verificar que tienen acceso a esta combinación grupo-asignatura
+        $id_docente = $_SESSION['usuario']['id_docente'];
+        
+        $query_verificacion = "
+            SELECT COUNT(*) as count 
+            FROM asignatura_docente_grupo adg 
+            WHERE adg.id_docente = ? AND adg.id_grupo = ? AND adg.id_asignatura = ?
+        ";
+        
+        $stmt_verificacion = mysqli_prepare($conexion, $query_verificacion);
+        mysqli_stmt_bind_param($stmt_verificacion, "iii", $id_docente, $id_grupo, $id_asignatura);
+        mysqli_stmt_execute($stmt_verificacion);
+        $result_verificacion = mysqli_stmt_get_result($stmt_verificacion);
+        $row_verificacion = mysqli_fetch_assoc($result_verificacion);
+        
+        if ($row_verificacion['count'] == 0) {
+            echo json_encode(['success' => false, 'message' => 'No tienes acceso a esta asignatura en este grupo']);
+            exit;
+        }
+        
+        mysqli_stmt_close($stmt_verificacion);
     }
-    
-    mysqli_stmt_close($stmt_verificacion);
+    // Admin y docente_apoyo tienen acceso completo, no necesitan verificación adicional
     
     // Iniciar transacción
     mysqli_autocommit($conexion, false);
@@ -144,7 +151,8 @@ try {
     echo json_encode([
         'success' => true,
         'message' => 'Valoración pedagógica registrada exitosamente',
-        'id_valoracion' => $id_valoracion
+        'id_valoracion' => $id_valoracion,
+        'registro_por' => $rol
     ]);
     
 } catch (Exception $e) {
