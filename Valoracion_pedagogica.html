@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valoración Pedagógica - LUDIK</title>
+    <title>Valoraciones Pedagógicas - LUDIK</title>
     <link rel="icon" href="img/Ludik2.png" type="image/x-icon">
     <link rel="stylesheet" href="Css/Valoracion_pedagogica.css">
 </head>
@@ -25,8 +25,98 @@
 
     <!-- Contenido Principal -->
     <main class="main-content">
-        <div class="section">
-            <h1>Registro de Valoración Pedagógica</h1>
+        <!-- Dashboard Principal -->
+        <div id="dashboard" class="section">
+            <div class="dashboard-header">
+                <h1>Mis Valoraciones Pedagógicas</h1>
+                <button id="btnNuevaValoracion" class="btn-nav btn-primary">
+                    ➕ Nueva Valoración
+                </button>
+            </div>
+
+            <!-- Filtros -->
+            <div class="filters-section">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label for="filtroAnio">Año:</label>
+                        <select id="filtroAnio">
+                            <option value="">Todos los años</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filtroPeriodo">Período:</label>
+                        <select id="filtroPeriodo">
+                            <option value="">Todos los períodos</option>
+                            <option value="1">Primer Período</option>
+                            <option value="2">Segundo Período</option>
+                            <option value="3">Tercer Período</option>
+                            <option value="4">Cuarto Período</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filtroGrupo">Grupo:</label>
+                        <select id="filtroGrupo">
+                            <option value="">Todos los grupos</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <button id="btnFiltrar" class="btn-nav btn-secondary">Filtrar</button>
+                        <button id="btnLimpiarFiltros" class="btn-nav btn-outline">Limpiar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalValoraciones">0</div>
+                    <div class="stat-label">Total Valoraciones</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalEstudiantes">0</div>
+                    <div class="stat-label">Estudiantes con Valoraciones</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalGrupos">0</div>
+                    <div class="stat-label">Grupos con Valoraciones</div>
+                </div>
+            </div>
+
+            <!-- Mensajes -->
+            <div id="mensaje-container"></div>
+
+            <!-- Tabla de Valoraciones -->
+            <div class="table-container">
+                <table id="tablaValoraciones" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Estudiante</th>
+                            <th>Grupo</th>
+                            <th>Asignatura</th>
+                            <th>Período</th>
+                            <th>Año</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaValoracionesBody">
+                        <!-- Se carga dinámicamente -->
+                    </tbody>
+                </table>
+                <div id="loadingTable" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                </div>
+                <div id="noDataTable" class="no-data" style="display: none;">
+                    No tienes valoraciones pedagógicas registradas
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario de Creación/Edición (Oculto por defecto) -->
+        <div id="formularioSection" class="section" style="display: none;">
+            <h1 id="tituloFormulario">Nueva Valoración Pedagógica</h1>
 
             <!-- Indicador de Progreso -->
             <div class="progress-indicator">
@@ -36,14 +126,10 @@
                 <div class="step-indicator" id="step4">4</div>
             </div>
 
-            <!-- Mensajes -->
-            <div id="mensaje-container"></div>
-
             <!-- Paso 1: Selección de Grupo -->
             <div id="paso1" class="form-step active">
                 <h2>Paso 1: Seleccionar Grupo</h2>
                 <p class="step-description">Selecciona el grupo para el cual deseas crear la valoración pedagógica.</p>
-
                 <div class="grupo-cards" id="grupoCards">
                     <!-- Los grupos se cargan dinámicamente -->
                 </div>
@@ -53,7 +139,6 @@
             <div id="paso2" class="form-step">
                 <h2>Paso 2: Seleccionar Asignatura</h2>
                 <p class="step-description">Selecciona la asignatura para la cual crearás la valoración.</p>
-
                 <div class="asignatura-cards" id="asignaturaCards">
                     <!-- Las asignaturas se cargan dinámicamente -->
                 </div>
@@ -63,7 +148,6 @@
             <div id="paso3" class="form-step">
                 <h2>Paso 3: Seleccionar Estudiante</h2>
                 <p class="step-description">Selecciona el estudiante para crear su valoración pedagógica.</p>
-
                 <div class="estudiante-cards" id="estudianteCards">
                     <!-- Los estudiantes se cargan dinámicamente -->
                 </div>
@@ -71,9 +155,11 @@
 
             <!-- Paso 4: Formulario de Valoración -->
             <div id="paso4" class="form-step">
-                <h2>Paso 4: Crear Valoración Pedagógica</h2>
+                <h2 id="tituloPaso4">Paso 4: Crear Valoración Pedagógica</h2>
 
                 <form id="formValoracion">
+                    <input type="hidden" id="idValoracion" name="id_valoracion">
+                    
                     <div class="info-seleccion">
                         <h3>Información Seleccionada</h3>
                         <div class="info-grid">
@@ -150,18 +236,42 @@
 
             <!-- Botones de Navegación -->
             <div class="navigation-buttons">
+                <button type="button" id="btnCancelar" class="btn-nav btn-outline">
+                    Cancelar
+                </button>
                 <button type="button" id="btnAnterior" class="btn-nav btn-anterior" style="display: none;">
                     Anterior
                 </button>
                 <button type="button" id="btnSiguiente" class="btn-nav btn-siguiente">
                     Siguiente
                 </button>
-                <button type="button" id="btnRegistrar" class="btn-nav btn-registrar" style="display: none;">
-                    Registrar Valoración
+                <button type="button" id="btnGuardar" class="btn-nav btn-primary" style="display: none;">
+                    Guardar Valoración
                 </button>
             </div>
         </div>
     </main>
+
+    <!-- Modal de Confirmación de Eliminación -->
+    <div id="modalEliminar" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirmar Eliminación</h3>
+                <button id="btnCerrarModal" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar esta valoración pedagógica?</p>
+                <div class="valoracion-info" id="infoValoracionEliminar">
+                    <!-- Se llena dinámicamente -->
+                </div>
+                <p class="warning-text">Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelarEliminar" class="btn-nav btn-outline">Cancelar</button>
+                <button id="btnConfirmarEliminar" class="btn-nav btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
 
     <button class="back-btn" onclick="goBackOrRedirect('Interfaz.html')">
         ⬅ Regresar
