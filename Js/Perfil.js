@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             if (data.error) {
                 alert(data.error);
-                window.location.href = "Index2.html";
+                window.location.href = "Inicio_sesion.html";
                 return;
             }
 
