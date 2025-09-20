@@ -1,133 +1,459 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #f5f6fa, #dfe9f3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+    overflow-x: hidden;
 }
 
 .perfil-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    animation: fadeIn 0.8s ease-out;
 }
 
-.perfil-card {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    text-align: center;
-    width: 380px;
+@media (max-width: 768px) {
+    .perfil-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* CARD PRINCIPAL */
+.perfil-main-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.perfil-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+.perfil-main-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.perfil-header {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 .perfil-foto {
-    width: 130px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 15px;
-    border: 4px solid transparent;
-    transition: border-color 0.3s ease;
+    margin-bottom: 20px;
+    border: 4px solid #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
 }
 
-/* Estilos de texto */
-h2 {
-    margin: 10px 0;
-    font-size: 1.7rem;
+.perfil-foto:hover {
+    transform: scale(1.05);
+}
+
+.perfil-header h2 {
+    font-size: 1.8rem;
     font-weight: 600;
+    margin-bottom: 10px;
+    color: #2d3748;
 }
 
-p {
-    margin: 8px 0;
-    font-size: 1rem;
-    color: #444;
+.rol-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: white;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-/* 🎨 Colores por rol */
-.rol-admin .perfil-card {
-    border-top: 6px solid #e74c3c;
+.perfil-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.rol-admin .perfil-foto {
-    border-color: #e74c3c;
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: rgba(249, 250, 251, 0.8);
+    border-radius: 12px;
+    transition: background 0.2s ease;
 }
 
-.rol-docente .perfil-card {
-    border-top: 6px solid #3498db;
+.info-item:hover {
+    background: rgba(249, 250, 251, 1);
 }
 
-.rol-docente .perfil-foto {
-    border-color: #3498db;
+.info-item i {
+    color: #667eea;
+    width: 20px;
+    text-align: center;
 }
 
-.rol-docente_apoyo .perfil-card {
-    border-top: 6px solid #9b59b6;
+.info-item span {
+    font-size: 0.95rem;
+    line-height: 1.4;
 }
 
-.rol-docente_apoyo .perfil-foto {
-    border-color: #9b59b6;
+/* CARDS DINÁMICAS */
+.perfil-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    align-content: start;
 }
 
-.rol-directivo .perfil-card {
-    border-top: 6px solid #f39c12;
+.data-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.rol-directivo .perfil-foto {
-    border-color: #f39c12;
+.data-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
 }
 
-.rol-acudiente .perfil-card {
-    border-top: 6px solid #16a085;
+.data-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
-.rol-acudiente .perfil-foto {
-    border-color: #16a085;
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.rol-madre .perfil-card {
-    border-top: 6px solid #e91e63;
+.card-header i {
+    font-size: 1.2rem;
+    color: #667eea;
+    padding: 8px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 8px;
 }
 
-.rol-madre .perfil-foto {
-    border-color: #e91e63;
+.card-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
 }
 
-.rol-padre .perfil-card {
-    border-top: 6px solid #2ecc71;
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.rol-padre .perfil-foto {
-    border-color: #2ecc71;
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: rgba(249, 250, 251, 0.6);
+    border-radius: 8px;
+    transition: background 0.2s ease;
 }
 
+.stat-item:hover {
+    background: rgba(249, 250, 251, 1);
+}
+
+.stat-label {
+    font-weight: 500;
+    color: #4a5568;
+}
+
+.stat-value {
+    font-weight: 600;
+    color: #2d3748;
+    padding: 4px 8px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.list-item {
+    padding: 10px 15px;
+    background: rgba(249, 250, 251, 0.6);
+    border-radius: 8px;
+    border-left: 3px solid #667eea;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.list-item:nth-child(even) {
+    border-left-color: #764ba2;
+}
+
+/* COLORES POR ROL */
+.rol-admin .perfil-main-card::before {
+    background: linear-gradient(90deg, #e53e3e, #c53030);
+}
+
+.rol-admin .rol-badge {
+    background: linear-gradient(135deg, #e53e3e, #c53030);
+}
+
+.rol-admin .card-header i {
+    color: #e53e3e;
+    background: rgba(229, 62, 62, 0.1);
+}
+
+.rol-docente .perfil-main-card::before {
+    background: linear-gradient(90deg, #3182ce, #2c5282);
+}
+
+.rol-docente .rol-badge {
+    background: linear-gradient(135deg, #3182ce, #2c5282);
+}
+
+.rol-docente .card-header i {
+    color: #3182ce;
+    background: rgba(49, 130, 206, 0.1);
+}
+
+.rol-docente_apoyo .perfil-main-card::before {
+    background: linear-gradient(90deg, #805ad5, #553c9a);
+}
+
+.rol-docente_apoyo .rol-badge {
+    background: linear-gradient(135deg, #805ad5, #553c9a);
+}
+
+.rol-docente_apoyo .card-header i {
+    color: #805ad5;
+    background: rgba(128, 90, 213, 0.1);
+}
+
+.rol-directivo .perfil-main-card::before {
+    background: linear-gradient(90deg, #d69e2e, #b7791f);
+}
+
+.rol-directivo .rol-badge {
+    background: linear-gradient(135deg, #d69e2e, #b7791f);
+}
+
+.rol-directivo .card-header i {
+    color: #d69e2e;
+    background: rgba(214, 158, 46, 0.1);
+}
+
+.rol-acudiente .perfil-main-card::before {
+    background: linear-gradient(90deg, #319795, #2c7a7b);
+}
+
+.rol-acudiente .rol-badge {
+    background: linear-gradient(135deg, #319795, #2c7a7b);
+}
+
+.rol-acudiente .card-header i {
+    color: #319795;
+    background: rgba(49, 151, 149, 0.1);
+}
+
+.rol-madre .perfil-main-card::before {
+    background: linear-gradient(90deg, #d53f8c, #b83280);
+}
+
+.rol-madre .rol-badge {
+    background: linear-gradient(135deg, #d53f8c, #b83280);
+}
+
+.rol-madre .card-header i {
+    color: #d53f8c;
+    background: rgba(213, 63, 140, 0.1);
+}
+
+.rol-padre .perfil-main-card::before {
+    background: linear-gradient(90deg, #38a169, #2f855a);
+}
+
+.rol-padre .rol-badge {
+    background: linear-gradient(135deg, #38a169, #2f855a);
+}
+
+.rol-padre .card-header i {
+    color: #38a169;
+    background: rgba(56, 161, 105, 0.1);
+}
+
+.rol-estudiante .perfil-main-card::before {
+    background: linear-gradient(90deg, #ed8936, #dd6b20);
+}
+
+.rol-estudiante .rol-badge {
+    background: linear-gradient(135deg, #ed8936, #dd6b20);
+}
+
+.rol-estudiante .card-header i {
+    color: #ed8936;
+    background: rgba(237, 137, 54, 0.1);
+}
+
+/* BOTÓN REGRESAR */
 .back-btn {
     position: fixed;
-    left: 18px;
-    bottom: 18px;
-    padding: 10px 16px;
-    background-color: #0b74da;
-    color: #fff;
+    bottom: 30px;
+    left: 30px;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    color: #2d3748;
     border: none;
-    border-radius: 8px;
+    border-radius: 50px;
     cursor: pointer;
-    font-size: 14px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: background 0.2s ease;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
     z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .back-btn:hover {
-    background-color: #095bb5;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 1);
+}
+
+/* LOADING */
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(102, 126, 234, 0.9);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+.loading p {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+    .perfil-container {
+        grid-template-columns: 350px 1fr;
+        gap: 25px;
+    }
+}
+
+@media (max-width: 968px) {
+    .perfil-container {
+        grid-template-columns: 1fr;
+    }
+
+    .perfil-main-card {
+        position: static;
+        margin-bottom: 10px;
+    }
+
+    .perfil-cards-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .perfil-main-card,
+    .data-card {
+        padding: 20px;
+    }
+
+    .perfil-cards-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .back-btn {
+        bottom: 20px;
+        left: 20px;
+        padding: 12px 16px;
+    }
 }
