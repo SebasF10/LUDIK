@@ -15,14 +15,14 @@
     <header>
         <div class="encabezado-ludik">
             <div class="lado-izq">
-                <img src="img/colegio.jpg" alt="Institución" class="logo-institucion">
+                <img src="img/sistemas.png" alt="Institución" class="logo-institucion">
                 <span class="especialidad">Especialidad: Sistemas</span>
             </div>
             <div class="centro">
                 <span class="titulo-ludik">LUDIK</span>
             </div>
             <div class="lado-der">
-                <img src="img/Ludik2.png" alt="Logo Ludik" class="logo-ludik">
+                <img src="img/Ludik2.png" alt="Logo Ludik" class="logo-ludik no-hover">
                 <a href="Inicio_sesion.html" class="btn-login">Iniciar Sesión</a>
             </div>
         </div>
@@ -68,16 +68,21 @@
                 cognitivas, sociales o culturales.
             </p>
             <h3>Leyes y Normativas Relevantes</h3>
-            <ul>
-                <li><strong>Constitución Política (1991):</strong> Establece el derecho a la educación como un derecho
-                    fundamental.</li>
-                <li><strong>Ley 115 de 1994:</strong> Ley General de Educación, promueve la atención a la diversidad.
-                </li>
-                <li><strong>Decreto 366 de 2009:</strong> Regula la atención educativa para estudiantes con
-                    discapacidad.
-                </li>
-                <li><strong>Decreto 1421 de 2017:</strong> Reglamenta la educación inclusiva en Colombia.</li>
-            </ul>
+            <div class="info-item">
+                <strong>Constitución Política (1991):</strong> Establece el derecho a la educación como un derecho
+                fundamental.
+            </div>
+            <div class="info-item">
+                <strong>Ley 115 de 1994:</strong> Ley General de Educación, promueve la atención a la diversidad.
+            </div>
+            <div class="info-item">
+                <strong>Decreto 366 de 2009:</strong> Regula la atención educativa para estudiantes con
+                discapacidad.
+            </div>
+            <div class="info-item">
+                <strong>Decreto 1421 de 2017:</strong> Reglamenta la educación inclusiva en Colombia.
+            </div>
+            
             <h3>Principios de Inclusión</h3>
             <p>
                 La inclusión implica reconocer la diversidad como un valor, eliminar barreras de aprendizaje y
@@ -92,7 +97,15 @@
 
         <!-- Sección Proyecto LUDIK -->
         <section id="ludik" class="section">
-            <h1>Proyecto LUDIK</h1>
+            <div class="ludik-header">
+                <div class="ludik-text">
+                    <h1>Proyecto LUDIK</h1>
+                </div>
+                <div class="ludik-logo">
+                    <img src="img/Ludik2.png" alt="Proyecto Ludik" class="imagen-logo-header">
+                </div>
+            </div>
+            
             <h3>Problemática</h3>
             <p>
                 El proyecto surge en el Colegio San José de Guanentá, donde estudiantes con necesidades educativas
@@ -103,32 +116,45 @@
             </p>
 
             <h3>Causas</h3>
-            <ul>
-                <li>Falta de herramientas tecnológicas adaptadas para estudiantes con discapacidad.</li>
-                <li>Limitaciones en la formación docente para atender adecuadamente la diversidad.</li>
-                <li>Pocas metodologías de aprendizaje adaptadas a estudiantes con necesidades especiales.</li>
-            </ul>
+            <div class="info-item">
+                Falta de herramientas tecnológicas adaptadas para estudiantes con discapacidad.
+            </div>
+            <div class="info-item">
+                Limitaciones en la formación docente para atender adecuadamente la diversidad.
+            </div>
+            <div class="info-item">
+                Pocas metodologías de aprendizaje adaptadas a estudiantes con necesidades especiales.
+            </div>
 
             <h3>Consecuencias</h3>
-            <ul>
-                <li>Bajo rendimiento académico en estudiantes de inclusión.</li>
-                <li>Aumento de brechas educativas entre estudiantes con y sin discapacidad.</li>
-                <li>Falta de acompañamiento familiar en el proceso educativo.</li>
-            </ul>
+            <div class="info-item">
+                Bajo rendimiento académico en estudiantes de inclusión.
+            </div>
+            <div class="info-item">
+                Aumento de brechas educativas entre estudiantes con y sin discapacidad.
+            </div>
+            <div class="info-item">
+                Falta de acompañamiento familiar en el proceso educativo.
+            </div>
 
             <h3>La Solución: Plataforma LUDIK</h3>
             <p>
                 LUDIK es una <span class="highlight">plataforma web inclusiva</span> que permitirá:
             </p>
-            <ul>
-                <li>Panel de usuario diferenciado para docentes, padres y administradores.</li>
-                <li>Actividades interactivas adaptadas a distintos tipos de discapacidad.</li>
-                <li>Seguimiento y reportes de progreso personalizados.</li>
-                <li>Recursos pedagógicos accesibles.</li>
-                <li>Comunicación directa entre docentes y familias.</li>
-            </ul>
-            <div class="image-space">
-                <img src="img/Ludik2.png" alt="Proyecto Ludik" class="imagen-logo">
+            <div class="info-item">
+                Panel de usuario diferenciado para docentes, padres y administradores.
+            </div>
+            <div class="info-item">
+                Actividades interactivas adaptadas a distintos tipos de discapacidad.
+            </div>
+            <div class="info-item">
+                Seguimiento y reportes de progreso personalizados.
+            </div>
+            <div class="info-item">
+                Recursos pedagógicos accesibles.
+            </div>
+            <div class="info-item">
+                Comunicación directa entre docentes y familias.
             </div>
         </section>
     </main>
@@ -179,8 +205,8 @@
             });
         });
 
-        // Efecto hover en las imágenes
-        document.querySelectorAll('.image-space img').forEach(img => {
+        // Efecto hover en las imágenes (excepto las que tienen clase no-hover)
+        document.querySelectorAll('.image-space img:not(.no-hover)').forEach(img => {
             img.addEventListener('mouseenter', function() {
                 this.style.transform = 'scale(1.05)';
                 this.style.transition = 'transform 0.3s ease';
