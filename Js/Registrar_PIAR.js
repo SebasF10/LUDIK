@@ -1,5 +1,6 @@
-// filepath: js/registro_piar.js
+console.log("Script cargado");
 
+// Variables para el PIAR
 let pasoActual = 1;
 let piarId = null;
 let entornoSaludId = null;
@@ -7,8 +8,233 @@ let contadorTratamientos = 1;
 let contadorMedicamentos = 1;
 let contadorAtencion = 1;
 
+// ===== FUNCIONALIDAD DEL MENÚ EXTRAÍBLE =====
+const burger = document.getElementById('burger');
+const sideMenu = document.getElementById('sideMenu');
+const overlay = document.getElementById('overlay');
+
+// Event listener para el menú hamburguesa
+if (burger) {
+    burger.addEventListener('change', function () {
+        if (this.checked) {
+            sideMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Inspeccionar elementos cuando se abra el menú
+            setTimeout(inspeccionarYEliminar, 200);
+        } else {
+            sideMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    });
+}
+
+// Event listener para cerrar el menú con overlay
+if (overlay) {
+    overlay.addEventListener('click', function () {
+        burger.checked = false;
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    });
+}
+
+// FUNCIÓN PARA INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
+function inspeccionarYEliminar() {
+    console.log("🔍 INSPECCIONANDO ELEMENTOS EN EL MENÚ");
+
+    const menuButtons = document.querySelector('.menu-buttons');
+    if (!menuButtons) return;
+
+    // Obtener TODOS los hijos directos
+    const todosLosHijos = Array.from(menuButtons.children);
+
+    console.log("📋 Elementos encontrados en menu-buttons:");
+    todosLosHijos.forEach((elemento, index) => {
+        console.log(`${index}: ${elemento.tagName} - ${elemento.className} - "${elemento.textContent?.trim()}" - Height: ${elemento.offsetHeight}px`);
+
+        // Eliminar elementos sospechosos
+        if (
+            // Elementos HR
+            elemento.tagName === 'HR' ||
+            // Elementos vacíos o con poca altura
+            (elemento.offsetHeight <= 5 && !elemento.textContent?.trim()) ||
+            // Elementos con clases de separador
+            elemento.className?.includes('separator') ||
+            elemento.className?.includes('divider') ||
+            elemento.className?.includes('line') ||
+            // Elementos que no son botones y no tienen texto
+            (!elemento.classList.contains('menu-button') && !elemento.textContent?.trim())
+        ) {
+            console.log(`🗑️ ELIMINANDO elemento sospechoso: ${elemento.tagName} - ${elemento.className}`);
+            elemento.remove();
+        }
+    });
+
+    // También verificar en el contenedor principal del menú
+    const sideMenuChildren = Array.from(sideMenu.children);
+    console.log("📋 Elementos en side-menu:");
+    sideMenuChildren.forEach((elemento, index) => {
+        console.log(`${index}: ${elemento.tagName} - ${elemento.className} - Height: ${elemento.offsetHeight}px`);
+
+        // Eliminar elementos extraños que no sean menu-header, menu-buttons o menu-bottom
+        if (!['menu-header', 'menu-buttons', 'menu-bottom'].some(clase => elemento.classList.contains(clase))) {
+            if (elemento.tagName === 'HR' || elemento.offsetHeight <= 5) {
+                console.log(`🗑️ ELIMINANDO elemento extraño en side-menu: ${elemento.tagName}`);
+                elemento.remove();
+            }
+        }
+    });
+}
+
+// Función simplificada para eliminar botones según rol
+function eliminarBotonesPorRol() {
+    const rol = localStorage.getItem("rol");
+    console.log("Verificando rol:", rol);
+
+    // PRIMERO: INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
+    inspeccionarYEliminar();
+
+    // Buscar TODOS los botones del menú
+    const todosLosBotones = document.querySelectorAll('.menu-button');
+    console.log("Botones encontrados:", todosLosBotones.length);
+
+    todosLosBotones.forEach(function (boton, index) {
+        const textoDelBoton = boton.textContent.trim().toLowerCase();
+        console.log(`Botón ${index}: "${textoDelBoton}"`);
+
+        // Lógica según el rol
+        if (rol === "admin") {
+            // Admin: puede ver todos los botones
+            console.log("Usuario es admin, todos los botones visibles");
+
+        } else if (rol === "docente_apoyo") {
+            // Docente de apoyo: ocultar solo "Crear Cuentas"
+            if (textoDelBoton.includes("crear cuenta")) {
+                console.log("¡Eliminando botón Crear Cuentas para docente_apoyo!");
+                boton.remove();
+            }
+
+        } else if (rol === "docente") {
+            // Docente regular: ocultar "Crear Cuentas", "Registrar PIAR" y "Registrar estudiante"
+            if (textoDelBoton.includes("crear cuenta")) {
+                console.log("¡Eliminando botón Crear Cuentas para docente!");
+                boton.remove();
+            }
+            if (textoDelBoton.includes("registrar un nuevo estudiante")) {
+                console.log("¡Eliminando botón Registrar un nuevo estudiante para docente!");
+                boton.remove();
+            }
+            if (textoDelBoton.includes("registrar un piar")) {
+                console.log("¡Eliminando botón Registrar un PIAR para docente!");
+                boton.remove();
+            }
+
+        } else {
+            // Rol desconocido o sin rol: comportamiento por defecto
+            console.log("Rol desconocido o sin rol, aplicando restricciones por defecto");
+            if (textoDelBoton.includes("crear cuenta") ||
+                textoDelBoton.includes("registrar un nuevo estudiante") ||
+                textoDelBoton.includes("registrar un piar")) {
+                console.log("¡Eliminando botón restringido para usuario sin rol definido!");
+                boton.remove();
+            }
+        }
+    });
+
+    // DESPUÉS DE MODIFICAR: INSPECCIONAR OTRA VEZ
+    setTimeout(inspeccionarYEliminar, 100);
+}
+
+// Manejar clicks de botones del menú
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('menu-button')) {
+        const texto = e.target.textContent.trim();
+        const textoLower = texto.toLowerCase();
+
+        console.log("=== DEBUG CLICK ===");
+        console.log("Texto original:", `"${texto}"`);
+        console.log("Texto lowercase:", `"${textoLower}"`);
+
+        if (textoLower.includes('perfil')) {
+            console.log("-> Redirigiendo a perfil");
+            window.location.href = 'perfil.html';
+        } else if (textoLower.includes('estudiantes')) {
+            console.log("-> Redirigiendo a estudiantes");
+            window.location.href = 'Estudiantes.html';
+        } else if (textoLower.includes('crear cuentas')) {
+            console.log("-> Redirigiendo a crear cuentas");
+            window.location.href = 'Crear_cuentas.html';
+        } else if (textoLower.includes('actividades')) {
+            console.log("-> Redirigiendo a actividades");
+            window.location.href = 'Ejercicios.html';
+        } else if (textoLower.includes('registrar un nuevo estudiante')) {
+            console.log("-> Redirigiendo a registrar estudiante");
+            window.location.href = 'Registrar_estudiante.html';
+        } else if (textoLower.includes('registrar un piar')) {
+            console.log("-> Redirigiendo a registrar PIAR");
+            window.location.href = 'Registrar_PIAR.html';
+        } else if (textoLower.includes('descripción general')) {
+            console.log("-> Redirigiendo a descripción general");
+            window.location.href = 'Descripción_general.html';
+        } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
+            console.log("-> ¡ENCONTRADO! Redirigiendo a valoración pedagógica");
+            window.location.href = 'Valoracion_pedagogica.html';
+        } else if (textoLower.includes('comunicate')) {
+            console.log("-> Redirigiendo a comunicación");
+            window.location.href = 'Comunicacion.html';
+        } else if (textoLower.includes('ayuda')) {
+            console.log("-> Redirigiendo a ayuda");
+            window.location.href = 'Ayuda.html';
+        } else if (textoLower.includes('cerrar sesion') || textoLower.includes('cerrar sesión')) {
+            console.log("-> Cerrando sesión");
+            if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
+                localStorage.removeItem('rol');
+                window.location.href = 'Inicio_sesion.html';
+            }
+        } else {
+            console.log("-> ❌ NO SE ENCONTRÓ COINCIDENCIA");
+            console.log("Texto a comparar:", `"${textoLower}"`);
+        }
+
+        // Cerrar menú
+        burger.checked = false;
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// ===== FUNCIONALIDAD PIAR =====
+
 // Inicializar cuando se carga la página
 document.addEventListener('DOMContentLoaded', function () {
+    console.log("DOM cargado - ejecutando función de roles");
+    eliminarBotonesPorRol();
+
+    // VERIFICAR ROL INMEDIATAMENTE - SIMPLIFICADO
+    const rol = localStorage.getItem('rol');
+    console.log('Rol en localStorage:', rol);
+
+    // Eliminar cualquier HR o línea que pueda existir
+    const lineas = document.querySelectorAll('hr, .separator, .line, .divider');
+    lineas.forEach(linea => {
+        console.log('Eliminando línea encontrada');
+        linea.remove();
+    });
+
+    // Si NO es admin, ocultar el botón
+    if (rol !== 'admin') {
+        const botonCrear = document.getElementById('btnCrearCuentas');
+        if (botonCrear) {
+            botonCrear.style.display = 'none';
+            console.log('Botón ocultado para rol:', rol);
+        }
+    }
+
+    // Inicializar funciones del PIAR
     cargarEstudiantes();
     cargarDiagnosticosCIE10();
     configurarFechaActual();
@@ -18,7 +244,10 @@ document.addEventListener('DOMContentLoaded', function () {
 function configurarFechaActual() {
     const hoy = new Date();
     const fechaFormateada = hoy.toISOString().split('T')[0];
-    document.getElementById('fecha_piar').value = fechaFormateada;
+    const fechaInput = document.getElementById('fecha_piar');
+    if (fechaInput) {
+        fechaInput.value = fechaFormateada;
+    }
 }
 
 // Cargar lista de estudiantes
@@ -28,14 +257,16 @@ async function cargarEstudiantes() {
         const estudiantes = await response.json();
 
         const select = document.getElementById('id_estudiante');
-        select.innerHTML = '<option value="">Seleccionar estudiante...</option>';
+        if (select) {
+            select.innerHTML = '<option value="">Seleccionar estudiante...</option>';
 
-        estudiantes.forEach(estudiante => {
-            const option = document.createElement('option');
-            option.value = estudiante.id_estudiante;
-            option.textContent = `${estudiante.nombre} ${estudiante.apellidos}`;
-            select.appendChild(option);
-        });
+            estudiantes.forEach(estudiante => {
+                const option = document.createElement('option');
+                option.value = estudiante.id_estudiante;
+                option.textContent = `${estudiante.nombre} ${estudiante.apellidos}`;
+                select.appendChild(option);
+            });
+        }
     } catch (error) {
         mostrarMensaje('Error al cargar estudiantes: ' + error.message, 'error');
     }
@@ -48,22 +279,24 @@ async function cargarDiagnosticosCIE10() {
         const diagnosticos = await response.json();
 
         const container = document.getElementById('diagnosticos-cie10-container');
-        container.innerHTML = '';
+        if (container) {
+            container.innerHTML = '';
 
-        diagnosticos.forEach(diagnostico => {
-            const div = document.createElement('div');
-            div.className = 'checkbox-item';
+            diagnosticos.forEach(diagnostico => {
+                const div = document.createElement('div');
+                div.className = 'checkbox-item';
 
-            div.innerHTML = `
-                <input type="checkbox" id="cie10_${diagnostico.id_cie10}" 
-                       name="diagnosticos_cie10[]" value="${diagnostico.id_cie10}">
-                <label for="cie10_${diagnostico.id_cie10}">
-                    <strong>${diagnostico.id_cie10}</strong> - ${diagnostico.descripcion}
-                </label>
-            `;
+                div.innerHTML = `
+                    <input type="checkbox" id="cie10_${diagnostico.id_cie10}" 
+                           name="diagnosticos_cie10[]" value="${diagnostico.id_cie10}">
+                    <label for="cie10_${diagnostico.id_cie10}">
+                        <strong>${diagnostico.id_cie10}</strong> - ${diagnostico.descripcion}
+                    </label>
+                `;
 
-            container.appendChild(div);
-        });
+                container.appendChild(div);
+            });
+        }
     } catch (error) {
         mostrarMensaje('Error al cargar diagnósticos CIE-10: ' + error.message, 'error');
     }
@@ -414,21 +647,24 @@ function validarFormulario(form) {
 // Mostrar mensaje
 function mostrarMensaje(mensaje, tipo) {
     const div = document.getElementById('mensaje');
-    div.textContent = mensaje;
-    div.className = `mensaje ${tipo}`;
-    div.style.display = 'block';
+    if (div) {
+        div.textContent = mensaje;
+        div.className = `mensaje ${tipo}`;
+        div.style.display = 'block';
 
-    // Auto-ocultar después de 5 segundos si es éxito
-    if (tipo === 'exito') {
-        setTimeout(() => {
-            div.style.display = 'none';
-        }, 5000);
+        // Auto-ocultar después de 5 segundos si es éxito
+        if (tipo === 'exito') {
+            setTimeout(() => {
+                div.style.display = 'none';
+            }, 5000);
+        }
+
+        // Scroll hacia arriba para mostrar el mensaje
+        div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-
-    // Scroll hacia arriba para mostrar el mensaje
-    div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
+// Función para el botón regresar
 function goBackOrRedirect(ruta) {
     if (ruta && ruta.trim() !== '') {
         window.location.href = ruta;   // Ir a la ruta que pongas

@@ -7,6 +7,7 @@
     <title>LUDIK - Registro Completo de Estudiante</title>
     <link rel="icon" href="img/Ludik2.png" type="image/x-icon">
     <link rel="stylesheet" href="Css\Registrar_estudiante.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         .skip-section {
             background: rgba(255, 193, 7, 0.1);
@@ -82,432 +83,521 @@
 </head>
 
 <body>
-    <header>
-        <div class="header-container">
-            <img src="img\colegio.jpg" alt="Logo Institución" class="logo-institucion">
-            <h1 class="titulo-ludik">LUDIK</h1>
+    <!-- NUEVO HEADER CON MENÚ EXTRAÍBLE -->
+    <div class="header">
+        <div class="left-section">
+            <label class="burger" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <span class="menu-text">MENÚ</span>
         </div>
-    </header>
-
-    <div class="main-content">
-        <section class="section">
-            <h1>Registro Completo de Estudiante</h1>
-
-            <!-- Indicador de progreso -->
-            <div class="progress-indicator">
-                <div class="step-indicator active" id="step1">1</div>
-                <div class="step-indicator" id="step2">2</div>
-                <div class="step-indicator" id="step3">3</div>
-                <div class="step-indicator" id="step4">4</div>
-                <div class="step-indicator" id="step5">5</div>
-                <div class="step-indicator" id="step6">6</div>
-                <div class="step-indicator" id="step7">7</div>
-                <div class="step-indicator" id="step8">8</div>
-                <div class="step-indicator" id="step9">9</div>
-                <div class="step-indicator" id="step10">10</div>
-                <div class="step-indicator" id="step11">11</div>
-            </div>
-
-            <form id="formulario-completo" method="POST">
-
-                <!-- PASO 1: INFORMACIÓN DE LA MADRE -->
-                <div class="form-step active" id="form-step-1">
-                    <h2>Información de la Madre</h2>
-
-                    <!-- Sección de Skip -->
-                    <div class="skip-section">
-                        <h3>Opciones de Registro</h3>
-                        <button type="button" class="skip-btn" onclick="showSkipOptions('madre')">
-                            Saltar Registro de Madre
-                        </button>
-                        
-                        <div id="madre-skip-options" class="skip-options">
-                            <div class="skip-radio">
-                                <input type="radio" id="madre-no-presente" name="madre_skip_reason" value="no_presente">
-                                <label for="madre-no-presente">La madre no está presente</label>
-                            </div>
-                            <div class="skip-radio">
-                                <input type="radio" id="madre-es-acudiente" name="madre_skip_reason" value="es_acudiente">
-                                <label for="madre-es-acudiente">La madre será registrada como acudiente</label>
-                            </div>
-                            <button type="button" class="skip-btn" onclick="confirmSkip('madre')">Confirmar</button>
-                            <button type="button" class="skip-btn" onclick="cancelSkip('madre')">Cancelar</button>
-                        </div>
-                    </div>
-
-                    <div id="madre-skipped-info" class="skipped-info">
-                        <strong>✓ Registro de madre omitido:</strong> <span id="madre-skip-reason-text"></span>
-                        <button type="button" class="skip-btn" onclick="undoSkip('madre')" style="margin-left: 1rem; padding: 0.5rem 1rem;">
-                            Deshacer
-                        </button>
-                    </div>
-
-                    <div id="madre-form-fields">
-                        <label for="madre_nombre">Nombre Completo de la Madre *</label>
-                        <input type="text" id="madre_nombre" name="madre_nombre" required>
-
-                        <label for="madre_educacion">Nivel Educativo</label>
-                        <select id="madre_educacion" name="madre_educacion" required>
-                            <option value="">Seleccione</option>
-                            <option value="Primaria">Primaria</option>
-                            <option value="Bachillerato">Bachillerato</option>
-                            <option value="Técnico">Técnico</option>
-                            <option value="Tecnológico">Tecnológico</option>
-                            <option value="Profesional">Profesional</option>
-                            <option value="Especialización">Especialización</option>
-                            <option value="Maestría">Maestría</option>
-                            <option value="Doctorado">Doctorado</option>
-                        </select>
-
-                        <label for="madre_ocupacion">Ocupación *</label>
-                        <input type="text" id="madre_ocupacion" name="madre_ocupacion" required>
-
-                        <label for="madre_email">Email</label>
-                        <input type="email" id="madre_email" name="madre_email">
-
-                        <label for="madre_telefono">Teléfono</label>
-                        <input type="tel" id="madre_telefono" name="madre_telefono">
-
-                        <label for="madre_contrasena">Contraseña</label>
-                        <input type="password" id="madre_contrasena" name="madre_contrasena">
-                    </div>
-                </div>
-
-                <!-- PASO 2: INFORMACIÓN DEL PADRE -->
-                <div class="form-step" id="form-step-2">
-                    <h2>Información del Padre</h2>
-
-                    <!-- Sección de Skip -->
-                    <div class="skip-section">
-                        <h3>Opciones de Registro</h3>
-                        <button type="button" class="skip-btn" onclick="showSkipOptions('padre')">
-                            Saltar Registro de Padre
-                        </button>
-                        
-                        <div id="padre-skip-options" class="skip-options">
-                            <div class="skip-radio">
-                                <input type="radio" id="padre-no-presente" name="padre_skip_reason" value="no_presente">
-                                <label for="padre-no-presente">El padre no está presente</label>
-                            </div>
-                            <div class="skip-radio">
-                                <input type="radio" id="padre-es-acudiente" name="padre_skip_reason" value="es_acudiente">
-                                <label for="padre-es-acudiente">El padre será registrado como acudiente</label>
-                            </div>
-                            <button type="button" class="skip-btn" onclick="confirmSkip('padre')">Confirmar</button>
-                            <button type="button" class="skip-btn" onclick="cancelSkip('padre')">Cancelar</button>
-                        </div>
-                    </div>
-
-                    <div id="padre-skipped-info" class="skipped-info">
-                        <strong>✓ Registro de padre omitido:</strong> <span id="padre-skip-reason-text"></span>
-                        <button type="button" class="skip-btn" onclick="undoSkip('padre')" style="margin-left: 1rem; padding: 0.5rem 1rem;">
-                            Deshacer
-                        </button>
-                    </div>
-
-                    <div id="padre-form-fields">
-                        <label for="padre_nombre">Nombre Completo del Padre *</label>
-                        <input type="text" id="padre_nombre" name="padre_nombre" required>
-
-                        <label for="padre_educacion">Nivel Educativo</label>
-                        <select id="padre_educacion" name="padre_educacion" required>
-                            <option value="">Seleccione</option>
-                            <option value="Primaria">Primaria</option>
-                            <option value="Bachillerato">Bachillerato</option>
-                            <option value="Técnico">Técnico</option>
-                            <option value="Tecnológico">Tecnológico</option>
-                            <option value="Profesional">Profesional</option>
-                            <option value="Especialización">Especialización</option>
-                            <option value="Maestría">Maestría</option>
-                            <option value="Doctorado">Doctorado</option>
-                        </select>
-
-                        <label for="padre_ocupacion">Ocupación *</label>
-                        <input type="text" id="padre_ocupacion" name="padre_ocupacion" required>
-
-                        <label for="padre_email">Email</label>
-                        <input type="email" id="padre_email" name="padre_email">
-
-                        <label for="padre_telefono">Teléfono</label>
-                        <input type="tel" id="padre_telefono" name="padre_telefono">
-
-                        <label for="padre_contrasena">Contraseña</label>
-                        <input type="password" id="padre_contrasena" name="padre_contrasena">
-                    </div>
-                </div>
-
-                <!-- PASO 3: INFORMACIÓN DEL CUIDADOR/ACUDIENTE -->
-                <div class="form-step" id="form-step-3">
-                    <h2>Información del Cuidador/Acudiente</h2>
-
-                    <div class="warning-text">
-                        <strong>Nota:</strong> Este registro es obligatorio. Si la madre o el padre es el acudiente principal, 
-                        registre aquí esa información.
-                    </div>
-
-                    <div id="cuidador-form-fields">
-                        <label for="cuidador_nombre">Nombre Completo del Cuidador/Acudiente *</label>
-                        <input type="text" id="cuidador_nombre" name="cuidador_nombre" required>
-
-                        <label for="cuidador_educacion">Nivel Educativo</label>
-                        <select id="cuidador_educacion" name="cuidador_educacion" required>
-                            <option value="">Seleccione</option>
-                            <option value="Primaria">Primaria</option>
-                            <option value="Bachillerato">Bachillerato</option>
-                            <option value="Técnico">Técnico</option>
-                            <option value="Tecnológico">Tecnológico</option>
-                            <option value="Profesional">Profesional</option>
-                            <option value="Especialización">Especialización</option>
-                            <option value="Maestría">Maestría</option>
-                            <option value="Doctorado">Doctorado</option>
-                        </select>
-
-                        <label for="cuidador_parentesco">Parentesco *</label>
-                        <select id="cuidador_parentesco" name="cuidador_parentesco" required>
-                            <option value="">Seleccione</option>
-                            <option value="Madre">Madre</option>
-                            <option value="Padre">Padre</option>
-                            <option value="Abuelo/a">Abuelo/a</option>
-                            <option value="Tío/a">Tío/a</option>
-                            <option value="Hermano/a">Hermano/a</option>
-                            <option value="Tutor Legal">Tutor Legal</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-
-                        <label for="cuidador_email">Email</label>
-                        <input type="email" id="cuidador_email" name="cuidador_email">
-
-                        <label for="cuidador_telefono">Teléfono</label>
-                        <input type="tel" id="cuidador_telefono" name="cuidador_telefono">
-
-                        <label for="cuidador_contrasena">Contraseña</label>
-                        <input type="password" id="cuidador_contrasena" name="cuidador_contrasena">
-                    </div>
-                </div>
-
-                <!-- PASO 4: INFORMACIÓN DEL ESTUDIANTE -->
-                <div class="form-step" id="form-step-4">
-                    <h2>Información del Estudiante</h2>
-
-                    <label for="estudiante_nombre">Nombre *</label>
-                    <input type="text" id="estudiante_nombre" name="estudiante_nombre" required>
-
-                    <label for="estudiante_apellidos">Apellidos *</label>
-                    <input type="text" id="estudiante_apellidos" name="estudiante_apellidos" required>
-
-                    <label for="tipo_documento">Tipo de Documento *</label>
-                    <select id="tipo_documento" name="tipo_documento" required>
-                        <option value="">Seleccione</option>
-                        <option value="TI">Tarjeta de Identidad</option>
-                        <option value="CC">Cédula de Ciudadanía</option>
-                        <option value="CE">Cédula de Extranjería</option>
-                        <option value="PAS">Pasaporte</option>
-                    </select>
-
-                    <label for="no_documento">Número de Documento *</label>
-                    <input type="text" id="no_documento" name="no_documento" required>
-
-                    <label for="lugar_nacimiento">Lugar de Nacimiento</label>
-                    <input type="text" id="lugar_nacimiento" name="lugar_nacimiento">
-
-                    <label for="fecha_nacimiento">Fecha de Nacimiento *</label>
-                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
-
-                    <label for="sector">Sector *</label>
-                    <select id="sector" name="sector" required>
-                        <option value="">Seleccione</option>
-                        <option value="Urbano">Urbano</option>
-                        <option value="Rural">Rural</option>
-                    </select>
-
-                    <label for="direccion">Dirección *</label>
-                    <input type="text" id="direccion" name="direccion" required>
-
-                    <label for="telefono">Teléfono</label>
-                    <input type="tel" id="telefono" name="telefono">
-
-                    <label for="correo">Correo Electrónico</label>
-                    <input type="email" id="correo" name="correo">
-
-                    <label for="contrasena">Contraseña</label>
-                    <input type="password" id="contrasena" name="contrasena">
-
-                    <label for="victima_conflicto">¿Es víctima del conflicto armado? *</label>
-                    <select id="victima_conflicto" name="victima_conflicto" required>
-                        <option value="">Seleccione</option>
-                        <option value="Si">Sí</option>
-                        <option value="No">No</option>
-                    </select>
-
-                    <div id="victima_tipo_container" class="conditional-container">
-                        <label for="victima_tipo">Tipo de Víctima</label>
-                        <select id="victima_tipo" name="victima_tipo">
-                            <option value="">Seleccione</option>
-                            <option value="Desplazado">Desplazado</option>
-                            <option value="Huérfano">Huérfano</option>
-                            <option value="Víctima directa">Víctima directa</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-
-                    <label for="registro_victima">¿Tiene registro de víctima?</label>
-                    <select id="registro_victima" name="registro_victima">
-                        <option value="">Seleccione</option>
-                        <option value="Si">Sí</option>
-                        <option value="No">No</option>
-                    </select>
-
-                    <label for="centro_proteccion">¿Está en centro de protección?</label>
-                    <select id="centro_proteccion" name="centro_proteccion">
-                        <option value="">Seleccione</option>
-                        <option value="Si">Sí</option>
-                        <option value="No">No</option>
-                    </select>
-
-                    <label for="grupo_etnico">¿Pertenece a algún grupo étnico? *</label>
-                    <select id="grupo_etnico" name="grupo_etnico" required>
-                        <option value="">Seleccione</option>
-                        <option value="Si">Sí</option>
-                        <option value="No">No</option>
-                    </select>
-
-                    <div id="etnico_tipo_container" class="conditional-container">
-                        <label for="etnico_tipo">Tipo de Grupo Étnico</label>
-                        <select id="etnico_tipo" name="etnico_tipo">
-                            <option value="">Seleccione</option>
-                            <option value="Indígena">Indígena</option>
-                            <option value="Afrodescendiente">Afrodescendiente</option>
-                            <option value="ROM">ROM</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-
-                    <label for="no_hermanos">Número de Hermanos</label>
-                    <input type="number" id="no_hermanos" name="no_hermanos" min="0">
-
-                    <label for="lugar_que_ocupa">Lugar que Ocupa</label>
-                    <input type="text" id="lugar_que_ocupa" name="lugar_que_ocupa">
-
-                    <label for="con_quien_vive">¿Con quién vive? *</label>
-                    <input type="text" id="con_quien_vive" name="con_quien_vive" required>
-
-                    <label for="quien_apoya_crianza">¿Quién apoya su crianza? *</label>
-                    <input type="text" id="quien_apoya_crianza" name="quien_apoya_crianza" required>
-
-                    <label for="afiliacion_salud">¿Tiene afiliación a salud? *</label>
-                    <select id="afiliacion_salud" name="afiliacion_salud" required>
-                        <option value="">Seleccione</option>
-                        <option value="Si">Sí</option>
-                        <option value="No">No</option>
-                    </select>
-
-                    <!-- SECCIÓN DE GRUPO ESTUDIANTIL -->
-                    <div class="grupo-section">
-                        <h3>Asignación de Grupo</h3>
-                        <label for="id_grupo">Grupo *</label>
-                        <select id="id_grupo" name="id_grupo" required>
-                            <option value="">Seleccione un grupo</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Pasos 5-11 permanecen igual -->
-                <!-- PASO 5: SELECCIÓN DE ESTUDIANTE PARA DESCRIPCIÓN -->
-                <div class="form-step" id="form-step-5">
-                    <h2>Descripción General - Selección de Estudiante</h2>
-                    <p>Ahora procederemos a crear la descripción general del estudiante registrado.</p>
-
-                    <label for="id_estudiante_descripcion">Estudiante *</label>
-                    <select id="id_estudiante_descripcion" name="id_estudiante_descripcion" required>
-                        <option value="">Se asignará automáticamente</option>
-                    </select>
-                </div>
-
-                <!-- PASO 6: CAPACIDADES -->
-                <div class="form-step" id="form-step-6">
-                    <h2>Capacidades del Estudiante</h2>
-
-                    <label for="capacidades">Describa las capacidades y habilidades especiales del estudiante *</label>
-                    <textarea id="capacidades" name="capacidades" required
-                        placeholder="Ejemplo: Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas, etc."></textarea>
-                </div>
-
-                <!-- PASO 7: GUSTOS E INTERESES -->
-                <div class="form-step" id="form-step-7">
-                    <h2>Gustos e Intereses</h2>
-
-                    <label for="gustos_intereses">Describa los gustos e intereses del estudiante *</label>
-                    <textarea id="gustos_intereses" name="gustos_intereses" required
-                        placeholder="Ejemplo: Le gusta la música, los deportes, la lectura, los videojuegos, etc."></textarea>
-                </div>
-
-                <!-- PASO 8: EXPECTATIVAS DEL ESTUDIANTE -->
-                <div class="form-step" id="form-step-8">
-                    <h2>Expectativas del Estudiante</h2>
-
-                    <label for="expectativas_estudiante">¿Cuáles son las expectativas y metas del estudiante? *</label>
-                    <textarea id="expectativas_estudiante" name="expectativas_estudiante" required
-                        placeholder="Ejemplo: Quiere graduarse, ir a la universidad, aprender un oficio, etc."></textarea>
-                </div>
-
-                <!-- PASO 9: EXPECTATIVAS DE LA FAMILIA -->
-                <div class="form-step" id="form-step-9">
-                    <h2>Expectativas de la Familia</h2>
-
-                    <label for="expectativas_familia">¿Cuáles son las expectativas de la familia para el estudiante? *</label>
-                    <textarea id="expectativas_familia" name="expectativas_familia" required
-                        placeholder="Ejemplo: Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro, etc."></textarea>
-                </div>
-
-                <!-- PASO 10: RED DE APOYO -->
-                <div class="form-step" id="form-step-10">
-                    <h2>Red de Apoyo</h2>
-
-                    <label for="red_apoyo">Describa la red de apoyo del estudiante *</label>
-                    <textarea id="red_apoyo" name="red_apoyo" required
-                        placeholder="Ejemplo: Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante."></textarea>
-                </div>
-
-                <!-- PASO 11: OTRAS DESCRIPCIONES -->
-                <div class="form-step" id="form-step-11">
-                    <h2>Información Adicional</h2>
-
-                    <label for="otra_descripcion">Información adicional relevante *</label>
-                    <textarea id="otra_descripcion" name="otra_descripcion" required
-                        placeholder="Cualquier otra información importante sobre el estudiante que considere relevante mencionar."></textarea>
-                </div>
-
-                <!-- Botones de navegación -->
-                <div class="navigation-buttons">
-                    <button type="button" class="btn-nav btn-anterior" id="btnAnterior" onclick="previousStep()"
-                        style="display: none;">
-                        Anterior
-                    </button>
-                    <button type="button" class="btn-nav btn-siguiente" id="btnSiguiente" onclick="nextStep()">
-                        Siguiente
-                    </button>
-                    <button type="submit" class="btn-nav btn-registrar" id="btnRegistrar" style="display: none;">
-                        Completar Registro
-                    </button>
-                </div>
-
-                <!-- Campos ocultos para manejar el estado de skip -->
-                <input type="hidden" id="madre_skipped" name="madre_skipped" value="false">
-                <input type="hidden" id="padre_skipped" name="padre_skipped" value="false">
-                <input type="hidden" id="madre_skip_reason_value" name="madre_skip_reason_value" value="">
-                <input type="hidden" id="padre_skip_reason_value" name="padre_skip_reason_value" value="">
-
-            </form>
-        </section>
+        
+        <div class="center-section">
+            <div class="title">LUDIK</div>
+        </div>
+        
+        <div class="right-section">
+            <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+        </div>
     </div>
 
-    <button class="back-btn" onclick="goBackOrRedirect('Interfaz.html')">
-        ← Regresar
-    </button>
+    <div class="overlay" id="overlay"></div>
 
-    <footer class="pie-pagina">
-        <p>&copy; 2025 LUDIK - Sistema de Gestión Educativa Inclusiva</p>
-    </footer>
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-header">
+            <div class="menu-title">Panel De Control</div>
+        </div>
+        <div class="menu-buttons">
+            <button class="menu-button">
+                <span class="menu-icon">👤</span>
+                Perfil
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">👥</span>
+                Estudiantes
+            </button>
+            <button class="menu-button" id="btnCrearCuentas">
+                <span class="menu-icon">➕</span>
+                Crear Cuentas
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📚</span>
+                Actividades
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📝</span>
+                Registrar un nuevo estudiante
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📋</span>
+                Registrar un PIAR y diagnóstico médico
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📊</span>
+                Crear una Valoración Pedagógica
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">💬</span>
+                Comunicate
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">❓</span>
+                Ayuda
+            </button>
+        </div>
+        <div class="menu-bottom">
+            <button class="menu-button close-session">
+                <span class="menu-icon">🚪</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO ORIGINAL DE REGISTRO DE ESTUDIANTE -->
+    <div class="content-wrapper">
+        <div class="main-content">
+            <section class="section">
+                <h1>Registro Completo de Estudiante</h1>
+
+                <!-- Indicador de progreso -->
+                <div class="progress-indicator">
+                    <div class="step-indicator active" id="step1">1</div>
+                    <div class="step-indicator" id="step2">2</div>
+                    <div class="step-indicator" id="step3">3</div>
+                    <div class="step-indicator" id="step4">4</div>
+                    <div class="step-indicator" id="step5">5</div>
+                    <div class="step-indicator" id="step6">6</div>
+                    <div class="step-indicator" id="step7">7</div>
+                    <div class="step-indicator" id="step8">8</div>
+                    <div class="step-indicator" id="step9">9</div>
+                    <div class="step-indicator" id="step10">10</div>
+                    <div class="step-indicator" id="step11">11</div>
+                </div>
+
+                <form id="formulario-completo" method="POST">
+
+                    <!-- PASO 1: INFORMACIÓN DE LA MADRE -->
+                    <div class="form-step active" id="form-step-1">
+                        <h2>Información de la Madre</h2>
+
+                        <!-- Sección de Skip -->
+                        <div class="skip-section">
+                            <h3>Opciones de Registro</h3>
+                            <button type="button" class="skip-btn" onclick="showSkipOptions('madre')">
+                                Saltar Registro de Madre
+                            </button>
+                            
+                            <div id="madre-skip-options" class="skip-options">
+                                <div class="skip-radio">
+                                    <input type="radio" id="madre-no-presente" name="madre_skip_reason" value="no_presente">
+                                    <label for="madre-no-presente">La madre no está presente</label>
+                                </div>
+                                <div class="skip-radio">
+                                    <input type="radio" id="madre-es-acudiente" name="madre_skip_reason" value="es_acudiente">
+                                    <label for="madre-es-acudiente">La madre será registrada como acudiente</label>
+                                </div>
+                                <button type="button" class="skip-btn" onclick="confirmSkip('madre')">Confirmar</button>
+                                <button type="button" class="skip-btn" onclick="cancelSkip('madre')">Cancelar</button>
+                            </div>
+                        </div>
+
+                        <div id="madre-skipped-info" class="skipped-info">
+                            <strong>✓ Registro de madre omitido:</strong> <span id="madre-skip-reason-text"></span>
+                            <button type="button" class="skip-btn" onclick="undoSkip('madre')" style="margin-left: 1rem; padding: 0.5rem 1rem;">
+                                Deshacer
+                            </button>
+                        </div>
+
+                        <div id="madre-form-fields">
+                            <label for="madre_nombre">Nombre Completo de la Madre *</label>
+                            <input type="text" id="madre_nombre" name="madre_nombre" required>
+
+                            <label for="madre_educacion">Nivel Educativo</label>
+                            <select id="madre_educacion" name="madre_educacion" required>
+                                <option value="">Seleccione</option>
+                                <option value="Primaria">Primaria</option>
+                                <option value="Bachillerato">Bachillerato</option>
+                                <option value="Técnico">Técnico</option>
+                                <option value="Tecnológico">Tecnológico</option>
+                                <option value="Profesional">Profesional</option>
+                                <option value="Especialización">Especialización</option>
+                                <option value="Maestría">Maestría</option>
+                                <option value="Doctorado">Doctorado</option>
+                            </select>
+
+                            <label for="madre_ocupacion">Ocupación *</label>
+                            <input type="text" id="madre_ocupacion" name="madre_ocupacion" required>
+
+                            <label for="madre_email">Email</label>
+                            <input type="email" id="madre_email" name="madre_email">
+
+                            <label for="madre_telefono">Teléfono</label>
+                            <input type="tel" id="madre_telefono" name="madre_telefono">
+
+                            <label for="madre_contrasena">Contraseña</label>
+                            <input type="password" id="madre_contrasena" name="madre_contrasena">
+                        </div>
+                    </div>
+
+                    <!-- PASO 2: INFORMACIÓN DEL PADRE -->
+                    <div class="form-step" id="form-step-2">
+                        <h2>Información del Padre</h2>
+
+                        <!-- Sección de Skip -->
+                        <div class="skip-section">
+                            <h3>Opciones de Registro</h3>
+                            <button type="button" class="skip-btn" onclick="showSkipOptions('padre')">
+                                Saltar Registro de Padre
+                            </button>
+                            
+                            <div id="padre-skip-options" class="skip-options">
+                                <div class="skip-radio">
+                                    <input type="radio" id="padre-no-presente" name="padre_skip_reason" value="no_presente">
+                                    <label for="padre-no-presente">El padre no está presente</label>
+                                </div>
+                                <div class="skip-radio">
+                                    <input type="radio" id="padre-es-acudiente" name="padre_skip_reason" value="es_acudiente">
+                                    <label for="padre-es-acudiente">El padre será registrado como acudiente</label>
+                                </div>
+                                <button type="button" class="skip-btn" onclick="confirmSkip('padre')">Confirmar</button>
+                                <button type="button" class="skip-btn" onclick="cancelSkip('padre')">Cancelar</button>
+                            </div>
+                        </div>
+
+                        <div id="padre-skipped-info" class="skipped-info">
+                            <strong>✓ Registro de padre omitido:</strong> <span id="padre-skip-reason-text"></span>
+                            <button type="button" class="skip-btn" onclick="undoSkip('padre')" style="margin-left: 1rem; padding: 0.5rem 1rem;">
+                                Deshacer
+                            </button>
+                        </div>
+
+                        <div id="padre-form-fields">
+                            <label for="padre_nombre">Nombre Completo del Padre *</label>
+                            <input type="text" id="padre_nombre" name="padre_nombre" required>
+
+                            <label for="padre_educacion">Nivel Educativo</label>
+                            <select id="padre_educacion" name="padre_educacion" required>
+                                <option value="">Seleccione</option>
+                                <option value="Primaria">Primaria</option>
+                                <option value="Bachillerato">Bachillerato</option>
+                                <option value="Técnico">Técnico</option>
+                                <option value="Tecnológico">Tecnológico</option>
+                                <option value="Profesional">Profesional</option>
+                                <option value="Especialización">Especialización</option>
+                                <option value="Maestría">Maestría</option>
+                                <option value="Doctorado">Doctorado</option>
+                            </select>
+
+                            <label for="padre_ocupacion">Ocupación *</label>
+                            <input type="text" id="padre_ocupacion" name="padre_ocupacion" required>
+
+                            <label for="padre_email">Email</label>
+                            <input type="email" id="padre_email" name="padre_email">
+
+                            <label for="padre_telefono">Teléfono</label>
+                            <input type="tel" id="padre_telefono" name="padre_telefono">
+
+                            <label for="padre_contrasena">Contraseña</label>
+                            <input type="password" id="padre_contrasena" name="padre_contrasena">
+                        </div>
+                    </div>
+
+                    <!-- PASO 3: INFORMACIÓN DEL CUIDADOR/ACUDIENTE -->
+                    <div class="form-step" id="form-step-3">
+                        <h2>Información del Cuidador/Acudiente</h2>
+
+                        <div class="warning-text">
+                            <strong>Nota:</strong> Este registro es obligatorio. Si la madre o el padre es el acudiente principal, 
+                            registre aquí esa información.
+                        </div>
+
+                        <div id="cuidador-form-fields">
+                            <label for="cuidador_nombre">Nombre Completo del Cuidador/Acudiente *</label>
+                            <input type="text" id="cuidador_nombre" name="cuidador_nombre" required>
+
+                            <label for="cuidador_educacion">Nivel Educativo</label>
+                            <select id="cuidador_educacion" name="cuidador_educacion" required>
+                                <option value="">Seleccione</option>
+                                <option value="Primaria">Primaria</option>
+                                <option value="Bachillerato">Bachillerato</option>
+                                <option value="Técnico">Técnico</option>
+                                <option value="Tecnológico">Tecnológico</option>
+                                <option value="Profesional">Profesional</option>
+                                <option value="Especialización">Especialización</option>
+                                <option value="Maestría">Maestría</option>
+                                <option value="Doctorado">Doctorado</option>
+                            </select>
+
+                            <label for="cuidador_parentesco">Parentesco *</label>
+                            <select id="cuidador_parentesco" name="cuidador_parentesco" required>
+                                <option value="">Seleccione</option>
+                                <option value="Madre">Madre</option>
+                                <option value="Padre">Padre</option>
+                                <option value="Abuelo/a">Abuelo/a</option>
+                                <option value="Tío/a">Tío/a</option>
+                                <option value="Hermano/a">Hermano/a</option>
+                                <option value="Tutor Legal">Tutor Legal</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+
+                            <label for="cuidador_email">Email</label>
+                            <input type="email" id="cuidador_email" name="cuidador_email">
+
+                            <label for="cuidador_telefono">Teléfono</label>
+                            <input type="tel" id="cuidador_telefono" name="cuidador_telefono">
+
+                            <label for="cuidador_contrasena">Contraseña</label>
+                            <input type="password" id="cuidador_contrasena" name="cuidador_contrasena">
+                        </div>
+                    </div>
+
+                    <!-- PASO 4: INFORMACIÓN DEL ESTUDIANTE -->
+                    <div class="form-step" id="form-step-4">
+                        <h2>Información del Estudiante</h2>
+
+                        <label for="estudiante_nombre">Nombre *</label>
+                        <input type="text" id="estudiante_nombre" name="estudiante_nombre" required>
+
+                        <label for="estudiante_apellidos">Apellidos *</label>
+                        <input type="text" id="estudiante_apellidos" name="estudiante_apellidos" required>
+
+                        <label for="tipo_documento">Tipo de Documento *</label>
+                        <select id="tipo_documento" name="tipo_documento" required>
+                            <option value="">Seleccione</option>
+                            <option value="TI">Tarjeta de Identidad</option>
+                            <option value="CC">Cédula de Ciudadanía</option>
+                            <option value="CE">Cédula de Extranjería</option>
+                            <option value="PAS">Pasaporte</option>
+                        </select>
+
+                        <label for="no_documento">Número de Documento *</label>
+                        <input type="text" id="no_documento" name="no_documento" required>
+
+                        <label for="lugar_nacimiento">Lugar de Nacimiento</label>
+                        <input type="text" id="lugar_nacimiento" name="lugar_nacimiento">
+
+                        <label for="fecha_nacimiento">Fecha de Nacimiento *</label>
+                        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+
+                        <label for="sector">Sector *</label>
+                        <select id="sector" name="sector" required>
+                            <option value="">Seleccione</option>
+                            <option value="Urbano">Urbano</option>
+                            <option value="Rural">Rural</option>
+                        </select>
+
+                        <label for="direccion">Dirección *</label>
+                        <input type="text" id="direccion" name="direccion" required>
+
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono">
+
+                        <label for="correo">Correo Electrónico</label>
+                        <input type="email" id="correo" name="correo">
+
+                        <label for="contrasena">Contraseña</label>
+                        <input type="password" id="contrasena" name="contrasena">
+
+                        <label for="victima_conflicto">¿Es víctima del conflicto armado? *</label>
+                        <select id="victima_conflicto" name="victima_conflicto" required>
+                            <option value="">Seleccione</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+
+                        <div id="victima_tipo_container" class="conditional-container">
+                            <label for="victima_tipo">Tipo de Víctima</label>
+                            <select id="victima_tipo" name="victima_tipo">
+                                <option value="">Seleccione</option>
+                                <option value="Desplazado">Desplazado</option>
+                                <option value="Huérfano">Huérfano</option>
+                                <option value="Víctima directa">Víctima directa</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <label for="registro_victima">¿Tiene registro de víctima?</label>
+                        <select id="registro_victima" name="registro_victima">
+                            <option value="">Seleccione</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+
+                        <label for="centro_proteccion">¿Está en centro de protección?</label>
+                        <select id="centro_proteccion" name="centro_proteccion">
+                            <option value="">Seleccione</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+
+                        <label for="grupo_etnico">¿Pertenece a algún grupo étnico? *</label>
+                        <select id="grupo_etnico" name="grupo_etnico" required>
+                            <option value="">Seleccione</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+
+                        <div id="etnico_tipo_container" class="conditional-container">
+                            <label for="etnico_tipo">Tipo de Grupo Étnico</label>
+                            <select id="etnico_tipo" name="etnico_tipo">
+                                <option value="">Seleccione</option>
+                                <option value="Indígena">Indígena</option>
+                                <option value="Afrodescendiente">Afrodescendiente</option>
+                                <option value="ROM">ROM</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <label for="no_hermanos">Número de Hermanos</label>
+                        <input type="number" id="no_hermanos" name="no_hermanos" min="0">
+
+                        <label for="lugar_que_ocupa">Lugar que Ocupa</label>
+                        <input type="text" id="lugar_que_ocupa" name="lugar_que_ocupa">
+
+                        <label for="con_quien_vive">¿Con quién vive? *</label>
+                        <input type="text" id="con_quien_vive" name="con_quien_vive" required>
+
+                        <label for="quien_apoya_crianza">¿Quién apoya su crianza? *</label>
+                        <input type="text" id="quien_apoya_crianza" name="quien_apoya_crianza" required>
+
+                        <label for="afiliacion_salud">¿Tiene afiliación a salud? *</label>
+                        <select id="afiliacion_salud" name="afiliacion_salud" required>
+                            <option value="">Seleccione</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+
+                        <!-- SECCIÓN DE GRUPO ESTUDIANTIL -->
+                        <div class="grupo-section">
+                            <h3>Asignación de Grupo</h3>
+                            <label for="id_grupo">Grupo *</label>
+                            <select id="id_grupo" name="id_grupo" required>
+                                <option value="">Seleccione un grupo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Pasos 5-11 permanecen igual -->
+                    <!-- PASO 5: SELECCIÓN DE ESTUDIANTE PARA DESCRIPCIÓN -->
+                    <div class="form-step" id="form-step-5">
+                        <h2>Descripción General - Selección de Estudiante</h2>
+                        <p>Ahora procederemos a crear la descripción general del estudiante registrado.</p>
+
+                        <label for="id_estudiante_descripcion">Estudiante *</label>
+                        <select id="id_estudiante_descripcion" name="id_estudiante_descripcion" required>
+                            <option value="">Se asignará automáticamente</option>
+                        </select>
+                    </div>
+
+                    <!-- PASO 6: CAPACIDADES -->
+                    <div class="form-step" id="form-step-6">
+                        <h2>Capacidades del Estudiante</h2>
+
+                        <label for="capacidades">Describa las capacidades y habilidades especiales del estudiante *</label>
+                        <textarea id="capacidades" name="capacidades" required
+                            placeholder="Ejemplo: Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas, etc."></textarea>
+                    </div>
+
+                    <!-- PASO 7: GUSTOS E INTERESES -->
+                    <div class="form-step" id="form-step-7">
+                        <h2>Gustos e Intereses</h2>
+
+                        <label for="gustos_intereses">Describa los gustos e intereses del estudiante *</label>
+                        <textarea id="gustos_intereses" name="gustos_intereses" required
+                            placeholder="Ejemplo: Le gusta la música, los deportes, la lectura, los videojuegos, etc."></textarea>
+                    </div>
+
+                    <!-- PASO 8: EXPECTATIVAS DEL ESTUDIANTE -->
+                    <div class="form-step" id="form-step-8">
+                        <h2>Expectativas del Estudiante</h2>
+
+                        <label for="expectativas_estudiante">¿Cuáles son las expectativas y metas del estudiante? *</label>
+                        <textarea id="expectativas_estudiante" name="expectativas_estudiante" required
+                            placeholder="Ejemplo: Quiere graduarse, ir a la universidad, aprender un oficio, etc."></textarea>
+                    </div>
+
+                    <!-- PASO 9: EXPECTATIVAS DE LA FAMILIA -->
+                    <div class="form-step" id="form-step-9">
+                        <h2>Expectativas de la Familia</h2>
+
+                        <label for="expectativas_familia">¿Cuáles son las expectativas de la familia para el estudiante? *</label>
+                        <textarea id="expectativas_familia" name="expectativas_familia" required
+                            placeholder="Ejemplo: Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro, etc."></textarea>
+                    </div>
+
+                    <!-- PASO 10: RED DE APOYO -->
+                    <div class="form-step" id="form-step-10">
+                        <h2>Red de Apoyo</h2>
+
+                        <label for="red_apoyo">Describa la red de apoyo del estudiante *</label>
+                        <textarea id="red_apoyo" name="red_apoyo" required
+                            placeholder="Ejemplo: Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante."></textarea>
+                    </div>
+
+                    <!-- PASO 11: OTRAS DESCRIPCIONES -->
+                    <div class="form-step" id="form-step-11">
+                        <h2>Información Adicional</h2>
+
+                        <label for="otra_descripcion">Información adicional relevante *</label>
+                        <textarea id="otra_descripcion" name="otra_descripcion" required
+                            placeholder="Cualquier otra información importante sobre el estudiante que considere relevante mencionar."></textarea>
+                    </div>
+
+                    <!-- Botones de navegación -->
+                    <div class="navigation-buttons">
+                        <button type="button" class="btn-nav btn-anterior" id="btnAnterior" onclick="previousStep()"
+                            style="display: none;">
+                            Anterior
+                        </button>
+                        <button type="button" class="btn-nav btn-siguiente" id="btnSiguiente" onclick="nextStep()">
+                            Siguiente
+                        </button>
+                        <button type="submit" class="btn-nav btn-registrar" id="btnRegistrar" style="display: none;">
+                            Completar Registro
+                        </button>
+                    </div>
+
+                    <!-- Campos ocultos para manejar el estado de skip -->
+                    <input type="hidden" id="madre_skipped" name="madre_skipped" value="false">
+                    <input type="hidden" id="padre_skipped" name="padre_skipped" value="false">
+                    <input type="hidden" id="madre_skip_reason_value" name="madre_skip_reason_value" value="">
+                    <input type="hidden" id="padre_skip_reason_value" name="padre_skip_reason_value" value="">
+
+                </form>
+            </section>
+        </div>
+
+        <footer class="pie-pagina">
+            <p>&copy; 2025 LUDIK - Sistema de Gestión Educativa Inclusiva</p>
+        </footer>
+    </div>
+
+    <script>
+        // VERIFICAR ROL INMEDIATAMENTE - SIMPLIFICADO
+        document.addEventListener('DOMContentLoaded', function() {
+            const rol = localStorage.getItem('rol');
+            console.log('Rol en localStorage:', rol);
+
+            // Eliminar cualquier HR o línea que pueda existir
+            const lineas = document.querySelectorAll('hr, .separator, .line, .divider');
+            lineas.forEach(linea => {
+                console.log('Eliminando línea encontrada');
+                linea.remove();
+            });
+
+            // Si NO es admin, ocultar el botón
+            if (rol !== 'admin') {
+                const botonCrear = document.getElementById('btnCrearCuentas');
+                if (botonCrear) {
+                    botonCrear.style.display = 'none';
+                    console.log('Botón ocultado para rol:', rol);
+                }
+            }
+        });
+    </script>
 
     <script src="Js\Registrar_estudiante.js"></script>
 </body>

@@ -1,4 +1,203 @@
-// JavaScript para Estudiantes.html - Sistema de Gestión de Estudiantes con descarga PDF
+// JavaScript para Estudiantes.html con Header y Menú Integrado
+
+// ===================== FUNCIONALIDAD DEL MENÚ =====================
+
+console.log("Script cargado");
+
+// Funcionalidad del menú
+const burger = document.getElementById('burger');
+const sideMenu = document.getElementById('sideMenu');
+const overlay = document.getElementById('overlay');
+
+burger.addEventListener('change', function () {
+    if (this.checked) {
+        sideMenu.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // INSPECCIONAR ELEMENTOS cuando se abra el menú
+        setTimeout(inspeccionarYEliminar, 200);
+    } else {
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+overlay.addEventListener('click', function () {
+    burger.checked = false;
+    sideMenu.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+});
+
+// FUNCIÓN PARA INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
+function inspeccionarYEliminar() {
+    console.log("🔍 INSPECCIONANDO ELEMENTOS EN EL MENÚ");
+
+    const menuButtons = document.querySelector('.menu-buttons');
+    if (!menuButtons) return;
+
+    // Obtener TODOS los hijos directos
+    const todosLosHijos = Array.from(menuButtons.children);
+
+    console.log("📋 Elementos encontrados en menu-buttons:");
+    todosLosHijos.forEach((elemento, index) => {
+        console.log(`${index}: ${elemento.tagName} - ${elemento.className} - "${elemento.textContent?.trim()}" - Height: ${elemento.offsetHeight}px`);
+
+        // Eliminar elementos sospechosos
+        if (
+            // Elementos HR
+            elemento.tagName === 'HR' ||
+            // Elementos vacíos o con poca altura
+            (elemento.offsetHeight <= 5 && !elemento.textContent?.trim()) ||
+            // Elementos con clases de separador
+            elemento.className?.includes('separator') ||
+            elemento.className?.includes('divider') ||
+            elemento.className?.includes('line') ||
+            // Elementos que no son botones y no tienen texto
+            (!elemento.classList.contains('menu-button') && !elemento.textContent?.trim())
+        ) {
+            console.log(`🗑️ ELIMINANDO elemento sospechoso: ${elemento.tagName} - ${elemento.className}`);
+            elemento.remove();
+        }
+    });
+
+    // También verificar en el contenedor principal del menú
+    const sideMenuChildren = Array.from(sideMenu.children);
+    console.log("📋 Elementos en side-menu:");
+    sideMenuChildren.forEach((elemento, index) => {
+        console.log(`${index}: ${elemento.tagName} - ${elemento.className} - Height: ${elemento.offsetHeight}px`);
+
+        // Eliminar elementos extraños que no sean menu-header, menu-buttons o menu-bottom
+        if (!['menu-header', 'menu-buttons', 'menu-bottom'].some(clase => elemento.classList.contains(clase))) {
+            if (elemento.tagName === 'HR' || elemento.offsetHeight <= 5) {
+                console.log(`🗑️ ELIMINANDO elemento extraño en side-menu: ${elemento.tagName}`);
+                elemento.remove();
+            }
+        }
+    });
+}
+
+// Función simplificada para eliminar botones según rol
+function eliminarBotonesPorRol() {
+    const rol = localStorage.getItem("rol");
+    console.log("Verificando rol:", rol);
+
+    // PRIMERO: INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
+    inspeccionarYEliminar();
+
+    // Buscar TODOS los botones del menú
+    const todosLosBotones = document.querySelectorAll('.menu-button');
+    console.log("Botones encontrados:", todosLosBotones.length);
+
+    todosLosBotones.forEach(function (boton, index) {
+        const textoDelBoton = boton.textContent.trim().toLowerCase();
+        console.log(`Botón ${index}: "${textoDelBoton}"`);
+
+        // Lógica según el rol
+        if (rol === "admin") {
+            // Admin: puede ver todos los botones
+            console.log("Usuario es admin, todos los botones visibles");
+
+        } else if (rol === "docente_apoyo") {
+            // Docente de apoyo: ocultar solo "Crear Cuentas"
+            if (textoDelBoton.includes("crear cuenta")) {
+                console.log("¡Eliminando botón Crear Cuentas para docente_apoyo!");
+                boton.remove();
+            }
+
+        } else if (rol === "docente") {
+            // Docente regular: ocultar "Crear Cuentas", "Registrar PIAR" y "Registrar estudiante"
+            if (textoDelBoton.includes("crear cuenta")) {
+                console.log("¡Eliminando botón Crear Cuentas para docente!");
+                boton.remove();
+            }
+            if (textoDelBoton.includes("registrar un nuevo estudiante")) {
+                console.log("¡Eliminando botón Registrar un nuevo estudiante para docente!");
+                boton.remove();
+            }
+            if (textoDelBoton.includes("registrar un piar")) {
+                console.log("¡Eliminando botón Registrar un PIAR para docente!");
+                boton.remove();
+            }
+
+        } else {
+            // Rol desconocido o sin rol: comportamiento por defecto
+            console.log("Rol desconocido o sin rol, aplicando restricciones por defecto");
+            if (textoDelBoton.includes("crear cuenta") ||
+                textoDelBoton.includes("registrar un nuevo estudiante") ||
+                textoDelBoton.includes("registrar un piar")) {
+                console.log("¡Eliminando botón restringido para usuario sin rol definido!");
+                boton.remove();
+            }
+        }
+    });
+
+    // DESPUÉS DE MODIFICAR: INSPECCIONAR OTRA VEZ
+    setTimeout(inspeccionarYEliminar, 100);
+}
+
+// Manejar clicks de botones del menú
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('menu-button')) {
+        const texto = e.target.textContent.trim();
+        const textoLower = texto.toLowerCase();
+
+        console.log("=== DEBUG CLICK ===");
+        console.log("Texto original:", `"${texto}"`);
+        console.log("Texto lowercase:", `"${textoLower}"`);
+
+        if (textoLower.includes('perfil')) {
+            console.log("-> Redirigiendo a perfil");
+            window.location.href = 'perfil.html';
+        } else if (textoLower.includes('estudiantes')) {
+            console.log("-> Redirigiendo a estudiantes");
+            window.location.href = 'Estudiantes.html';
+        } else if (textoLower.includes('crear cuentas')) {
+            console.log("-> Redirigiendo a crear cuentas");
+            window.location.href = 'Crear_cuentas.html';
+        } else if (textoLower.includes('actividades')) {
+            console.log("-> Redirigiendo a actividades");
+            window.location.href = 'Ejercicios.html';
+        } else if (textoLower.includes('registrar un nuevo estudiante')) {
+            console.log("-> Redirigiendo a registrar estudiante");
+            window.location.href = 'Registrar_estudiante.html';
+        } else if (textoLower.includes('registrar un piar')) {
+            console.log("-> Redirigiendo a registrar PIAR");
+            window.location.href = 'Registrar_PIAR.html';
+        } else if (textoLower.includes('descripción general')) {
+            console.log("-> Redirigiendo a descripción general");
+            window.location.href = 'Descripción_general.html';
+        } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
+            console.log("-> ¡ENCONTRADO! Redirigiendo a valoración pedagógica");
+            window.location.href = 'Valoracion_pedagogica.html';
+        } else if (textoLower.includes('comunicate')) {
+            console.log("-> Redirigiendo a comunicación");
+            window.location.href = 'Comunicacion.html';
+        } else if (textoLower.includes('ayuda')) {
+            console.log("-> Redirigiendo a ayuda");
+            window.location.href = 'Ayuda.html';
+        } else if (textoLower.includes('cerrar sesion') || textoLower.includes('cerrar sesión')) {
+            console.log("-> Cerrando sesión");
+            if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
+                localStorage.removeItem('rol');
+                window.location.href = 'Inicio_sesion.html';
+            }
+        } else {
+            console.log("-> ❌ NO SE ENCONTRÓ COINCIDENCIA");
+            console.log("Texto a comparar:", `"${textoLower}"`);
+        }
+
+        // Cerrar menú
+        burger.checked = false;
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// ===================== FUNCIONALIDAD DE ESTUDIANTES (ORIGINAL) =====================
 
 // Líneas de debugging - agregar después de la línea 1
 console.log('=== DEBUG DE RUTAS ===');
@@ -43,6 +242,8 @@ console.log('API URL final:', new URL(API_BASE_URL, window.location.href).href);
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', function () {
+    console.log("DOM cargado - ejecutando función de roles y inicialización");
+    eliminarBotonesPorRol();
     initializeApp();
 });
 
@@ -256,7 +457,7 @@ async function performSearch() {
         const data = await makeRequest('searchStudents', { term: searchTerm });
         currentSearchResults = data.students;
         displaySearchResults(data.students);
-        
+
         // Mostrar botones de descarga si hay resultados
         if (data.students.length > 0) {
             searchDownloadControls.style.display = 'block';
@@ -608,17 +809,17 @@ async function downloadIndividualStudentPDF() {
     }
 
     showPDFLoading();
-    
+
     try {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        
+
         // Configuración de la página
         const pageWidth = doc.internal.pageSize.getWidth();
         const pageHeight = doc.internal.pageSize.getHeight();
         const margin = 20;
         let yPosition = margin;
-        
+
         // Función para agregar nueva página si es necesario
         function checkPageBreak(neededHeight = 10) {
             if (yPosition + neededHeight > pageHeight - margin) {
@@ -628,37 +829,37 @@ async function downloadIndividualStudentPDF() {
             }
             return false;
         }
-        
+
         // Función para agregar texto con ajuste automático
         function addText(text, fontSize = 10, style = 'normal', maxWidth = pageWidth - 2 * margin) {
             doc.setFontSize(fontSize);
             doc.setFont('helvetica', style);
-            
+
             const splitText = doc.splitTextToSize(text, maxWidth);
             const textHeight = splitText.length * (fontSize * 0.4);
-            
+
             checkPageBreak(textHeight + 5);
-            
+
             doc.text(splitText, margin, yPosition);
             yPosition += textHeight + 5;
         }
-        
+
         // Función para agregar sección
         function addSection(title, content) {
             checkPageBreak(15);
-            
+
             // Título de sección
             doc.setFillColor(102, 126, 234);
             doc.rect(margin, yPosition - 5, pageWidth - 2 * margin, 12, 'F');
-            
+
             doc.setTextColor(255, 255, 255);
             doc.setFontSize(12);
             doc.setFont('helvetica', 'bold');
             doc.text(title, margin + 5, yPosition + 3);
-            
+
             yPosition += 15;
             doc.setTextColor(0, 0, 0);
-            
+
             // Contenido
             if (typeof content === 'object') {
                 Object.keys(content).forEach(key => {
@@ -669,22 +870,22 @@ async function downloadIndividualStudentPDF() {
             } else {
                 addText(content, 10, 'normal');
             }
-            
+
             yPosition += 5;
         }
-        
+
         // Encabezado del documento
         doc.setFillColor(667, 126, 234);
         doc.rect(0, 0, pageWidth, 30, 'F');
-        
+
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(16);
         doc.setFont('helvetica', 'bold');
         doc.text('LUDIK - Información del Estudiante', margin, 20);
-        
+
         yPosition = 40;
         doc.setTextColor(0, 0, 0);
-        
+
         // Información personal
         const personalData = {
             'Nombre Completo': `${currentStudentData.nombre} ${currentStudentData.apellidos}`,
@@ -700,15 +901,15 @@ async function downloadIndividualStudentPDF() {
             'Con quien Vive': currentStudentData.con_quien_vive || 'No especificado',
             'Afiliación de Salud': currentStudentData.afiliacion_salud || 'No especificada'
         };
-        
+
         addSection('DATOS PERSONALES', personalData);
-        
+
         // Información académica
         const academicData = {
             'Grado Actual': currentStudentData.grado || 'No asignado',
             'Grupo': currentStudentData.grupo || 'No asignado'
         };
-        
+
         if (currentStudentData.entorno_educativo) {
             const entorno = currentStudentData.entorno_educativo;
             academicData['Último grado cursado'] = entorno.ultimo_grado_cursado || 'No especificado';
@@ -717,33 +918,9 @@ async function downloadIndividualStudentPDF() {
             academicData['Programas complementarios'] = entorno.asiste_programas_complementarios || 'No especificado';
             academicData['Observaciones'] = entorno.observacion || 'Ninguna';
         }
-        
+
         addSection('INFORMACIÓN ACADÉMICA', academicData);
-        
-        // Información familiar - Madre
-        if (currentStudentData.madre) {
-            const madreData = {
-                'Nombre completo': currentStudentData.madre.nombre_completo || 'No registrado',
-                'Nivel educativo': currentStudentData.madre.nivel_educativo || 'No especificado',
-                'Ocupación': currentStudentData.madre.ocupacion || 'No especificada',
-                'Teléfono': currentStudentData.madre.telefono || 'No registrado',
-                'Email': currentStudentData.madre.email || 'No registrado'
-            };
-            addSection('INFORMACIÓN DE LA MADRE', madreData);
-        }
-        
-        // Información familiar - Padre
-        if (currentStudentData.padre) {
-            const padreData = {
-                'Nombre completo': currentStudentData.padre.nombre_completo || 'No registrado',
-                'Nivel educativo': currentStudentData.padre.nivel_educativo || 'No especificado',
-                'Ocupación': currentStudentData.padre.ocupacion || 'No especificada',
-                'Teléfono': currentStudentData.padre.telefono || 'No registrado',
-                'Email': currentStudentData.padre.email || 'No registrado'
-            };
-            addSection('INFORMACIÓN DEL PADRE', padreData);
-        }
-        
+
         // Información familiar - Acudiente
         if (currentStudentData.acudiente) {
             const acudienteData = {
@@ -756,12 +933,12 @@ async function downloadIndividualStudentPDF() {
             };
             addSection('INFORMACIÓN DEL ACUDIENTE', acudienteData);
         }
-        
+
         // Información médica
         if (currentStudentData.info_medica) {
             let medicalText = '';
             const medical = currentStudentData.info_medica;
-            
+
             if (medical.diagnosticos && medical.diagnosticos.length > 0) {
                 medicalText += 'DIAGNÓSTICOS:\n';
                 medical.diagnosticos.forEach(diag => {
@@ -769,7 +946,7 @@ async function downloadIndividualStudentPDF() {
                 });
                 medicalText += '\n';
             }
-            
+
             if (medical.medicamentos && medical.medicamentos.length > 0) {
                 medicalText += 'MEDICAMENTOS:\n';
                 medical.medicamentos.forEach(med => {
@@ -777,19 +954,19 @@ async function downloadIndividualStudentPDF() {
                 });
                 medicalText += '\n';
             }
-            
+
             if (medical.tratamientos && medical.tratamientos.length > 0) {
                 medicalText += 'TRATAMIENTOS:\n';
                 medical.tratamientos.forEach(trat => {
                     medicalText += `• ${trat.descripcion} - ${trat.frecuencia}\n`;
                 });
             }
-            
+
             if (medicalText) {
                 addSection('INFORMACIÓN MÉDICA', medicalText);
             }
         }
-        
+
         // PIAR
         if (currentStudentData.piar) {
             const piarData = {
@@ -800,7 +977,7 @@ async function downloadIndividualStudentPDF() {
             };
             addSection('PLAN INDIVIDUAL DE AJUSTES RAZONABLES (PIAR)', piarData);
         }
-        
+
         // Valoraciones pedagógicas
         if (currentStudentData.valoraciones && currentStudentData.valoraciones.length > 0) {
             let valoracionesText = '';
@@ -814,7 +991,7 @@ async function downloadIndividualStudentPDF() {
             });
             addSection('VALORACIONES PEDAGÓGICAS', valoracionesText);
         }
-        
+
         // Pie de página
         const totalPages = doc.internal.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
@@ -824,11 +1001,11 @@ async function downloadIndividualStudentPDF() {
             doc.text(`Página ${i} de ${totalPages}`, pageWidth - margin - 30, pageHeight - 10);
             doc.text(`Generado el ${new Date().toLocaleDateString('es-ES')}`, margin, pageHeight - 10);
         }
-        
+
         // Guardar PDF
         const fileName = `estudiante_${currentStudentData.nombre}_${currentStudentData.apellidos}_${new Date().toISOString().split('T')[0]}.pdf`;
         doc.save(fileName);
-        
+
     } catch (error) {
         console.error('Error generando PDF:', error);
         alert('Error al generar el PDF. Por favor, inténtalo de nuevo.');
@@ -845,29 +1022,29 @@ async function downloadAllStudentsPDF() {
     }
 
     showPDFLoading();
-    
+
     try {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        
+
         // Configuración
         const pageWidth = doc.internal.pageSize.getWidth();
         const pageHeight = doc.internal.pageSize.getHeight();
         const margin = 20;
         let yPosition = margin;
-        
+
         // Encabezado
         doc.setFillColor(102, 126, 234);
         doc.rect(0, 0, pageWidth, 30, 'F');
-        
+
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(16);
         doc.setFont('helvetica', 'bold');
         doc.text('LUDIK - Lista Completa de Estudiantes', margin, 20);
-        
+
         yPosition = 40;
         doc.setTextColor(0, 0, 0);
-        
+
         // Función para nueva página
         function checkPageBreak(neededHeight = 10) {
             if (yPosition + neededHeight > pageHeight - margin) {
@@ -877,45 +1054,45 @@ async function downloadAllStudentsPDF() {
             }
             return false;
         }
-        
+
         // Información general
         doc.setFontSize(12);
         doc.text(`Total de estudiantes: ${allStudents.length}`, margin, yPosition);
         doc.text(`Fecha de generación: ${new Date().toLocaleDateString('es-ES')}`, margin, yPosition + 10);
         yPosition += 30;
-        
+
         // Lista de estudiantes
         allStudents.forEach((student, index) => {
             checkPageBreak(25);
-            
+
             // Fondo alternado
             if (index % 2 === 0) {
                 doc.setFillColor(248, 250, 252);
                 doc.rect(margin - 5, yPosition - 5, pageWidth - 2 * margin + 10, 20, 'F');
             }
-            
+
             doc.setTextColor(0, 0, 0);
             doc.setFontSize(11);
             doc.setFont('helvetica', 'bold');
-            
+
             const fullName = `${student.nombre} ${student.apellidos}`.trim();
             doc.text(`${index + 1}. ${fullName}`, margin, yPosition);
-            
+
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(9);
-            
+
             const documento = student.no_documento || 'Sin documento';
             const grado = student.grado || 'Sin asignar';
             const grupo = student.grupo || 'Sin grupo';
             const telefono = student.telefono || 'Sin teléfono';
-            
+
             doc.text(`Documento: ${documento}`, margin + 5, yPosition + 7);
             doc.text(`Grado: ${grado} - Grupo: ${grupo}`, margin + 5, yPosition + 14);
             doc.text(`Teléfono: ${telefono}`, margin + 100, yPosition + 7);
-            
+
             yPosition += 25;
         });
-        
+
         // Pie de página
         const totalPages = doc.internal.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
@@ -924,11 +1101,11 @@ async function downloadAllStudentsPDF() {
             doc.setTextColor(128, 128, 128);
             doc.text(`Página ${i} de ${totalPages}`, pageWidth - margin - 30, pageHeight - 10);
         }
-        
+
         // Guardar
         const fileName = `estudiantes_completo_${new Date().toISOString().split('T')[0]}.pdf`;
         doc.save(fileName);
-        
+
     } catch (error) {
         console.error('Error generando PDF:', error);
         alert('Error al generar el PDF. Por favor, inténtalo de nuevo.');
@@ -945,29 +1122,29 @@ async function downloadSearchResultsPDF() {
     }
 
     showPDFLoading();
-    
+
     try {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        
+
         // Similar a downloadAllStudentsPDF pero con currentSearchResults
         const pageWidth = doc.internal.pageSize.getWidth();
         const pageHeight = doc.internal.pageSize.getHeight();
         const margin = 20;
         let yPosition = margin;
-        
+
         // Encabezado
         doc.setFillColor(102, 126, 234);
         doc.rect(0, 0, pageWidth, 30, 'F');
-        
+
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(16);
         doc.setFont('helvetica', 'bold');
         doc.text('LUDIK - Resultados de Búsqueda', margin, 20);
-        
+
         yPosition = 40;
         doc.setTextColor(0, 0, 0);
-        
+
         function checkPageBreak(neededHeight = 10) {
             if (yPosition + neededHeight > pageHeight - margin) {
                 doc.addPage();
@@ -976,45 +1153,45 @@ async function downloadSearchResultsPDF() {
             }
             return false;
         }
-        
+
         // Información de búsqueda
         doc.setFontSize(12);
         doc.text(`Término buscado: "${searchInput.value}"`, margin, yPosition);
         doc.text(`Resultados encontrados: ${currentSearchResults.length}`, margin, yPosition + 10);
         doc.text(`Fecha de generación: ${new Date().toLocaleDateString('es-ES')}`, margin, yPosition + 20);
         yPosition += 40;
-        
+
         // Lista de resultados
         currentSearchResults.forEach((student, index) => {
             checkPageBreak(25);
-            
+
             if (index % 2 === 0) {
                 doc.setFillColor(248, 250, 252);
                 doc.rect(margin - 5, yPosition - 5, pageWidth - 2 * margin + 10, 20, 'F');
             }
-            
+
             doc.setTextColor(0, 0, 0);
             doc.setFontSize(11);
             doc.setFont('helvetica', 'bold');
-            
+
             const fullName = `${student.nombre} ${student.apellidos}`.trim();
             doc.text(`${index + 1}. ${fullName}`, margin, yPosition);
-            
+
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(9);
-            
+
             const documento = student.no_documento || 'Sin documento';
             const grado = student.grado || 'Sin asignar';
             const grupo = student.grupo || 'Sin grupo';
             const telefono = student.telefono || 'Sin teléfono';
-            
+
             doc.text(`Documento: ${documento}`, margin + 5, yPosition + 7);
             doc.text(`Grado: ${grado} - Grupo: ${grupo}`, margin + 5, yPosition + 14);
             doc.text(`Teléfono: ${telefono}`, margin + 100, yPosition + 7);
-            
+
             yPosition += 25;
         });
-        
+
         // Pie de página
         const totalPages = doc.internal.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
@@ -1023,10 +1200,10 @@ async function downloadSearchResultsPDF() {
             doc.setTextColor(128, 128, 128);
             doc.text(`Página ${i} de ${totalPages}`, pageWidth - margin - 30, pageHeight - 10);
         }
-        
+
         const fileName = `busqueda_estudiantes_${new Date().toISOString().split('T')[0]}.pdf`;
         doc.save(fileName);
-        
+
     } catch (error) {
         console.error('Error generando PDF:', error);
         alert('Error al generar el PDF. Por favor, inténtalo de nuevo.');
@@ -1043,12 +1220,12 @@ function downloadAllStudentsExcel() {
         alert('No hay estudiantes para descargar');
         return;
     }
-    
+
     try {
         // Crear CSV
         const headers = ['Nombre', 'Apellidos', 'Documento', 'Grado', 'Grupo', 'Teléfono', 'Correo'];
         let csvContent = headers.join(',') + '\n';
-        
+
         allStudents.forEach(student => {
             const row = [
                 student.nombre || '',
@@ -1061,7 +1238,7 @@ function downloadAllStudentsExcel() {
             ];
             csvContent += row.map(field => `"${field}"`).join(',') + '\n';
         });
-        
+
         // Descargar
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
@@ -1072,7 +1249,7 @@ function downloadAllStudentsExcel() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
     } catch (error) {
         console.error('Error generando CSV:', error);
         alert('Error al generar el archivo CSV');
@@ -1084,11 +1261,11 @@ function downloadSearchResultsExcel() {
         alert('No hay resultados de búsqueda para descargar');
         return;
     }
-    
+
     try {
         const headers = ['Nombre', 'Apellidos', 'Documento', 'Grado', 'Grupo', 'Teléfono', 'Correo'];
         let csvContent = headers.join(',') + '\n';
-        
+
         currentSearchResults.forEach(student => {
             const row = [
                 student.nombre || '',
@@ -1101,7 +1278,7 @@ function downloadSearchResultsExcel() {
             ];
             csvContent += row.map(field => `"${field}"`).join(',') + '\n';
         });
-        
+
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
@@ -1111,7 +1288,7 @@ function downloadSearchResultsExcel() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
     } catch (error) {
         console.error('Error generando CSV:', error);
         alert('Error al generar el archivo CSV');
@@ -1192,4 +1369,28 @@ function goBackOrRedirect(ruta) {
     } else {
         window.history.back();         // Si está vacío, volver atrás
     }
+} - Madre
+if (currentStudentData.madre) {
+    const madreData = {
+        'Nombre completo': currentStudentData.madre.nombre_completo || 'No registrado',
+        'Nivel educativo': currentStudentData.madre.nivel_educativo || 'No especificado',
+        'Ocupación': currentStudentData.madre.ocupacion || 'No especificada',
+        'Teléfono': currentStudentData.madre.telefono || 'No registrado',
+        'Email': currentStudentData.madre.email || 'No registrado'
+    };
+    addSection('INFORMACIÓN DE LA MADRE', madreData);
 }
+
+// Información familiar - Padre
+if (currentStudentData.padre) {
+    const padreData = {
+        'Nombre completo': currentStudentData.padre.nombre_completo || 'No registrado',
+        'Nivel educativo': currentStudentData.padre.nivel_educativo || 'No especificado',
+        'Ocupación': currentStudentData.padre.ocupacion || 'No especificada',
+        'Teléfono': currentStudentData.padre.telefono || 'No registrado',
+        'Email': currentStudentData.padre.email || 'No registrado'
+    };
+    addSection('INFORMACIÓN DEL PADRE', padreData);
+}
+
+// Información familiar

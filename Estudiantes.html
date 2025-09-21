@@ -14,22 +14,80 @@
 </head>
 
 <body>
-    <!-- Header -->
-    <header>
-        <div class="encabezado-ludik">
-            <div class="lado-izq">
-                <img src="img\colegio.jpg" alt="Logo Institución" class="logo-institucion">
-                <div class="especialidad">EDUCACIÓN INCLUSIVA</div>
-            </div>
-            <div class="centro">
-                <h1 class="titulo-ludik">LUDIK</h1>
-            </div>
-            <div class="lado-der">
-                <img src="img\Ludik2.png" alt="Logo LUDIK" class="logo-ludik">
-                <a href="Interfaz.html" class="btn-home">Inicio</a>
-            </div>
+    <!-- Header con Menú Extraíble -->
+    <div class="header">
+        <div class="left-section">
+            <label class="burger" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <span class="menu-text">MENÚ</span>
         </div>
-    </header>
+
+        <div class="center-section">
+            <div class="title">LUDIK</div>
+        </div>
+
+        <div class="right-section">
+            <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+        </div>
+    </div>
+
+    <!-- Overlay para cerrar menú -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Menú Lateral -->
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-header">
+            <div class="menu-title">Panel De Control</div>
+        </div>
+        <div class="menu-buttons">
+            <button class="menu-button">
+                <span class="menu-icon">👤</span>
+                Perfil
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">👥</span>
+                Estudiantes
+            </button>
+            <button class="menu-button" id="btnCrearCuentas">
+                <span class="menu-icon">➕</span>
+                Crear Cuentas
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📚</span>
+                Actividades
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📝</span>
+                Registrar un nuevo estudiante
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📋</span>
+                Registrar un PIAR y diagnóstico médico
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📊</span>
+                Crear una Valoración Pedagógica
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">💬</span>
+                Comunicate
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">❓</span>
+                Ayuda
+            </button>
+        </div>
+        <div class="menu-bottom">
+            <button class="menu-button close-session">
+                <span class="menu-icon">🚪</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </div>
 
     <!-- Contenido Principal -->
     <div class="main-content">
@@ -265,7 +323,7 @@
         <div class="spinner"></div>
         <p>Cargando...</p>
     </div>
-    
+
     <!-- PDF Loading spinner -->
     <div id="pdfLoadingSpinner" class="loading-spinner">
         <div class="spinner"></div>
@@ -276,7 +334,7 @@
         ⬅ Regresar
     </button>
 
-    <script src="Js\Estudiantes.js"></script>
+    <script src="Js/Estudiantes.js"></script>
 </body>
 
 </html>

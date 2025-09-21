@@ -7,21 +7,84 @@
     <title>Valoraciones Pedagógicas - LUDIK</title>
     <link rel="icon" href="img/Ludik2.png" type="image/x-icon">
     <link rel="stylesheet" href="Css/Valoracion_pedagogica.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="header-left">
-                <img src="img/Ludik2.png" alt="Logo Institución" class="logo-institucion">
-                <h1 class="titulo-ludik">LUDIK</h1>
-            </div>
-            <div class="header-right">
-                <span>Sistema de Valoración Pedagógica</span>
-            </div>
+    <!-- Header con Menú Extraíble -->
+    <div class="header">
+        <div class="left-section">
+            <label class="burger" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <span class="menu-text">MENÚ</span>
         </div>
-    </header>
+
+        <div class="center-section">
+            <div class="title">LUDIK</div>
+        </div>
+
+        <div class="right-section">
+            <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+        </div>
+    </div>
+
+    <!-- Overlay para cerrar menú -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Menú Lateral -->
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-header">
+            <div class="menu-title">Panel De Control</div>
+        </div>
+        <div class="menu-buttons">
+            <button class="menu-button">
+                <span class="menu-icon">👤</span>
+                Perfil
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">👥</span>
+                Estudiantes
+            </button>
+            <button class="menu-button" id="btnCrearCuentas">
+                <span class="menu-icon">➕</span>
+                Crear Cuentas
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📚</span>
+                Actividades
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📝</span>
+                Registrar un nuevo estudiante
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📋</span>
+                Registrar un PIAR y diagnóstico médico
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📊</span>
+                Crear una Valoración Pedagógica
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">💬</span>
+                Comunicate
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">❓</span>
+                Ayuda
+            </button>
+        </div>
+        <div class="menu-bottom">
+            <button class="menu-button close-session">
+                <span class="menu-icon">🚪</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </div>
 
     <!-- Contenido Principal -->
     <main class="main-content">
@@ -159,7 +222,7 @@
 
                 <form id="formValoracion">
                     <input type="hidden" id="idValoracion" name="id_valoracion">
-                    
+
                     <div class="info-seleccion">
                         <h3>Información Seleccionada</h3>
                         <div class="info-grid">
@@ -274,7 +337,7 @@
     </div>
 
     <button class="back-btn" onclick="goBackOrRedirect('Interfaz.html')">
-        ⬅ Regresar
+        ← Regresar
     </button>
 
     <!-- Footer -->

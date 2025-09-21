@@ -1,37 +1,196 @@
-// valoracion_pedagogica.js - Sistema CRUD completo para valoraciones pedagógicas
-
-// Variables globales
-let modoActual = 'dashboard'; // 'dashboard' o 'formulario'
-let pasoActual = 1;
-let valoracionActual = null; // Para edición
-let seleccion = {
-    grupo: null,
-    asignatura: null,
-    estudiante: null,
-    piar: null
-};
-
-// Inicializar la aplicación
-document.addEventListener('DOMContentLoaded', function () {
-    inicializarEventos();
-    mostrarDashboard();
+overlay.addEventListener('click', function () {
+    burger.checked = false;
+    sideMenu.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
 });
 
-// ===== EVENTOS =====
+// VERIFICAR ROL Y ELIMINAR BOTONES
+eliminarBotonesPorRol();
+
+// Manejar clicks de botones del menú
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('menu-button')) {
+        const texto = e.target.textContent.trim();
+        const textoLower = texto.toLowerCase();
+
+        console.log("=== DEBUG CLICK ===");
+        console.log("Texto original:", `"${texto}"`);
+        console.log("Texto lowercase:", `"${textoLower}"`);
+
+        if (textoLower.includes('perfil')) {
+            console.log("-> Redirigiendo a perfil");
+            window.location.href = 'perfil.html';
+        } else if (textoLower.includes('estudiantes')) {
+            console.log("-> Redirigiendo a estudiantes");
+            window.location.href = 'Estudiantes.html';
+        } else if (textoLower.includes('crear cuentas')) {
+            console.log("-> Redirigiendo a crear cuentas");
+            window.location.href = 'Crear_cuentas.html';
+        } else if (textoLower.includes('actividades')) {
+            console.log("-> Redirigiendo a actividades");
+            window.location.href = 'Ejercicios.html';
+        } else if (textoLower.includes('registrar un nuevo estudiante')) {
+            console.log("-> Redirigiendo a registrar estudiante");
+            window.location.href = 'Registrar_estudiante.html';
+        } else if (textoLower.includes('registrar un piar')) {
+            console.log("-> Redirigiendo a registrar PIAR");
+            window.location.href = 'Registrar_PIAR.html';
+        } else if (textoLower.includes('descripción general')) {
+            console.log("-> Redirigiendo a descripción general");
+            window.location.href = 'Descripción_general.html';
+        } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
+            console.log("-> Ya estás en valoración pedagógica");
+            // No redirigir ya que estamos en la misma página
+        } else if (textoLower.includes('comunicate')) {
+            console.log("-> Redirigiendo a comunicación");
+            window.location.href = 'Comunicacion.html';
+        } else if (textoLower.includes('ayuda')) {
+            console.log("-> Redirigiendo a ayuda");
+            window.location.href = 'Ayuda.html';
+        } else if (textoLower.includes('cerrar sesion') || textoLower.includes('cerrar sesión')) {
+            console.log("-> Cerrando sesión");
+            if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
+                localStorage.removeItem('rol');
+                window.location.href = 'Inicio_sesion.html';
+            }
+        } else {
+            console.log("-> ❌ NO SE ENCONTRÓ COINCIDENCIA");
+            console.log("Texto a comparar:", `"${textoLower}"`);
+        }
+
+        // Cerrar menú
+        burger.checked = false;
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+
+// FUNCIÓN PARA INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
+function inspeccionarYEliminar() {
+    console.log("🔍 INSPECCIONANDO ELEMENTOS EN EL MENÚ");
+
+    const menuButtons = document.querySelector('.menu-buttons');
+    if (!menuButtons) return;
+
+    // Obtener TODOS los hijos directos
+    const todosLosHijos = Array.from(menuButtons.children);
+
+    console.log("📋 Elementos encontrados en menu-buttons:");
+    todosLosHijos.forEach((elemento, index) => {
+        console.log(`${index}: ${elemento.tagName} - ${elemento.className} - "${elemento.textContent?.trim()}" - Height: ${elemento.offsetHeight}px`);
+
+        // Eliminar elementos sospechosos
+        if (
+            // Elementos HR
+            elemento.tagName === 'HR' ||
+            // Elementos vacíos o con poca altura
+            (elemento.offsetHeight <= 5 && !elemento.textContent?.trim()) ||
+            // Elementos con clases de separador
+            elemento.className?.includes('separator') ||
+            elemento.className?.includes('divider') ||
+            elemento.className?.includes('line') ||
+            // Elementos que no son botones y no tienen texto
+            (!elemento.classList.contains('menu-button') && !elemento.textContent?.trim())
+        ) {
+            console.log(`🗑️ ELIMINANDO elemento sospechoso: ${elemento.tagName} - ${elemento.className}`);
+            elemento.remove();
+        }
+    });
+
+    // También verificar en el contenedor principal del menú
+    const sideMenu = document.getElementById('sideMenu');
+    const sideMenuChildren = Array.from(sideMenu.children);
+    console.log("📋 Elementos en side-menu:");
+    sideMenuChildren.forEach((elemento, index) => {
+        console.log(`${index}: ${elemento.tagName} - ${elemento.className} - Height: ${elemento.offsetHeight}px`);
+
+        // Eliminar elementos extraños que no sean menu-header, menu-buttons o menu-bottom
+        if (!['menu-header', 'menu-buttons', 'menu-bottom'].some(clase => elemento.classList.contains(clase))) {
+            if (elemento.tagName === 'HR' || elemento.offsetHeight <= 5) {
+                console.log(`🗑️ ELIMINANDO elemento extraño en side-menu: ${elemento.tagName}`);
+                elemento.remove();
+            }
+        }
+    });
+}
+
+// Función simplificada para eliminar botones según rol
+function eliminarBotonesPorRol() {
+    const rol = localStorage.getItem("rol");
+    console.log("Verificando rol:", rol);
+
+    // PRIMERO: INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
+    inspeccionarYEliminar();
+
+    // Buscar TODOS los botones del menú
+    const todosLosBotones = document.querySelectorAll('.menu-button');
+    console.log("Botones encontrados:", todosLosBotones.length);
+
+    todosLosBotones.forEach(function (boton, index) {
+        const textoDelBoton = boton.textContent.trim().toLowerCase();
+        console.log(`Botón ${index}: "${textoDelBoton}"`);
+
+        // Lógica según el rol
+        if (rol === "admin") {
+            // Admin: puede ver todos los botones
+            console.log("Usuario es admin, todos los botones visibles");
+
+        } else if (rol === "docente_apoyo") {
+            // Docente de apoyo: ocultar solo "Crear Cuentas"
+            if (textoDelBoton.includes("crear cuenta")) {
+                console.log("¡Eliminando botón Crear Cuentas para docente_apoyo!");
+                boton.remove();
+            }
+
+        } else if (rol === "docente") {
+            // Docente regular: ocultar "Crear Cuentas", "Registrar PIAR" y "Registrar estudiante"
+            if (textoDelBoton.includes("crear cuenta")) {
+                console.log("¡Eliminando botón Crear Cuentas para docente!");
+                boton.remove();
+            }
+            if (textoDelBoton.includes("registrar un nuevo estudiante")) {
+                console.log("¡Eliminando botón Registrar un nuevo estudiante para docente!");
+                boton.remove();
+            }
+            if (textoDelBoton.includes("registrar un piar")) {
+                console.log("¡Eliminando botón Registrar un PIAR para docente!");
+                boton.remove();
+            }
+
+        } else {
+            // Rol desconocido o sin rol: comportamiento por defecto
+            console.log("Rol desconocido o sin rol, aplicando restricciones por defecto");
+            if (textoDelBoton.includes("crear cuenta") ||
+                textoDelBoton.includes("registrar un nuevo estudiante") ||
+                textoDelBoton.includes("registrar un piar")) {
+                console.log("¡Eliminando botón restringido para usuario sin rol definido!");
+                boton.remove();
+            }
+        }
+    });
+
+    // DESPUÉS DE MODIFICAR: INSPECCIONAR OTRA VEZ
+    setTimeout(inspeccionarYEliminar, 100);
+}
+
+// ===== EVENTOS PRINCIPALES =====
 function inicializarEventos() {
     // Botones principales
     document.getElementById('btnNuevaValoracion')?.addEventListener('click', () => mostrarFormulario());
-    
+
     // Botones de navegación del formulario
     document.getElementById('btnCancelar')?.addEventListener('click', cancelarFormulario);
     document.getElementById('btnAnterior')?.addEventListener('click', pasoAnterior);
     document.getElementById('btnSiguiente')?.addEventListener('click', pasoSiguiente);
     document.getElementById('btnGuardar')?.addEventListener('click', guardarValoracion);
-    
+
     // Filtros
     document.getElementById('btnFiltrar')?.addEventListener('click', aplicarFiltros);
     document.getElementById('btnLimpiarFiltros')?.addEventListener('click', limpiarFiltros);
-    
+
     // Modal de eliminación
     document.getElementById('btnCerrarModal')?.addEventListener('click', cerrarModalEliminar);
     document.getElementById('btnCancelarEliminar')?.addEventListener('click', cerrarModalEliminar);
@@ -43,7 +202,7 @@ async function mostrarDashboard() {
     modoActual = 'dashboard';
     document.getElementById('dashboard').style.display = 'block';
     document.getElementById('formularioSection').style.display = 'none';
-    
+
     await Promise.all([
         cargarValoraciones(),
         cargarEstadisticas(),
@@ -54,23 +213,23 @@ async function mostrarDashboard() {
 async function cargarValoraciones() {
     try {
         mostrarCargandoTabla(true);
-        
+
         // Construir parámetros de filtro
         const params = new URLSearchParams({
             accion: 'listar_valoraciones'
         });
-        
+
         const anio = document.getElementById('filtroAnio')?.value;
         const periodo = document.getElementById('filtroPeriodo')?.value;
         const grupo = document.getElementById('filtroGrupo')?.value;
-        
+
         if (anio) params.append('anio', anio);
         if (periodo) params.append('periodo', periodo);
         if (grupo) params.append('id_grupo', grupo);
-        
+
         const response = await fetch(`php/Valoracion_pedagogica.php?${params}`);
         const data = await response.json();
-        
+
         if (data.success) {
             mostrarTablaValoraciones(data.valoraciones);
         } else {
@@ -90,24 +249,24 @@ function mostrarTablaValoraciones(valoraciones) {
     const tbody = document.getElementById('tablaValoracionesBody');
     const noDataDiv = document.getElementById('noDataTable');
     const tabla = document.getElementById('tablaValoraciones');
-    
+
     if (valoraciones.length === 0) {
         tabla.style.display = 'none';
         noDataDiv.style.display = 'block';
         return;
     }
-    
+
     tabla.style.display = 'table';
     noDataDiv.style.display = 'none';
-    
+
     tbody.innerHTML = valoraciones.map(val => {
         const periodoTexto = {
             '1': 'Primer Período',
-            '2': 'Segundo Período', 
+            '2': 'Segundo Período',
             '3': 'Tercer Período',
             '4': 'Cuarto Período'
         }[val.periodo] || `Período ${val.periodo}`;
-        
+
         return `
             <tr>
                 <td>
@@ -129,7 +288,6 @@ function mostrarTablaValoraciones(valoraciones) {
                     </span>
                 </td>
                 <td>${val.anio}</td>
-                <td>--</td>
                 <td class="actions-cell">
                     <button onclick="editarValoracion(${val.id_valoracion_pedagogica})" 
                             class="btn-action btn-edit" title="Editar">
@@ -153,7 +311,7 @@ async function cargarEstadisticas() {
     try {
         const response = await fetch('php/Valoracion_pedagogica.php?accion=estadisticas');
         const data = await response.json();
-        
+
         if (data.success) {
             document.getElementById('totalValoraciones').textContent = data.estadisticas.total_valoraciones;
             document.getElementById('totalEstudiantes').textContent = data.estadisticas.total_estudiantes;
@@ -168,7 +326,7 @@ async function cargarGruposParaFiltros() {
     try {
         const response = await fetch('php/Valoracion_pedagogica.php?accion=obtener_grupos');
         const data = await response.json();
-        
+
         if (data.success) {
             const select = document.getElementById('filtroGrupo');
             select.innerHTML = '<option value="">Todos los grupos</option>' +
@@ -199,16 +357,16 @@ async function verValoracion(idValoracion) {
     try {
         const response = await fetch(`php/Valoracion_pedagogica.php?accion=obtener_valoracion&id_valoracion=${idValoracion}`);
         const data = await response.json();
-        
+
         if (data.success) {
             const val = data.valoracion;
             const periodoTexto = {
                 '1': 'Primer Período',
-                '2': 'Segundo Período', 
+                '2': 'Segundo Período',
                 '3': 'Tercer Período',
                 '4': 'Cuarto Período'
             }[val.periodo] || `Período ${val.periodo}`;
-            
+
             const contenido = `
                 <div class="valoracion-detalle">
                     <div class="info-header">
@@ -250,10 +408,10 @@ async function verValoracion(idValoracion) {
                     </div>
                 </div>
             `;
-            
+
             // Crear modal temporal para mostrar detalles
             mostrarModalTemporal('Detalles de la Valoración Pedagógica', contenido);
-            
+
         } else {
             mostrarMensaje(data.message || 'Error al obtener los detalles', 'error');
         }
@@ -267,10 +425,10 @@ async function editarValoracion(idValoracion) {
     try {
         const response = await fetch(`php/Valoracion_pedagogica.php?accion=obtener_valoracion&id_valoracion=${idValoracion}`);
         const data = await response.json();
-        
+
         if (data.success) {
             valoracionActual = data.valoracion;
-            
+
             // Configurar selección previa
             seleccion = {
                 grupo: {
@@ -291,16 +449,16 @@ async function editarValoracion(idValoracion) {
                 },
                 piar: valoracionActual.id_piar
             };
-            
+
             // Cambiar al modo formulario
             mostrarFormulario(true);
-            
+
             // Saltar directamente al paso 4 (formulario) para edición
             mostrarPaso(4);
-            
+
             // Llenar el formulario con los datos existentes
             llenarFormularioEdicion();
-            
+
         } else {
             mostrarMensaje(data.message || 'Error al cargar la valoración', 'error');
         }
@@ -319,31 +477,31 @@ function eliminarValoracion(idValoracion, estudiante, asignatura, periodo, anio)
             <p><strong>Período:</strong> ${periodo} ${anio}</p>
         </div>
     `;
-    
+
     // Guardar el ID para usar en la confirmación
     document.getElementById('btnConfirmarEliminar').setAttribute('data-id', idValoracion);
-    
+
     // Mostrar el modal
     document.getElementById('modalEliminar').style.display = 'flex';
 }
 
 async function confirmarEliminar() {
     const idValoracion = document.getElementById('btnConfirmarEliminar').getAttribute('data-id');
-    
+
     if (!idValoracion) return;
-    
+
     try {
         const formData = new FormData();
         formData.append('accion', 'eliminar_valoracion');
         formData.append('id_valoracion', idValoracion);
-        
+
         const response = await fetch('php/Valoracion_pedagogica.php', {
             method: 'POST',
             body: formData
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             mostrarMensaje('Valoración eliminada exitosamente', 'exito');
             cerrarModalEliminar();
@@ -367,7 +525,7 @@ function mostrarFormulario(esEdicion = false) {
     modoActual = 'formulario';
     document.getElementById('dashboard').style.display = 'none';
     document.getElementById('formularioSection').style.display = 'block';
-    
+
     // Configurar título y textos según el modo
     if (esEdicion) {
         document.getElementById('tituloFormulario').textContent = 'Editar Valoración Pedagógica';
@@ -381,7 +539,7 @@ function mostrarFormulario(esEdicion = false) {
         seleccion = { grupo: null, asignatura: null, estudiante: null, piar: null };
         limpiarFormulario();
     }
-    
+
     if (!esEdicion) {
         mostrarPaso(1);
         cargarGrupos();
@@ -399,7 +557,7 @@ function llenarFormularioEdicion() {
     document.getElementById('infoGrupo').textContent = `${seleccion.grupo.grupo} - ${seleccion.grupo.grado}`;
     document.getElementById('infoAsignatura').textContent = seleccion.asignatura.nombre_asig;
     document.getElementById('infoEstudiante').textContent = `${seleccion.estudiante.nombre} ${seleccion.estudiante.apellidos}`;
-    
+
     // Llenar campos del formulario
     document.getElementById('idValoracion').value = valoracionActual.id_valoracion_pedagogica;
     document.getElementById('periodo').value = valoracionActual.periodo;
@@ -419,7 +577,7 @@ function limpiarFormulario() {
     document.getElementById('infoEstudiante').textContent = '-';
 }
 
-// Navegación entre pasos (similar al código original pero adaptado)
+// Navegación entre pasos
 function mostrarPaso(paso) {
     document.querySelectorAll('.form-step').forEach(step => {
         step.classList.remove('active');
@@ -669,13 +827,13 @@ async function guardarValoracion() {
     }
 
     const formData = new FormData(form);
-    
+
     // Determinar si es creación o actualización
     const esEdicion = valoracionActual !== null;
     const accion = esEdicion ? 'actualizar_valoracion' : 'crear_valoracion';
-    
+
     formData.append('accion', accion);
-    
+
     if (!esEdicion) {
         // Solo para nuevas valoraciones
         formData.append('id_grupo', seleccion.grupo.id);
@@ -765,7 +923,7 @@ function mostrarModalTemporal(titulo, contenido) {
             </div>
         </div>
     `;
-    
+
     document.body.insertAdjacentHTML('beforeend', modalHtml);
 }
 
@@ -782,4 +940,51 @@ function goBackOrRedirect(ruta) {
     } else {
         window.history.back();
     }
+}// valoracion_pedagogica.js - Sistema CRUD completo para valoraciones pedagógicas con menú integrado
+
+// Variables globales
+let modoActual = 'dashboard'; // 'dashboard' o 'formulario'
+let pasoActual = 1;
+let valoracionActual = null; // Para edición
+let seleccion = {
+    grupo: null,
+    asignatura: null,
+    estudiante: null,
+    piar: null
+};
+
+// Inicializar la aplicación
+document.addEventListener('DOMContentLoaded', function () {
+    inicializarEventos();
+    inicializarMenu();
+    mostrarDashboard();
+});
+
+// ===== FUNCIONALIDAD DEL MENÚ ===== 
+function inicializarMenu() {
+    // Funcionalidad del menú
+    const burger = document.getElementById('burger');
+    const sideMenu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('overlay');
+
+    burger.addEventListener('change', function () {
+        if (this.checked) {
+            sideMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // INSPECCIONAR ELEMENTOS cuando se abra el menú
+            setTimeout(inspeccionarYEliminar, 200);
+        } else {
+            sideMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    overlay.addEventListener('click', function () {
+        burger.checked = false;
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+    });
 }
