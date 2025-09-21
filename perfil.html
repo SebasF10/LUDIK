@@ -3,29 +3,57 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Perfil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - LUDIK</title>
     <link rel="icon" href="img/Ludik2.png" type="image/x-icon">
-    <link rel="stylesheet" href="Css/Perfil.css">
+    <link rel="stylesheet" href="Css\Perfil.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="perfil-container">
-        <div class="perfil-card">
-            <img id="fotoPerfil" src="" alt="Foto del usuario" class="perfil-foto">
-            <h2 id="nombreUsuario">Nombre</h2>
-            <p><strong>Rol:</strong> <span id="rolUsuario"></span></p>
-            <p><strong>Email:</strong> <span id="emailUsuario"></span></p>
-            <p><strong>Celular:</strong> <span id="celularUsuario"></span></p>
+        <!-- Card principal del usuario -->
+        <div class="perfil-main-card">
+            <div class="perfil-header">
+                <img id="fotoPerfil" src="" alt="Foto del usuario" class="perfil-foto">
+                <h2 id="nombreUsuario">Cargando..</h2>
+                <span id="rolBadge" class="rol-badge">Usuario</span>
+            </div>
+
+            <div class="perfil-info">
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <span><strong>Email:</strong> <span id="emailUsuario">-</span></span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <span><strong>Teléfono:</strong> <span id="celularUsuario">-</span></span>
+                </div>
+                <div id="infoAdicional" class="info-item" style="display: none;">
+                    <i class="fas fa-info-circle"></i>
+                    <span id="infoAdicionalTexto"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards dinámicas según el rol -->
+        <div class="perfil-cards-container" id="cardsContainer">
+            <!-- Las cards se generarán dinámicamente -->
         </div>
     </div>
 
+    <!-- Botón regresar -->
     <button class="back-btn" onclick="goBackOrRedirect('Interfaz.html')">
-        ⬅ Regresar
+        <i class="fas fa-arrow-left"></i> Regresar
     </button>
 
-    <script src="Js/Perfil.js"></script>
-</body>
+    <!-- Loading -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Cargando perfil...</p>
+    </div>
 
-</html>
+    <script src="Js\Perfil.js"></script>
+</body>
 
 </html>
