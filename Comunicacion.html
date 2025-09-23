@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comunicación - Docentes</title>
+    <title>Comunicación - LUDIK</title>
     <link rel="icon" href="img/Ludik2.png" type="image/x-icon">
-    <link rel="stylesheet" href="Css\Comunicacion.css">
+    <link rel="stylesheet" href="Css/Comunicacion.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
@@ -32,13 +33,19 @@
         </div>
     </div>
 
+    <!-- Overlay para cerrar menú -->
     <div class="overlay" id="overlay"></div>
 
+    <!-- Menú lateral -->
     <div class="side-menu" id="sideMenu">
         <div class="menu-header">
             <div class="menu-title">Panel De Control</div>
         </div>
         <div class="menu-buttons">
+            <button class="menu-button">
+                <span class="menu-icon">🏠</span>
+                Volver a Interfaz
+            </button>
             <button class="menu-button">
                 <span class="menu-icon">👤</span>
                 Perfil
@@ -68,15 +75,9 @@
                 Crear una Valoración Pedagógica
             </button>
             <button class="menu-button">
-                <span class="menu-icon">💬</span>
-                Comunicate
-            </button>
-            <button class="menu-button">
                 <span class="menu-icon">❓</span>
                 Ayuda
             </button>
-        </div>
-        <div class="menu-bottom">
             <button class="menu-button close-session">
                 <span class="menu-icon">🚪</span>
                 Cerrar Sesión
@@ -114,31 +115,7 @@
         </div>
     </div>
 
-    <script>
-        // VERIFICAR ROL INMEDIATAMENTE - SIMPLIFICADO
-        document.addEventListener('DOMContentLoaded', function () {
-            const rol = localStorage.getItem('rol');
-            console.log('Rol en localStorage:', rol);
-
-            // Eliminar cualquier HR o línea que pueda existir
-            const lineas = document.querySelectorAll('hr, .separator, .line, .divider');
-            lineas.forEach(linea => {
-                console.log('Eliminando línea encontrada');
-                linea.remove();
-            });
-
-            // Si NO es admin, ocultar el botón
-            if (rol !== 'admin') {
-                const botonCrear = document.getElementById('btnCrearCuentas');
-                if (botonCrear) {
-                    botonCrear.style.display = 'none';
-                    console.log('Botón ocultado para rol:', rol);
-                }
-            }
-        });
-    </script>
-    <script src="Js\Menu.js"></script>
-    <script src="Js\Comunicacion.js"></script>
+    <script src="Js/Comunicacion.js"></script>
 </body>
 
 </html>

@@ -1,4 +1,3 @@
-// ======= FUNCIONALIDAD DEL MENÚ (COPIADA DE Menu.js) =======
 console.log("Script cargado");
 
 // Funcionalidad del menú
@@ -7,7 +6,7 @@ const sideMenu = document.getElementById('sideMenu');
 const overlay = document.getElementById('overlay');
 
 // Esperar a que el DOM esté cargado para configurar el menú
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Configurar event listeners del menú solo si existen los elementos
     if (burger && sideMenu && overlay) {
         burger.addEventListener('change', function () {
@@ -15,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 sideMenu.classList.add('active');
                 overlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                
+
                 // INSPECCIONAR ELEMENTOS cuando se abra el menú
                 setTimeout(inspeccionarYEliminar, 200);
             } else {
@@ -37,42 +36,37 @@ document.addEventListener('DOMContentLoaded', function() {
 // FUNCIÓN PARA INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
 function inspeccionarYEliminar() {
     console.log("🔍 INSPECCIONANDO ELEMENTOS EN EL MENÚ");
-    
+
     const menuButtons = document.querySelector('.menu-buttons');
     if (!menuButtons) return;
-    
+
     // Obtener TODOS los hijos directos
     const todosLosHijos = Array.from(menuButtons.children);
-    
+
     console.log("📋 Elementos encontrados en menu-buttons:");
     todosLosHijos.forEach((elemento, index) => {
         console.log(`${index}: ${elemento.tagName} - ${elemento.className} - "${elemento.textContent?.trim()}" - Height: ${elemento.offsetHeight}px`);
-        
+
         // Eliminar elementos sospechosos
         if (
-            // Elementos HR
             elemento.tagName === 'HR' ||
-            // Elementos vacíos o con poca altura
             (elemento.offsetHeight <= 5 && !elemento.textContent?.trim()) ||
-            // Elementos con clases de separador
             elemento.className?.includes('separator') ||
             elemento.className?.includes('divider') ||
             elemento.className?.includes('line') ||
-            // Elementos que no son botones y no tienen texto
             (!elemento.classList.contains('menu-button') && !elemento.textContent?.trim())
         ) {
             console.log(`🗑️ ELIMINANDO elemento sospechoso: ${elemento.tagName} - ${elemento.className}`);
             elemento.remove();
         }
     });
-    
+
     // También verificar en el contenedor principal del menú
     const sideMenuChildren = Array.from(sideMenu.children);
     console.log("📋 Elementos en side-menu:");
     sideMenuChildren.forEach((elemento, index) => {
         console.log(`${index}: ${elemento.tagName} - ${elemento.className} - Height: ${elemento.offsetHeight}px`);
-        
-        // Eliminar elementos extraños que no sean menu-header, menu-buttons o menu-bottom
+
         if (!['menu-header', 'menu-buttons', 'menu-bottom'].some(clase => elemento.classList.contains(clase))) {
             if (elemento.tagName === 'HR' || elemento.offsetHeight <= 5) {
                 console.log(`🗑️ ELIMINANDO elemento extraño en side-menu: ${elemento.tagName}`);
@@ -98,101 +92,75 @@ function eliminarBotonesPorRol() {
         const textoDelBoton = boton.textContent.trim().toLowerCase();
         console.log(`Botón ${index}: "${textoDelBoton}"`);
 
-        // Lógica según el rol
         if (rol === "admin") {
-            // Admin: puede ver todos los botones
             console.log("Usuario es admin, todos los botones visibles");
 
         } else if (rol === "docente_apoyo") {
-            // Docente de apoyo: ocultar solo "Crear Cuentas"
             if (textoDelBoton.includes("crear cuenta")) {
                 console.log("¡Eliminando botón Crear Cuentas para docente_apoyo!");
                 boton.remove();
             }
 
         } else if (rol === "docente") {
-            // Docente regular: ocultar "Crear Cuentas", "Registrar PIAR" y "Registrar estudiante"
             if (textoDelBoton.includes("crear cuenta")) {
-                console.log("¡Eliminando botón Crear Cuentas para docente!");
                 boton.remove();
             }
             if (textoDelBoton.includes("registrar un nuevo estudiante")) {
-                console.log("¡Eliminando botón Registrar un nuevo estudiante para docente!");
                 boton.remove();
             }
             if (textoDelBoton.includes("registrar un piar")) {
-                console.log("¡Eliminando botón Registrar un PIAR para docente!");
                 boton.remove();
             }
 
         } else {
-            // Rol desconocido o sin rol: comportamiento por defecto
-            console.log("Rol desconocido o sin rol, aplicando restricciones por defecto");
             if (textoDelBoton.includes("crear cuenta") ||
                 textoDelBoton.includes("registrar un nuevo estudiante") ||
                 textoDelBoton.includes("registrar un piar")) {
-                console.log("¡Eliminando botón restringido para usuario sin rol definido!");
                 boton.remove();
             }
         }
     });
 
-    // DESPUÉS DE MODIFICAR: INSPECCIONAR OTRA VEZ
     setTimeout(inspeccionarYEliminar, 100);
 }
 
-// Manejar clicks de botones del menú
+// ======= CLICK EN BOTONES DEL MENÚ =======
 document.addEventListener('click', function (e) {
-    if (e.target.classList.contains('menu-button')) {
-        const texto = e.target.textContent.trim();
+    const boton = e.target.closest('.menu-button'); // ✅ busca el botón padre
+    if (boton) {
+        const texto = boton.textContent.trim();
         const textoLower = texto.toLowerCase();
 
-        console.log("=== DEBUG CLICK ===");
-        console.log("Texto original:", `"${texto}"`);
-        console.log("Texto lowercase:", `"${textoLower}"`);
+        console.log("=== DEBUG CLICK ===", textoLower);
 
-        if (textoLower.includes('perfil')) {
-            console.log("-> Ya estás en perfil");
-            // No redirigir porque ya estamos en perfil
+        if (textoLower.includes('volver a interfaz')) {
+            window.location.href = 'Interfaz.html';
         } else if (textoLower.includes('estudiantes')) {
-            console.log("-> Redirigiendo a estudiantes");
             window.location.href = 'Estudiantes.html';
         } else if (textoLower.includes('crear cuentas')) {
-            console.log("-> Redirigiendo a crear cuentas");
             window.location.href = 'Crear_cuentas.html';
         } else if (textoLower.includes('actividades')) {
-            console.log("-> Redirigiendo a actividades");
             window.location.href = 'Ejercicios.html';
         } else if (textoLower.includes('registrar un nuevo estudiante')) {
-            console.log("-> Redirigiendo a registrar estudiante");
             window.location.href = 'Registrar_estudiante.html';
         } else if (textoLower.includes('registrar un piar')) {
-            console.log("-> Redirigiendo a registrar PIAR");
             window.location.href = 'Registrar_PIAR.html';
         } else if (textoLower.includes('descripción general')) {
-            console.log("-> Redirigiendo a descripción general");
             window.location.href = 'Descripción_general.html';
         } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
-            console.log("-> ¡ENCONTRADO! Redirigiendo a valoración pedagógica");
             window.location.href = 'Valoracion_pedagogica.html';
         } else if (textoLower.includes('comunicate')) {
-            console.log("-> Redirigiendo a comunicación");
             window.location.href = 'Comunicacion.html';
         } else if (textoLower.includes('ayuda')) {
-            console.log("-> Redirigiendo a ayuda");
             window.location.href = 'Ayuda.html';
         } else if (textoLower.includes('cerrar sesion') || textoLower.includes('cerrar sesión')) {
-            console.log("-> Cerrando sesión");
             if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
                 localStorage.removeItem('rol');
                 window.location.href = 'Inicio_sesion.html';
             }
-        } else {
-            console.log("-> ❌ NO SE ENCONTRÓ COINCIDENCIA");
-            console.log("Texto a comparar:", `"${textoLower}"`);
         }
 
-        // Cerrar menú
+        // Cerrar menú al hacer click
         if (burger && sideMenu && overlay) {
             burger.checked = false;
             sideMenu.classList.remove('active');
@@ -206,10 +174,7 @@ document.addEventListener('click', function (e) {
 document.addEventListener("DOMContentLoaded", () => {
     const loading = document.getElementById("loading");
 
-    // Ejecutar funciones del menú
     eliminarBotonesPorRol();
-
-    // Mostrar loading al inicio
     loading.style.display = "flex";
 
     fetch("php/Perfil.php")
@@ -221,13 +186,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Ocultar loading
             loading.style.display = "none";
-
-            // Cargar datos básicos del usuario
             cargarDatosBasicos(data);
-
-            // Cargar contenido específico según el rol
             cargarContenidoPorRol(data);
         })
         .catch(err => {
@@ -238,18 +198,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function cargarDatosBasicos(data) {
-    // Datos principales
     document.getElementById("fotoPerfil").src = data.foto || "img/default-avatar.png";
     document.getElementById("nombreUsuario").textContent = data.nombre || "Sin nombre";
     document.getElementById("rolBadge").textContent = data.rol || "Usuario";
     document.getElementById("emailUsuario").textContent = data.email || "Sin email";
     document.getElementById("celularUsuario").textContent = data.celular || "No registrado";
 
-    // Aplicar clase del rol para estilos
     const rolNormalizado = (data.rol || "").toLowerCase().replace(/\s+/g, "_");
     document.body.classList.add("rol-" + rolNormalizado);
 
-    // Información adicional si existe
     if (data.info_adicional) {
         document.getElementById("infoAdicional").style.display = "flex";
         document.getElementById("infoAdicionalTexto").innerHTML = data.info_adicional;
@@ -260,28 +217,15 @@ function cargarContenidoPorRol(data) {
     const container = document.getElementById("cardsContainer");
     container.innerHTML = "";
 
-    // Crear cards según el rol
     switch (data.rol) {
-        case "admin":
-            crearCardsAdmin(container, data);
-            break;
-        case "docente":
-            crearCardsDocente(container, data);
-            break;
-        case "docente_apoyo":
-            crearCardsDocenteApoyo(container, data);
-            break;
-        case "directivo":
-            crearCardsDirectivo(container, data);
-            break;
-        case "estudiante":
-            crearCardsEstudiante(container, data);
-            break;
+        case "admin": crearCardsAdmin(container, data); break;
+        case "docente": crearCardsDocente(container, data); break;
+        case "docente_apoyo": crearCardsDocenteApoyo(container, data); break;
+        case "directivo": crearCardsDirectivo(container, data); break;
+        case "estudiante": crearCardsEstudiante(container, data); break;
         case "madre":
         case "padre":
-        case "acudiente":
-            crearCardsFamilia(container, data);
-            break;
+        case "acudiente": crearCardsFamilia(container, data); break;
     }
 }
 
@@ -544,15 +488,6 @@ function crearCardLista(icono, titulo, items) {
     `;
 
     return card;
-}
-
-// Función para manejar el botón regresar
-function goBackOrRedirect(ruta) {
-    if (ruta && ruta.trim() !== '') {
-        window.location.href = ruta;
-    } else {
-        window.history.back();
-    }
 }
 
 // Función para formatear fechas

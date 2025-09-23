@@ -83,7 +83,7 @@
 </head>
 
 <body>
-    <!-- NUEVO HEADER CON MENÚ EXTRAÍBLE -->
+    <!-- HEADER CON MENÚ EXTRAÍBLE -->
     <div class="header">
         <div class="left-section">
             <label class="burger" for="burger">
@@ -94,23 +94,29 @@
             </label>
             <span class="menu-text">MENÚ</span>
         </div>
-        
+
         <div class="center-section">
             <div class="title">LUDIK</div>
         </div>
-        
+
         <div class="right-section">
             <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
         </div>
     </div>
 
+    <!-- Overlay para cerrar menú -->
     <div class="overlay" id="overlay"></div>
 
+    <!-- Menú lateral -->
     <div class="side-menu" id="sideMenu">
         <div class="menu-header">
             <div class="menu-title">Panel De Control</div>
         </div>
         <div class="menu-buttons">
+            <button class="menu-button">
+                <span class="menu-icon">🏠</span>
+                Volver a Interfaz
+            </button>
             <button class="menu-button">
                 <span class="menu-icon">👤</span>
                 Perfil
@@ -128,10 +134,6 @@
                 Actividades
             </button>
             <button class="menu-button">
-                <span class="menu-icon">📝</span>
-                Registrar un nuevo estudiante
-            </button>
-            <button class="menu-button">
                 <span class="menu-icon">📋</span>
                 Registrar un PIAR y diagnóstico médico
             </button>
@@ -147,8 +149,6 @@
                 <span class="menu-icon">❓</span>
                 Ayuda
             </button>
-        </div>
-        <div class="menu-bottom">
             <button class="menu-button close-session">
                 <span class="menu-icon">🚪</span>
                 Cerrar Sesión
@@ -189,14 +189,16 @@
                             <button type="button" class="skip-btn" onclick="showSkipOptions('madre')">
                                 Saltar Registro de Madre
                             </button>
-                            
+
                             <div id="madre-skip-options" class="skip-options">
                                 <div class="skip-radio">
-                                    <input type="radio" id="madre-no-presente" name="madre_skip_reason" value="no_presente">
+                                    <input type="radio" id="madre-no-presente" name="madre_skip_reason"
+                                        value="no_presente">
                                     <label for="madre-no-presente">La madre no está presente</label>
                                 </div>
                                 <div class="skip-radio">
-                                    <input type="radio" id="madre-es-acudiente" name="madre_skip_reason" value="es_acudiente">
+                                    <input type="radio" id="madre-es-acudiente" name="madre_skip_reason"
+                                        value="es_acudiente">
                                     <label for="madre-es-acudiente">La madre será registrada como acudiente</label>
                                 </div>
                                 <button type="button" class="skip-btn" onclick="confirmSkip('madre')">Confirmar</button>
@@ -206,7 +208,8 @@
 
                         <div id="madre-skipped-info" class="skipped-info">
                             <strong>✓ Registro de madre omitido:</strong> <span id="madre-skip-reason-text"></span>
-                            <button type="button" class="skip-btn" onclick="undoSkip('madre')" style="margin-left: 1rem; padding: 0.5rem 1rem;">
+                            <button type="button" class="skip-btn" onclick="undoSkip('madre')"
+                                style="margin-left: 1rem; padding: 0.5rem 1rem;">
                                 Deshacer
                             </button>
                         </div>
@@ -252,14 +255,16 @@
                             <button type="button" class="skip-btn" onclick="showSkipOptions('padre')">
                                 Saltar Registro de Padre
                             </button>
-                            
+
                             <div id="padre-skip-options" class="skip-options">
                                 <div class="skip-radio">
-                                    <input type="radio" id="padre-no-presente" name="padre_skip_reason" value="no_presente">
+                                    <input type="radio" id="padre-no-presente" name="padre_skip_reason"
+                                        value="no_presente">
                                     <label for="padre-no-presente">El padre no está presente</label>
                                 </div>
                                 <div class="skip-radio">
-                                    <input type="radio" id="padre-es-acudiente" name="padre_skip_reason" value="es_acudiente">
+                                    <input type="radio" id="padre-es-acudiente" name="padre_skip_reason"
+                                        value="es_acudiente">
                                     <label for="padre-es-acudiente">El padre será registrado como acudiente</label>
                                 </div>
                                 <button type="button" class="skip-btn" onclick="confirmSkip('padre')">Confirmar</button>
@@ -269,7 +274,8 @@
 
                         <div id="padre-skipped-info" class="skipped-info">
                             <strong>✓ Registro de padre omitido:</strong> <span id="padre-skip-reason-text"></span>
-                            <button type="button" class="skip-btn" onclick="undoSkip('padre')" style="margin-left: 1rem; padding: 0.5rem 1rem;">
+                            <button type="button" class="skip-btn" onclick="undoSkip('padre')"
+                                style="margin-left: 1rem; padding: 0.5rem 1rem;">
                                 Deshacer
                             </button>
                         </div>
@@ -283,7 +289,7 @@
                                 <option value="">Seleccione</option>
                                 <option value="Primaria">Primaria</option>
                                 <option value="Bachillerato">Bachillerato</option>
-                                <option value="Técnico">Técnico</option>
+                                <option value="TÃ©cnico">Técnico</option>
                                 <option value="Tecnológico">Tecnológico</option>
                                 <option value="Profesional">Profesional</option>
                                 <option value="Especialización">Especialización</option>
@@ -310,7 +316,8 @@
                         <h2>Información del Cuidador/Acudiente</h2>
 
                         <div class="warning-text">
-                            <strong>Nota:</strong> Este registro es obligatorio. Si la madre o el padre es el acudiente principal, 
+                            <strong>Nota:</strong> Este registro es obligatorio. Si la madre o el padre es el acudiente
+                            principal,
                             registre aquí esa información.
                         </div>
 
@@ -496,7 +503,8 @@
                     <div class="form-step" id="form-step-6">
                         <h2>Capacidades del Estudiante</h2>
 
-                        <label for="capacidades">Describa las capacidades y habilidades especiales del estudiante *</label>
+                        <label for="capacidades">Describa las capacidades y habilidades especiales del estudiante
+                            *</label>
                         <textarea id="capacidades" name="capacidades" required
                             placeholder="Ejemplo: Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas, etc."></textarea>
                     </div>
@@ -514,7 +522,8 @@
                     <div class="form-step" id="form-step-8">
                         <h2>Expectativas del Estudiante</h2>
 
-                        <label for="expectativas_estudiante">¿Cuáles son las expectativas y metas del estudiante? *</label>
+                        <label for="expectativas_estudiante">¿Cuáles son las expectativas y metas del estudiante?
+                            *</label>
                         <textarea id="expectativas_estudiante" name="expectativas_estudiante" required
                             placeholder="Ejemplo: Quiere graduarse, ir a la universidad, aprender un oficio, etc."></textarea>
                     </div>
@@ -523,7 +532,8 @@
                     <div class="form-step" id="form-step-9">
                         <h2>Expectativas de la Familia</h2>
 
-                        <label for="expectativas_familia">¿Cuáles son las expectativas de la familia para el estudiante? *</label>
+                        <label for="expectativas_familia">¿Cuáles son las expectativas de la familia para el estudiante?
+                            *</label>
                         <textarea id="expectativas_familia" name="expectativas_familia" required
                             placeholder="Ejemplo: Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro, etc."></textarea>
                     </div>
@@ -574,30 +584,6 @@
             <p>&copy; 2025 LUDIK - Sistema de Gestión Educativa Inclusiva</p>
         </footer>
     </div>
-
-    <script>
-        // VERIFICAR ROL INMEDIATAMENTE - SIMPLIFICADO
-        document.addEventListener('DOMContentLoaded', function() {
-            const rol = localStorage.getItem('rol');
-            console.log('Rol en localStorage:', rol);
-
-            // Eliminar cualquier HR o línea que pueda existir
-            const lineas = document.querySelectorAll('hr, .separator, .line, .divider');
-            lineas.forEach(linea => {
-                console.log('Eliminando línea encontrada');
-                linea.remove();
-            });
-
-            // Si NO es admin, ocultar el botón
-            if (rol !== 'admin') {
-                const botonCrear = document.getElementById('btnCrearCuentas');
-                if (botonCrear) {
-                    botonCrear.style.display = 'none';
-                    console.log('Botón ocultado para rol:', rol);
-                }
-            }
-        });
-    </script>
 
     <script src="Js\Registrar_estudiante.js"></script>
 </body>
