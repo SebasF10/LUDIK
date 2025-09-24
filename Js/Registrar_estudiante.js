@@ -43,9 +43,47 @@ document.addEventListener('DOMContentLoaded', function () {
     verificarYAplicarRestricciones();
 });
 
-// -------------------------------------------
-// FUNCIÓN PARA INSPECCIONAR Y ELIMINAR ELEMENTOS
-// -------------------------------------------
+// Función para manejar campos condicionales del entorno educativo
+function setupEntornoEducativoEventListeners() {
+    // Campo condicional para institución anterior
+    document.getElementById('vinculado_otra_inst').addEventListener('change', handleVinculadoOtraInst);
+    
+    // Campo condicional para programas complementarios
+    document.getElementById('asiste_programas_complementarios').addEventListener('change', handleProgramasComplementarios);
+}
+
+function handleVinculadoOtraInst() {
+    const container = document.getElementById('institucion_anterior_container');
+    const campo = document.getElementById('nombre_institucion_anterior');
+    
+    if (this.value === 'Si') {
+        container.style.display = 'block';
+        campo.setAttribute('required', 'required');
+    } else {
+        container.style.display = 'none';
+        campo.removeAttribute('required');
+        campo.removeAttribute('data-originally-required');
+        campo.value = '';
+    }
+}
+
+function handleProgramasComplementarios() {
+    const container = document.getElementById('programas_complementarios_container');
+    const campo = document.getElementById('detalle_programas_complementarios');
+    
+    if (this.value === 'Si') {
+        container.style.display = 'block';
+        campo.setAttribute('required', 'required');
+    } else {
+        container.style.display = 'none';
+        campo.removeAttribute('required');
+        campo.removeAttribute('data-originally-required');
+        campo.value = '';
+    }
+}
+
+// FUNCIÓN PARA INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
+
 function inspeccionarYEliminar() {
     console.log("🔍 INSPECCIONANDO ELEMENTOS EN EL MENÚ");
 
@@ -299,7 +337,7 @@ console.log("Script de Registrar Estudiante cargado con funcionalidad de menú i
 
 // Variables globales del formulario / flujo
 let currentStep = 1;
-const totalSteps = 11;
+const totalSteps = 12;
 let estudianteRegistradoId = null;
 let estudianteRegistradoNombre = '';
 let isPhase1Complete = false;
@@ -431,6 +469,43 @@ function confirmSkip(type) {
     if (infoMessage) {
         showAlert(infoMessage, 'warning');
     }
+}
+
+
+// Validación específica para el paso 5 (Entorno Educativo)
+function validateStep5() {
+    const ultimoGrado = document.getElementById('ultimo_grado_cursado').value;
+    const vinculadoOtra = document.getElementById('vinculado_otra_inst').value;
+    const informePedagogico = document.getElementById('informe_pedagogico').value;
+    const asistenProgramas = document.getElementById('asiste_programas_complementarios').value;
+    
+    // Validar campos obligatorios básicos
+    if (!ultimoGrado || !vinculadoOtra || !informePedagogico || !asistenProgramas) {
+        showAlert('Por favor complete todos los campos obligatorios del entorno educativo.', 'error');
+        return false;
+    }
+    
+    // Validar campo condicional de institución anterior
+    if (vinculadoOtra === 'Si') {
+        const nombreInstitucion = document.getElementById('nombre_institucion_anterior').value;
+        if (!nombreInstitucion.trim()) {
+            showAlert('Por favor especifique el nombre de la institución educativa anterior.', 'error');
+            document.getElementById('nombre_institucion_anterior').focus();
+            return false;
+        }
+    }
+    
+    // Validar campo condicional de programas complementarios
+    if (asistenProgramas === 'Si') {
+        const detallesProgramas = document.getElementById('detalle_programas_complementarios').value;
+        if (!detallesProgramas.trim()) {
+            showAlert('Por favor especifique los programas complementarios a los que asiste.', 'error');
+            document.getElementById('detalle_programas_complementarios').focus();
+            return false;
+        }
+    }
+    
+    return true;
 }
 
 function prefillCuidadorFields(parentType) {
@@ -576,6 +651,7 @@ function setupEventListeners() {
         });
     });
 
+    setupEntornoEducativoEventListeners();
     // Navegación con teclado
     document.addEventListener('keydown', handleKeyNavigation);
 }
@@ -654,10 +730,13 @@ function validateCurrentStep() {
     // Validaciones específicas por paso
     if (currentStep === 4) {
         return validateStep4();
+    } else if (currentStep === 5) {
+        return validateStep5(); 
     }
 
     return true;
 }
+
 
 function validateStep4() {
     // Validar documento único
@@ -691,11 +770,11 @@ function validateStep4() {
     return true;
 }
 
-function validateSteps1to4() {
+function validateSteps1to5() {
     let isValid = true;
     let firstInvalidStep = null;
 
-    for (let step = 1; step <= 4; step++) {
+    for (let step = 1; step <= 5; step++) {
         const stepElement = document.getElementById('form-step-' + step);
         if (!stepElement) continue;
 
@@ -724,6 +803,7 @@ function validateSteps1to4() {
 
     return isValid;
 }
+
 
 function validateAllDescriptionSteps() {
     let isValid = true;
@@ -836,8 +916,8 @@ function cargarGrupos() {
 // ==================== NAVEGACIÓN ENTRE PASOS ====================
 function nextStep() {
     if (validateCurrentStep()) {
-        // Si estamos en el paso 4 y aún no se ha completado la fase 1, registrar estudiante
-        if (currentStep === 4 && !isPhase1Complete) {
+        // Si estamos en el paso 5 (entorno educativo) y aún no se ha completado la fase 1, registrar estudiante
+        if (currentStep === 5 && !isPhase1Complete) {
             registerStudentPhase1();
             return;
         }
@@ -872,8 +952,8 @@ function nextStep() {
             // Scroll suave hacia arriba
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Si llegamos al paso 5, configurar la descripción
-            if (currentStep === 5) {
+            // Si llegamos al paso 6 (antes era 5), configurar la descripción
+            if (currentStep === 6) {
                 setupDescripcionStep();
             }
         }
@@ -998,10 +1078,10 @@ function goToStep(targetStep) {
 function registerStudentPhase1() {
     showLoadingOverlay();
 
-    // Restaurar todos los required para validación
+    // Restaurar todos los required para validación (pasos 1-5)
     restoreAllRequiredAttributesForPhase1();
 
-    if (!validateSteps1to4()) {
+    if (!validateSteps1to5()) { // Cambiar validateSteps1to4 por validateSteps1to5
         hideLoadingOverlay();
         return;
     }
@@ -1099,7 +1179,7 @@ function setupDescripcionStep() {
 }
 
 function restoreAllRequiredAttributesForPhase1() {
-    for (let step = 1; step <= 4; step++) {
+    for (let step = 1; step <= 5; step++) { // Cambiar de 4 a 5
         const stepElement = document.getElementById('form-step-' + step);
         if (!stepElement) continue;
         const fields = stepElement.querySelectorAll('[data-originally-required]');
@@ -1183,23 +1263,22 @@ function updateButtons() {
     const btnSiguiente = document.getElementById('btnSiguiente');
     const btnRegistrar = document.getElementById('btnRegistrar');
 
-    if (btnAnterior) btnAnterior.style.display = currentStep > 1 ? 'inline-block' : 'none';
 
-    if (btnSiguiente && btnRegistrar) {
-        // Mostrar/ocultar botones siguiente y registrar
-        if (currentStep === totalSteps) {
-            btnSiguiente.style.display = 'none';
-            btnRegistrar.style.display = 'inline-block';
-            btnRegistrar.textContent = 'Completar Descripción General';
-        } else if (currentStep === 4 && !isPhase1Complete) {
-            btnSiguiente.style.display = 'inline-block';
-            btnSiguiente.textContent = 'Registrar Estudiante';
-            btnRegistrar.style.display = 'none';
-        } else {
-            btnSiguiente.style.display = 'inline-block';
-            btnRegistrar.style.display = 'none';
-            btnSiguiente.textContent = 'Siguiente';
-        }
+    // Mostrar/ocultar botón anterior
+    btnAnterior.style.display = currentStep > 1 ? 'inline-block' : 'none';
+
+    // Mostrar/ocultar botones siguiente y registrar
+    if (currentStep === totalSteps) {
+        btnSiguiente.style.display = 'none';
+        btnRegistrar.style.display = 'inline-block';
+        btnRegistrar.textContent = 'Completar Descripción General';
+    } else if (currentStep === 5 && !isPhase1Complete) { // Cambiar de 4 a 5
+        btnSiguiente.textContent = 'Registrar Estudiante';
+    } else {
+        btnSiguiente.style.display = 'inline-block';
+        btnRegistrar.style.display = 'none';
+        btnSiguiente.textContent = 'Siguiente';
+
     }
 }
 

@@ -1,0 +1,17 @@
+# Protección para fotos de estudiantes
+<Files *.php>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Permitir solo imágenes
+<FilesMatch "\.(jpg|jpeg|png|gif)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# Cache para imágenes
+<FilesMatch "\.(jpg|jpeg|png|gif)$">
+    ExpiresActive on
+    ExpiresDefault "access plus 1 month"
+</FilesMatch>

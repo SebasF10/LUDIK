@@ -9,10 +9,10 @@ DEFINE('BD', 'ludik');
 
 // Parámetros BD remota (InfinityFree)
 /*
-define('USER', 'if0_39848338');
-define('PW', 'iLov3Window5');
-define('HOST', 'sql113.infinityfree.com');
-define('BD', 'if0_39848338_ludik');
+define('USER', 'if0_39975666');
+define('PW', 'iLov3window5');
+define('HOST', 'sql112.infinityfree.com');
+define('BD', 'if0_39975666_ludik');
 */
 
 // Parametros BD remota (Hosting del colegio)

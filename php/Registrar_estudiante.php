@@ -47,7 +47,7 @@ try {
 
 function registerStudentAndFamily($conn) {
     $ids = [];
-    
+
     // STEP 1: Register Mother (with skip handling)
     $madre_skipped = $_POST['madre_skipped'] ?? 'false';
     
@@ -250,11 +250,76 @@ function registerStudentAndFamily($conn) {
     $id_estudiante = $conn->insert_id;
     $stmt->close();
     
-    // STEP 5: Assign to group if provided
+    // STEP 5: Register Educational Environment
+    $entorno_data = [
+        'ultimo_grado_cursado' => trim($_POST['ultimo_grado_cursado'] ?? ''),
+        'vinculado_otra_inst' => trim($_POST['vinculado_otra_inst'] ?? ''),
+        'nombre_institucion_anterior' => isset($_POST['nombre_institucion_anterior']) && $_POST['vinculado_otra_inst'] === 'Si' ? trim($_POST['nombre_institucion_anterior']) : null,
+        'informe_pedagogico' => intval($_POST['informe_pedagogico'] ?? 0),
+        'modalidad_proveniente' => isset($_POST['modalidad_proveniente']) ? trim($_POST['modalidad_proveniente']) : null,
+        'asiste_programas_complementarios' => trim($_POST['asiste_programas_complementarios'] ?? ''),
+        'detalle_programas_complementarios' => isset($_POST['detalle_programas_complementarios']) && $_POST['asiste_programas_complementarios'] === 'Si' ? trim($_POST['detalle_programas_complementarios']) : null,
+        'observacion' => isset($_POST['observacion_entorno']) ? trim($_POST['observacion_entorno']) : null,
+        'estado' => 1 // Activo por defecto
+    ];
+
+    // Validación de campos obligatorios del entorno educativo
+    $required_entorno_fields = ['ultimo_grado_cursado', 'vinculado_otra_inst', 'asiste_programas_complementarios'];
+    foreach ($required_entorno_fields as $field) {
+        if (empty($entorno_data[$field])) {
+            throw new Exception("Faltan datos obligatorios del entorno educativo: $field");
+        }
+    }
+
+    // Validar campo condicional de institución anterior
+    if ($entorno_data['vinculado_otra_inst'] === 'Si' && empty($entorno_data['nombre_institucion_anterior'])) {
+        throw new Exception("Debe especificar el nombre de la institución educativa anterior");
+    }
+
+    // Validar campo condicional de programas complementarios
+    if ($entorno_data['asiste_programas_complementarios'] === 'Si' && empty($entorno_data['detalle_programas_complementarios'])) {
+        throw new Exception("Debe especificar los programas complementarios a los que asiste");
+    }
+
+    // Preparar observación completa
+    $observacion_completa = $entorno_data['observacion'];
+    if ($entorno_data['nombre_institucion_anterior']) {
+        $observacion_completa = ($observacion_completa ? $observacion_completa . ' | ' : '') .
+                               'Institución anterior: ' . $entorno_data['nombre_institucion_anterior'];
+    }
+    if ($entorno_data['detalle_programas_complementarios']) {
+        $observacion_completa = ($observacion_completa ? $observacion_completa . ' | ' : '') .
+                               'Programas complementarios: ' . $entorno_data['detalle_programas_complementarios'];
+    }
+
+    $stmt = $conn->prepare("INSERT INTO entorno_educativo (
+        estado, ultimo_grado_cursado, vinculado_otra_inst, informe_pedagogico,
+        modalidad_proveniente, asiste_programas_complementarios, observacion, id_estudiante
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    
+    $stmt->bind_param(
+        "ississsi",
+        $entorno_data['estado'],
+        $entorno_data['ultimo_grado_cursado'],
+        $entorno_data['vinculado_otra_inst'],
+        $entorno_data['informe_pedagogico'],
+        $entorno_data['modalidad_proveniente'],
+        $entorno_data['asiste_programas_complementarios'],
+        $observacion_completa,
+        $id_estudiante
+    );
+    
+    if (!$stmt->execute()) {
+        throw new Exception("Error insertando entorno educativo: " . $stmt->error);
+    }
+    $id_entorno_educativo = $conn->insert_id;
+    $stmt->close();
+
+    // STEP 6: Assign to group if provided
     if (isset($_POST['id_grupo']) && !empty($_POST['id_grupo'])) {
         $id_grupo = intval($_POST['id_grupo']);
         $anio_actual = date('Y');
-        
+
         // Verify group exists
         $stmt = $conn->prepare("SELECT id_grupo FROM grupo WHERE id_grupo = ?");
         $stmt->bind_param("i", $id_grupo);
@@ -264,16 +329,16 @@ function registerStudentAndFamily($conn) {
             throw new Exception("El grupo especificado no existe");
         }
         $stmt->close();
-        
+
         $stmt = $conn->prepare("INSERT INTO grupo_estudiante (id_grupo, id_estudiante, anio) VALUES (?, ?, ?)");
         $stmt->bind_param("iii", $id_grupo, $id_estudiante, $anio_actual);
-        
+
         if (!$stmt->execute()) {
             throw new Exception("Error asignando grupo al estudiante: " . $stmt->error);
         }
         $stmt->close();
     }
-    
+
     // Prepare response with skip information
     $skip_info = [];
     if ($madre_skipped === 'true') {
@@ -282,17 +347,19 @@ function registerStudentAndFamily($conn) {
     if ($padre_skipped === 'true') {
         $skip_info['padre'] = $_POST['padre_skip_reason_value'] ?? '';
     }
-    
+
     return [
         'success' => true,
         'phase' => 1,
         'id_estudiante' => $id_estudiante,
-        'message' => 'Estudiante y familia registrados exitosamente. Ahora puede proceder con la descripción general.',
+        'id_entorno_educativo' => $id_entorno_educativo,
+        'message' => 'Estudiante, familia y entorno educativo registrados exitosamente. Ahora puede proceder con la descripción general.',
         'skip_info' => $skip_info,
         'data' => [
             'id_madre' => $id_madre,
             'id_padre' => $id_padre,
             'id_cuidador' => $id_cuidador,
+            'id_entorno_educativo' => $id_entorno_educativo,
             'nombre_completo' => $estudiante_data['nombre'] . ' ' . $estudiante_data['apellidos']
         ]
     ];
@@ -416,5 +483,50 @@ function registerDescription($conn) {
         'student_name' => $student['nombre'] . ' ' . $student['apellidos'],
         'complete' => true
     ];
+}
+
+// Función opcional para actualizar entorno educativo
+function updateEntornoEducativo($conn, $id_estudiante, $entorno_data) {
+    $stmt = $conn->prepare("UPDATE entorno_educativo SET 
+        ultimo_grado_cursado = ?, 
+        vinculado_otra_inst = ?, 
+        informe_pedagogico = ?, 
+        modalidad_proveniente = ?, 
+        asiste_programas_complementarios = ?, 
+        observacion = ?
+        WHERE id_estudiante = ?");
+    
+    $stmt->bind_param(
+        "sssissi",
+        $entorno_data['ultimo_grado_cursado'],
+        $entorno_data['vinculado_otra_inst'],
+        $entorno_data['informe_pedagogico'],
+        $entorno_data['modalidad_proveniente'],
+        $entorno_data['asiste_programas_complementarios'],
+        $entorno_data['observacion'],
+        $id_estudiante
+    );
+    
+    if (!$stmt->execute()) {
+        throw new Exception("Error actualizando entorno educativo: " . $stmt->error);
+    }
+    
+    $stmt->close();
+    return true;
+}
+
+// Función para obtener entorno educativo de un estudiante
+function getEntornoEducativo($conn, $id_estudiante) {
+    $stmt = $conn->prepare("SELECT * FROM entorno_educativo WHERE id_estudiante = ?");
+    $stmt->bind_param("i", $id_estudiante);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        return $result->fetch_assoc();
+    }
+    
+    $stmt->close();
+    return null;
 }
 ?>

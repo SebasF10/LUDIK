@@ -176,6 +176,9 @@ document.addEventListener('click', function (e) {
             window.location.href = 'Descripción_general.html';
         } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
             window.location.href = 'Valoracion_pedagogica.html';
+        } else if (textoLower.includes('documentos')) {
+            console.log("-> Redirigiendo a documentos");
+            window.location.href = 'Documentos.html';
         } else if (textoLower.includes('comunicate')) {
             window.location.href = 'Comunicacion.html';
         } else if (textoLower.includes('ayuda')) {
@@ -335,6 +338,16 @@ window.addEventListener('resize', function () {
     }
 });
 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const btnDocumentos = document.getElementById('btnDocumentos');
+    if (btnDocumentos) {
+        btnDocumentos.addEventListener('click', function () {
+            window.location.href = 'Documentos.html';
+        });
+    }
+});
+
 // Prevenir scroll del body cuando el menú está abierto
 window.addEventListener('scroll', function () {
     if (sideMenu && sideMenu.classList.contains('active')) {
@@ -386,3 +399,4 @@ setTimeout(() => {
 }, 1000);
 
 console.log("✅ Interfaz.js completamente cargado y configurado");
+

@@ -162,7 +162,7 @@
             <section class="section">
                 <h1>Registro Completo de Estudiante</h1>
 
-                <!-- Indicador de progreso -->
+                <!-- Indicador de progreso ACTUALIZADO -->
                 <div class="progress-indicator">
                     <div class="step-indicator active" id="step1">1</div>
                     <div class="step-indicator" id="step2">2</div>
@@ -175,6 +175,7 @@
                     <div class="step-indicator" id="step9">9</div>
                     <div class="step-indicator" id="step10">10</div>
                     <div class="step-indicator" id="step11">11</div>
+                    <div class="step-indicator" id="step12">12</div>
                 </div>
 
                 <form id="formulario-completo" method="POST">
@@ -487,9 +488,88 @@
                         </div>
                     </div>
 
-                    <!-- Pasos 5-11 permanecen igual -->
-                    <!-- PASO 5: SELECCIÓN DE ESTUDIANTE PARA DESCRIPCIÓN -->
+                    <!-- PASO 5: ENTORNO EDUCATIVO -->
                     <div class="form-step" id="form-step-5">
+                        <h2>Entorno Educativo</h2>
+                        <h3>Información académica y educativa del estudiante</h3>
+
+                        <label for="ultimo_grado_cursado">Último Grado Cursado *</label>
+                        <select id="ultimo_grado_cursado" name="ultimo_grado_cursado" required>
+                            <option value="">Seleccione</option>
+                            <option value="Preescolar">Preescolar</option>
+                            <option value="1°">1° Primaria</option>
+                            <option value="2°">2° Primaria</option>
+                            <option value="3°">3° Primaria</option>
+                            <option value="4°">4° Primaria</option>
+                            <option value="5°">5° Primaria</option>
+                            <option value="6°">6° Bachillerato</option>
+                            <option value="7°">7° Bachillerato</option>
+                            <option value="8°">8° Bachillerato</option>
+                            <option value="9°">9° Bachillerato</option>
+                            <option value="10°">10° Bachillerato</option>
+                            <option value="11°">11° Bachillerato</option>
+                            <option value="No ha cursado">No ha cursado ningún grado</option>
+                        </select>
+
+                        <label for="vinculado_otra_inst">¿Estuvo vinculado a otra institución educativa? *</label>
+                        <select id="vinculado_otra_inst" name="vinculado_otra_inst" required>
+                            <option value="">Seleccione</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+
+                        <div id="institucion_anterior_container" class="conditional-container">
+                            <label for="nombre_institucion_anterior">Nombre de la institución anterior</label>
+                            <input type="text" id="nombre_institucion_anterior" name="nombre_institucion_anterior"
+                                placeholder="Ingrese el nombre de la institución educativa anterior">
+                        </div>
+
+                        <label for="informe_pedagogico">¿Cuenta con informe pedagógico? *</label>
+                        <select id="informe_pedagogico" name="informe_pedagogico" required>
+                            <option value="">Seleccione</option>
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
+
+                        <label for="modalidad_proveniente">Modalidad de la que proviene</label>
+                        <select id="modalidad_proveniente" name="modalidad_proveniente">
+                            <option value="">Seleccione</option>
+                            <option value="Presencial">Presencial</option>
+                            <option value="Virtual">Virtual</option>
+                            <option value="Semipresencial">Semipresencial</option>
+                            <option value="Flexible">Flexible</option>
+                            <option value="No aplica">No aplica</option>
+                        </select>
+
+                        <label for="asiste_programas_complementarios">¿Asiste a programas complementarios? *</label>
+                        <select id="asiste_programas_complementarios" name="asiste_programas_complementarios" required>
+                            <option value="">Seleccione</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+
+                        <div id="programas_complementarios_container" class="conditional-container">
+                            <label for="detalle_programas_complementarios">Especifique los programas
+                                complementarios</label>
+                            <textarea id="detalle_programas_complementarios" name="detalle_programas_complementarios"
+                                placeholder="Ejemplo: Terapia ocupacional, fonoaudiología, psicología, deportes, música, etc."
+                                rows="3"></textarea>
+                        </div>
+
+                        <label for="observacion_entorno">Observaciones adicionales sobre el entorno educativo</label>
+                        <textarea id="observacion_entorno" name="observacion_entorno"
+                            placeholder="Ingrese cualquier observación relevante sobre la situación educativa del estudiante"
+                            rows="4"></textarea>
+
+                        <div class="warning-text">
+                            <strong>Nota:</strong> Esta información es crucial para el diseño del plan educativo
+                            personalizado del estudiante.
+                        </div>
+                    </div>
+
+                    <!-- Pasos 6-11 permanecen igual -->
+                    <!-- PASO 6: SELECCIÓN DE ESTUDIANTE PARA DESCRIPCIÓN -->
+                    <div class="form-step" id="form-step-6">
                         <h2>Descripción General - Selección de Estudiante</h2>
                         <p>Ahora procederemos a crear la descripción general del estudiante registrado.</p>
 
@@ -499,8 +579,8 @@
                         </select>
                     </div>
 
-                    <!-- PASO 6: CAPACIDADES -->
-                    <div class="form-step" id="form-step-6">
+                    <!-- PASO 7: CAPACIDADES -->
+                    <div class="form-step" id="form-step-7">
                         <h2>Capacidades del Estudiante</h2>
 
                         <label for="capacidades">Describa las capacidades y habilidades especiales del estudiante
@@ -509,8 +589,8 @@
                             placeholder="Ejemplo: Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas, etc."></textarea>
                     </div>
 
-                    <!-- PASO 7: GUSTOS E INTERESES -->
-                    <div class="form-step" id="form-step-7">
+                    <!-- PASO 8: GUSTOS E INTERESES -->
+                    <div class="form-step" id="form-step-8">
                         <h2>Gustos e Intereses</h2>
 
                         <label for="gustos_intereses">Describa los gustos e intereses del estudiante *</label>
@@ -518,8 +598,8 @@
                             placeholder="Ejemplo: Le gusta la música, los deportes, la lectura, los videojuegos, etc."></textarea>
                     </div>
 
-                    <!-- PASO 8: EXPECTATIVAS DEL ESTUDIANTE -->
-                    <div class="form-step" id="form-step-8">
+                    <!-- PASO 9: EXPECTATIVAS DEL ESTUDIANTE -->
+                    <div class="form-step" id="form-step-9">
                         <h2>Expectativas del Estudiante</h2>
 
                         <label for="expectativas_estudiante">¿Cuáles son las expectativas y metas del estudiante?
@@ -528,8 +608,8 @@
                             placeholder="Ejemplo: Quiere graduarse, ir a la universidad, aprender un oficio, etc."></textarea>
                     </div>
 
-                    <!-- PASO 9: EXPECTATIVAS DE LA FAMILIA -->
-                    <div class="form-step" id="form-step-9">
+                    <!-- PASO 10: EXPECTATIVAS DE LA FAMILIA -->
+                    <div class="form-step" id="form-step-10">
                         <h2>Expectativas de la Familia</h2>
 
                         <label for="expectativas_familia">¿Cuáles son las expectativas de la familia para el estudiante?
@@ -538,8 +618,8 @@
                             placeholder="Ejemplo: Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro, etc."></textarea>
                     </div>
 
-                    <!-- PASO 10: RED DE APOYO -->
-                    <div class="form-step" id="form-step-10">
+                    <!-- PASO 11: RED DE APOYO -->
+                    <div class="form-step" id="form-step-11">
                         <h2>Red de Apoyo</h2>
 
                         <label for="red_apoyo">Describa la red de apoyo del estudiante *</label>
@@ -547,8 +627,8 @@
                             placeholder="Ejemplo: Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante."></textarea>
                     </div>
 
-                    <!-- PASO 11: OTRAS DESCRIPCIONES -->
-                    <div class="form-step" id="form-step-11">
+                    <!-- PASO 12: OTRAS DESCRIPCIONES -->
+                    <div class="form-step" id="form-step-12">
                         <h2>Información Adicional</h2>
 
                         <label for="otra_descripcion">Información adicional relevante *</label>
@@ -584,6 +664,33 @@
             <p>&copy; 2025 LUDIK - Sistema de Gestión Educativa Inclusiva</p>
         </footer>
     </div>
+
+
+    <script>
+        // VERIFICAR ROL INMEDIATAMENTE - SIMPLIFICADO
+        document.addEventListener('DOMContentLoaded', function () {
+            const rol = localStorage.getItem('rol');
+            console.log('Rol en localStorage:', rol);
+
+            // Eliminar cualquier HR o línea que pueda existir
+            const lineas = document.querySelectorAll('hr, .separator, .line, .divider');
+            lineas.forEach(linea => {
+                console.log('Eliminando línea encontrada');
+                linea.remove();
+            });
+
+            // Si NO es admin, ocultar el botón
+            if (rol !== 'admin') {
+                const botonCrear = document.getElementById('btnCrearCuentas');
+                if (botonCrear) {
+                    botonCrear.style.display = 'none';
+                    console.log('Botón ocultado para rol:', rol);
+                }
+            }
+        });
+    </script>
+
+
 
     <script src="Js\Registrar_estudiante.js"></script>
 </body>
