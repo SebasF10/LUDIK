@@ -1,7 +1,6 @@
-/* ============================================ */
-/* ESTILOS DEL MENÚ EXTRAÍBLE - COPIADOS DE MENU.CSS */
-/* ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* RESET Y BASE */
 * {
     margin: 0;
     padding: 0;
@@ -11,14 +10,15 @@
 }
 
 body {
-    font-family: 'Inter', Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    color: #2c3e50;
+    color: #333;
+    overflow-x: hidden;
     line-height: 1.6;
 }
 
-/* Header mejorado con estética moderna */
+/* ======= ESTILOS DEL HEADER Y MENÚ ======= */
 .header {
     display: flex;
     align-items: center;
@@ -31,7 +31,6 @@ body {
     position: sticky;
     top: 0;
     z-index: 1001;
-    position: relative;
 }
 
 .left-section {
@@ -185,14 +184,12 @@ body {
     /* Línea más larga */
 }
 
-/* MENÚ LATERAL - ARREGLADO PARA EVITAR LA BARRA AZUL */
+/* MENÚ LATERAL - CON SCROLL */
 .side-menu {
     position: fixed;
     top: 89px;
     left: -380px;
-    /* AUMENTADO de 350px a 380px */
     width: 380px;
-    /* AUMENTADO de 350px a 380px */
     height: calc(100vh - 89px);
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
@@ -200,11 +197,9 @@ body {
     z-index: 1000;
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
     outline: none !important;
-    border-bottom: none !important;
-    border-top: none !important;
-    border-left: none !important;
 }
 
 .side-menu.active {
@@ -212,6 +207,7 @@ body {
 }
 
 .menu-header {
+    flex-shrink: 0;
     padding: 35px 40px 35px 40px;
     border-bottom: none !important;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
@@ -234,21 +230,45 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* CONTENEDOR DE BOTONES CON SCROLL */
 .menu-buttons {
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 35px 0 35px 0;
-    height: auto !important;
-    min-height: calc(100vh - 300px);
-    overflow: visible !important;
-    overflow-x: visible !important;
-    overflow-y: visible !important;
+    padding: 20px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+    /* Scroll personalizado */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
+/* Scroll personalizado para webkit */
+.menu-buttons::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu-buttons::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
+
+/* BOTONES DEL MENÚ */
 .menu-button {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -268,6 +288,7 @@ body {
     overflow: hidden !important;
     width: 100% !important;
     max-width: 380px !important;
+    margin: 2px 0;
 }
 
 .menu-button:focus,
@@ -287,6 +308,7 @@ body {
     box-shadow: none !important;
 }
 
+/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
     content: '';
     position: absolute;
@@ -320,37 +342,9 @@ body {
     filter: grayscale(0);
 }
 
-/* Overlay para cerrar menu */
-.overlay {
-    position: fixed;
-    top: 89px;
-    left: 0;
-    width: 100vw;
-    height: calc(100vh - 89px);
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    display: none;
-    z-index: 999;
-    transition: all 0.3s ease;
-}
-
-.overlay.active {
-    display: block;
-}
-
-.menu-bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 0;
-    background: transparent;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-}
-
+/* CERRAR SESIÓN COMO BOTÓN NORMAL */
 .menu-button.close-session {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -364,9 +358,8 @@ body {
     transition: all 0.3s ease;
     position: relative;
     font-family: 'Inter', Arial, sans-serif;
-    justify-content: center;
     width: 100%;
-    margin: 0;
+    margin: 2px 0;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -407,19 +400,32 @@ body {
     content: none !important;
 }
 
+/* Overlay para cerrar menu */
+.overlay {
+    position: fixed;
+    top: 89px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 89px);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: none;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.overlay.active {
+    display: block;
+}
+
 /* ============================================ */
-/* ESTILOS ORIGINALES DE REGISTRAR ESTUDIANTE - MODIFICADOS */
+/* ESTILOS ORIGINALES DE REGISTRAR ESTUDIANTE */
 /* ============================================ */
 
 /* Wrapper para el contenido después del header */
 .content-wrapper {
     min-height: calc(100vh - 89px);
     padding-top: 0;
-}
-
-/* Reset y configuración base */
-.content-wrapper * {
-    box-sizing: border-box;
 }
 
 /* Contenido principal */
@@ -808,19 +814,24 @@ textarea {
     backdrop-filter: blur(10px);
 }
 
-/* Responsive Design */
+/* RESPONSIVE - MOBILE */
 @media (max-width: 768px) {
     .header {
         padding: 15px 20px;
     }
 
     .title {
-        font-size: 2rem;
+        font-size: 2.5rem;
         letter-spacing: 2px;
     }
 
     .menu-text {
-        font-size: 0.9rem;
+        font-size: 1.5rem;
+    }
+
+    .header-logo {
+        width: 50px !important;
+        height: 50px !important;
     }
 
     .side-menu {
@@ -828,23 +839,9 @@ textarea {
         left: -320px;
     }
 
-    .menu-header {
-        padding: 30px 25px 30px 25px;
-        min-height: 70px;
-    }
-
-    .menu-title {
-        font-size: 1.2rem;
-    }
-
     .menu-button {
-        padding: 15px 25px;
+        padding: 16px 25px;
         font-size: 0.95rem;
-        min-width: 320px !important;
-    }
-
-    .menu-button.close-session {
-        padding: 15px 25px;
     }
 
     .section {
@@ -878,189 +875,5 @@ textarea {
     .btn-nav {
         width: 100%;
         max-width: 250px;
-    }
-}
-
-@media (max-width: 480px) {
-    .menu-text {
-        display: none;
-    }
-
-    .title {
-        font-size: 1.8rem;
-        letter-spacing: 1px;
-    }
-
-    .progress-indicator {
-        flex-wrap: wrap;
-        max-width: 100%;
-    }
-
-    .step-indicator {
-        width: 30px;
-        height: 30px;
-        font-size: 0.7rem;
-    }
-
-    .step-indicator:not(:last-child)::after {
-        display: none;
-    }
-
-    .section h1 {
-        font-size: 1.8rem;
-    }
-}
-
-/* Mejoras de accesibilidad */
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* Modo oscuro (opcional) */
-@media (prefers-color-scheme: dark) {
-    .content-wrapper {
-        background: linear-gradient(135deg, #2c3e50 0%, #4a6741 100%);
-    }
-
-    .section {
-        background: rgba(52, 58, 64, 0.95);
-        color: #f8f9fa;
-    }
-
-    .section h1,
-    .form-step h2 {
-        color: #f8f9fa;
-    }
-
-    label {
-        color: #ced4da;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="password"],
-    input[type="date"],
-    input[type="number"],
-    select,
-    textarea {
-        background: rgba(73, 80, 87, 0.8);
-        border-color: #495057;
-        color: #f8f9fa;
-    }
-
-    input[type="text"]:focus,
-    input[type="email"]:focus,
-    input[type="tel"]:focus,
-    input[type="password"]:focus,
-    input[type="date"]:focus,
-    input[type="number"]:focus,
-    select:focus,
-    textarea:focus {
-        background: rgba(73, 80, 87, 1);
-        border-color: #667eea;
-    }
-}
-
-/* Estilos adicionales para campos específicos */
-.required-field::after {
-    content: ' *';
-    color: #dc3545;
-    font-weight: bold;
-}
-
-/* Animaciones suaves */
-.form-step {
-    transition: all 0.3s ease;
-}
-
-/* Mejoras visuales para select */
-select {
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1rem;
-    padding-right: 3rem;
-}
-
-/* Estilos para campos de fecha */
-input[type="date"] {
-    position: relative;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-    filter: invert(0.5);
-}
-
-/* Hover effects mejorados */
-input:hover:not(:focus),
-select:hover:not(:focus),
-textarea:hover:not(:focus) {
-    border-color: rgba(102, 126, 234, 0.5);
-    transform: translateY(-1px);
-}
-
-/* Estilos para campos numéricos */
-input[type="number"] {
-    text-align: center;
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type="number"] {
-    -moz-appearance: textfield;
-}
-
-/* Estilos para placeholder mejorados */
-::placeholder {
-    color: #6c757d;
-    font-style: italic;
-    opacity: 0.8;
-}
-
-/* Transiciones suaves para todos los elementos interactivos */
-.content-wrapper * {
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out;
-}
-
-/* Estilos para focus visible (accesibilidad) */
-*:focus-visible {
-    outline: 2px solid #667eea;
-    outline-offset: 2px;
-}
-
-/* Estilos específicos para campos de contraseña */
-input[type="password"] {
-    font-family: monospace;
-    letter-spacing: 2px;
-}
-
-/* Mejoras en la tipografía */
-h1,
-h2,
-h3 {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    font-weight: 600;
-}
-
-/* Estilos para pantallas de alta densidad */
-@media (-webkit-min-device-pixel-ratio: 2),
-(min-resolution: 192dpi) {
-    .header-logo {
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: crisp-edges;
     }
 }

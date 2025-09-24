@@ -168,7 +168,8 @@ body {
 .burger input:checked~span:nth-of-type(1) {
     transform: translate(-50%, -50%) rotate(45deg);
     top: 50%;
-    width: 38px; /* Línea más corta */
+    width: 38px;
+    /* Línea más corta */
 }
 
 .burger input:checked~span:nth-of-type(2) {
@@ -179,10 +180,11 @@ body {
 .burger input:checked~span:nth-of-type(3) {
     transform: translate(-50%, -50%) rotate(-45deg);
     top: 50%;
-    width: 48px; /* Línea más larga */
+    width: 48px;
+    /* Línea más larga */
 }
 
-/* MENÚ LATERAL */
+/* MENÚ LATERAL - CON SCROLL */
 .side-menu {
     position: fixed;
     top: 89px;
@@ -195,7 +197,8 @@ body {
     z-index: 1000;
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
     outline: none !important;
 }
 
@@ -204,6 +207,7 @@ body {
 }
 
 .menu-header {
+    flex-shrink: 0;
     padding: 35px 40px 35px 40px;
     border-bottom: none !important;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
@@ -226,23 +230,44 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* CONTENEDOR DE BOTONES */
+/* CONTENEDOR DE BOTONES CON SCROLL */
 .menu-buttons {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 35px 0 35px 0;
-    height: auto !important;
-    min-height: calc(100vh - 300px);
-    overflow: visible !important;
-    overflow-x: visible !important;
-    overflow-y: visible !important;
+    padding: 20px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+    /* Scroll personalizado */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
+}
+
+/* Scroll personalizado para webkit */
+.menu-buttons::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu-buttons::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
 }
 
 /* BOTONES DEL MENÚ */
 .menu-button {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -262,6 +287,7 @@ body {
     overflow: hidden !important;
     width: 100% !important;
     max-width: 380px !important;
+    margin: 2px 0;
 }
 
 .menu-button:focus,
@@ -315,38 +341,9 @@ body {
     filter: grayscale(0);
 }
 
-/* Overlay para cerrar menu */
-.overlay {
-    position: fixed;
-    top: 89px;
-    left: 0;
-    width: 100vw;
-    height: calc(100vh - 89px);
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    display: none;
-    z-index: 999;
-    transition: all 0.3s ease;
-}
-
-.overlay.active {
-    display: block;
-}
-
-/* MENÚ BOTTOM */
-.menu-bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 0;
-    background: transparent;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-}
-
+/* CERRAR SESIÓN COMO BOTÓN NORMAL */
 .menu-button.close-session {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -360,9 +357,8 @@ body {
     transition: all 0.3s ease;
     position: relative;
     font-family: 'Inter', Arial, sans-serif;
-    justify-content: center;
     width: 100%;
-    margin: 0;
+    margin: 2px 0;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -403,6 +399,24 @@ body {
     content: none !important;
 }
 
+/* Overlay para cerrar menu */
+.overlay {
+    position: fixed;
+    top: 89px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 89px);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: none;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.overlay.active {
+    display: block;
+}
+
 /* ======= ESTILOS DEL PERFIL (ACTUALIZADOS) ======= */
 .perfil-container {
     display: grid;
@@ -412,7 +426,8 @@ body {
     margin: 0 auto;
     animation: fadeIn 0.8s ease-out;
     padding: 20px;
-    margin-top: 20px; /* Espaciado del header */
+    margin-top: 20px;
+    /* Espaciado del header */
 }
 
 @media (max-width: 768px) {
@@ -433,7 +448,8 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     height: fit-content;
     position: sticky;
-    top: 110px; /* Ajustado para el header */
+    top: 110px;
+    /* Ajustado para el header */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -723,182 +739,14 @@ body {
     background: rgba(237, 137, 54, 0.1);
 }
 
-/* BOTÓN REGRESAR */
-.back-btn {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    padding: 15px 20px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    color: #2d3748;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 500;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.back-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    background: rgba(255, 255, 255, 1);
-}
-
-/* LOADING */
-.loading {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(102, 126, 234, 0.9);
-    backdrop-filter: blur(10px);
+.side-menu {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    color: white;
 }
 
-.spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 20px;
-}
-
-.loading p {
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* RESPONSIVE PARA HEADER Y MENÚ */
-@media (max-width: 768px) {
-    .header {
-        padding: 15px 20px;
-    }
-    
-    .title {
-        font-size: 2rem;
-        letter-spacing: 2px;
-    }
-    
-    .menu-text {
-        font-size: 0.9rem;
-    }
-    
-    .side-menu {
-        width: 320px;
-        left: -320px;
-    }
-    
-    .menu-header {
-        padding: 30px 25px 30px 25px;
-        min-height: 70px;
-    }
-    
-    .menu-title {
-        font-size: 1.2rem;
-    }
-    
-    .menu-button {
-        padding: 15px 25px;
-        font-size: 0.95rem;
-        max-width: 320px !important;
-    }
-    
-    .menu-button.close-session {
-        padding: 15px 25px;
-        max-width: 320px !important;
-    }
-    
-    .perfil-main-card {
-        position: static;
-        margin-bottom: 10px;
-        top: auto;
-    }
-    
-    .perfil-cards-container {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    }
-}
-
-@media (max-width: 480px) {
-    .menu-text {
-        display: none;
-    }
-    
-    .title {
-        font-size: 1.8rem;
-        letter-spacing: 1px;
-    }
-    
-    body {
-        padding: 0;
-    }
-    
-    .perfil-container {
-        padding: 10px;
-    }
-    
-    .perfil-main-card,
-    .data-card {
-        padding: 20px;
-    }
-    
-    .perfil-cards-container {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-    
-    .back-btn {
-        bottom: 20px;
-        left: 20px;
-        padding: 12px 16px;
-    }
-}
-
-/* RESPONSIVE ADICIONAL PARA PERFIL */
-@media (max-width: 1200px) {
-    .perfil-container {
-        grid-template-columns: 350px 1fr;
-        gap: 25px;
-    }
-}
-
-@media (max-width: 968px) {
-    .perfil-container {
-        grid-template-columns: 1fr;
-    }
+.menu-buttons {
+    flex: 1;
+    min-height: 0;
+    /* 👈 evita que se bloquee el scroll */
+    overflow-y: auto;
 }

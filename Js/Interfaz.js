@@ -135,6 +135,9 @@ document.addEventListener('click', function (e) {
         } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
             console.log("-> ¡ENCONTRADO! Redirigiendo a valoración pedagógica");
             window.location.href = 'Valoracion_pedagogica.html';
+        } else if (textoLower.includes('documentos')) {
+            console.log("-> Redirigiendo a documentos");
+            window.location.href = 'Documentos.html';
         } else if (textoLower.includes('comunicate')) {
             console.log("-> Redirigiendo a comunicación");
             window.location.href = 'Comunicacion.html';
@@ -157,5 +160,14 @@ document.addEventListener('click', function (e) {
         sideMenu.classList.remove('active');
         overlay.classList.remove('active');
         document.body.style.overflow = 'auto';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const btnDocumentos = document.getElementById('btnDocumentos');
+    if (btnDocumentos) {
+        btnDocumentos.addEventListener('click', function () {
+            window.location.href = 'Documentos.html';
+        });
     }
 });

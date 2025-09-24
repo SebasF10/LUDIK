@@ -1,118 +1,6 @@
-/* CSS específico para Interfaz.html - Página principal con menú lateral */
-/* Adoptando la estética moderna de Info.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    color: #2c3e50;
-    line-height: 1.6;
-}
-
-/* Header mejorado con estética moderna */
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 40px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1001;
-    position: relative;
-}
-
-.left-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex: 1;
-}
-
-.center-section {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    flex: 1;
-    display: flex;
-    justify-content: center;
-}
-
-.right-section {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    justify-content: flex-end;
-}
-
-.menu-text {
-    font-size: 1.9rem;
-    font-weight: 600;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-family: 'Inter', Arial, sans-serif;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.header-logo {
-    width: 70px !important;
-    height: 70px !important;
-    object-fit: cover;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    transition: none !important;
-    background: none !important;
-    padding: 0 !important;
-    transform: none !important;
-    cursor: default;
-    animation: none !important;
-    rotate: 0deg !important;
-    scale: 1 !important;
-    translate: 0px 0px !important;
-}
-
-.header-logo:hover,
-.header-logo:focus,
-.header-logo:active,
-.header-logo:visited {
-    transform: none !important;
-    box-shadow: none !important;
-    scale: 1 !important;
-    rotate: 0deg !important;
-    translate: 0px 0px !important;
-    animation: none !important;
-}
-
-.header-logo:hover {
-    transform: scale(1.05) rotate(5deg);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.title {
-    font-size: 3.2rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 3px;
-    text-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.2));
-}
-
-/* Burger menu styles mejorado con X asimétrica */
+/* ======= BURGER MENU CON ANIMACIÓN X ASIMÉTRICA ======= */
 .burger {
     position: relative;
     width: 60px;
@@ -123,15 +11,21 @@ body {
     padding: 5px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    outline: none !important;
+    border: none !important;
 }
 
 .burger:hover {
     background: rgba(102, 126, 234, 0.1);
     transform: scale(1.05);
+    outline: none !important;
+    border: none !important;
 }
 
 .burger input {
     display: none;
+    outline: none !important;
+    border: none !important;
 }
 
 .burger span {
@@ -143,6 +37,8 @@ body {
     opacity: 1;
     left: 50%;
     transition: .25s ease-in-out;
+    outline: none !important;
+    border: none !important;
 }
 
 /* Líneas simétricas en estado normal */
@@ -155,7 +51,7 @@ body {
 
 .burger span:nth-of-type(2) {
     width: 50px;
-    top: 50%;
+    top: 23px;
     transform: translate(-50%, -50%);
     transform-origin: center;
 }
@@ -171,7 +67,7 @@ body {
 .burger input:checked~span:nth-of-type(1) {
     transform: translate(-50%, -50%) rotate(45deg);
     top: 50%;
-    width: 38px; /* Línea más corta */
+    width: 38px;
 }
 
 .burger input:checked~span:nth-of-type(2) {
@@ -182,15 +78,15 @@ body {
 .burger input:checked~span:nth-of-type(3) {
     transform: translate(-50%, -50%) rotate(-45deg);
     top: 50%;
-    width: 48px; /* Línea más larga */
+    width: 48px;
 }
 
-/* Menu lateral con estética moderna */
+/* ======= MENÚ LATERAL CON SCROLL ======= */
 .side-menu {
     position: fixed;
     top: 89px;
-    left: -350px;
-    width: 350px;
+    left: -380px;
+    width: 380px;
     height: calc(100vh - 89px);
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
@@ -198,6 +94,9 @@ body {
     z-index: 1000;
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    outline: none !important;
 }
 
 .side-menu.active {
@@ -205,13 +104,17 @@ body {
 }
 
 .menu-header {
-    padding: 35px 30px 35px 30px;
-    border-bottom: none;
+    flex-shrink: 0;
+    padding: 35px 40px 35px 40px;
+    border-bottom: none !important;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 90px;
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
 }
 
 .menu-title {
@@ -224,38 +127,85 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* CONTENEDOR DE BOTONES CON SCROLL */
 .menu-buttons {
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 35px 0;
+    padding: 20px 0;
     overflow-y: auto;
-    max-height: calc(100vh - 240px);
+    overflow-x: hidden;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    /* Scroll personalizado */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
+/* Scroll personalizado para webkit */
+.menu-buttons::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu-buttons::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
+
+/* ======= BOTONES DEL MENÚ ======= */
 .menu-button {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
     padding: 18px 30px;
-    background: transparent;
+    background: transparent !important;
     color: #667eea;
-    border: none;
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
     text-align: left;
     transition: all 0.3s ease;
-    border-radius: 0;
     position: relative;
     font-family: 'Inter', Arial, sans-serif;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    max-width: 380px !important;
+    margin: 2px 0;
+}
+
+.menu-button:focus,
+.menu-button:active,
+.menu-button:visited {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .menu-button:hover {
-    background: rgba(102, 126, 234, 0.1);
+    background: rgba(102, 126, 234, 0.1) !important;
     color: #667eea;
     transform: translateX(8px);
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
+/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
     content: '';
     position: absolute;
@@ -265,6 +215,16 @@ body {
     width: 4px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 0 4px 4px 0;
+}
+
+.menu-button::after,
+.menu-button:hover::after,
+.menu-button:focus::after,
+.menu-button:active::after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+    background: none !important;
 }
 
 .menu-icon {
@@ -277,6 +237,64 @@ body {
 
 .menu-button:hover .menu-icon {
     filter: grayscale(0);
+}
+
+/* CERRAR SESIÓN COMO BOTÓN NORMAL */
+.menu-button.close-session {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 30px;
+    background: transparent !important;
+    color: #d32f2f;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    position: relative;
+    font-family: 'Inter', Arial, sans-serif;
+    width: 100%;
+    margin: 2px 0;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    max-width: 380px !important;
+}
+
+.menu-button.close-session:focus,
+.menu-button.close-session:active {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.menu-button.close-session:hover {
+    background: rgba(211, 47, 47, 0.1) !important;
+    color: #b71c1c;
+    transform: translateX(8px);
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.menu-button.close-session:hover::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #d32f2f;
+    border-radius: 0 4px 4px 0;
+}
+
+.menu-button.close-session::after,
+.menu-button.close-session:hover::after {
+    display: none !important;
+    content: none !important;
 }
 
 /* Overlay para cerrar menu */
@@ -297,7 +315,7 @@ body {
     display: block;
 }
 
-/* Content area mejorado */
+/* ======= CONTENT AREA MEJORADO ======= */
 .content {
     padding: 40px;
     margin-left: 0;
@@ -498,96 +516,80 @@ body {
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
 }
 
-/* Menu bottom section mejorado */
-.menu-bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 20px 0;
-    background: linear-gradient(135deg, rgba(211, 47, 47, 0.05) 0%, rgba(255, 255, 255, 0.95) 100%);
-    border-top: 1px solid rgba(211, 47, 47, 0.2);
-}
-
-.menu-button.close-session {
-    background: transparent;
-    color: #d32f2f;
-    font-weight: 600;
-    border-top: none;
-    justify-content: center;
-}
-
-.menu-button.close-session:hover {
-    background: rgba(211, 47, 47, 0.1);
-    color: #b71c1c;
-    transform: translateX(0);
-}
-
-.menu-button.close-session:hover::before {
-    background: #d32f2f;
-}
-
-/* Responsive Design */
+/* ======= RESPONSIVE DESIGN ======= */
 @media (max-width: 768px) {
     .header {
         padding: 15px 20px;
     }
-    
+
     .title {
-        font-size: 2rem;
+        font-size: 2.5rem;
         letter-spacing: 2px;
     }
-    
+
     .menu-text {
-        font-size: 0.9rem;
+        font-size: 1.5rem;
     }
-    
+
+    .header-logo {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
     .content {
         padding: 20px 15px;
     }
-    
+
     .welcome-section {
         padding: 30px 25px;
     }
-    
+
     .welcome-section h1 {
         font-size: 2.2rem;
     }
-    
+
     .subtitle {
         font-size: 1rem;
     }
-    
+
     .stats-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .actions-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .side-menu {
-        width: 300px;
-        left: -300px;
+        width: 320px;
+        left: -320px;
     }
-    
-    .stat-card, .action-card {
+
+    .stat-card,
+    .action-card {
         padding: 25px 20px;
     }
-    
+
     .menu-header {
-        padding: 30px 20px 30px 20px;
+        padding: 30px 25px 30px 25px;
         min-height: 70px;
     }
-    
+
     .menu-title {
         font-size: 1.2rem;
     }
-    
+
     .menu-button {
-        padding: 15px 20px;
+        padding: 16px 25px;
         font-size: 0.95rem;
+        max-width: 320px !important;
+    }
+
+    .menu-button.close-session {
+        padding: 16px 25px;
+        max-width: 320px !important;
     }
 }
 
@@ -595,31 +597,33 @@ body {
     .welcome-section h1 {
         font-size: 1.8rem;
     }
-    
+
     .stat-number {
         font-size: 2rem;
     }
-    
-    .stat-icon, .action-icon {
+
+    .stat-icon,
+    .action-icon {
         font-size: 2.5rem;
     }
-    
+
     .menu-text {
         display: none;
     }
-    
+
     .title {
         font-size: 1.8rem;
         letter-spacing: 1px;
     }
 }
 
-/* Animaciones de entrada */
+/* ======= ANIMACIONES DE ENTRADA ======= */
 @keyframes slideInUp {
     from {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -649,3 +653,105 @@ body {
 .action-card:nth-child(3) {
     animation-delay: 0.4s;
 }
+
+RESET Y BASE */ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none !important;
+    border: none;
+}
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #2c3e50;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ======= HEADER MEJORADO ======= */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.center-section {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.right-section {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.menu-text {
+    font-size: 1.9rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-family: 'Inter', Arial, sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.header-logo {
+    width: 70px !important;
+    height: 70px !important;
+    object-fit: cover;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transition: all 0.3s ease !important;
+    background: none !important;
+    padding: 0 !important;
+    cursor: default;
+    outline: none !important;
+    border: none !important;
+}
+
+.header-logo:hover {
+    transform: scale(1.05) rotate(5deg);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    outline: none !important;
+    border: none !important;
+}
+
+.title {
+    font-size: 3.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 3px;
+    text-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.2));
+}
+
+/*

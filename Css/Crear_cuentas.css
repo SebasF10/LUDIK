@@ -1,5 +1,6 @@
-/* CSS integrado para Crear_cuentas con Header y Menú Extraíble */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* RESET Y BASE */
 * {
     margin: 0;
     padding: 0;
@@ -9,16 +10,15 @@
 }
 
 body {
-    font-family: 'Inter', Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    color: #2c3e50;
+    color: #333;
+    overflow-x: hidden;
     line-height: 1.6;
 }
 
-/* ========== ESTILOS DEL HEADER Y MENÚ ========== */
-
-/* Header mejorado con estética moderna */
+/* ======= ESTILOS DEL HEADER Y MENÚ ======= */
 .header {
     display: flex;
     align-items: center;
@@ -31,7 +31,6 @@ body {
     position: sticky;
     top: 0;
     z-index: 1001;
-    position: relative;
 }
 
 .left-section {
@@ -109,158 +108,6 @@ body {
     height: 50px;
     background: transparent;
     cursor: pointer;
-    border: 2px solid rgba(102, 126, 234, 0.2);
-    transition: all 0.3s ease;
-}
-
-.checkbox-item:hover {
-    border-color: #667eea;
-    background: rgba(102, 126, 234, 0.1);
-}
-
-.checkbox-item input[type="checkbox"] {
-    accent-color: #667eea;
-    margin-right: 8px;
-}
-
-/* Estilos para las asignaturas por grupo */
-.asignaturas-container {
-    margin-top: 20px;
-    border: 2px solid rgba(102, 126, 234, 0.2);
-    border-radius: 12px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-}
-
-.asignaturas-container h3 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    text-align: center;
-    font-weight: 600;
-}
-
-.grupo-asignaturas {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid rgba(102, 126, 234, 0.3);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.7);
-}
-
-.grupo-asignaturas h4 {
-    color: #374151;
-    font-size: 1rem;
-    margin-bottom: 10px;
-    padding: 8px 12px;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%);
-    border-radius: 6px;
-    text-align: center;
-    font-weight: 600;
-}
-
-.grupo-asignaturas .checkbox-list {
-    margin-top: 10px;
-}
-
-.grupo-asignaturas .checkbox-item {
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(102, 126, 234, 0.2);
-}
-
-.grupo-asignaturas .checkbox-item:hover {
-    border-color: #667eea;
-    background: rgba(102, 126, 234, 0.1);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .header {
-        padding: 15px 20px;
-    }
-
-    .title {
-        font-size: 2rem;
-        letter-spacing: 2px;
-    }
-
-    .menu-text {
-        font-size: 0.9rem;
-    }
-
-    .side-menu {
-        width: 320px;
-        left: -320px;
-    }
-
-    .menu-header {
-        padding: 30px 25px 30px 25px;
-        min-height: 70px;
-    }
-
-    .menu-title {
-        font-size: 1.2rem;
-    }
-
-    .menu-button {
-        padding: 15px 25px;
-        font-size: 0.95rem;
-        min-width: 320px !important;
-    }
-
-    .menu-button.close-session {
-        padding: 15px 25px;
-    }
-
-    .container {
-        margin: 10px;
-        padding: 20px 15px;
-    }
-
-    .roles {
-        gap: 10px;
-    }
-
-    .roles .role-btn {
-        width: 120px;
-        height: 40px;
-        font-size: 0.9rem;
-    }
-
-    .header-content h1 {
-        font-size: 1.8rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .menu-text {
-        display: none;
-    }
-
-    .title {
-        font-size: 1.8rem;
-        letter-spacing: 1px;
-    }
-
-    .roles {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .roles .role-btn {
-        width: 200px;
-    }
-
-    .header-content h1 {
-        font-size: 1.5rem;
-    }
-}
-
-.burger {
     display: block;
     padding: 5px;
     border-radius: 8px;
@@ -337,7 +184,7 @@ body {
     /* Línea más larga */
 }
 
-/* MENÚ LATERAL - ARREGLADO PARA EVITAR LA BARRA AZUL */
+/* MENÚ LATERAL - CON SCROLL */
 .side-menu {
     position: fixed;
     top: 89px;
@@ -350,11 +197,9 @@ body {
     z-index: 1000;
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
     outline: none !important;
-    border-bottom: none !important;
-    border-top: none !important;
-    border-left: none !important;
 }
 
 .side-menu.active {
@@ -362,6 +207,7 @@ body {
 }
 
 .menu-header {
+    flex-shrink: 0;
     padding: 35px 40px 35px 40px;
     border-bottom: none !important;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
@@ -384,40 +230,45 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* CONTENEDOR DE BOTONES - CON SCROLL */
+/* CONTENEDOR DE BOTONES CON SCROLL */
 .menu-buttons {
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     padding: 20px 0;
-    height: calc(100vh - 280px);
     overflow-y: auto;
     overflow-x: hidden;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+    /* Scroll personalizado */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
-/* Estilos personalizados para la barra de desplazamiento */
+/* Scroll personalizado para webkit */
 .menu-buttons::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 .menu-buttons::-webkit-scrollbar-track {
-    background: rgba(102, 126, 234, 0.1);
-    border-radius: 4px;
+    background: transparent;
 }
 
 .menu-buttons::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 4px;
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+    transition: background 0.3s ease;
 }
 
 .menu-buttons::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    background: rgba(102, 126, 234, 0.5);
 }
 
 /* BOTONES DEL MENÚ */
 .menu-button {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -437,6 +288,7 @@ body {
     overflow: hidden !important;
     width: 100% !important;
     max-width: 380px !important;
+    margin: 2px 0;
 }
 
 .menu-button:focus,
@@ -490,20 +342,9 @@ body {
     filter: grayscale(0);
 }
 
-/* MENÚ BOTTOM */
-.menu-bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 0;
-    background: transparent;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-}
-
+/* CERRAR SESIÓN COMO BOTÓN NORMAL */
 .menu-button.close-session {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -517,9 +358,8 @@ body {
     transition: all 0.3s ease;
     position: relative;
     font-family: 'Inter', Arial, sans-serif;
-    justify-content: center;
     width: 100%;
-    margin: 0;
+    margin: 2px 0;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -778,4 +618,144 @@ body {
     display: flex;
     align-items: center;
     cursor: pointer;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    transition: all 0.3s ease;
+}
+
+.checkbox-item:hover {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.checkbox-item input[type="checkbox"] {
+    accent-color: #667eea;
+    margin-right: 8px;
+}
+
+/* Estilos para las asignaturas por grupo */
+.asignaturas-container {
+    margin-top: 20px;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+}
+
+.asignaturas-container h3 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.grupo-asignaturas {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.grupo-asignaturas h4 {
+    color: #374151;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%);
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.grupo-asignaturas .checkbox-list {
+    margin-top: 10px;
+}
+
+.grupo-asignaturas .checkbox-item {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.grupo-asignaturas .checkbox-item:hover {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+/* RESPONSIVE - MOBILE */
+@media (max-width: 768px) {
+    .header {
+        padding: 15px 20px;
+    }
+
+    .title {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+    }
+
+    .menu-text {
+        font-size: 1.5rem;
+    }
+
+    .header-logo {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .side-menu {
+        width: 320px;
+        left: -320px;
+    }
+
+    .menu-button {
+        padding: 16px 25px;
+        font-size: 0.95rem;
+    }
+
+    .container {
+        margin: 10px;
+        padding: 20px 15px;
+    }
+
+    .roles {
+        gap: 10px;
+    }
+
+    .roles .role-btn {
+        width: 120px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+
+    .header-content h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-text {
+        display: none;
+    }
+
+    .title {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+    }
+
+    .roles {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .roles .role-btn {
+        width: 200px;
+    }
+
+    .header-content h1 {
+        font-size: 1.5rem;
+    }
 }

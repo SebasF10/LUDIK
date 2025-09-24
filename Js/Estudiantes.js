@@ -1,810 +1,171 @@
-// JavaScript para Estudiantes.html con Header y Menú Integrado
+// ===================== FUNCIONES DE UTILIDAD =====================
 
-// ===================== FUNCIONALIDAD DEL MENÚ =====================
-
-console.log("Script cargado");
-
-// Funcionalidad del menú
-const burger = document.getElementById('burger');
-const sideMenu = document.getElementById('sideMenu');
-const overlay = document.getElementById('overlay');
-
-burger.addEventListener('change', function () {
-    if (this.checked) {
-        sideMenu.classList.add('active');
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-
-        // INSPECCIONAR ELEMENTOS cuando se abra el menú
-        setTimeout(inspeccionarYEliminar, 200);
-    } else {
-        sideMenu.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-});
-
-overlay.addEventListener('click', function () {
-    burger.checked = false;
-    sideMenu.classList.remove('active');
-    overlay.classList.remove('active');
-    document.body.style.overflow = 'auto';
-});
-
-// FUNCIÓN PARA INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
-function inspeccionarYEliminar() {
-    console.log("🔍 INSPECCIONANDO ELEMENTOS EN EL MENÚ");
-
-    const menuButtons = document.querySelector('.menu-buttons');
-    if (!menuButtons) return;
-
-    // Obtener TODOS los hijos directos
-    const todosLosHijos = Array.from(menuButtons.children);
-
-    console.log("📋 Elementos encontrados en menu-buttons:");
-    todosLosHijos.forEach((elemento, index) => {
-        console.log(`${index}: ${elemento.tagName} - ${elemento.className} - "${elemento.textContent?.trim()}" - Height: ${elemento.offsetHeight}px`);
-
-        // Eliminar elementos sospechosos
-        if (
-            // Elementos HR
-            elemento.tagName === 'HR' ||
-            // Elementos vacíos o con poca altura
-            (elemento.offsetHeight <= 5 && !elemento.textContent?.trim()) ||
-            // Elementos con clases de separador
-            elemento.className?.includes('separator') ||
-            elemento.className?.includes('divider') ||
-            elemento.className?.includes('line') ||
-            // Elementos que no son botones y no tienen texto
-            (!elemento.classList.contains('menu-button') && !elemento.textContent?.trim())
-        ) {
-            console.log(`🗑️ ELIMINANDO elemento sospechoso: ${elemento.tagName} - ${elemento.className}`);
-            elemento.remove();
-        }
-    });
-
-    // También verificar en el contenedor principal del menú
-    const sideMenuChildren = Array.from(sideMenu.children);
-    console.log("📋 Elementos en side-menu:");
-    sideMenuChildren.forEach((elemento, index) => {
-        console.log(`${index}: ${elemento.tagName} - ${elemento.className} - Height: ${elemento.offsetHeight}px`);
-
-        // Eliminar elementos extraños que no sean menu-header, menu-buttons o menu-bottom
-        if (!['menu-header', 'menu-buttons', 'menu-bottom'].some(clase => elemento.classList.contains(clase))) {
-            if (elemento.tagName === 'HR' || elemento.offsetHeight <= 5) {
-                console.log(`🗑️ ELIMINANDO elemento extraño en side-menu: ${elemento.tagName}`);
-                elemento.remove();
-            }
-        }
-    });
-}
-
-// Función simplificada para eliminar botones según rol
-function eliminarBotonesPorRol() {
-    const rol = localStorage.getItem("rol");
-    console.log("Verificando rol:", rol);
-
-    // PRIMERO: INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
-    inspeccionarYEliminar();
-
-    // Buscar TODOS los botones del menú
-    const todosLosBotones = document.querySelectorAll('.menu-button');
-    console.log("Botones encontrados:", todosLosBotones.length);
-
-    todosLosBotones.forEach(function (boton, index) {
-        const textoDelBoton = boton.textContent.trim().toLowerCase();
-        console.log(`Botón ${index}: "${textoDelBoton}"`);
-
-        // Lógica según el rol
-        if (rol === "admin") {
-            // Admin: puede ver todos los botones
-            console.log("Usuario es admin, todos los botones visibles");
-
-        } else if (rol === "docente_apoyo") {
-            // Docente de apoyo: ocultar solo "Crear Cuentas"
-            if (textoDelBoton.includes("crear cuenta")) {
-                console.log("¡Eliminando botón Crear Cuentas para docente_apoyo!");
-                boton.remove();
-            }
-
-        } else if (rol === "docente") {
-            // Docente regular: ocultar "Crear Cuentas", "Registrar PIAR" y "Registrar estudiante"
-            if (textoDelBoton.includes("crear cuenta")) {
-                console.log("¡Eliminando botón Crear Cuentas para docente!");
-                boton.remove();
-            }
-            if (textoDelBoton.includes("registrar un nuevo estudiante")) {
-                console.log("¡Eliminando botón Registrar un nuevo estudiante para docente!");
-                boton.remove();
-            }
-            if (textoDelBoton.includes("registrar un piar")) {
-                console.log("¡Eliminando botón Registrar un PIAR para docente!");
-                boton.remove();
-            }
-
-        } else {
-            // Rol desconocido o sin rol: comportamiento por defecto
-            console.log("Rol desconocido o sin rol, aplicando restricciones por defecto");
-            if (textoDelBoton.includes("crear cuenta") ||
-                textoDelBoton.includes("registrar un nuevo estudiante") ||
-                textoDelBoton.includes("registrar un piar")) {
-                console.log("¡Eliminando botón restringido para usuario sin rol definido!");
-                boton.remove();
-            }
-        }
-    });
-
-    // DESPUÉS DE MODIFICAR: INSPECCIONAR OTRA VEZ
-    setTimeout(inspeccionarYEliminar, 100);
-}
-
-// Manejar clicks de botones del menú
-document.addEventListener('click', function (e) {
-    if (e.target.classList.contains('menu-button')) {
-        const texto = e.target.textContent.trim();
-        const textoLower = texto.toLowerCase();
-
-        console.log("=== DEBUG CLICK ===");
-        console.log("Texto original:", `"${texto}"`);
-        console.log("Texto lowercase:", `"${textoLower}"`);
-
-        if (textoLower.includes('perfil')) {
-            console.log("-> Redirigiendo a perfil");
-            window.location.href = 'perfil.html';
-        } else if (textoLower.includes('estudiantes')) {
-            console.log("-> Redirigiendo a estudiantes");
-            window.location.href = 'Estudiantes.html';
-        } else if (textoLower.includes('crear cuentas')) {
-            console.log("-> Redirigiendo a crear cuentas");
-            window.location.href = 'Crear_cuentas.html';
-        } else if (textoLower.includes('actividades')) {
-            console.log("-> Redirigiendo a actividades");
-            window.location.href = 'Ejercicios.html';
-        } else if (textoLower.includes('registrar un nuevo estudiante')) {
-            console.log("-> Redirigiendo a registrar estudiante");
-            window.location.href = 'Registrar_estudiante.html';
-        } else if (textoLower.includes('registrar un piar')) {
-            console.log("-> Redirigiendo a registrar PIAR");
-            window.location.href = 'Registrar_PIAR.html';
-        } else if (textoLower.includes('descripción general')) {
-            console.log("-> Redirigiendo a descripción general");
-            window.location.href = 'Descripción_general.html';
-        } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
-            console.log("-> ¡ENCONTRADO! Redirigiendo a valoración pedagógica");
-            window.location.href = 'Valoracion_pedagogica.html';
-        } else if (textoLower.includes('comunicate')) {
-            console.log("-> Redirigiendo a comunicación");
-            window.location.href = 'Comunicacion.html';
-        } else if (textoLower.includes('ayuda')) {
-            console.log("-> Redirigiendo a ayuda");
-            window.location.href = 'Ayuda.html';
-        } else if (textoLower.includes('cerrar sesion') || textoLower.includes('cerrar sesión')) {
-            console.log("-> Cerrando sesión");
-            if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
-                localStorage.removeItem('rol');
-                window.location.href = 'Inicio_sesion.html';
-            }
-        } else {
-            console.log("-> ❌ NO SE ENCONTRÓ COINCIDENCIA");
-            console.log("Texto a comparar:", `"${textoLower}"`);
-        }
-
-        // Cerrar menú
-        burger.checked = false;
-        sideMenu.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-});
-
-// ===================== FUNCIONALIDAD DE ESTUDIANTES (ORIGINAL) =====================
-
-// Líneas de debugging - agregar después de la línea 1
-console.log('=== DEBUG DE RUTAS ===');
-console.log('URL actual:', window.location.href);
-console.log('Protocolo:', window.location.protocol);
-console.log('Ruta base:', window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')));
-
-// Variables globales
-let allStudents = [];
-let currentSearchResults = [];
-let currentStudentData = null;
-let currentPage = 1;
-const studentsPerPage = 12;
-let currentSection = 'buscar';
-
-// DOM Elements
-const searchInput = document.getElementById('searchInput');
-const searchBtn = document.getElementById('searchBtn');
-const gradoFilter = document.getElementById('gradoFilter');
-const grupoFilter = document.getElementById('grupoFilter');
-const searchResults = document.getElementById('searchResults');
-const studentsGrid = document.getElementById('studentsGrid');
-const modal = document.getElementById('studentModal');
-const closeModal = document.querySelector('.close');
-const loadingSpinner = document.getElementById('loadingSpinner');
-const pdfLoadingSpinner = document.getElementById('pdfLoadingSpinner');
-const pageInfo = document.getElementById('pageInfo');
-const prevPageBtn = document.getElementById('prevPage');
-const nextPageBtn = document.getElementById('nextPage');
-
-// Download buttons
-const downloadAllPDF = document.getElementById('downloadAllPDF');
-const downloadAllExcel = document.getElementById('downloadAllExcel');
-const downloadSearchPDF = document.getElementById('downloadSearchPDF');
-const downloadSearchExcel = document.getElementById('downloadSearchExcel');
-const downloadStudentPDF = document.getElementById('downloadStudentPDF');
-const searchDownloadControls = document.getElementById('searchDownloadControls');
-
-// Configuración de la API
-const API_BASE_URL = './php/Estudiantes.php';
-console.log('API URL final:', new URL(API_BASE_URL, window.location.href).href);
-
-// Inicialización
-document.addEventListener('DOMContentLoaded', function () {
-    console.log("DOM cargado - ejecutando función de roles y inicialización");
-    eliminarBotonesPorRol();
-    initializeApp();
-});
-
-function initializeApp() {
-    setupEventListeners();
-    loadFilters();
-
-    // Mostrar sección de búsqueda por defecto
-    showSection('buscar');
-}
-
-function setupEventListeners() {
-    // Navegación interna
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const section = this.getAttribute('data-section');
-            showSection(section);
-        });
-    });
-
-    // Búsqueda
-    searchBtn.addEventListener('click', performSearch);
-    searchInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            performSearch();
-        }
-    });
-
-    // Filtros
-    gradoFilter.addEventListener('change', applyFilters);
-    grupoFilter.addEventListener('change', applyFilters);
-
-    // Modal
-    closeModal.addEventListener('click', closeStudentModal);
-    window.addEventListener('click', function (e) {
-        if (e.target === modal) {
-            closeStudentModal();
-        }
-    });
-
-    // Paginación
-    prevPageBtn.addEventListener('click', () => changePage(-1));
-    nextPageBtn.addEventListener('click', () => changePage(1));
-
-    // Pestañas del modal
-    document.addEventListener('click', function (e) {
-        if (e.target.classList.contains('modal-tab')) {
-            showModalTab(e.target.getAttribute('data-tab'));
-        }
-    });
-
-    // Event listeners para descarga PDF
-    downloadAllPDF.addEventListener('click', () => downloadAllStudentsPDF());
-    downloadAllExcel.addEventListener('click', () => downloadAllStudentsExcel());
-    downloadSearchPDF.addEventListener('click', () => downloadSearchResultsPDF());
-    downloadSearchExcel.addEventListener('click', () => downloadSearchResultsExcel());
-    downloadStudentPDF.addEventListener('click', () => downloadIndividualStudentPDF());
-}
-
-function showSection(sectionName) {
-    // Actualizar navegación
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
-
-    // Mostrar sección
-    document.querySelectorAll('.section').forEach(section => {
-        section.classList.remove('active');
-    });
-    document.getElementById(sectionName).classList.add('active');
-
-    currentSection = sectionName;
-
-    // Cargar datos según la sección
-    if (sectionName === 'lista') {
-        loadAllStudents();
-    } else {
-        clearSearchResults();
-    }
-}
-
+/**
+ * Mostrar loading
+ */
 function showLoading() {
-    loadingSpinner.style.display = 'block';
+    if (loadingSpinner) {
+        loadingSpinner.style.display = 'block';
+    }
 }
 
+/**
+ * Ocultar loading
+ */
 function hideLoading() {
-    loadingSpinner.style.display = 'none';
+    if (loadingSpinner) {
+        loadingSpinner.style.display = 'none';
+    }
 }
 
+/**
+ * Mostrar loading de PDF
+ */
 function showPDFLoading() {
-    pdfLoadingSpinner.style.display = 'block';
+    if (pdfLoadingSpinner) {
+        pdfLoadingSpinner.style.display = 'block';
+    }
 }
 
+/**
+ * Ocultar loading de PDF
+ */
 function hidePDFLoading() {
-    pdfLoadingSpinner.style.display = 'none';
+    if (pdfLoadingSpinner) {
+        pdfLoadingSpinner.style.display = 'none';
+    }
 }
 
+/**
+ * Mostrar error
+ */
 function showError(message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.innerHTML = `
         <div class="no-results">
-            <h3>Error de Conexión</h3>
+            <h3>Error</h3>
             <p>${message}</p>
-            <p>Verifica que:</p>
-            <ul style="text-align: left; max-width: 400px; margin: 0 auto;">
-                <li>El servidor web esté ejecutándose (XAMPP, WAMP, etc.)</li>
-                <li>La base de datos MySQL esté activa</li>
-                <li>Las credenciales de la base de datos sean correctas</li>
-                <li>La base de datos 'ludik' exista</li>
-            </ul>
         </div>
     `;
 
-    if (currentSection === 'buscar') {
+    if (currentSection === 'buscar' && searchResults) {
         searchResults.innerHTML = '';
         searchResults.appendChild(errorDiv);
-    } else {
+    } else if (studentsGrid) {
         studentsGrid.innerHTML = '';
         studentsGrid.appendChild(errorDiv);
     }
+
+    // Auto-remover después de 5 segundos
+    setTimeout(() => {
+        if (errorDiv && errorDiv.parentNode) {
+            errorDiv.remove();
+        }
+    }, 5000);
 }
 
-async function makeRequest(action, params = {}) {
-    showLoading();
-
-    try {
-        // Construir URL correctamente usando la URL base configurada
-        const url = new URL(API_BASE_URL, window.location.href);
-        url.searchParams.append('action', action);
-
-        Object.keys(params).forEach(key => {
-            url.searchParams.append(key, params[key]);
-        });
-
-        console.log('Realizando petición a:', url.toString());
-
-        const response = await fetch(url.toString(), {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
-        }
-
-        const data = await response.json();
-
-        if (!data.success) {
-            throw new Error(data.error || 'Error desconocido en el servidor');
-        }
-
-        return data;
-
-    } catch (error) {
-        console.error('Error en la petición:', error);
-
-        if (error.name === 'TypeError' && error.message.includes('fetch')) {
-            showError('No se puede conectar al servidor. Verifica que el servidor web esté ejecutándose.');
-        } else if (error.message.includes('HTTP')) {
-            showError(`Error del servidor: ${error.message}`);
-        } else {
-            showError(error.message);
-        }
-
-        throw error;
-    } finally {
-        hideLoading();
-    }
-}
-
-async function loadFilters() {
-    try {
-        const data = await makeRequest('getFilters');
-
-        // Cargar grados
-        gradoFilter.innerHTML = '<option value="">Todos los grados</option>';
-        data.grados.forEach(grado => {
-            const option = document.createElement('option');
-            option.value = grado.id_grado;
-            option.textContent = grado.grado;
-            gradoFilter.appendChild(option);
-        });
-
-        // Cargar grupos
-        grupoFilter.innerHTML = '<option value="">Todos los grupos</option>';
-        data.grupos.forEach(grupo => {
-            const option = document.createElement('option');
-            option.value = grupo.id_grupo;
-            option.textContent = `${grupo.grado} - ${grupo.grupo}`;
-            grupoFilter.appendChild(option);
-        });
-
-    } catch (error) {
-        console.error('Error cargando filtros:', error);
-    }
-}
-
-async function performSearch() {
-    const searchTerm = searchInput.value.trim();
-
-    if (searchTerm.length < 2) {
-        showError('Ingresa al menos 2 caracteres para buscar');
-        return;
-    }
-
-    try {
-        const data = await makeRequest('searchStudents', { term: searchTerm });
-        currentSearchResults = data.students;
-        displaySearchResults(data.students);
-
-        // Mostrar botones de descarga si hay resultados
-        if (data.students.length > 0) {
-            searchDownloadControls.style.display = 'block';
-        } else {
-            searchDownloadControls.style.display = 'none';
-        }
-    } catch (error) {
-        console.error('Error en la búsqueda:', error);
-    }
-}
-
-function displaySearchResults(students) {
-    searchResults.innerHTML = '';
-
-    if (students.length === 0) {
-        searchResults.innerHTML = `
-            <div class="no-results">
-                <h3>Sin resultados</h3>
-                <p>No se encontraron estudiantes que coincidan con tu búsqueda.</p>
-            </div>
-        `;
-        return;
-    }
-
-    students.forEach(student => {
-        const studentCard = createStudentCard(student);
-        searchResults.appendChild(studentCard);
+/**
+ * Mostrar pestaña del modal
+ */
+function showModalTab(tabName) {
+    // Actualizar pestañas
+    document.querySelectorAll('.modal-tab').forEach(tab => {
+        tab.classList.remove('active');
     });
-}
-
-async function loadAllStudents() {
-    try {
-        const data = await makeRequest('getAllStudents');
-        allStudents = data.students;
-        displayStudentsList();
-    } catch (error) {
-        console.error('Error cargando estudiantes:', error);
-    }
-}
-
-function displayStudentsList() {
-    const startIndex = (currentPage - 1) * studentsPerPage;
-    const endIndex = startIndex + studentsPerPage;
-    const studentsToShow = allStudents.slice(startIndex, endIndex);
-
-    studentsGrid.innerHTML = '';
-
-    if (studentsToShow.length === 0) {
-        studentsGrid.innerHTML = `
-            <div class="no-results">
-                <h3>Sin estudiantes</h3>
-                <p>No hay estudiantes registrados en el sistema.</p>
-            </div>
-        `;
-        return;
+    const activeTab = document.querySelector(`[data-tab="${tabName}"]`);
+    if (activeTab) {
+        activeTab.classList.add('active');
     }
 
-    studentsToShow.forEach(student => {
-        const studentCard = createStudentCard(student);
-        studentsGrid.appendChild(studentCard);
+    // Mostrar contenido
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
     });
-
-    updatePaginationInfo();
-}
-
-function createStudentCard(student) {
-    const card = document.createElement('div');
-    card.className = 'student-card';
-    card.onclick = () => showStudentDetails(student.id_estudiante);
-
-    const fullName = `${student.nombre} ${student.apellidos}`.trim();
-    const documento = student.no_documento || 'Sin documento';
-    const grado = student.grado || 'Sin asignar';
-    const grupo = student.grupo || 'Sin grupo';
-    const telefono = student.telefono || 'Sin teléfono';
-    const correo = student.correo || 'Sin correo';
-
-    card.innerHTML = `
-        <div class="student-name">${fullName}</div>
-        <div class="student-info">
-            <div><strong>Documento:</strong> ${documento}</div>
-            <div><strong>Grado:</strong> ${grado}</div>
-            <div><strong>Grupo:</strong> ${grupo}</div>
-            <div><strong>Teléfono:</strong> ${telefono}</div>
-            <div><strong>Correo:</strong> ${correo}</div>
-        </div>
-        <div class="student-badge">${grado} - ${grupo}</div>
-    `;
-
-    return card;
-}
-
-async function showStudentDetails(studentId) {
-    try {
-        const data = await makeRequest('getStudentDetails', { id: studentId });
-        const student = data.student;
-        currentStudentData = student;
-
-        // Actualizar título del modal
-        document.getElementById('modalTitle').textContent =
-            `${student.nombre} ${student.apellidos}`;
-
-        // Llenar información personal
-        fillPersonalInfo(student);
-        fillAcademicInfo(student);
-        fillFamilyInfo(student);
-        fillMedicalInfo(student);
-        fillPiarInfo(student);
-
-        // Mostrar modal
-        modal.style.display = 'block';
-        showModalTab('personal');
-
-    } catch (error) {
-        console.error('Error cargando detalles del estudiante:', error);
-        alert('Error al cargar los detalles del estudiante');
+    const activeContent = document.getElementById(`${tabName}Tab`);
+    if (activeContent) {
+        activeContent.classList.add('active');
     }
 }
 
-function fillPersonalInfo(student) {
-    const fields = {
-        'nombreCompleto': `${student.nombre} ${student.apellidos}`,
-        'documento': `${student.tipo_documento || ''} ${student.no_documento || ''}`.trim(),
-        'fechaNacimiento': student.fecha_nacimiento || 'No registrada',
-        'lugarNacimiento': student.lugar_nacimiento || 'No registrado',
-        'sector': student.sector || 'No registrado',
-        'direccion': student.direccion || 'No registrada',
-        'telefono': student.telefono || 'No registrado',
-        'correo': student.correo || 'No registrado',
-        'victimaConflicto': student.victima_conflicto || 'No especificado',
-        'grupoEtnico': student.grupo_etnico || 'No especificado',
-        'conQuienVive': student.con_quien_vive || 'No especificado',
-        'afiliacionSalud': student.afiliacion_salud || 'No especificada'
-    };
-
-    Object.keys(fields).forEach(fieldId => {
-        const element = document.getElementById(fieldId);
-        if (element) {
-            element.textContent = fields[fieldId];
-        }
-    });
+/**
+ * Cerrar modal del estudiante
+ */
+function closeStudentModal() {
+    if (modal) {
+        modal.style.display = 'none';
+    }
+    currentStudentData = null;
 }
 
-function fillAcademicInfo(student) {
-    document.getElementById('gradoActual').textContent = student.grado || 'No asignado';
-    document.getElementById('grupoActual').textContent = student.grupo || 'No asignado';
+/**
+ * Limpiar resultados de búsqueda
+ */
+function clearSearchResults() {
+    if (searchResults) {
+        searchResults.innerHTML = '';
+    }
+    if (searchDownloadControls) {
+        searchDownloadControls.style.display = 'none';
+    }
+    currentSearchResults = [];
+}
 
-    // Información del entorno educativo
-    const entornoDiv = document.getElementById('entornoEducativo');
-    entornoDiv.innerHTML = '';
-
-    if (student.entorno_educativo) {
-        const entorno = student.entorno_educativo;
-        entornoDiv.innerHTML = `
-            <div class="info-item">
-                <span class="label">Último grado cursado:</span>
-                <span class="value">${entorno.ultimo_grado_cursado || 'No especificado'}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Vinculado a otra institución:</span>
-                <span class="value">${entorno.vinculado_otra_inst || 'No especificado'}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Modalidad proveniente:</span>
-                <span class="value">${entorno.modalidad_proveniente || 'No especificado'}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Programas complementarios:</span>
-                <span class="value">${entorno.asiste_programas_complementarios || 'No especificado'}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Observaciones:</span>
-                <span class="value">${entorno.observacion || 'Ninguna'}</span>
-            </div>
-        `;
-    } else {
-        entornoDiv.innerHTML = '<p>No hay información del entorno educativo registrada.</p>';
+/**
+ * Aplicar filtros
+ */
+function applyFilters() {
+    if (searchInput && searchInput.value.trim()) {
+        performSearch();
     }
 }
 
-function fillFamilyInfo(student) {
-    // Información de la madre
-    fillParentInfo('infoMadre', student.madre, 'madre');
-    // Información del padre
-    fillParentInfo('infoPadre', student.padre, 'padre');
-    // Información del acudiente
-    fillParentInfo('infoAcudiente', student.acudiente, 'acudiente');
+/**
+ * Actualizar información de paginación
+ */
+function updatePaginationInfo() {
+    if (!pageInfo) return;
+    
+    const totalPages = Math.ceil(allStudents.length / studentsPerPage);
+    pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+
+    if (prevPageBtn) {
+        prevPageBtn.disabled = currentPage === 1;
+    }
+    if (nextPageBtn) {
+        nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+    }
 }
 
-function fillParentInfo(containerId, parentData, parentType) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
+/**
+ * Cambiar página
+ */
+function changePage(direction) {
+    const totalPages = Math.ceil(allStudents.length / studentsPerPage);
 
-    if (!parentData) {
-        container.innerHTML = `<p>No hay información de ${parentType} registrada.</p>`;
-        return;
+    if (direction === -1 && currentPage > 1) {
+        currentPage--;
+    } else if (direction === 1 && currentPage < totalPages) {
+        currentPage++;
     }
 
-    container.innerHTML = `
-        <div class="info-item">
-            <span class="label">Nombre completo:</span>
-            <span class="value">${parentData.nombre_completo || 'No registrado'}</span>
-        </div>
-        <div class="info-item">
-            <span class="label">Nivel educativo:</span>
-            <span class="value">${parentData.nivel_educativo || 'No especificado'}</span>
-        </div>
-        <div class="info-item">
-            <span class="label">Ocupación:</span>
-            <span class="value">${parentData.ocupacion || 'No especificada'}</span>
-        </div>
-        <div class="info-item">
-            <span class="label">Teléfono:</span>
-            <span class="value">${parentData.telefono || 'No registrado'}</span>
-        </div>
-        <div class="info-item">
-            <span class="label">Email:</span>
-            <span class="value">${parentData.email || 'No registrado'}</span>
-        </div>
-        ${parentType === 'acudiente' ? `
-        <div class="info-item">
-            <span class="label">Parentesco:</span>
-            <span class="value">${parentData.parentesco || 'No especificado'}</span>
-        </div>` : ''}
-    `;
-}
-
-function fillMedicalInfo(student) {
-    const container = document.getElementById('infoMedica');
-    container.innerHTML = '';
-
-    if (!student.info_medica) {
-        container.innerHTML = '<p>No hay información médica registrada.</p>';
-        return;
-    }
-
-    const medicalInfo = student.info_medica;
-    let html = '';
-
-    // Diagnósticos
-    if (medicalInfo.diagnosticos && medicalInfo.diagnosticos.length > 0) {
-        html += '<h4>Diagnósticos:</h4><ul>';
-        medicalInfo.diagnosticos.forEach(diagnostico => {
-            html += `<li><strong>${diagnostico.id_cie10}:</strong> ${diagnostico.descripcion}</li>`;
-        });
-        html += '</ul>';
-    }
-
-    // Medicamentos
-    if (medicalInfo.medicamentos && medicalInfo.medicamentos.length > 0) {
-        html += '<h4>Medicamentos:</h4><ul>';
-        medicalInfo.medicamentos.forEach(medicamento => {
-            html += `<li><strong>${medicamento.descripcion}</strong> - ${medicamento.frecuencia_horario}</li>`;
-        });
-        html += '</ul>';
-    }
-
-    // Tratamientos
-    if (medicalInfo.tratamientos && medicalInfo.tratamientos.length > 0) {
-        html += '<h4>Tratamientos:</h4><ul>';
-        medicalInfo.tratamientos.forEach(tratamiento => {
-            html += `<li><strong>${tratamiento.descripcion}</strong> - ${tratamiento.frecuencia}</li>`;
-        });
-        html += '</ul>';
-    }
-
-    if (html === '') {
-        html = '<p>No hay información médica específica registrada.</p>';
-    }
-
-    container.innerHTML = html;
-}
-
-function fillPiarInfo(student) {
-    const container = document.getElementById('infoPiar');
-    const valoracionesContainer = document.getElementById('valoracionesList');
-
-    // Información del PIAR
-    if (student.piar) {
-        const piar = student.piar;
-        container.innerHTML = `
-            <div class="info-item">
-                <span class="label">Fecha:</span>
-                <span class="value">${piar.fecha || 'No registrada'}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Ajustes:</span>
-                <span class="value">${piar.ajuste || 'No especificados'}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Apoyos:</span>
-                <span class="value">${piar.apoyo || 'No especificados'}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Barreras:</span>
-                <span class="value">${piar.barrera || 'No especificadas'}</span>
-            </div>
-        `;
-    } else {
-        container.innerHTML = '<p>No hay PIAR registrado para este estudiante.</p>';
-    }
-
-    // Valoraciones pedagógicas
-    valoracionesContainer.innerHTML = '';
-
-    if (student.valoraciones && student.valoraciones.length > 0) {
-        student.valoraciones.forEach(valoracion => {
-            const valoracionDiv = document.createElement('div');
-            valoracionDiv.className = 'valoracion-item';
-            valoracionDiv.innerHTML = `
-                <h4>${valoracion.nombre_asig} - ${valoracion.periodo} ${valoracion.anio}</h4>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="label">Objetivo:</span>
-                        <span class="value">${valoracion.objetivo || 'No especificado'}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">Barrera:</span>
-                        <span class="value">${valoracion.barrera || 'No especificada'}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">Tipo de ajuste:</span>
-                        <span class="value">${valoracion.tipo_ajuste || 'No especificado'}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">Apoyo requerido:</span>
-                        <span class="value">${valoracion.apoyo_requerido || 'No especificado'}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="label">Seguimiento:</span>
-                        <span class="value">${valoracion.seguimiento || 'No especificado'}</span>
-                    </div>
-                </div>
-            `;
-            valoracionesContainer.appendChild(valoracionDiv);
-        });
-    } else {
-        valoracionesContainer.innerHTML = '<p>No hay valoraciones pedagógicas registradas.</p>';
-    }
+    displayStudentsList();
 }
 
 // ===================== FUNCIONES DE DESCARGA PDF =====================
 
-// Función para descargar PDF de estudiante individual
+/**
+ * Descargar PDF de estudiante individual
+ */
 async function downloadIndividualStudentPDF() {
     if (!currentStudentData) {
         alert('No hay datos de estudiante para descargar');
+        return;
+    }
+
+    // Verificar permisos de descarga según rol
+    if (!canDownloadStudentData()) {
+        alert('No tiene permisos para descargar esta información');
         return;
     }
 
@@ -875,7 +236,7 @@ async function downloadIndividualStudentPDF() {
         }
 
         // Encabezado del documento
-        doc.setFillColor(667, 126, 234);
+        doc.setFillColor(102, 126, 234);
         doc.rect(0, 0, pageWidth, 30, 'F');
 
         doc.setTextColor(255, 255, 255);
@@ -886,89 +247,34 @@ async function downloadIndividualStudentPDF() {
         yPosition = 40;
         doc.setTextColor(0, 0, 0);
 
-        // Información personal
-        const personalData = {
-            'Nombre Completo': `${currentStudentData.nombre} ${currentStudentData.apellidos}`,
-            'Documento': `${currentStudentData.tipo_documento || ''} ${currentStudentData.no_documento || ''}`.trim(),
-            'Fecha de Nacimiento': currentStudentData.fecha_nacimiento || 'No registrada',
-            'Lugar de Nacimiento': currentStudentData.lugar_nacimiento || 'No registrado',
-            'Sector': currentStudentData.sector || 'No registrado',
-            'Dirección': currentStudentData.direccion || 'No registrada',
-            'Teléfono': currentStudentData.telefono || 'No registrado',
-            'Correo': currentStudentData.correo || 'No registrado',
-            'Víctima de Conflicto': currentStudentData.victima_conflicto || 'No especificado',
-            'Grupo Étnico': currentStudentData.grupo_etnico || 'No especificado',
-            'Con quien Vive': currentStudentData.con_quien_vive || 'No especificado',
-            'Afiliación de Salud': currentStudentData.afiliacion_salud || 'No especificada'
-        };
-
+        // Información personal (adaptada según rol)
+        const personalData = getPersonalDataForPDF(currentStudentData);
         addSection('DATOS PERSONALES', personalData);
 
-        // Información académica
-        const academicData = {
-            'Grado Actual': currentStudentData.grado || 'No asignado',
-            'Grupo': currentStudentData.grupo || 'No asignado'
-        };
-
-        if (currentStudentData.entorno_educativo) {
-            const entorno = currentStudentData.entorno_educativo;
-            academicData['Último grado cursado'] = entorno.ultimo_grado_cursado || 'No especificado';
-            academicData['Vinculado a otra institución'] = entorno.vinculado_otra_inst || 'No especificado';
-            academicData['Modalidad proveniente'] = entorno.modalidad_proveniente || 'No especificado';
-            academicData['Programas complementarios'] = entorno.asiste_programas_complementarios || 'No especificado';
-            academicData['Observaciones'] = entorno.observacion || 'Ninguna';
+        // Información académica (según permisos)
+        if (canViewAcademicInfo()) {
+            const academicData = getAcademicDataForPDF(currentStudentData);
+            addSection('INFORMACIÓN ACADÉMICA', academicData);
         }
 
-        addSection('INFORMACIÓN ACADÉMICA', academicData);
-
-        // Información familiar - Acudiente
-        if (currentStudentData.acudiente) {
-            const acudienteData = {
-                'Nombre completo': currentStudentData.acudiente.nombre_completo || 'No registrado',
-                'Parentesco': currentStudentData.acudiente.parentesco || 'No especificado',
-                'Nivel educativo': currentStudentData.acudiente.nivel_educativo || 'No especificado',
-                'Ocupación': currentStudentData.acudiente.ocupacion || 'No especificada',
-                'Teléfono': currentStudentData.acudiente.telefono || 'No registrado',
-                'Email': currentStudentData.acudiente.email || 'No registrado'
-            };
-            addSection('INFORMACIÓN DEL ACUDIENTE', acudienteData);
-        }
-
-        // Información médica
-        if (currentStudentData.info_medica) {
-            let medicalText = '';
-            const medical = currentStudentData.info_medica;
-
-            if (medical.diagnosticos && medical.diagnosticos.length > 0) {
-                medicalText += 'DIAGNÓSTICOS:\n';
-                medical.diagnosticos.forEach(diag => {
-                    medicalText += `• ${diag.id_cie10}: ${diag.descripcion}\n`;
-                });
-                medicalText += '\n';
-            }
-
-            if (medical.medicamentos && medical.medicamentos.length > 0) {
-                medicalText += 'MEDICAMENTOS:\n';
-                medical.medicamentos.forEach(med => {
-                    medicalText += `• ${med.descripcion} - ${med.frecuencia_horario}\n`;
-                });
-                medicalText += '\n';
-            }
-
-            if (medical.tratamientos && medical.tratamientos.length > 0) {
-                medicalText += 'TRATAMIENTOS:\n';
-                medical.tratamientos.forEach(trat => {
-                    medicalText += `• ${trat.descripcion} - ${trat.frecuencia}\n`;
-                });
-            }
-
-            if (medicalText) {
-                addSection('INFORMACIÓN MÉDICA', medicalText);
+        // Información familiar (según permisos)
+        if (canViewFamilyInfo()) {
+            const familyData = getFamilyDataForPDF(currentStudentData);
+            if (familyData) {
+                addSection('INFORMACIÓN FAMILIAR', familyData);
             }
         }
 
-        // PIAR
-        if (currentStudentData.piar) {
+        // Información médica (según permisos)
+        if (canViewMedicalInfo()) {
+            const medicalData = getMedicalDataForPDF(currentStudentData);
+            if (medicalData) {
+                addSection('INFORMACIÓN MÉDICA', medicalData);
+            }
+        }
+
+        // PIAR (solo roles educativos)
+        if (canViewPiarInfo() && currentStudentData.piar) {
             const piarData = {
                 'Fecha': currentStudentData.piar.fecha || 'No registrada',
                 'Ajustes': currentStudentData.piar.ajuste || 'No especificados',
@@ -978,8 +284,8 @@ async function downloadIndividualStudentPDF() {
             addSection('PLAN INDIVIDUAL DE AJUSTES RAZONABLES (PIAR)', piarData);
         }
 
-        // Valoraciones pedagógicas
-        if (currentStudentData.valoraciones && currentStudentData.valoraciones.length > 0) {
+        // Valoraciones pedagógicas (solo roles educativos)
+        if (canViewPiarInfo() && currentStudentData.valoraciones && currentStudentData.valoraciones.length > 0) {
             let valoracionesText = '';
             currentStudentData.valoraciones.forEach((val, index) => {
                 valoracionesText += `${index + 1}. ${val.nombre_asig} - ${val.periodo} ${val.anio}\n`;
@@ -1014,10 +320,183 @@ async function downloadIndividualStudentPDF() {
     }
 }
 
-// Función para descargar PDF de todos los estudiantes
+/**
+ * Verificar si puede descargar datos del estudiante
+ */
+function canDownloadStudentData() {
+    return ['admin', 'directivo', 'docente_apoyo', 'docente'].includes(currentUserRole);
+}
+
+/**
+ * Verificar permisos de visualización
+ */
+function canViewAcademicInfo() {
+    return ['admin', 'directivo', 'docente_apoyo', 'docente'].includes(currentUserRole);
+}
+
+function canViewFamilyInfo() {
+    return ['admin', 'directivo', 'docente_apoyo', 'docente'].includes(currentUserRole) || 
+           ['madre', 'padre', 'acudiente'].includes(currentUserRole);
+}
+
+function canViewMedicalInfo() {
+    return ['admin', 'directivo', 'docente_apoyo', 'docente'].includes(currentUserRole);
+}
+
+function canViewPiarInfo() {
+    return ['admin', 'directivo', 'docente_apoyo', 'docente'].includes(currentUserRole);
+}
+
+/**
+ * Obtener datos personales para PDF según rol
+ */
+function getPersonalDataForPDF(student) {
+    const baseData = {
+        'Nombre Completo': `${student.nombre} ${student.apellidos}`,
+        'Documento': `${student.tipo_documento || ''} ${student.no_documento || ''}`.trim(),
+        'Fecha de Nacimiento': student.fecha_nacimiento || 'No registrada',
+        'Teléfono': student.telefono || 'No registrado',
+        'Correo': student.correo || 'No registrado',
+        'Afiliación de Salud': student.afiliacion_salud || 'No especificada'
+    };
+
+    // Información completa solo para roles educativos
+    if (canViewAcademicInfo()) {
+        baseData['Lugar de Nacimiento'] = student.lugar_nacimiento || 'No registrado';
+        baseData['Sector'] = student.sector || 'No registrado';
+        baseData['Dirección'] = student.direccion || 'No registrada';
+        baseData['Víctima de Conflicto'] = student.victima_conflicto || 'No especificado';
+        baseData['Grupo Étnico'] = student.grupo_etnico || 'No especificado';
+        baseData['Con quien Vive'] = student.con_quien_vive || 'No especificado';
+    }
+
+    return baseData;
+}
+
+/**
+ * Obtener datos académicos para PDF
+ */
+function getAcademicDataForPDF(student) {
+    const academicData = {
+        'Grado Actual': student.grado || 'No asignado',
+        'Grupo': student.grupo || 'No asignado'
+    };
+
+    if (student.entorno_educativo) {
+        const entorno = student.entorno_educativo;
+        academicData['Último grado cursado'] = entorno.ultimo_grado_cursado || 'No especificado';
+        academicData['Vinculado a otra institución'] = entorno.vinculado_otra_inst || 'No especificado';
+        academicData['Modalidad proveniente'] = entorno.modalidad_proveniente || 'No especificado';
+        academicData['Programas complementarios'] = entorno.asiste_programas_complementarios || 'No especificado';
+        academicData['Observaciones'] = entorno.observacion || 'Ninguna';
+    }
+
+    return academicData;
+}
+
+/**
+ * Obtener datos familiares para PDF
+ */
+function getFamilyDataForPDF(student) {
+    if (currentUserRole === 'madre' && student.madre) {
+        return {
+            'Información de la Madre': student.madre.nombre_completo || 'No registrado',
+            'Nivel educativo': student.madre.nivel_educativo || 'No especificado',
+            'Ocupación': student.madre.ocupacion || 'No especificada',
+            'Teléfono': student.madre.telefono || 'No registrado',
+            'Email': student.madre.email || 'No registrado'
+        };
+    } else if (currentUserRole === 'padre' && student.padre) {
+        return {
+            'Información del Padre': student.padre.nombre_completo || 'No registrado',
+            'Nivel educativo': student.padre.nivel_educativo || 'No especificado',
+            'Ocupación': student.padre.ocupacion || 'No especificada',
+            'Teléfono': student.padre.telefono || 'No registrado',
+            'Email': student.padre.email || 'No registrado'
+        };
+    } else if (currentUserRole === 'acudiente' && student.acudiente) {
+        return {
+            'Información del Acudiente': student.acudiente.nombre_completo || 'No registrado',
+            'Parentesco': student.acudiente.parentesco || 'No especificado',
+            'Nivel educativo': student.acudiente.nivel_educativo || 'No especificado',
+            'Ocupación': student.acudiente.ocupacion || 'No especificada',
+            'Teléfono': student.acudiente.telefono || 'No registrado',
+            'Email': student.acudiente.email || 'No registrado'
+        };
+    } else if (canViewAcademicInfo()) {
+        // Roles educativos pueden ver toda la información familiar
+        const familyData = {};
+        
+        if (student.madre) {
+            familyData['Madre - Nombre'] = student.madre.nombre_completo || 'No registrado';
+            familyData['Madre - Ocupación'] = student.madre.ocupacion || 'No especificada';
+            familyData['Madre - Teléfono'] = student.madre.telefono || 'No registrado';
+        }
+        
+        if (student.padre) {
+            familyData['Padre - Nombre'] = student.padre.nombre_completo || 'No registrado';
+            familyData['Padre - Ocupación'] = student.padre.ocupacion || 'No especificada';
+            familyData['Padre - Teléfono'] = student.padre.telefono || 'No registrado';
+        }
+        
+        if (student.acudiente) {
+            familyData['Acudiente - Nombre'] = student.acudiente.nombre_completo || 'No registrado';
+            familyData['Acudiente - Parentesco'] = student.acudiente.parentesco || 'No especificado';
+            familyData['Acudiente - Teléfono'] = student.acudiente.telefono || 'No registrado';
+        }
+        
+        return familyData;
+    }
+
+    return null;
+}
+
+/**
+ * Obtener datos médicos para PDF
+ */
+function getMedicalDataForPDF(student) {
+    if (!student.info_medica) return null;
+
+    let medicalText = '';
+    const medical = student.info_medica;
+
+    if (medical.diagnosticos && medical.diagnosticos.length > 0) {
+        medicalText += 'DIAGNÓSTICOS:\n';
+        medical.diagnosticos.forEach(diag => {
+            medicalText += `• ${diag.id_cie10}: ${diag.descripcion}\n`;
+        });
+        medicalText += '\n';
+    }
+
+    if (medical.medicamentos && medical.medicamentos.length > 0) {
+        medicalText += 'MEDICAMENTOS:\n';
+        medical.medicamentos.forEach(med => {
+            medicalText += `• ${med.descripcion} - ${med.frecuencia_horario}\n`;
+        });
+        medicalText += '\n';
+    }
+
+    if (medical.tratamientos && medical.tratamientos.length > 0) {
+        medicalText += 'TRATAMIENTOS:\n';
+        medical.tratamientos.forEach(trat => {
+            medicalText += `• ${trat.descripcion} - ${trat.frecuencia}\n`;
+        });
+    }
+
+    return medicalText || null;
+}
+
+/**
+ * Descargar PDF de todos los estudiantes
+ */
 async function downloadAllStudentsPDF() {
     if (!allStudents || allStudents.length === 0) {
         alert('No hay estudiantes para descargar');
+        return;
+    }
+
+    if (!canDownloadStudentData()) {
+        alert('No tiene permisos para descargar esta información');
         return;
     }
 
@@ -1027,7 +506,6 @@ async function downloadAllStudentsPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
-        // Configuración
         const pageWidth = doc.internal.pageSize.getWidth();
         const pageHeight = doc.internal.pageSize.getHeight();
         const margin = 20;
@@ -1040,12 +518,11 @@ async function downloadAllStudentsPDF() {
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(16);
         doc.setFont('helvetica', 'bold');
-        doc.text('LUDIK - Lista Completa de Estudiantes', margin, 20);
+        doc.text('LUDIK - Lista de Estudiantes', margin, 20);
 
         yPosition = 40;
         doc.setTextColor(0, 0, 0);
 
-        // Función para nueva página
         function checkPageBreak(neededHeight = 10) {
             if (yPosition + neededHeight > pageHeight - margin) {
                 doc.addPage();
@@ -1055,17 +532,15 @@ async function downloadAllStudentsPDF() {
             return false;
         }
 
-        // Información general
         doc.setFontSize(12);
         doc.text(`Total de estudiantes: ${allStudents.length}`, margin, yPosition);
         doc.text(`Fecha de generación: ${new Date().toLocaleDateString('es-ES')}`, margin, yPosition + 10);
-        yPosition += 30;
+        doc.text(`Generado por: ${getRoleDisplayName(currentUserRole)}`, margin, yPosition + 20);
+        yPosition += 40;
 
-        // Lista de estudiantes
         allStudents.forEach((student, index) => {
             checkPageBreak(25);
 
-            // Fondo alternado
             if (index % 2 === 0) {
                 doc.setFillColor(248, 250, 252);
                 doc.rect(margin - 5, yPosition - 5, pageWidth - 2 * margin + 10, 20, 'F');
@@ -1102,7 +577,6 @@ async function downloadAllStudentsPDF() {
             doc.text(`Página ${i} de ${totalPages}`, pageWidth - margin - 30, pageHeight - 10);
         }
 
-        // Guardar
         const fileName = `estudiantes_completo_${new Date().toISOString().split('T')[0]}.pdf`;
         doc.save(fileName);
 
@@ -1114,10 +588,17 @@ async function downloadAllStudentsPDF() {
     }
 }
 
-// Función para descargar PDF de resultados de búsqueda
+/**
+ * Descargar PDF de resultados de búsqueda
+ */
 async function downloadSearchResultsPDF() {
     if (!currentSearchResults || currentSearchResults.length === 0) {
         alert('No hay resultados de búsqueda para descargar');
+        return;
+    }
+
+    if (!canDownloadStudentData()) {
+        alert('No tiene permisos para descargar esta información');
         return;
     }
 
@@ -1127,13 +608,11 @@ async function downloadSearchResultsPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
-        // Similar a downloadAllStudentsPDF pero con currentSearchResults
         const pageWidth = doc.internal.pageSize.getWidth();
         const pageHeight = doc.internal.pageSize.getHeight();
         const margin = 20;
         let yPosition = margin;
 
-        // Encabezado
         doc.setFillColor(102, 126, 234);
         doc.rect(0, 0, pageWidth, 30, 'F');
 
@@ -1154,14 +633,12 @@ async function downloadSearchResultsPDF() {
             return false;
         }
 
-        // Información de búsqueda
         doc.setFontSize(12);
         doc.text(`Término buscado: "${searchInput.value}"`, margin, yPosition);
         doc.text(`Resultados encontrados: ${currentSearchResults.length}`, margin, yPosition + 10);
         doc.text(`Fecha de generación: ${new Date().toLocaleDateString('es-ES')}`, margin, yPosition + 20);
         yPosition += 40;
 
-        // Lista de resultados
         currentSearchResults.forEach((student, index) => {
             checkPageBreak(25);
 
@@ -1192,7 +669,6 @@ async function downloadSearchResultsPDF() {
             yPosition += 25;
         });
 
-        // Pie de página
         const totalPages = doc.internal.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
             doc.setPage(i);
@@ -1214,15 +690,21 @@ async function downloadSearchResultsPDF() {
 
 // ===================== FUNCIONES DE DESCARGA EXCEL =====================
 
-// Función para generar CSV (como alternativa a Excel)
+/**
+ * Descargar Excel de todos los estudiantes
+ */
 function downloadAllStudentsExcel() {
     if (!allStudents || allStudents.length === 0) {
         alert('No hay estudiantes para descargar');
         return;
     }
 
+    if (!canDownloadStudentData()) {
+        alert('No tiene permisos para descargar esta información');
+        return;
+    }
+
     try {
-        // Crear CSV
         const headers = ['Nombre', 'Apellidos', 'Documento', 'Grado', 'Grupo', 'Teléfono', 'Correo'];
         let csvContent = headers.join(',') + '\n';
 
@@ -1239,7 +721,6 @@ function downloadAllStudentsExcel() {
             csvContent += row.map(field => `"${field}"`).join(',') + '\n';
         });
 
-        // Descargar
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
@@ -1256,9 +737,17 @@ function downloadAllStudentsExcel() {
     }
 }
 
+/**
+ * Descargar Excel de resultados de búsqueda
+ */
 function downloadSearchResultsExcel() {
     if (!currentSearchResults || currentSearchResults.length === 0) {
         alert('No hay resultados de búsqueda para descargar');
+        return;
+    }
+
+    if (!canDownloadStudentData()) {
+        alert('No tiene permisos para descargar esta información');
         return;
     }
 
@@ -1295,66 +784,15 @@ function downloadSearchResultsExcel() {
     }
 }
 
-// ===================== FUNCIONES RESTANTES (sin cambios) =====================
+// ===================== FUNCIÓN DE UTILIDAD PARA DEBUGGING =====================
 
-function showModalTab(tabName) {
-    // Actualizar pestañas
-    document.querySelectorAll('.modal-tab').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-
-    // Mostrar contenido
-    document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-    });
-    document.getElementById(`${tabName}Tab`).classList.add('active');
-}
-
-function closeStudentModal() {
-    modal.style.display = 'none';
-    currentStudentData = null;
-}
-
-function clearSearchResults() {
-    searchResults.innerHTML = '';
-    searchDownloadControls.style.display = 'none';
-    currentSearchResults = [];
-}
-
-function applyFilters() {
-    // Esta función se puede implementar para filtrar por grado y grupo
-    // Por ahora solo realizamos una nueva búsqueda si hay término
-    if (searchInput.value.trim()) {
-        performSearch();
-    }
-}
-
-function updatePaginationInfo() {
-    const totalPages = Math.ceil(allStudents.length / studentsPerPage);
-    pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
-
-    prevPageBtn.disabled = currentPage === 1;
-    nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
-}
-
-function changePage(direction) {
-    const totalPages = Math.ceil(allStudents.length / studentsPerPage);
-
-    if (direction === -1 && currentPage > 1) {
-        currentPage--;
-    } else if (direction === 1 && currentPage < totalPages) {
-        currentPage++;
-    }
-
-    displayStudentsList();
-}
-
-// Función de utilidad para debugging
+/**
+ * Función de utilidad para debugging
+ */
 window.testConnection = async function () {
     console.log('Probando conexión...');
     try {
-        const data = await makeRequest('getFilters');
+        const data = await makeAuthenticatedRequest('getFilters');
         console.log('Conexión exitosa:', data);
         return data;
     } catch (error) {
@@ -1363,34 +801,1120 @@ window.testConnection = async function () {
     }
 };
 
+/**
+ * Función para regresar o redireccionar
+ */
 function goBackOrRedirect(ruta) {
     if (ruta && ruta.trim() !== '') {
-        window.location.href = ruta;   // Ir a la ruta que pongas
+        window.location.href = ruta;
     } else {
-        window.history.back();         // Si está vacío, volver atrás
+        window.history.back();
     }
-} - Madre
-if (currentStudentData.madre) {
-    const madreData = {
-        'Nombre completo': currentStudentData.madre.nombre_completo || 'No registrado',
-        'Nivel educativo': currentStudentData.madre.nivel_educativo || 'No especificado',
-        'Ocupación': currentStudentData.madre.ocupacion || 'No especificada',
-        'Teléfono': currentStudentData.madre.telefono || 'No registrado',
-        'Email': currentStudentData.madre.email || 'No registrado'
-    };
-    addSection('INFORMACIÓN DE LA MADRE', madreData);
+}// JavaScript para Estudiantes con Control de Roles y Fotos
+// Estudiantes_con_roles.js
+
+console.log("Script de estudiantes con roles cargado");
+
+// ===================== FUNCIONALIDAD DEL MENÚ =====================
+
+// Variables globales
+let allStudents = [];
+let currentSearchResults = [];
+let currentStudentData = null;
+let currentPage = 1;
+const studentsPerPage = 12;
+let currentSection = 'buscar';
+let currentUserRole = null;
+let currentUser = null;
+
+// DOM Elements
+const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+const gradoFilter = document.getElementById('gradoFilter');
+const grupoFilter = document.getElementById('grupoFilter');
+const searchResults = document.getElementById('searchResults');
+const studentsGrid = document.getElementById('studentsGrid');
+const modal = document.getElementById('studentModal');
+const closeModal = document.querySelector('.close');
+const loadingSpinner = document.getElementById('loadingSpinner');
+const pdfLoadingSpinner = document.getElementById('pdfLoadingSpinner');
+const pageInfo = document.getElementById('pageInfo');
+const prevPageBtn = document.getElementById('prevPage');
+const nextPageBtn = document.getElementById('nextPage');
+
+// Download buttons
+const downloadAllPDF = document.getElementById('downloadAllPDF');
+const downloadAllExcel = document.getElementById('downloadAllExcel');
+const downloadSearchPDF = document.getElementById('downloadSearchPDF');
+const downloadSearchExcel = document.getElementById('downloadSearchExcel');
+const downloadStudentPDF = document.getElementById('downloadStudentPDF');
+const searchDownloadControls = document.getElementById('searchDownloadControls');
+
+// Configuración de la API
+const API_BASE_URL = './php/Estudiantes.php';
+
+// Funcionalidad del menú
+const burger = document.getElementById('burger');
+const sideMenu = document.getElementById('sideMenu');
+const overlay = document.getElementById('overlay');
+
+// Inicialización
+document.addEventListener('DOMContentLoaded', function () {
+    console.log("DOM cargado - ejecutando función de roles y inicialización");
+    
+    // Obtener rol del usuario
+    currentUserRole = localStorage.getItem("rol");
+    console.log("Rol del usuario:", currentUserRole);
+    
+    // Mostrar indicador de rol
+    showRoleIndicator();
+    
+    // Configurar menú según rol
+    eliminarBotonesPorRol();
+    
+    // Inicializar aplicación
+    initializeApp();
+});
+
+/**
+ * Mostrar indicador de rol en el header
+ */
+function showRoleIndicator() {
+    const rightSection = document.querySelector('.right-section');
+    
+    if (currentUserRole) {
+        const roleIndicator = document.createElement('div');
+        roleIndicator.className = 'role-indicator';
+        
+        const roleIcon = document.createElement('div');
+        roleIcon.className = 'role-icon';
+        
+        const roleText = document.createElement('span');
+        roleText.textContent = getRoleDisplayName(currentUserRole);
+        
+        roleIndicator.appendChild(roleIcon);
+        roleIndicator.appendChild(roleText);
+        
+        // Insertar antes del logo
+        const logo = rightSection.querySelector('.header-logo');
+        rightSection.insertBefore(roleIndicator, logo);
+    }
 }
 
-// Información familiar - Padre
-if (currentStudentData.padre) {
-    const padreData = {
-        'Nombre completo': currentStudentData.padre.nombre_completo || 'No registrado',
-        'Nivel educativo': currentStudentData.padre.nivel_educativo || 'No especificado',
-        'Ocupación': currentStudentData.padre.ocupacion || 'No especificada',
-        'Teléfono': currentStudentData.padre.telefono || 'No registrado',
-        'Email': currentStudentData.padre.email || 'No registrado'
+/**
+ * Obtener nombre de rol para mostrar
+ */
+function getRoleDisplayName(role) {
+    const roleNames = {
+        'admin': 'Administrador',
+        'directivo': 'Directivo',
+        'docente_apoyo': 'Docente de Apoyo',
+        'docente': 'Docente',
+        'madre': 'Madre',
+        'padre': 'Padre',
+        'acudiente': 'Acudiente'
     };
-    addSection('INFORMACIÓN DEL PADRE', padreData);
+    
+    return roleNames[role] || 'Usuario';
 }
 
-// Información familiar
+/**
+ * Función para eliminar botones según rol
+ */
+function eliminarBotonesPorRol() {
+    const rol = currentUserRole;
+    console.log("Configurando menú para rol:", rol);
+
+    const todosLosBotones = document.querySelectorAll('.menu-button');
+    console.log("Botones encontrados:", todosLosBotones.length);
+
+    todosLosBotones.forEach(function (boton, index) {
+        const textoDelBoton = boton.textContent.trim().toLowerCase();
+        console.log(`Botón ${index}: "${textoDelBoton}"`);
+
+        // Lógica según el rol
+        if (rol === "admin") {
+            // Admin: puede ver todos los botones
+            console.log("Usuario es admin, todos los botones visibles");
+
+        } else if (rol === "directivo") {
+            // Directivo: similar a admin pero sin crear cuentas
+            if (textoDelBoton.includes("crear cuenta")) {
+                console.log("Eliminando botón Crear Cuentas para directivo");
+                boton.remove();
+            }
+
+        } else if (rol === "docente_apoyo") {
+            // Docente de apoyo: ocultar solo "Crear Cuentas"
+            if (textoDelBoton.includes("crear cuenta")) {
+                console.log("Eliminando botón Crear Cuentas para docente_apoyo");
+                boton.remove();
+            }
+
+        } else if (rol === "docente") {
+            // Docente regular: ocultar varios botones
+            if (textoDelBoton.includes("crear cuenta") ||
+                textoDelBoton.includes("registrar un nuevo estudiante") ||
+                textoDelBoton.includes("registrar un piar")) {
+                console.log("Eliminando botón restringido para docente:", textoDelBoton);
+                boton.remove();
+            }
+
+        } else if (rol === "madre" || rol === "padre" || rol === "acudiente") {
+            // Padres: solo pueden ver estudiantes y comunicación
+            if (!textoDelBoton.includes("estudiantes") &&
+                !textoDelBoton.includes("comunicate") &&
+                !textoDelBoton.includes("perfil") &&
+                !textoDelBoton.includes("ayuda") &&
+                !textoDelBoton.includes("cerrar sesion")) {
+                console.log("Eliminando botón restringido para padre:", textoDelBoton);
+                boton.remove();
+            }
+
+        } else {
+            // Rol desconocido: comportamiento restrictivo
+            console.log("Rol desconocido, aplicando restricciones máximas");
+            if (!textoDelBoton.includes("perfil") &&
+                !textoDelBoton.includes("ayuda") &&
+                !textoDelBoton.includes("cerrar sesion")) {
+                boton.remove();
+            }
+        }
+    });
+}
+
+/**
+ * Event listeners del menú
+ */
+burger.addEventListener('change', function () {
+    if (this.checked) {
+        sideMenu.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    } else {
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+overlay.addEventListener('click', function () {
+    burger.checked = false;
+    sideMenu.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+});
+
+// Manejar clicks de botones del menú
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('menu-button')) {
+        const texto = e.target.textContent.trim().toLowerCase();
+
+        console.log("=== DEBUG CLICK MENÚ ===");
+        console.log("Texto:", texto);
+
+        if (texto.includes('perfil')) {
+            window.location.href = 'perfil.html';
+        } else if (texto.includes('estudiantes')) {
+            // Ya estamos en estudiantes, solo cerrar menú
+            console.log("Ya estamos en la página de estudiantes");
+        } else if (texto.includes('crear cuentas')) {
+            window.location.href = 'Crear_cuentas.html';
+        } else if (texto.includes('actividades')) {
+            window.location.href = 'Ejercicios.html';
+        } else if (texto.includes('registrar un nuevo estudiante')) {
+            window.location.href = 'Registrar_estudiante.html';
+        } else if (texto.includes('registrar un piar')) {
+            window.location.href = 'Registrar_PIAR.html';
+        } else if (texto.includes('valoración') || texto.includes('valoracion')) {
+            window.location.href = 'Valoracion_pedagogica.html';
+        } else if (texto.includes('comunicate')) {
+            window.location.href = 'Comunicacion.html';
+        } else if (texto.includes('ayuda')) {
+            window.location.href = 'Ayuda.html';
+        } else if (texto.includes('cerrar sesion') || texto.includes('cerrar sesión')) {
+            if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
+                localStorage.removeItem('rol');
+                window.location.href = 'Inicio_sesion.html';
+            }
+        }
+
+        // Cerrar menú
+        burger.checked = false;
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// ===================== FUNCIONALIDAD DE ESTUDIANTES =====================
+
+/**
+ * Inicializar aplicación
+ */
+function initializeApp() {
+    setupEventListeners();
+    loadFilters();
+    showSection('buscar');
+}
+
+/**
+ * Configurar event listeners
+ */
+function setupEventListeners() {
+    // Navegación interna
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const section = this.getAttribute('data-section');
+            showSection(section);
+        });
+    });
+
+    // Búsqueda
+    if (searchBtn) {
+        searchBtn.addEventListener('click', performSearch);
+    }
+    
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    }
+
+    // Filtros
+    if (gradoFilter) {
+        gradoFilter.addEventListener('change', applyFilters);
+    }
+    if (grupoFilter) {
+        grupoFilter.addEventListener('change', applyFilters);
+    }
+
+    // Modal
+    if (closeModal) {
+        closeModal.addEventListener('click', closeStudentModal);
+    }
+    
+    window.addEventListener('click', function (e) {
+        if (e.target === modal) {
+            closeStudentModal();
+        }
+    });
+
+    // Paginación
+    if (prevPageBtn) {
+        prevPageBtn.addEventListener('click', () => changePage(-1));
+    }
+    if (nextPageBtn) {
+        nextPageBtn.addEventListener('click', () => changePage(1));
+    }
+
+    // Pestañas del modal
+    document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('modal-tab')) {
+            showModalTab(e.target.getAttribute('data-tab'));
+        }
+    });
+
+    // Event listeners para descarga PDF
+    if (downloadAllPDF) {
+        downloadAllPDF.addEventListener('click', () => downloadAllStudentsPDF());
+    }
+    if (downloadAllExcel) {
+        downloadAllExcel.addEventListener('click', () => downloadAllStudentsExcel());
+    }
+    if (downloadSearchPDF) {
+        downloadSearchPDF.addEventListener('click', () => downloadSearchResultsPDF());
+    }
+    if (downloadSearchExcel) {
+        downloadSearchExcel.addEventListener('click', () => downloadSearchResultsExcel());
+    }
+    if (downloadStudentPDF) {
+        downloadStudentPDF.addEventListener('click', () => downloadIndividualStudentPDF());
+    }
+}
+
+/**
+ * Mostrar sección
+ */
+function showSection(sectionName) {
+    // Actualizar navegación
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    const activeBtn = document.querySelector(`[data-section="${sectionName}"]`);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
+
+    // Mostrar sección
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+    });
+    const activeSection = document.getElementById(sectionName);
+    if (activeSection) {
+        activeSection.classList.add('active');
+    }
+
+    currentSection = sectionName;
+
+    // Cargar datos según la sección
+    if (sectionName === 'lista') {
+        loadAllStudents();
+    } else {
+        clearSearchResults();
+    }
+}
+
+/**
+ * Realizar petición con autenticación
+ */
+async function makeAuthenticatedRequest(action, params = {}) {
+    showLoading();
+
+    try {
+        const url = new URL(API_BASE_URL, window.location.href);
+        url.searchParams.append('action', action);
+
+        Object.keys(params).forEach(key => {
+            url.searchParams.append(key, params[key]);
+        });
+
+        console.log('Realizando petición autenticada a:', url.toString());
+
+        const response = await fetch(url.toString(), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'same-origin' // Incluir cookies de sesión
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.error || 'Error desconocido en el servidor');
+        }
+
+        return data;
+
+    } catch (error) {
+        console.error('Error en la petición:', error);
+
+        if (error.message.includes('No autorizado')) {
+            showError('Sesión expirada. Por favor, inicie sesión nuevamente.');
+            setTimeout(() => {
+                window.location.href = 'Inicio_sesion.html';
+            }, 2000);
+        } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            showError('No se puede conectar al servidor. Verifique su conexión.');
+        } else if (error.message.includes('HTTP')) {
+            showError(`Error del servidor: ${error.message}`);
+        } else {
+            showError(error.message);
+        }
+
+        throw error;
+    } finally {
+        hideLoading();
+    }
+}
+
+/**
+ * Cargar filtros según el rol
+ */
+async function loadFilters() {
+    try {
+        const data = await makeAuthenticatedRequest('getFilters');
+
+        // Cargar grados
+        if (gradoFilter) {
+            gradoFilter.innerHTML = '<option value="">Todos los grados</option>';
+            data.grados.forEach(grado => {
+                const option = document.createElement('option');
+                option.value = grado.id_grado;
+                option.textContent = grado.grado;
+                gradoFilter.appendChild(option);
+            });
+        }
+
+        // Cargar grupos
+        if (grupoFilter) {
+            grupoFilter.innerHTML = '<option value="">Todos los grupos</option>';
+            data.grupos.forEach(grupo => {
+                const option = document.createElement('option');
+                option.value = grupo.id_grupo;
+                option.textContent = `${grupo.grado} - ${grupo.grupo}`;
+                grupoFilter.appendChild(option);
+            });
+        }
+
+    } catch (error) {
+        console.error('Error cargando filtros:', error);
+    }
+}
+
+/**
+ * Realizar búsqueda
+ */
+async function performSearch() {
+    if (!searchInput) return;
+    
+    const searchTerm = searchInput.value.trim();
+
+    if (searchTerm.length < 2) {
+        showError('Ingresa al menos 2 caracteres para buscar');
+        return;
+    }
+
+    try {
+        const data = await makeAuthenticatedRequest('searchStudents', { term: searchTerm });
+        currentSearchResults = data.students;
+        displaySearchResults(data.students);
+
+        // Mostrar botones de descarga si hay resultados
+        if (searchDownloadControls) {
+            if (data.students.length > 0) {
+                searchDownloadControls.style.display = 'block';
+            } else {
+                searchDownloadControls.style.display = 'none';
+            }
+        }
+    } catch (error) {
+        console.error('Error en la búsqueda:', error);
+    }
+}
+
+/**
+ * Mostrar resultados de búsqueda
+ */
+function displaySearchResults(students) {
+    if (!searchResults) return;
+    
+    searchResults.innerHTML = '';
+
+    if (students.length === 0) {
+        searchResults.innerHTML = `
+            <div class="no-results">
+                <h3>Sin resultados</h3>
+                <p>No se encontraron estudiantes que coincidan con tu búsqueda.</p>
+            </div>
+        `;
+        return;
+    }
+
+    students.forEach(student => {
+        const studentCard = createStudentCard(student);
+        searchResults.appendChild(studentCard);
+    });
+}
+
+/**
+ * Cargar todos los estudiantes
+ */
+async function loadAllStudents() {
+    try {
+        const data = await makeAuthenticatedRequest('getAllStudents');
+        allStudents = data.students;
+        displayStudentsList();
+    } catch (error) {
+        console.error('Error cargando estudiantes:', error);
+    }
+}
+
+/**
+ * Mostrar lista de estudiantes con paginación
+ */
+function displayStudentsList() {
+    if (!studentsGrid) return;
+    
+    const startIndex = (currentPage - 1) * studentsPerPage;
+    const endIndex = startIndex + studentsPerPage;
+    const studentsToShow = allStudents.slice(startIndex, endIndex);
+
+    studentsGrid.innerHTML = '';
+
+    if (studentsToShow.length === 0) {
+        studentsGrid.innerHTML = `
+            <div class="no-results">
+                <h3>Sin estudiantes</h3>
+                <p>No hay estudiantes registrados en el sistema o no tienes acceso a ninguno.</p>
+            </div>
+        `;
+        return;
+    }
+
+    studentsToShow.forEach(student => {
+        const studentCard = createStudentCard(student);
+        studentsGrid.appendChild(studentCard);
+    });
+
+    updatePaginationInfo();
+}
+
+/**
+ * Crear tarjeta de estudiante con foto
+ */
+function createStudentCard(student) {
+    const card = document.createElement('div');
+    card.className = 'student-card';
+    card.onclick = () => showStudentDetails(student.id_estudiante);
+
+    const fullName = `${student.nombre} ${student.apellidos}`.trim();
+    const documento = student.no_documento || 'Sin documento';
+    const grado = student.grado || 'Sin asignar';
+    const grupo = student.grupo || 'Sin grupo';
+    const telefono = student.telefono || 'Sin teléfono';
+    const correo = student.correo || 'Sin correo';
+
+    // Crear elemento de foto
+    let photoElement;
+    if (student.foto_url && student.foto_url !== 'photos/default.png') {
+        photoElement = `<img src="${student.foto_url}" alt="Foto de ${fullName}" class="student-photo" onerror="this.outerHTML='<div class=\\'student-photo default\\'>${getInitials(fullName)}</div>'">`;
+    } else {
+        photoElement = `<div class="student-photo default">${getInitials(fullName)}</div>`;
+    }
+
+    // Badge especial para padres
+    let badgeClass = 'student-badge';
+    let badgeText = `${grado} - ${grupo}`;
+    
+    if (['madre', 'padre', 'acudiente'].includes(currentUserRole)) {
+        badgeClass += ' parent-relation';
+        badgeText = getParentRelationText(currentUserRole);
+    }
+
+    card.innerHTML = `
+        ${photoElement}
+        <div class="student-name">${fullName}</div>
+        <div class="student-info">
+            <div><strong>Documento:</strong> ${documento}</div>
+            <div><strong>Grado:</strong> ${grado}</div>
+            <div><strong>Grupo:</strong> ${grupo}</div>
+            <div><strong>Teléfono:</strong> ${telefono}</div>
+            <div><strong>Correo:</strong> ${correo}</div>
+        </div>
+        <div class="${badgeClass}">${badgeText}</div>
+    `;
+
+    return card;
+}
+
+/**
+ * Obtener iniciales del nombre
+ */
+function getInitials(fullName) {
+    return fullName
+        .split(' ')
+        .map(word => word.charAt(0))
+        .join('')
+        .substring(0, 2)
+        .toUpperCase();
+}
+
+/**
+ * Obtener texto de relación para padres
+ */
+function getParentRelationText(role) {
+    const relations = {
+        'madre': 'Mi hijo/a',
+        'padre': 'Mi hijo/a', 
+        'acudiente': 'A mi cargo'
+    };
+    return relations[role] || 'Estudiante';
+}
+
+/**
+ * Mostrar detalles del estudiante
+ */
+async function showStudentDetails(studentId) {
+    try {
+        const data = await makeAuthenticatedRequest('getStudentDetails', { id: studentId });
+        const student = data.student;
+        currentStudentData = student;
+
+        // Actualizar título del modal con foto
+        const modalTitle = document.getElementById('modalTitle');
+        const modalHeader = document.querySelector('.modal-header');
+        
+        if (modalTitle && modalHeader) {
+            // Limpiar header anterior
+            const existingPhoto = modalHeader.querySelector('.modal-student-photo');
+            if (existingPhoto) {
+                existingPhoto.remove();
+            }
+
+            modalTitle.textContent = `${student.nombre} ${student.apellidos}`;
+
+            // Agregar foto al modal
+            let photoElement;
+            if (student.foto_url && student.foto_url !== 'photos/default.png') {
+                photoElement = document.createElement('img');
+                photoElement.src = student.foto_url;
+                photoElement.alt = `Foto de ${student.nombre} ${student.apellidos}`;
+                photoElement.className = 'modal-student-photo';
+                photoElement.onerror = function() {
+                    this.outerHTML = `<div class="modal-student-photo default">${getInitials(student.nombre + ' ' + student.apellidos)}</div>`;
+                };
+            } else {
+                photoElement = document.createElement('div');
+                photoElement.className = 'modal-student-photo default';
+                photoElement.textContent = getInitials(student.nombre + ' ' + student.apellidos);
+            }
+
+            // Insertar foto antes del título
+            modalHeader.insertBefore(photoElement, modalTitle);
+        }
+
+        // Llenar información según el rol
+        if (['admin', 'directivo', 'docente_apoyo', 'docente'].includes(currentUserRole)) {
+            // Roles educativos: información completa
+            fillPersonalInfo(student);
+            fillAcademicInfo(student);
+            fillFamilyInfo(student);
+            fillMedicalInfo(student);
+            fillPiarInfo(student);
+        } else if (['madre', 'padre', 'acudiente'].includes(currentUserRole)) {
+            // Padres: información limitada
+            fillPersonalInfoForParents(student);
+            fillAcademicInfoForParents(student);
+            fillFamilyInfoForParents(student);
+            fillMedicalInfoForParents(student);
+            fillPiarInfoForParents(student);
+        }
+
+        // Mostrar modal
+        if (modal) {
+            modal.style.display = 'block';
+            showModalTab('personal');
+        }
+
+    } catch (error) {
+        console.error('Error cargando detalles del estudiante:', error);
+        alert('Error al cargar los detalles del estudiante');
+    }
+}
+
+/**
+ * Llenar información personal completa
+ */
+function fillPersonalInfo(student) {
+    const fields = {
+        'nombreCompleto': `${student.nombre} ${student.apellidos}`,
+        'documento': `${student.tipo_documento || ''} ${student.no_documento || ''}`.trim(),
+        'fechaNacimiento': student.fecha_nacimiento || 'No registrada',
+        'lugarNacimiento': student.lugar_nacimiento || 'No registrado',
+        'sector': student.sector || 'No registrado',
+        'direccion': student.direccion || 'No registrada',
+        'telefono': student.telefono || 'No registrado',
+        'correo': student.correo || 'No registrado',
+        'victimaConflicto': student.victima_conflicto || 'No especificado',
+        'grupoEtnico': student.grupo_etnico || 'No especificado',
+        'conQuienVive': student.con_quien_vive || 'No especificado',
+        'afiliacionSalud': student.afiliacion_salud || 'No especificada'
+    };
+
+    Object.keys(fields).forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        if (element) {
+            element.textContent = fields[fieldId];
+        }
+    });
+}
+
+/**
+ * Llenar información personal para padres (limitada)
+ */
+function fillPersonalInfoForParents(student) {
+    const fields = {
+        'nombreCompleto': `${student.nombre} ${student.apellidos}`,
+        'documento': `${student.tipo_documento || ''} ${student.no_documento || ''}`.trim(),
+        'fechaNacimiento': student.fecha_nacimiento || 'No registrada',
+        'telefono': student.telefono || 'No registrado',
+        'correo': student.correo || 'No registrado',
+        'afiliacionSalud': student.afiliacion_salud || 'No especificada'
+    };
+
+    // Campos restringidos para padres
+    const restrictedFields = ['lugarNacimiento', 'sector', 'direccion', 'victimaConflicto', 'grupoEtnico', 'conQuienVive'];
+    
+    Object.keys(fields).forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        if (element) {
+            element.textContent = fields[fieldId];
+        }
+    });
+
+    // Ocultar información restringida
+    restrictedFields.forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        if (element) {
+            element.textContent = 'Información restringida';
+            element.style.color = '#94a3b8';
+        }
+    });
+}
+
+/**
+ * Llenar información académica completa
+ */
+function fillAcademicInfo(student) {
+    const gradoActual = document.getElementById('gradoActual');
+    const grupoActual = document.getElementById('grupoActual');
+    
+    if (gradoActual) {
+        gradoActual.textContent = student.grado || 'No asignado';
+    }
+    if (grupoActual) {
+        grupoActual.textContent = student.grupo || 'No asignado';
+    }
+
+    // Información del entorno educativo
+    const entornoDiv = document.getElementById('entornoEducativo');
+    if (entornoDiv) {
+        entornoDiv.innerHTML = '';
+
+        if (student.entorno_educativo) {
+            const entorno = student.entorno_educativo;
+            entornoDiv.innerHTML = `
+                <div class="info-item">
+                    <span class="label">Último grado cursado:</span>
+                    <span class="value">${entorno.ultimo_grado_cursado || 'No especificado'}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Vinculado a otra institución:</span>
+                    <span class="value">${entorno.vinculado_otra_inst || 'No especificado'}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Modalidad proveniente:</span>
+                    <span class="value">${entorno.modalidad_proveniente || 'No especificado'}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Programas complementarios:</span>
+                    <span class="value">${entorno.asiste_programas_complementarios || 'No especificado'}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Observaciones:</span>
+                    <span class="value">${entorno.observacion || 'Ninguna'}</span>
+                </div>
+            `;
+        } else {
+            entornoDiv.innerHTML = '<p>No hay información del entorno educativo registrada.</p>';
+        }
+    }
+}
+
+/**
+ * Llenar información académica para padres
+ */
+function fillAcademicInfoForParents(student) {
+    const gradoActual = document.getElementById('gradoActual');
+    const grupoActual = document.getElementById('grupoActual');
+    
+    if (gradoActual) {
+        gradoActual.textContent = student.grado || 'No asignado';
+    }
+    if (grupoActual) {
+        grupoActual.textContent = student.grupo || 'No asignado';
+    }
+
+    // Información del entorno educativo restringida
+    const entornoDiv = document.getElementById('entornoEducativo');
+    if (entornoDiv) {
+        entornoDiv.innerHTML = `
+            <div class="restricted-content">
+                <h3>Información Académica Detallada</h3>
+                <p>Esta información está disponible solo para el personal educativo. Para consultas específicas, contacte al docente o coordinador académico.</p>
+            </div>
+        `;
+    }
+}
+
+/**
+ * Llenar información familiar
+ */
+function fillFamilyInfo(student) {
+    // Información de la madre
+    fillParentInfo('infoMadre', student.madre, 'madre');
+    // Información del padre  
+    fillParentInfo('infoPadre', student.padre, 'padre');
+    // Información del acudiente
+    fillParentInfo('infoAcudiente', student.acudiente, 'acudiente');
+}
+
+/**
+ * Llenar información familiar para padres (solo su propia información)
+ */
+function fillFamilyInfoForParents(student) {
+    // Los padres solo pueden ver su propia información
+    if (currentUserRole === 'madre') {
+        fillParentInfo('infoMadre', student.madre, 'madre');
+        hideParentSection('infoPadre', 'padre');
+        hideParentSection('infoAcudiente', 'acudiente');
+    } else if (currentUserRole === 'padre') {
+        fillParentInfo('infoPadre', student.padre, 'padre');
+        hideParentSection('infoMadre', 'madre');
+        hideParentSection('infoAcudiente', 'acudiente');
+    } else if (currentUserRole === 'acudiente') {
+        fillParentInfo('infoAcudiente', student.acudiente, 'acudiente');
+        hideParentSection('infoMadre', 'madre');
+        hideParentSection('infoPadre', 'padre');
+    }
+}
+
+/**
+ * Ocultar sección de padre
+ */
+function hideParentSection(containerId, parentType) {
+    const container = document.getElementById(containerId);
+    if (container) {
+        container.innerHTML = `
+            <div class="restricted-content">
+                <h3>Información de ${parentType}</h3>
+                <p>Esta información está restringida por privacidad.</p>
+            </div>
+        `;
+    }
+}
+
+/**
+ * Llenar información de padre/madre/acudiente
+ */
+function fillParentInfo(containerId, parentData, parentType) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    container.innerHTML = '';
+
+    if (!parentData) {
+        container.innerHTML = `<p>No hay información de ${parentType} registrada.</p>`;
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="info-item">
+            <span class="label">Nombre completo:</span>
+            <span class="value">${parentData.nombre_completo || 'No registrado'}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Nivel educativo:</span>
+            <span class="value">${parentData.nivel_educativo || 'No especificado'}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Ocupación:</span>
+            <span class="value">${parentData.ocupacion || 'No especificada'}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Teléfono:</span>
+            <span class="value">${parentData.telefono || 'No registrado'}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Email:</span>
+            <span class="value">${parentData.email || 'No registrado'}</span>
+        </div>
+        ${parentType === 'acudiente' ? `
+        <div class="info-item">
+            <span class="label">Parentesco:</span>
+            <span class="value">${parentData.parentesco || 'No especificado'}</span>
+        </div>` : ''}
+    `;
+}
+
+/**
+ * Llenar información médica completa
+ */
+function fillMedicalInfo(student) {
+    const container = document.getElementById('infoMedica');
+    if (!container) return;
+    
+    container.innerHTML = '';
+
+    if (!student.info_medica) {
+        container.innerHTML = '<p>No hay información médica registrada.</p>';
+        return;
+    }
+
+    const medicalInfo = student.info_medica;
+    let html = '';
+
+    // Diagnósticos
+    if (medicalInfo.diagnosticos && medicalInfo.diagnosticos.length > 0) {
+        html += '<h4>Diagnósticos:</h4><ul>';
+        medicalInfo.diagnosticos.forEach(diagnostico => {
+            html += `<li><strong>${diagnostico.id_cie10}:</strong> ${diagnostico.descripcion}</li>`;
+        });
+        html += '</ul>';
+    }
+
+    // Medicamentos
+    if (medicalInfo.medicamentos && medicalInfo.medicamentos.length > 0) {
+        html += '<h4>Medicamentos:</h4><ul>';
+        medicalInfo.medicamentos.forEach(medicamento => {
+            html += `<li><strong>${medicamento.descripcion}</strong> - ${medicamento.frecuencia_horario}</li>`;
+        });
+        html += '</ul>';
+    }
+
+    // Tratamientos
+    if (medicalInfo.tratamientos && medicalInfo.tratamientos.length > 0) {
+        html += '<h4>Tratamientos:</h4><ul>';
+        medicalInfo.tratamientos.forEach(tratamiento => {
+            html += `<li><strong>${tratamiento.descripcion}</strong> - ${tratamiento.frecuencia}</li>`;
+        });
+        html += '</ul>';
+    }
+
+    if (html === '') {
+        html = '<p>No hay información médica específica registrada.</p>';
+    }
+
+    container.innerHTML = html;
+}
+
+/**
+ * Llenar información médica para padres (resumida)
+ */
+function fillMedicalInfoForParents(student) {
+    const container = document.getElementById('infoMedica');
+    if (!container) return;
+    
+    container.innerHTML = '';
+
+    if (!student.info_medica) {
+        container.innerHTML = '<p>No hay información médica registrada.</p>';
+        return;
+    }
+
+    const medicalInfo = student.info_medica;
+    
+    container.innerHTML = `
+        <div class="parent-limited-info">
+            <h4>Resumen de Información Médica</h4>
+            <div class="info-summary">
+                <div class="info-summary-item">
+                    <div class="count">${medicalInfo.total_diagnosticos || 0}</div>
+                    <div class="label">Diagnósticos</div>
+                </div>
+                <div class="info-summary-item">
+                    <div class="count">${medicalInfo.total_medicamentos || 0}</div>
+                    <div class="label">Medicamentos</div>
+                </div>
+                <div class="info-summary-item">
+                    <div class="count">${medicalInfo.total_tratamientos || 0}</div>
+                    <div class="label">Tratamientos</div>
+                </div>
+            </div>
+            ${medicalInfo.dx_general ? `<p><strong>Diagnóstico General:</strong> ${medicalInfo.dx_general}</p>` : ''}
+        </div>
+        <div class="restricted-content">
+            <h3>Información Médica Detallada</h3>
+            <p>Para acceder a información médica detallada, consulte con el personal médico o educativo de la institución.</p>
+        </div>
+    `;
+}
+
+/**
+ * Llenar información del PIAR
+ */
+function fillPiarInfo(student) {
+    const container = document.getElementById('infoPiar');
+    const valoracionesContainer = document.getElementById('valoracionesList');
+
+    // Información del PIAR
+    if (container) {
+        if (student.piar) {
+            const piar = student.piar;
+            container.innerHTML = `
+                <div class="info-item">
+                    <span class="label">Fecha:</span>
+                    <span class="value">${piar.fecha || 'No registrada'}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Ajustes:</span>
+                    <span class="value">${piar.ajuste || 'No especificados'}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Apoyos:</span>
+                    <span class="value">${piar.apoyo || 'No especificados'}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Barreras:</span>
+                    <span class="value">${piar.barrera || 'No especificadas'}</span>
+                </div>
+            `;
+        } else {
+            container.innerHTML = '<p>No hay PIAR registrado para este estudiante.</p>';
+        }
+    }
+
+    // Valoraciones pedagógicas
+    if (valoracionesContainer) {
+        valoracionesContainer.innerHTML = '';
+
+        if (student.valoraciones && student.valoraciones.length > 0) {
+            student.valoraciones.forEach(valoracion => {
+                const valoracionDiv = document.createElement('div');
+                valoracionDiv.className = 'valoracion-item';
+                valoracionDiv.innerHTML = `
+                    <h4>${valoracion.nombre_asig} - ${valoracion.periodo} ${valoracion.anio}</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="label">Objetivo:</span>
+                            <span class="value">${valoracion.objetivo || 'No especificado'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Barrera:</span>
+                            <span class="value">${valoracion.barrera || 'No especificada'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Tipo de ajuste:</span>
+                            <span class="value">${valoracion.tipo_ajuste || 'No especificado'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Apoyo requerido:</span>
+                            <span class="value">${valoracion.apoyo_requerido || 'No especificado'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Seguimiento:</span>
+                            <span class="value">${valoracion.seguimiento || 'No especificado'}</span>
+                        </div>
+                    </div>
+                `;
+                valoracionesContainer.appendChild(valoracionDiv);
+            });
+        } else {
+            valoracionesContainer.innerHTML = '<p>No hay valoraciones pedagógicas registradas.</p>';
+        }
+    }
+}
+
+/**
+ * Llenar información del PIAR para padres (restringida)
+ */
+function fillPiarInfoForParents(student) {
+    const container = document.getElementById('infoPiar');
+    const valoracionesContainer = document.getElementById('valoracionesList');
+
+    if (container) {
+        container.innerHTML = `
+            <div class="restricted-content">
+                <h3>Plan Individual de Ajustes Razonables (PIAR)</h3>
+                <p>Esta información pedagógica especializada está disponible para consulta con el equipo docente y de apoyo de la institución.</p>
+            </div>
+        `;
+    }
+
+    if (valoracionesContainer) {
+        valoracionesContainer.innerHTML = `
+            <div class="restricted-content">
+                <h3>Valoraciones Pedagógicas</h3>
+                <p>Las valoraciones pedagógicas son documentos técnicos disponibles para consulta en reuniones con el equipo educativo.</p>
+            </div>
+        `;
+    }
+}
