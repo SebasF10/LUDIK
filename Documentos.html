@@ -38,48 +38,58 @@
     <!-- Menú lateral -->
     <div class="side-menu" id="sideMenu">
         <div class="menu-header">
-            <div class="menu-title">Panel de Control</div>
+            <div class="menu-title">Panel De Control</div>
         </div>
         <div class="menu-buttons">
-            <button class="menu-button" onclick="location.href='perfil.html'">
+            <button class="menu-button">
+                <span class="menu-icon">🏠</span>
+                Volver a Interfaz
+            </button>
+            <button class="menu-button">
                 <span class="menu-icon">👤</span>
                 Perfil
             </button>
-            <button class="menu-button" onclick="location.href='estudiantes.html'">
+            <button class="menu-button">
                 <span class="menu-icon">👥</span>
                 Estudiantes
             </button>
-            <button class="menu-button" onclick="location.href='crear-cuentas.html'">
+            <button class="menu-button">
                 <span class="menu-icon">➕</span>
                 Crear Cuentas
             </button>
-            <button class="menu-button" onclick="location.href='actividades.html'">
+            <button class="menu-button">
                 <span class="menu-icon">📚</span>
                 Actividades
             </button>
-            <button class="menu-button" onclick="location.href='registrar-estudiante.html'">
+            <button class="menu-button" id="btnIA">
+                <span class="menu-icon">🤖</span>
+                Asistente IA
+            </button>
+            <button class="menu-button">
                 <span class="menu-icon">📝</span>
                 Registrar un nuevo estudiante
             </button>
-            <button class="menu-button" onclick="location.href='registrar-piar.html'">
+            <button class="menu-button">
                 <span class="menu-icon">📋</span>
                 Registrar un PIAR y diagnóstico médico
             </button>
-            <button class="menu-button" onclick="location.href='valoraciones.html'">
+            <button class="menu-button">
                 <span class="menu-icon">📊</span>
-                Valoraciones Pedagógicas
+                Crear una Valoración Pedagógica
             </button>
-            <button class="menu-button" onclick="location.href='comunicacion.html'">
+            <button class="menu-button" id="btnDocumentos">
+                <span class="menu-icon">📁</span>
+                Documentos
+            </button>
+            <button class="menu-button">
                 <span class="menu-icon">💬</span>
                 Comunicate
             </button>
-            <button class="menu-button" onclick="location.href='ayuda.html'">
+            <button class="menu-button">
                 <span class="menu-icon">❓</span>
                 Ayuda
             </button>
-        </div>
-        <div class="menu-bottom">
-            <button class="menu-button close-session" onclick="cerrarSesion()">
+            <button class="menu-button close-session">
                 <span class="menu-icon">🚪</span>
                 Cerrar Sesión
             </button>
@@ -90,24 +100,25 @@
     <div class="main-content">
         <div class="section active">
             <h1>Gestión de Documentos</h1>
-            
+
             <!-- Formulario de subida -->
             <div class="upload-container">
                 <div class="upload-header">
                     <h2>Subir Nuevo Documento</h2>
                     <p>Formatos permitidos: PDF, DOCX, XLSX, imágenes (PNG, JPG, JPEG)</p>
                 </div>
-                
+
                 <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
                     <div class="file-input-container">
-                        <input type="file" id="fileInput" name="archivo" accept=".pdf,.docx,.xlsx,.png,.jpg,.jpeg" required>
+                        <input type="file" id="fileInput" name="archivo" accept=".pdf,.docx,.xlsx,.png,.jpg,.jpeg"
+                            required>
                         <label for="fileInput" class="file-input-label">
                             <span class="file-icon">📄</span>
                             <span class="file-text">Seleccionar archivo</span>
                         </label>
                         <div class="file-name" id="fileName"></div>
                     </div>
-                    
+
                     <button type="submit" class="btn-upload" id="btnUpload">
                         <span class="upload-icon">⬆️</span>
                         Subir Documento
@@ -124,7 +135,7 @@
                         <span class="count-text">documentos</span>
                     </div>
                 </div>
-                
+
                 <div class="documents-grid" id="documentsGrid">
                     <!-- Los documentos se cargarán aquí desde PHP -->
                 </div>
@@ -150,11 +161,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Botón de regresar -->
-    <button class="back-btn" onclick="history.back()">
-        ← Regresar
-    </button>
 
     <script src="Js/Documentos.js"></script>
 </body>

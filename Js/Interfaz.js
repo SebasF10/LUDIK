@@ -348,6 +348,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const btnIA = document.getElementById('btnIA');
+    if (btnIA) {
+        btnIA.addEventListener('click', function () {
+            window.open('https://ia-ludik-1.onrender.com/', '_blank');
+        });
+    }
+});
+
+
 // Prevenir scroll del body cuando el menú está abierto
 window.addEventListener('scroll', function () {
     if (sideMenu && sideMenu.classList.contains('active')) {

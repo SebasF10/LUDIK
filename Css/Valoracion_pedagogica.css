@@ -10,15 +10,15 @@
 }
 
 body {
+    font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #2c3e50;
-    font-family: 'Inter', Arial, sans-serif;
     min-height: 100vh;
-    line-height: 1.6;
+    color: #333;
     overflow-x: hidden;
+    line-height: 1.6;
 }
 
-/* ===== HEADER Y MENÚ EXTRAÍBLE ===== */
+/* ======= ESTILOS DEL HEADER Y MENÚ - FUSIONADOS ======= */
 .header {
     display: flex;
     align-items: center;
@@ -31,7 +31,6 @@ body {
     position: sticky;
     top: 0;
     z-index: 1001;
-    margin-bottom: 30px;
 }
 
 .left-section {
@@ -170,6 +169,7 @@ body {
     transform: translate(-50%, -50%) rotate(45deg);
     top: 50%;
     width: 38px;
+    /* Línea más corta */
 }
 
 .burger input:checked~span:nth-of-type(2) {
@@ -181,6 +181,7 @@ body {
     transform: translate(-50%, -50%) rotate(-45deg);
     top: 50%;
     width: 48px;
+    /* Línea más larga */
 }
 
 /* MENÚ LATERAL - CON SCROLL */
@@ -198,6 +199,7 @@ body {
     border-right: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     flex-direction: column;
+    outline: none !important;
 }
 
 .side-menu.active {
@@ -237,31 +239,36 @@ body {
     padding: 20px 0;
     overflow-y: auto;
     overflow-x: hidden;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    /* Scroll personalizado */
     scrollbar-width: thin;
     scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
+/* Scroll personalizado para webkit */
 .menu-buttons::-webkit-scrollbar {
     width: 6px;
+}
+
+.menu-buttons::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 .menu-buttons::-webkit-scrollbar-thumb {
     background: rgba(102, 126, 234, 0.3);
     border-radius: 3px;
+    transition: background 0.3s ease;
 }
 
 .menu-buttons::-webkit-scrollbar-thumb:hover {
     background: rgba(102, 126, 234, 0.5);
 }
 
-.menu-footer {
-    padding: 15px 20px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    background: rgba(255, 255, 255, 0.95);
-}
-
 /* BOTONES DEL MENÚ */
 .menu-button {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -281,6 +288,7 @@ body {
     overflow: hidden !important;
     width: 100% !important;
     max-width: 380px !important;
+    margin: 2px 0;
 }
 
 .menu-button:focus,
@@ -300,6 +308,7 @@ body {
     box-shadow: none !important;
 }
 
+/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
     content: '';
     position: absolute;
@@ -333,51 +342,42 @@ body {
     filter: grayscale(0);
 }
 
-/* Overlay para cerrar menu */
-.overlay {
-    position: fixed;
-    top: 89px;
-    left: 0;
-    width: 100vw;
-    height: calc(100vh - 89px);
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    display: none;
-    z-index: 999;
-    transition: all 0.3s ease;
-}
-
-.overlay.active {
-    display: block;
-}
-
 /* CERRAR SESIÓN COMO BOTÓN NORMAL */
 .menu-button.close-session {
-    width: 100%;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 16px 25px;
-    background: rgba(211, 47, 47, 0.05);
+    padding: 18px 30px;
+    background: transparent !important;
     color: #d32f2f;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    border-radius: 6px;
+    text-align: left;
     transition: all 0.3s ease;
+    position: relative;
     font-family: 'Inter', Arial, sans-serif;
+    width: 100%;
+    margin: 2px 0;
     border: none !important;
     outline: none !important;
-}
-
-.menu-button.close-session:hover {
-    background: rgba(211, 47, 47, 0.15) !important;
-    color: #b71c1c;
-    transform: translateX(5px);
+    box-shadow: none !important;
+    overflow: hidden !important;
+    max-width: 380px !important;
 }
 
 .menu-button.close-session:focus,
 .menu-button.close-session:active {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.menu-button.close-session:hover {
+    background: rgba(211, 47, 47, 0.1) !important;
+    color: #b71c1c;
+    transform: translateX(8px);
     outline: none !important;
     border: none !important;
     box-shadow: none !important;
@@ -400,6 +400,24 @@ body {
     content: none !important;
 }
 
+/* Overlay para cerrar menu */
+.overlay {
+    position: fixed;
+    top: 89px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 89px);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: none;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.overlay.active {
+    display: block;
+}
+
 /* ===== CONTENIDO PRINCIPAL ===== */
 .main-content {
     display: flex;
@@ -416,7 +434,7 @@ body {
     padding: 40px;
     max-width: 1200px;
     width: 100%;
-    margin: 0 auto;
+    margin: 30px auto 0;
     position: relative;
     overflow: hidden;
 }
@@ -1310,9 +1328,6 @@ footer.pie-pagina {
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
     .header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
         padding: 15px 20px;
     }
 
@@ -1325,28 +1340,19 @@ footer.pie-pagina {
         font-size: 1.5rem;
     }
 
+    .header-logo {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
     .side-menu {
         width: 320px;
         left: -320px;
     }
 
-    .menu-header {
-        padding: 30px 25px 30px 25px;
-        min-height: 70px;
-    }
-
-    .menu-title {
-        font-size: 1.2rem;
-    }
-
     .menu-button {
-        padding: 15px 25px;
+        padding: 16px 25px;
         font-size: 0.95rem;
-        min-width: 320px !important;
-    }
-
-    .menu-button.close-session {
-        padding: 15px 25px;
     }
 
     .dashboard-header {
