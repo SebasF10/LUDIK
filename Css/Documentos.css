@@ -1,6 +1,8 @@
-/* CSS para Documentos - Basado en Estudiantes.css con estética moderna */
+/* CSS para Documentos - Con Header y Menú del archivo Menu.css */
 
-/* Reset y configuración base */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ===================== RESET Y CONFIGURACIÓN BASE ===================== */
 * {
     margin: 0;
     padding: 0;
@@ -16,9 +18,10 @@ body {
     color: #2c3e50;
     line-height: 1.6;
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
-/* ===================== ESTILOS DEL HEADER Y MENÚ ===================== */
+/* ===================== ESTILOS DEL HEADER Y MENÚ (del Menu.css) ===================== */
 
 .header {
     display: flex;
@@ -53,7 +56,6 @@ body {
 .right-section {
     display: flex;
     align-items: center;
-    gap: 15px;
     flex: 1;
     justify-content: flex-end;
 }
@@ -87,6 +89,8 @@ body {
 .header-logo:hover {
     transform: scale(1.05) rotate(5deg);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    outline: none !important;
+    border: none !important;
 }
 
 .title {
@@ -119,10 +123,14 @@ body {
 .burger:hover {
     background: rgba(102, 126, 234, 0.1);
     transform: scale(1.05);
+    outline: none !important;
+    border: none !important;
 }
 
 .burger input {
     display: none;
+    outline: none !important;
+    border: none !important;
 }
 
 .burger span {
@@ -134,8 +142,11 @@ body {
     opacity: 1;
     left: 50%;
     transition: .25s ease-in-out;
+    outline: none !important;
+    border: none !important;
 }
 
+/* Líneas simétricas en estado normal */
 .burger span:nth-of-type(1) {
     width: 50px;
     top: 12px;
@@ -157,6 +168,7 @@ body {
     transform-origin: center;
 }
 
+/* Animación de transformación a X ASIMÉTRICA */
 .burger input:checked~span:nth-of-type(1) {
     transform: translate(-50%, -50%) rotate(45deg);
     top: 50%;
@@ -174,7 +186,7 @@ body {
     width: 48px;
 }
 
-/* MENÚ LATERAL */
+/* MENÚ LATERAL - CON SCROLL */
 .side-menu {
     position: fixed;
     top: 89px;
@@ -187,7 +199,9 @@ body {
     z-index: 1000;
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    outline: none !important;
 }
 
 .side-menu.active {
@@ -195,12 +209,17 @@ body {
 }
 
 .menu-header {
-    padding: 35px 40px;
+    flex-shrink: 0;
+    padding: 35px 40px 35px 40px;
+    border-bottom: none !important;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 90px;
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
 }
 
 .menu-title {
@@ -213,16 +232,45 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* CONTENEDOR DE BOTONES CON SCROLL */
 .menu-buttons {
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 35px 0;
-    height: auto;
-    min-height: calc(100vh - 300px);
-    overflow: visible;
+    padding: 20px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    /* Scroll personalizado */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
+/* Scroll personalizado para webkit */
+.menu-buttons::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu-buttons::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
+
+/* BOTONES DEL MENÚ */
 .menu-button {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -238,15 +286,31 @@ body {
     font-family: 'Inter', Arial, sans-serif;
     border: none !important;
     outline: none !important;
-    width: 100%;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    max-width: 380px !important;
+    margin: 2px 0;
+}
+
+.menu-button:focus,
+.menu-button:active,
+.menu-button:visited {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .menu-button:hover {
     background: rgba(102, 126, 234, 0.1) !important;
     color: #667eea;
     transform: translateX(8px);
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
+/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
     content: '';
     position: absolute;
@@ -258,21 +322,14 @@ body {
     border-radius: 0 4px 4px 0;
 }
 
-.menu-button.active {
-    background: rgba(102, 126, 234, 0.15) !important;
-    color: #5a67d8;
-    font-weight: 600;
-}
-
-.menu-button.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 0 4px 4px 0;
+.menu-button::after,
+.menu-button:hover::after,
+.menu-button:focus::after,
+.menu-button:active::after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+    background: none !important;
 }
 
 .menu-icon {
@@ -283,6 +340,69 @@ body {
     transition: filter 0.3s ease;
 }
 
+.menu-button:hover .menu-icon {
+    filter: grayscale(0);
+}
+
+/* CERRAR SESIÓN COMO BOTÓN NORMAL */
+.menu-button.close-session {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 30px;
+    background: transparent !important;
+    color: #d32f2f;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    position: relative;
+    font-family: 'Inter', Arial, sans-serif;
+    width: 100%;
+    margin: 2px 0;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    max-width: 380px !important;
+}
+
+.menu-button.close-session:focus,
+.menu-button.close-session:active {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.menu-button.close-session:hover {
+    background: rgba(211, 47, 47, 0.1) !important;
+    color: #b71c1c;
+    transform: translateX(8px);
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.menu-button.close-session:hover::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #d32f2f;
+    border-radius: 0 4px 4px 0;
+}
+
+.menu-button.close-session::after,
+.menu-button.close-session:hover::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Overlay para cerrar menu */
 .overlay {
     position: fixed;
     top: 89px;
@@ -298,32 +418,6 @@ body {
 
 .overlay.active {
     display: block;
-}
-
-.menu-bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 0;
-    background: transparent;
-}
-
-.menu-button.close-session {
-    color: #d32f2f;
-    font-weight: 600;
-    justify-content: center;
-    width: 100%;
-    margin: 0;
-}
-
-.menu-button.close-session:hover {
-    background: rgba(211, 47, 47, 0.1) !important;
-    color: #b71c1c;
-    transform: translateX(8px);
-}
-
-.menu-button.close-session:hover::before {
-    background: #d32f2f;
 }
 
 /* ===================== CONTENIDO PRINCIPAL ===================== */
@@ -809,33 +903,13 @@ body {
     display: none;
 }
 
-/* Botón de regresar */
-.back-btn {
-    position: fixed;
-    left: 18px;
-    bottom: 18px;
-    padding: 10px 16px;
-    background-color: #0b74da;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: background 0.2s ease;
-    z-index: 1000;
-}
-
-.back-btn:hover {
-    background-color: #095bb5;
-}
-
 /* ===================== ANIMACIONES ===================== */
 
 @keyframes fadeIn {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -846,6 +920,7 @@ body {
         opacity: 0;
         transform: translateY(50px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -856,15 +931,19 @@ body {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.7;
     }
@@ -872,18 +951,24 @@ body {
 
 /* ===================== RESPONSIVE DESIGN ===================== */
 
+/* RESPONSIVE - MOBILE (del Menu.css) */
 @media (max-width: 768px) {
     .header {
         padding: 15px 20px;
     }
 
     .title {
-        font-size: 2rem;
+        font-size: 2.5rem;
         letter-spacing: 2px;
     }
 
     .menu-text {
-        font-size: 0.9rem;
+        font-size: 1.5rem;
+    }
+
+    .header-logo {
+        width: 50px !important;
+        height: 50px !important;
     }
 
     .side-menu {
@@ -891,20 +976,12 @@ body {
         left: -320px;
     }
 
-    .menu-header {
-        padding: 30px 25px;
-        min-height: 70px;
-    }
-
-    .menu-title {
-        font-size: 1.2rem;
-    }
-
     .menu-button {
-        padding: 15px 25px;
+        padding: 16px 25px;
         font-size: 0.95rem;
     }
 
+    /* Estilos específicos de documentos responsive */
     .main-content {
         margin: 20px 15px;
         border-radius: 16px;

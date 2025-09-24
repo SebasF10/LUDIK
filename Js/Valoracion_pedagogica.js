@@ -1,6 +1,8 @@
 // valoracion_pedagogica.js - Sistema CRUD completo para valoraciones pedagógicas con menú integrado
 
-// Variables globales
+console.log("Header y Menú script cargado");
+
+// ===== VARIABLES GLOBALES PRINCIPALES =====
 let modoActual = 'dashboard'; // 'dashboard' o 'formulario'
 let pasoActual = 1;
 let valoracionActual = null; // Para edición
@@ -16,14 +18,14 @@ const burger = document.getElementById('burger');
 const sideMenu = document.getElementById('sideMenu');
 const overlay = document.getElementById('overlay');
 
-// Inicializar la aplicación
+// ===== INICIALIZAR LA APLICACIÓN =====
 document.addEventListener('DOMContentLoaded', function () {
     inicializarMenu();
     inicializarEventos();
     mostrarDashboard();
 });
 
-// ===== FUNCIONALIDAD DEL MENÚ ===== 
+// ===== FUNCIONALIDAD DEL MENÚ - FUSIONADA =====
 function inicializarMenu() {
     // Configurar event listeners del menú solo si existen los elementos
     if (burger && sideMenu && overlay) {
@@ -161,7 +163,7 @@ function eliminarBotonesPorRol() {
     setTimeout(inspeccionarYEliminar, 100);
 }
 
-// ======= CLICK EN BOTONES DEL MENÚ =======
+// ======= CLICK EN BOTONES DEL MENÚ - FUSIONADO =======
 document.addEventListener('click', function (e) {
     const boton = e.target.closest('.menu-button');
     if (boton) {
@@ -185,9 +187,14 @@ document.addEventListener('click', function (e) {
             window.location.href = 'Registrar_estudiante.html';
         } else if (textoLower.includes('registrar un piar')) {
             window.location.href = 'Registrar_PIAR.html';
+        } else if (textoLower.includes('descripción general')) {
+            window.location.href = 'Descripción_general.html';
         } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
             // Ya estamos en valoración pedagógica, no hacer nada
             console.log("-> Ya estás en valoración pedagógica");
+        } else if (textoLower.includes('documentos')) {
+            console.log("-> Redirigiendo a documentos");
+            window.location.href = 'Documentos.html';
         } else if (textoLower.includes('comunicate')) {
             window.location.href = 'Comunicacion.html';
         } else if (textoLower.includes('ayuda')) {
@@ -208,6 +215,69 @@ document.addEventListener('click', function (e) {
         }
     }
 });
+
+// ===== FUNCIONES ADICIONALES PARA PERSONALIZACIÓN DEL MENÚ =====
+
+// Función para cambiar el título del header
+function cambiarTitulo(nuevoTitulo) {
+    const titulo = document.querySelector('.title');
+    if (titulo) {
+        titulo.textContent = nuevoTitulo;
+    }
+}
+
+// Función para cambiar el logo
+function cambiarLogo(rutaLogo) {
+    const logo = document.querySelector('.header-logo');
+    if (logo) {
+        logo.src = rutaLogo;
+    }
+}
+
+// Función para añadir botón personalizado al menú
+function añadirBotonMenu(icono, texto, callback) {
+    const menuButtons = document.querySelector('.menu-buttons');
+    const botonCerrarSesion = document.querySelector('.close-session');
+
+    if (menuButtons) {
+        const nuevoBoton = document.createElement('button');
+        nuevoBoton.className = 'menu-button';
+        nuevoBoton.innerHTML = `
+            <span class="menu-icon">${icono}</span>
+            ${texto}
+        `;
+
+        // Insertar antes del botón de cerrar sesión
+        if (botonCerrarSesion) {
+            menuButtons.insertBefore(nuevoBoton, botonCerrarSesion);
+        } else {
+            menuButtons.appendChild(nuevoBoton);
+        }
+
+        // Añadir evento click
+        nuevoBoton.addEventListener('click', callback);
+
+        return nuevoBoton;
+    }
+}
+
+// Función para remover botón específico
+function removerBotonMenu(textoBoton) {
+    const botones = document.querySelectorAll('.menu-button');
+    botones.forEach(boton => {
+        if (boton.textContent.trim().toLowerCase().includes(textoBoton.toLowerCase())) {
+            boton.remove();
+        }
+    });
+}
+
+// Función para cambiar el título del panel de control
+function cambiarTituloPanel(nuevoTitulo) {
+    const menuTitle = document.querySelector('.menu-title');
+    if (menuTitle) {
+        menuTitle.textContent = nuevoTitulo;
+    }
+}
 
 // ===== EVENTOS PRINCIPALES =====
 function inicializarEventos() {
@@ -369,6 +439,16 @@ async function cargarGruposParaFiltros() {
         console.error('Error al cargar grupos para filtros:', error);
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const btnIA = document.getElementById('btnIA');
+    if (btnIA) {
+        btnIA.addEventListener('click', function () {
+            window.open('https://ia-ludik-1.onrender.com/', '_blank');
+        });
+    }
+});
+
 
 function aplicarFiltros() {
     cargarValoraciones();
@@ -974,3 +1054,4 @@ function goBackOrRedirect(ruta) {
         window.history.back();
     }
 }
+

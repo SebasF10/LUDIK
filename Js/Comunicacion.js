@@ -175,6 +175,9 @@ document.addEventListener('click', function (e) {
             window.location.href = 'Descripción_general.html';
         } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
             window.location.href = 'Valoracion_pedagogica.html';
+        } else if (textoLower.includes('documentos')) {
+            console.log("-> Redirigiendo a documentos");
+            window.location.href = 'Documentos.html';
         } else if (textoLower.includes('comunicate')) {
             window.location.href = 'Comunicacion.html';
         } else if (textoLower.includes('ayuda')) {
@@ -195,6 +198,16 @@ document.addEventListener('click', function (e) {
         }
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const btnIA = document.getElementById('btnIA');
+    if (btnIA) {
+        btnIA.addEventListener('click', function () {
+            window.open('https://ia-ludik-1.onrender.com/', '_blank');
+        });
+    }
+});
+
 
 // ======= FUNCIONES ADICIONALES PARA PERSONALIZACIÓN =======
 
