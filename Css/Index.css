@@ -1,4 +1,4 @@
-/* CSS para Index.html - Página de información con estética moderna */
+/* CSS para Index.html - Página de información con estética moderna mejorada */
 
 /* Reset y configuración base */
 * {
@@ -14,6 +14,78 @@ body {
     color: #2c3e50;
     line-height: 1.6;
     scroll-behavior: smooth;
+}
+
+/* TIPOGRAFÍA CONSISTENTE */
+.parrafo-principal {
+    font-size: 1.1rem !important;
+    line-height: 1.8 !important;
+    color: #64748b !important;
+    margin-bottom: 20px !important;
+    text-align: justify;
+}
+
+.subtitulo {
+    color: #475569 !important;
+    margin: 30px 0 15px 0 !important;
+    font-size: 1.3rem !important;
+    font-weight: 600 !important;
+}
+
+.titulo-seccion {
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin: 40px 0 25px 0 !important;
+    position: relative;
+}
+
+.titulo-seccion::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+}
+
+.numero-destacado {
+    color: #667eea !important;
+    font-weight: 700 !important;
+    font-size: 1.2em !important;
+}
+
+.cita {
+    font-size: 1.2rem !important;
+    font-style: italic !important;
+    color: #2c3e50 !important;
+    margin-bottom: 15px !important;
+    line-height: 1.6 !important;
+    position: relative;
+}
+
+.autor-cita {
+    font-size: 1rem !important;
+    color: #667eea !important;
+    font-weight: 600 !important;
+}
+
+.subtitulo-ludik {
+    font-size: 1.2rem !important;
+    color: #667eea !important;
+    font-weight: 500 !important;
+    margin-top: 10px !important;
+    font-style: italic;
+}
+
+.pie-imagen {
+    font-size: 0.9rem !important;
+    color: #64748b !important;
+    text-align: center !important;
+    margin-top: 15px !important;
+    font-style: italic;
 }
 
 /* Header mejorado con botón de sesión integrado */
@@ -61,12 +133,6 @@ header {
     transition: transform 0.3s ease;
 }
 
-/* REMOVIDO: La regla de hover para .logo-institucion para mantenerlo estático */
-/* .logo-institucion:hover {
-    transform: scale(1.05);
-} */
-
-/* Clase especial para evitar animación en logos con no-hover */
 .no-hover {
     transition: none !important;
 }
@@ -125,7 +191,6 @@ header {
     background: white;
     margin: 40px auto;
     margin-top: 120px;
-    /* Espacio para el header fijo */
     max-width: 1200px;
     border-radius: 24px;
     overflow: hidden;
@@ -142,13 +207,11 @@ header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* BOTONES DE NAVEGACIÓN CON NUEVO COMPORTAMIENTO */
 .nav-btn {
-    /* Estado por defecto: fondo blanco con borde del gradiente */
     background: white;
     color: #667eea;
     border: 2px solid transparent;
-    background-image: 
+    background-image:
         linear-gradient(white, white),
         linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     background-origin: border-box;
@@ -166,7 +229,6 @@ header {
     display: inline-block;
 }
 
-/* Estado hover: gradiente de fondo */
 .nav-btn:hover {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -175,7 +237,6 @@ header {
     border: 2px solid transparent;
 }
 
-/* Estado activo: mantiene el gradiente */
 .nav-btn.active {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -184,7 +245,6 @@ header {
     border: 2px solid transparent;
 }
 
-/* Efecto adicional para el botón activo */
 .nav-btn.active::before {
     content: '';
     position: absolute;
@@ -204,10 +264,12 @@ header {
         transform: scale(1);
         opacity: 0.3;
     }
+
     50% {
         transform: scale(1.05);
         opacity: 0.1;
     }
+
     100% {
         transform: scale(1);
         opacity: 0.3;
@@ -221,13 +283,11 @@ header {
     opacity: 1;
     transform: translateY(0);
     display: none;
-    /* Ocultar por defecto */
     transition: all 0.5s ease;
 }
 
 .section.active {
     display: block;
-    /* Mostrar solo la sección activa */
     animation: fadeInUp 0.5s ease forwards;
 }
 
@@ -235,29 +295,11 @@ header {
     border-bottom: 1px solid #f1f5f9;
 }
 
-.section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-/* Comentado para eliminar la línea morada molesta
-.section:hover::before {
-    opacity: 1;
-}
-*/
-
 .section h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 25px;
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin-bottom: 25px !important;
     position: relative;
 }
 
@@ -272,29 +314,242 @@ header {
     border-radius: 2px;
 }
 
-.section h3 {
-    color: #475569;
-    margin: 30px 0 15px 0;
-    font-size: 1.3rem;
-    font-weight: 600;
-}
-
-.section p {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    margin-bottom: 20px;
-    color: #64748b;
-}
-
 .highlight {
-    color: #667eea;
-    font-weight: 600;
-    background: rgba(102, 126, 234, 0.1);
-    padding: 2px 8px;
-    border-radius: 6px;
+    color: #667eea !important;
+    font-weight: 600 !important;
+    background: rgba(102, 126, 234, 0.1) !important;
+    padding: 2px 8px !important;
+    border-radius: 6px !important;
 }
 
-/* Header específico para la sección LUDIK */
+/* Cita mejorada con imagen del atleta */
+.quote-section {
+    margin: 40px 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
+    border-radius: 16px;
+    padding: 30px;
+    border-left: 5px solid #667eea;
+}
+
+.quote-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+}
+
+.quote-text {
+    flex: 2;
+}
+
+.quote-text blockquote::before {
+    content: '"';
+    font-size: 3rem;
+    color: #667eea;
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    opacity: 0.3;
+}
+
+.quote-image {
+    flex: 0 0 150px;
+    text-align: center;
+}
+
+.athlete-image {
+    width: 120px !important;
+    height: 160px !important;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.athlete-image:hover {
+    transform: scale(1.05);
+}
+
+/* Definición de inclusión mejorada */
+.inclusion-definition {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 25px;
+    margin: 30px 0;
+    border-left: 4px solid #10b981;
+}
+
+.inclusion-definition h3 {
+    color: #10b981 !important;
+    margin-bottom: 15px !important;
+}
+
+.reality-check {
+    background: rgba(255, 193, 7, 0.1);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 25px 0;
+    border-left: 4px solid #ffc107;
+}
+
+.inclusion-stats {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.03) 100%);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 30px 0;
+    border-left: 4px solid #10b981;
+}
+
+.stat-highlight {
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: 600;
+    color: #2c3e50;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    font-size: 1.1rem;
+}
+
+.santander-stats {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(220, 38, 38, 0.03) 100%);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 30px 0;
+    border-left: 4px solid #ef4444;
+}
+
+.santander-stats h3 {
+    color: #ef4444 !important;
+    margin-bottom: 15px !important;
+}
+
+/* BOTONES DESPLEGABLES COMPLETAMENTE REDISEÑADOS */
+.laws-container {
+    margin: 30px 0;
+}
+
+.law-item {
+    margin: 20px 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    background: white;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.law-item:hover {
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+    transform: translateY(-2px);
+}
+
+.law-btn {
+    width: 100%;
+    text-align: left;
+    padding: 25px 30px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.02) 0%, rgba(118, 75, 162, 0.01) 100%);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 5px solid #667eea;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.law-btn:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
+    border-left-color: #764ba2;
+}
+
+.law-title {
+    flex: 1;
+}
+
+.law-title h4 {
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin-bottom: 8px !important;
+}
+
+.law-title p {
+    font-size: 1rem !important;
+    color: #64748b !important;
+    margin: 0 !important;
+    font-weight: 500 !important;
+}
+
+.law-icon {
+    flex-shrink: 0;
+    width: 35px;
+    height: 35px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.law-item.expanded .law-icon {
+    transform: rotate(45deg);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.law-content {
+    display: none;
+    background: white;
+    border-top: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.law-body {
+    padding: 30px;
+}
+
+.law-body h5 {
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    color: #667eea !important;
+    margin-bottom: 15px !important;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+}
+
+/* Principios de inclusión */
+.principios-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+}
+
+.principio-item {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.03) 100%);
+    border-radius: 16px;
+    padding: 25px;
+    border-left: 5px solid #10b981;
+    transition: transform 0.3s ease;
+}
+
+.principio-item:hover {
+    transform: translateY(-3px);
+}
+
+.principio-titulo {
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    color: #10b981 !important;
+    margin-bottom: 15px !important;
+}
+
+/* Header específico para LUDIK */
 .ludik-header {
     display: flex;
     justify-content: space-between;
@@ -327,24 +582,99 @@ header {
     transform: none !important;
 }
 
-/* Elementos de información mejorados (reemplaza las listas) */
-.info-item {
-    margin: 12px 0;
-    padding: 15px 20px;
-    background: #f8fafc;
-    border-radius: 10px;
-    border-left: 4px solid #667eea;
-    font-size: 1rem;
-    color: #475569;
-    position: relative;
-    cursor: default;
+/* Contenedores para causas y consecuencias */
+.causas-container,
+.consecuencias-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
 }
 
-.info-item::before {
-    content: '→';
-    color: #667eea;
-    font-weight: bold;
-    margin-right: 10px;
+.causa-item,
+.consecuencia-item {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.02) 100%);
+    border-radius: 16px;
+    padding: 25px;
+    border-left: 5px solid #667eea;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    transition: transform 0.3s ease;
+}
+
+.causa-item:hover,
+.consecuencia-item:hover {
+    transform: translateY(-3px);
+}
+
+.causa-icono,
+.consecuencia-icono {
+    font-size: 2rem;
+    flex-shrink: 0;
+    background: rgba(102, 126, 234, 0.1);
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.causa-content h4,
+.consecuencia-content h4 {
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    margin-bottom: 12px !important;
+}
+
+/* Funcionalidades de LUDIK */
+.funcionalidades-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+}
+
+.funcionalidad-item {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, rgba(5, 150, 105, 0.02) 100%);
+    border-radius: 16px;
+    padding: 25px;
+    border-left: 5px solid #10b981;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    transition: transform 0.3s ease;
+}
+
+.funcionalidad-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+}
+
+.funcionalidad-icono {
+    font-size: 2rem;
+    flex-shrink: 0;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.funcionalidad-content h4 {
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    color: #10b981 !important;
+    margin-bottom: 12px !important;
+}
+
+.ludik-objective {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
+    border-radius: 16px;
+    padding: 30px;
+    margin: 30px 0;
+    border-left: 5px solid #667eea;
+}
+
+.ludik-objective h3 {
+    color: #667eea !important;
+    margin-bottom: 20px !important;
 }
 
 /* Imágenes mejoradas */
@@ -367,7 +697,6 @@ header {
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
 }
 
-/* Imagen grande (Colegio) */
 .imagen-colegio {
     display: block;
     margin: 20px auto;
@@ -376,7 +705,6 @@ header {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
-/* Imagen mediana (Inclusión) */
 .imagen-mediana {
     display: block;
     margin: 20px auto;
@@ -458,13 +786,12 @@ header {
     }
 
     .section h1 {
-        font-size: 2rem;
+        font-size: 2rem !important;
     }
 
     .main-content {
         margin: 20px 15px;
         margin-top: 160px;
-        /* Más espacio en mobile */
         border-radius: 16px;
     }
 
@@ -496,7 +823,6 @@ header {
         font-size: 0.9rem;
     }
 
-    /* Header LUDIK responsivo */
     .ludik-header {
         flex-direction: column;
         align-items: center;
@@ -506,6 +832,40 @@ header {
 
     .ludik-logo {
         order: -1;
+    }
+
+    .quote-content {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .athlete-image {
+        width: 100px !important;
+        height: 130px !important;
+    }
+
+    .cita {
+        font-size: 1.1rem !important;
+    }
+
+    .law-btn {
+        padding: 20px 25px;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .law-title h4 {
+        font-size: 1.1rem !important;
+    }
+
+    .causas-container,
+    .consecuencias-container,
+    .funcionalidades-container,
+    .principios-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 }
 
@@ -520,11 +880,11 @@ header {
     }
 
     .section h1 {
-        font-size: 1.8rem;
+        font-size: 1.8rem !important;
     }
 
-    .section p {
-        font-size: 1rem;
+    .parrafo-principal {
+        font-size: 1rem !important;
     }
 
     .btn-login {
@@ -534,7 +894,6 @@ header {
 
     .main-content {
         margin-top: 180px;
-        /* Aún más espacio en pantallas muy pequeñas */
     }
 
     .imagen-mediana {
@@ -545,11 +904,6 @@ header {
         width: 80px !important;
     }
 
-    .info-item {
-        padding: 12px 15px;
-        font-size: 0.95rem;
-    }
-
     .nav-interno {
         padding: 20px 15px;
     }
@@ -558,20 +912,30 @@ header {
         padding: 10px 20px;
         font-size: 0.9rem;
     }
-}
 
-.btn-maps {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4285F4;
-    /* Azul característico de Google */
-    color: white;
-    font-size: 16px;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: 0.3s;
-}
+    .cita {
+        font-size: 1rem !important;
+    }
 
-.btn-maps:hover {
-    background-color: #0b66c3;
+    .athlete-image {
+        width: 80px !important;
+        height: 110px !important;
+    }
+
+    .inclusion-stats,
+    .santander-stats,
+    .inclusion-definition,
+    .reality-check,
+    .ludik-objective {
+        padding: 20px;
+        margin: 20px 0;
+    }
+
+    .law-btn {
+        padding: 18px 20px;
+    }
+
+    .law-body {
+        padding: 25px 20px;
+    }
 }
