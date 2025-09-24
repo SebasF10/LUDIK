@@ -1,44 +1,30 @@
 // ===================== FUNCIONES DE UTILIDAD =====================
 
-/**
- * Mostrar loading
- */
+
 function showLoading() {
     if (loadingSpinner) {
         loadingSpinner.style.display = 'block';
     }
 }
 
-/**
- * Ocultar loading
- */
 function hideLoading() {
     if (loadingSpinner) {
         loadingSpinner.style.display = 'none';
     }
 }
 
-/**
- * Mostrar loading de PDF
- */
 function showPDFLoading() {
     if (pdfLoadingSpinner) {
         pdfLoadingSpinner.style.display = 'block';
     }
 }
 
-/**
- * Ocultar loading de PDF
- */
 function hidePDFLoading() {
     if (pdfLoadingSpinner) {
         pdfLoadingSpinner.style.display = 'none';
     }
 }
 
-/**
- * Mostrar error
- */
 function showError(message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
@@ -61,13 +47,95 @@ function showError(message) {
     setTimeout(() => {
         if (errorDiv && errorDiv.parentNode) {
             errorDiv.remove();
+=======
+console.log("Header y Menú script cargado");
+
+// ===================== FUNCIONALIDAD DEL MENÚ =====================
+
+// Variables globales del menú
+const burger = document.getElementById('burger');
+const sideMenu = document.getElementById('sideMenu');
+const overlay = document.getElementById('overlay');
+
+// Esperar a que el DOM esté cargado para configurar el menú
+document.addEventListener('DOMContentLoaded', function () {
+    console.log("DOM cargado - ejecutando función de roles e inicialización");
+
+    // Configurar event listeners del menú
+    if (burger && sideMenu && overlay) {
+        burger.addEventListener('change', function () {
+            if (this.checked) {
+                sideMenu.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                setTimeout(inspeccionarYEliminar, 200);
+            } else {
+                sideMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        overlay.addEventListener('click', function () {
+            burger.checked = false;
+            sideMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    }
+
+    // Verificar y aplicar restricciones por rol
+    verificarYAplicarRestricciones();
+
+    // Inicializar funcionalidad específica de estudiantes
+    initializeApp();
+});
+
+// FUNCIÓN PARA INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
+function inspeccionarYEliminar() {
+    console.log("🔍 INSPECCIONANDO ELEMENTOS EN EL MENÚ");
+
+    const menuButtons = document.querySelector('.menu-buttons');
+    if (!menuButtons) return;
+
+    // Obtener TODOS los hijos directos
+    const todosLosHijos = Array.from(menuButtons.children);
+
+    console.log("📋 Elementos encontrados en menu-buttons:");
+    todosLosHijos.forEach((elemento, index) => {
+        console.log(`${index}: ${elemento.tagName} - ${elemento.className} - "${elemento.textContent?.trim()}" - Height: ${elemento.offsetHeight}px`);
+
+        // Eliminar elementos sospechosos
+        if (
+            elemento.tagName === 'HR' ||
+            (elemento.offsetHeight <= 5 && !elemento.textContent?.trim()) ||
+            elemento.className?.includes('separator') ||
+            elemento.className?.includes('divider') ||
+            elemento.className?.includes('line') ||
+            (!elemento.classList.contains('menu-button') && !elemento.textContent?.trim())
+        ) {
+            console.log(`🗑️ ELIMINANDO elemento sospechoso: ${elemento.tagName} - ${elemento.className}`);
+            elemento.remove();
+        }
+    });
+
+    // También verificar en el contenedor principal del menú
+    const sideMenuChildren = Array.from(sideMenu.children);
+    console.log("📋 Elementos en side-menu:");
+    sideMenuChildren.forEach((elemento, index) => {
+        console.log(`${index}: ${elemento.tagName} - ${elemento.className} - Height: ${elemento.offsetHeight}px`);
+
+        if (!['menu-header', 'menu-buttons', 'menu-bottom'].some(clase => elemento.classList.contains(clase))) {
+            if (elemento.tagName === 'HR' || elemento.offsetHeight <= 5) {
+                console.log(`🗑️ ELIMINANDO elemento extraño en side-menu: ${elemento.tagName}`);
+                elemento.remove();
+            }
         }
     }, 5000);
 }
 
-/**
- * Mostrar pestaña del modal
- */
+
 function showModalTab(tabName) {
     // Actualizar pestañas
     document.querySelectorAll('.modal-tab').forEach(tab => {
@@ -81,6 +149,66 @@ function showModalTab(tabName) {
     // Mostrar contenido
     document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
+      
+// FUNCIÓN PARA VERIFICAR ROL Y APLICAR RESTRICCIONES
+function verificarYAplicarRestricciones() {
+    const rol = localStorage.getItem('rol');
+    console.log('Rol en localStorage:', rol);
+
+    // Eliminar cualquier HR o línea que pueda existir
+    const lineas = document.querySelectorAll('hr, .separator, .line, .divider');
+    lineas.forEach(linea => {
+        console.log('Eliminando línea encontrada');
+        linea.remove();
+    });
+
+    // Aplicar restricciones por rol
+    eliminarBotonesPorRol();
+}
+
+// FUNCIÓN SIMPLIFICADA PARA ELIMINAR BOTONES SEGÚN ROL
+function eliminarBotonesPorRol() {
+    const rol = localStorage.getItem("rol");
+    console.log("Verificando rol:", rol);
+
+    // PRIMERO: INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
+    inspeccionarYEliminar();
+
+    // Buscar TODOS los botones del menú
+    const todosLosBotones = document.querySelectorAll('.menu-button');
+    console.log("Botones encontrados:", todosLosBotones.length);
+
+    todosLosBotones.forEach(function (boton, index) {
+        const textoDelBoton = boton.textContent.trim().toLowerCase();
+        console.log(`Botón ${index}: "${textoDelBoton}"`);
+
+        if (rol === "admin") {
+            console.log("Usuario es admin, todos los botones visibles");
+
+        } else if (rol === "docente_apoyo") {
+            if (textoDelBoton.includes("crear cuenta")) {
+                console.log("¡Eliminando botón Crear Cuentas para docente_apoyo!");
+                boton.remove();
+            }
+
+        } else if (rol === "docente") {
+            if (textoDelBoton.includes("crear cuenta")) {
+                boton.remove();
+            }
+            if (textoDelBoton.includes("registrar un nuevo estudiante")) {
+                boton.remove();
+            }
+            if (textoDelBoton.includes("registrar un piar")) {
+                boton.remove();
+            }
+
+        } else {
+            if (textoDelBoton.includes("crear cuenta") ||
+                textoDelBoton.includes("registrar un nuevo estudiante") ||
+                textoDelBoton.includes("registrar un piar")) {
+                boton.remove();
+            }
+        }
     });
     const activeContent = document.getElementById(`${tabName}Tab`);
     if (activeContent) {
@@ -88,9 +216,6 @@ function showModalTab(tabName) {
     }
 }
 
-/**
- * Cerrar modal del estudiante
- */
 function closeStudentModal() {
     if (modal) {
         modal.style.display = 'none';
@@ -131,17 +256,70 @@ function updatePaginationInfo() {
 
     if (prevPageBtn) {
         prevPageBtn.disabled = currentPage === 1;
+    setTimeout(inspeccionarYEliminar, 100);
+}
+
+// ======= CLICK EN BOTONES DEL MENÚ =======
+document.addEventListener('click', function (e) {
+    const boton = e.target.closest('.menu-button');
+    if (boton) {
+        const texto = boton.textContent.trim();
+        const textoLower = texto.toLowerCase();
+
+        console.log("=== DEBUG CLICK ===", textoLower);
+
+        // Navegación según el botón clickeado
+        if (textoLower.includes('volver a interfaz')) {
+            window.location.href = 'Interfaz.html';
+        } else if (textoLower.includes('perfil')) {
+            console.log("-> Redirigiendo a perfil");
+            window.location.href = 'perfil.html';
+        } else if (textoLower.includes('crear cuentas')) {
+            window.location.href = 'Crear_cuentas.html';
+        } else if (textoLower.includes('actividades')) {
+            window.location.href = 'Ejercicios.html';
+        } else if (textoLower.includes('registrar un nuevo estudiante')) {
+            window.location.href = 'Registrar_estudiante.html';
+        } else if (textoLower.includes('registrar un piar')) {
+            window.location.href = 'Registrar_PIAR.html';
+        } else if (textoLower.includes('descripción general')) {
+            window.location.href = 'Descripción_general.html';
+        } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
+            window.location.href = 'Valoracion_pedagogica.html';
+        } else if (textoLower.includes('comunicate')) {
+            window.location.href = 'Comunicacion.html';
+        } else if (textoLower.includes('ayuda')) {
+            window.location.href = 'Ayuda.html';
+        } else if (textoLower.includes('cerrar sesion') || textoLower.includes('cerrar sesión')) {
+            if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
+                localStorage.removeItem('rol');
+                window.location.href = 'Inicio_sesion.html';
+            }
+        }
+
+        // Cerrar menú al hacer click
+        if (burger && sideMenu && overlay) {
+            burger.checked = false;
+            sideMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
     }
     if (nextPageBtn) {
         nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
     }
 }
 
-/**
- * Cambiar página
- */
+
 function changePage(direction) {
     const totalPages = Math.ceil(allStudents.length / studentsPerPage);
+
+// Líneas de debugging
+console.log('=== DEBUG DE RUTAS ===');
+console.log('URL actual:', window.location.href);
+console.log('Protocolo:', window.location.protocol);
+console.log('Ruta base:', window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')));
+
 
     if (direction === -1 && currentPage > 1) {
         currentPage--;
@@ -163,6 +341,7 @@ async function downloadIndividualStudentPDF() {
         return;
     }
 
+
     // Verificar permisos de descarga según rol
     if (!canDownloadStudentData()) {
         alert('No tiene permisos para descargar esta información');
@@ -170,6 +349,12 @@ async function downloadIndividualStudentPDF() {
     }
 
     showPDFLoading();
+
+// Inicialización de funcionalidad específica de estudiantes
+function initializeApp() {
+    setupEventListeners();
+    loadFilters();
+
 
     try {
         const { jsPDF } = window.jspdf;
@@ -1091,7 +1276,7 @@ function setupEventListeners() {
         grupoFilter.addEventListener('change', applyFilters);
     }
 
-    // Modal
+
     if (closeModal) {
         closeModal.addEventListener('click', closeStudentModal);
     }
@@ -1101,6 +1286,11 @@ function setupEventListeners() {
             closeStudentModal();
         }
     });
+
+        // Encabezado del documento
+        doc.setFillColor(102, 126, 234);
+        doc.rect(0, 0, pageWidth, 30, 'F');
+
 
     // Paginación
     if (prevPageBtn) {
@@ -1167,11 +1357,38 @@ function showSection(sectionName) {
     }
 }
 
-/**
- * Realizar petición con autenticación
- */
+
 async function makeAuthenticatedRequest(action, params = {}) {
     showLoading();
+=======
+        // Información familiar - Madre
+        if (currentStudentData.madre) {
+            const madreData = {
+                'Nombre completo': currentStudentData.madre.nombre_completo || 'No registrado',
+                'Nivel educativo': currentStudentData.madre.nivel_educativo || 'No especificado',
+                'Ocupación': currentStudentData.madre.ocupacion || 'No especificada',
+                'Teléfono': currentStudentData.madre.telefono || 'No registrado',
+                'Email': currentStudentData.madre.email || 'No registrado'
+            };
+            addSection('INFORMACIÓN DE LA MADRE', madreData);
+        }
+
+        // Información familiar - Padre
+        if (currentStudentData.padre) {
+            const padreData = {
+                'Nombre completo': currentStudentData.padre.nombre_completo || 'No registrado',
+                'Nivel educativo': currentStudentData.padre.nivel_educativo || 'No especificado',
+                'Ocupación': currentStudentData.padre.ocupacion || 'No especificada',
+                'Teléfono': currentStudentData.padre.telefono || 'No registrado',
+                'Email': currentStudentData.padre.email || 'No registrado'
+            };
+            addSection('INFORMACIÓN DEL PADRE', padreData);
+        }
+
+        // Información médica
+        if (currentStudentData.info_medica) {
+            let medicalText = '';
+            const medical = currentStudentData.info_medica;e
 
     try {
         const url = new URL(API_BASE_URL, window.location.href);
@@ -1751,7 +1968,7 @@ function fillMedicalInfo(student) {
         html += '</ul>';
     }
 
-    // Medicamentos
+
     if (medicalInfo.medicamentos && medicalInfo.medicamentos.length > 0) {
         html += '<h4>Medicamentos:</h4><ul>';
         medicalInfo.medicamentos.forEach(medicamento => {
@@ -1759,6 +1976,7 @@ function fillMedicalInfo(student) {
         });
         html += '</ul>';
     }
+
 
     // Tratamientos
     if (medicalInfo.tratamientos && medicalInfo.tratamientos.length > 0) {
@@ -1891,11 +2109,7 @@ function fillPiarInfo(student) {
             valoracionesContainer.innerHTML = '<p>No hay valoraciones pedagógicas registradas.</p>';
         }
     }
-}
 
-/**
- * Llenar información del PIAR para padres (restringida)
- */
 function fillPiarInfoForParents(student) {
     const container = document.getElementById('infoPiar');
     const valoracionesContainer = document.getElementById('valoracionesList');
@@ -1918,3 +2132,6 @@ function fillPiarInfoForParents(student) {
         `;
     }
 }
+
+};
+

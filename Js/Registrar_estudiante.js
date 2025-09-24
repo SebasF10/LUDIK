@@ -1,34 +1,46 @@
-console.log("Script de Registrar Estudiante cargado con funcionalidad de menú");
 
-// ============================================
-// FUNCIONALIDAD DEL MENÚ EXTRAÍBLE - COPIADO DE MENU.JS
-// ============================================
+console.log("Header y Menú script cargado (fusionado en Registrar_estudiante.js)");
 
-// Funcionalidad del menú
+// ---------------------------
+// VARIABLES GLOBALES DEL MENÚ
+// ---------------------------
 const burger = document.getElementById('burger');
 const sideMenu = document.getElementById('sideMenu');
 const overlay = document.getElementById('overlay');
 
-burger.addEventListener('change', function () {
-    if (this.checked) {
-        sideMenu.classList.add('active');
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
+// ---------------------------
+// CONFIGURACIÓN DEL MENÚ AL CARGAR EL DOM
+// ---------------------------
+document.addEventListener('DOMContentLoaded', function () {
+    // Configurar event listeners del menú solo si existen los elementos
+    if (burger && sideMenu && overlay) {
+        // Usamos 'change' para inputs tipo checkbox (burger)
+        burger.addEventListener('change', function () {
+            if (this.checked) {
+                sideMenu.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
 
-        // INSPECCIONAR ELEMENTOS cuando se abra el menú
-        setTimeout(inspeccionarYEliminar, 200);
-    } else {
-        sideMenu.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.style.overflow = 'auto';
+                // INSPECCIONAR ELEMENTOS cuando se abra el menú
+                setTimeout(inspeccionarYEliminar, 200);
+            } else {
+                sideMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        overlay.addEventListener('click', function () {
+            // Cerrar el menú si el overlay es clickeado
+            if (burger) burger.checked = false;
+            sideMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
     }
-});
 
-overlay.addEventListener('click', function () {
-    burger.checked = false;
-    sideMenu.classList.remove('active');
-    overlay.classList.remove('active');
-    document.body.style.overflow = 'auto';
+    // Verificar y aplicar restricciones por rol (si corresponde)
+    verificarYAplicarRestricciones();
 });
 
 // Función para manejar campos condicionales del entorno educativo
@@ -71,6 +83,7 @@ function handleProgramasComplementarios() {
 }
 
 // FUNCIÓN PARA INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
+
 function inspeccionarYEliminar() {
     console.log("🔍 INSPECCIONANDO ELEMENTOS EN EL MENÚ");
 
@@ -86,15 +99,11 @@ function inspeccionarYEliminar() {
 
         // Eliminar elementos sospechosos
         if (
-            // Elementos HR
             elemento.tagName === 'HR' ||
-            // Elementos vacíos o con poca altura
             (elemento.offsetHeight <= 5 && !elemento.textContent?.trim()) ||
-            // Elementos con clases de separador
             elemento.className?.includes('separator') ||
             elemento.className?.includes('divider') ||
             elemento.className?.includes('line') ||
-            // Elementos que no son botones y no tienen texto
             (!elemento.classList.contains('menu-button') && !elemento.textContent?.trim())
         ) {
             console.log(`🗑️ ELIMINANDO elemento sospechoso: ${elemento.tagName} - ${elemento.className}`);
@@ -103,22 +112,43 @@ function inspeccionarYEliminar() {
     });
 
     // También verificar en el contenedor principal del menú
-    const sideMenuChildren = Array.from(sideMenu.children);
-    console.log("📋 Elementos en side-menu:");
-    sideMenuChildren.forEach((elemento, index) => {
-        console.log(`${index}: ${elemento.tagName} - ${elemento.className} - Height: ${elemento.offsetHeight}px`);
+    if (sideMenu) {
+        const sideMenuChildren = Array.from(sideMenu.children);
+        console.log("📋 Elementos en side-menu:");
+        sideMenuChildren.forEach((elemento, index) => {
+            console.log(`${index}: ${elemento.tagName} - ${elemento.className} - Height: ${elemento.offsetHeight}px`);
 
-        // Eliminar elementos extraños que no sean menu-header, menu-buttons o menu-bottom
-        if (!['menu-header', 'menu-buttons', 'menu-bottom'].some(clase => elemento.classList.contains(clase))) {
-            if (elemento.tagName === 'HR' || elemento.offsetHeight <= 5) {
-                console.log(`🗑️ ELIMINANDO elemento extraño en side-menu: ${elemento.tagName}`);
-                elemento.remove();
+            if (!['menu-header', 'menu-buttons', 'menu-bottom'].some(clase => elemento.classList.contains(clase))) {
+                if (elemento.tagName === 'HR' || elemento.offsetHeight <= 5) {
+                    console.log(`🗑️ ELIMINANDO elemento extraño en side-menu: ${elemento.tagName}`);
+                    elemento.remove();
+                }
             }
-        }
-    });
+        });
+    }
 }
 
-// Función simplificada para eliminar botones según rol
+// -------------------------------------------------
+// FUNCIÓN PARA VERIFICAR ROL Y APLICAR RESTRICCIONES
+// -------------------------------------------------
+function verificarYAplicarRestricciones() {
+    const rol = localStorage.getItem('rol');
+    console.log('Rol en localStorage:', rol);
+
+    // Eliminar cualquier HR o línea que pueda existir
+    const lineas = document.querySelectorAll('hr, .separator, .line, .divider');
+    lineas.forEach(linea => {
+        console.log('Eliminando línea encontrada');
+        linea.remove();
+    });
+
+    // Aplicar restricciones por rol
+    eliminarBotonesPorRol();
+}
+
+// -------------------------------------------------
+// FUNCIÓN: eliminarBotonesPorRol (combinada y robusta)
+// -------------------------------------------------
 function eliminarBotonesPorRol() {
     const rol = localStorage.getItem("rol");
     console.log("Verificando rol:", rol);
@@ -134,7 +164,6 @@ function eliminarBotonesPorRol() {
         const textoDelBoton = boton.textContent.trim().toLowerCase();
         console.log(`Botón ${index}: "${textoDelBoton}"`);
 
-        // Lógica según el rol
         if (rol === "admin") {
             // Admin: puede ver todos los botones
             console.log("Usuario es admin, todos los botones visibles");
@@ -173,80 +202,140 @@ function eliminarBotonesPorRol() {
         }
     });
 
-    // DESPUÉS DE MODIFICAR: INSPECCIONAR OTRA VEZ
+    // Ejecutar una inspección adicional tras los cambios
     setTimeout(inspeccionarYEliminar, 100);
 }
 
-// EJECUTAR cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', function () {
-    console.log("DOM cargado - ejecutando función de roles");
-    eliminarBotonesPorRol();
-});
-
-// Manejar clicks de botones del menú
+// -------------------------------
+// CLICK GLOBAL EN BOTONES DEL MENÚ
+// -------------------------------
 document.addEventListener('click', function (e) {
-    if (e.target.classList.contains('menu-button')) {
-        const texto = e.target.textContent.trim();
+    const boton = e.target.closest('.menu-button');
+    if (boton) {
+        const texto = boton.textContent.trim();
         const textoLower = texto.toLowerCase();
 
-        console.log("=== DEBUG CLICK ===");
-        console.log("Texto original:", `"${texto}"`);
-        console.log("Texto lowercase:", `"${textoLower}"`);
+        console.log("=== DEBUG CLICK (Menú) ===", textoLower);
 
-        if (textoLower.includes('perfil')) {
-            console.log("-> Redirigiendo a perfil");
+        // Navegación según el botón clickeado (mapeo extendido)
+        if (textoLower.includes('volver a interfaz')) {
+            window.location.href = 'Interfaz.html';
+        } else if (textoLower.includes('perfil')) {
             window.location.href = 'perfil.html';
         } else if (textoLower.includes('estudiantes')) {
-            console.log("-> Redirigiendo a estudiantes");
             window.location.href = 'Estudiantes.html';
         } else if (textoLower.includes('crear cuentas')) {
-            console.log("-> Redirigiendo a crear cuentas");
             window.location.href = 'Crear_cuentas.html';
         } else if (textoLower.includes('actividades')) {
-            console.log("-> Redirigiendo a actividades");
             window.location.href = 'Ejercicios.html';
-        } else if (textoLower.includes('registrar un nuevo estudiante')) {
-            console.log("-> Redirigiendo a registrar estudiante");
-            window.location.href = 'Registrar_estudiante.html';
         } else if (textoLower.includes('registrar un piar')) {
-            console.log("-> Redirigiendo a registrar PIAR");
             window.location.href = 'Registrar_PIAR.html';
         } else if (textoLower.includes('descripción general')) {
-            console.log("-> Redirigiendo a descripción general");
             window.location.href = 'Descripción_general.html';
         } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
-            console.log("-> ¡ENCONTRADO! Redirigiendo a valoración pedagógica");
             window.location.href = 'Valoracion_pedagogica.html';
         } else if (textoLower.includes('comunicate')) {
-            console.log("-> Redirigiendo a comunicación");
             window.location.href = 'Comunicacion.html';
         } else if (textoLower.includes('ayuda')) {
-            console.log("-> Redirigiendo a ayuda");
             window.location.href = 'Ayuda.html';
         } else if (textoLower.includes('cerrar sesion') || textoLower.includes('cerrar sesión')) {
-            console.log("-> Cerrando sesión");
             if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
                 localStorage.removeItem('rol');
                 window.location.href = 'Inicio_sesion.html';
             }
         } else {
-            console.log("-> ❌ NO SE ENCONTRÓ COINCIDENCIA");
-            console.log("Texto a comparar:", `"${textoLower}"`);
+            console.log("-> ❌ NO SE ENCONTRÓ COINCIDENCIA (Menú)");
         }
 
-        // Cerrar menú
-        burger.checked = false;
-        sideMenu.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.style.overflow = 'auto';
+        // Cerrar menú tras click si está presente
+        if (burger && sideMenu && overlay) {
+            burger.checked = false;
+            sideMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
     }
 });
 
-// ============================================
-// FUNCIONALIDAD ORIGINAL DE REGISTRAR ESTUDIANTE
-// ============================================
+// ---------------------------
+// FUNCIONES ADICIONALES PARA PERSONALIZACIÓN
+// ---------------------------
+function cambiarTitulo(nuevoTitulo) {
+    const titulo = document.querySelector('.title');
+    if (titulo) {
+        titulo.textContent = nuevoTitulo;
+    }
+}
 
-// Variables globales
+function cambiarLogo(rutaLogo) {
+    const logo = document.querySelector('.header-logo');
+    if (logo) {
+        logo.src = rutaLogo;
+    }
+}
+
+function añadirBotonMenu(icono, texto, callback) {
+    const menuButtons = document.querySelector('.menu-buttons');
+    const botonCerrarSesion = document.querySelector('.close-session');
+
+    if (menuButtons) {
+        const nuevoBoton = document.createElement('button');
+        nuevoBoton.className = 'menu-button';
+        nuevoBoton.innerHTML = `
+            <span class="menu-icon">${icono}</span>
+            ${texto}
+        `;
+
+        // Insertar antes del botón de cerrar sesión
+        if (botonCerrarSesion) {
+            menuButtons.insertBefore(nuevoBoton, botonCerrarSesion);
+        } else {
+            menuButtons.appendChild(nuevoBoton);
+        }
+
+        // Añadir evento click
+        nuevoBoton.addEventListener('click', callback);
+
+        return nuevoBoton;
+    }
+}
+
+function removerBotonMenu(textoBoton) {
+    const botones = document.querySelectorAll('.menu-button');
+    botones.forEach(boton => {
+        if (boton.textContent.trim().toLowerCase().includes(textoBoton.toLowerCase())) {
+            boton.remove();
+        }
+    });
+}
+
+function cambiarTituloPanel(nuevoTitulo) {
+    const menuTitle = document.querySelector('.menu-title');
+    if (menuTitle) {
+        menuTitle.textContent = nuevoTitulo;
+    }
+}
+
+// Exportar funciones para uso global (opcional)
+window.HeaderMenu = {
+    cambiarTitulo,
+    cambiarLogo,
+    añadirBotonMenu,
+    removerBotonMenu,
+    cambiarTituloPanel,
+    inspeccionarYEliminar,
+    eliminarBotonesPorRol
+};
+
+// ------------------------------------------------------------
+// A PARTIR DE AQUÍ: FUNCIONALIDAD ORIGINAL DE REGISTRAR ESTUDIANTE
+// (Se mantiene la mayor parte del código original, adaptado
+//  para coexistir con la sección del menú)
+// ------------------------------------------------------------
+
+console.log("Script de Registrar Estudiante cargado con funcionalidad de menú integrada");
+
+// Variables globales del formulario / flujo
 let currentStep = 1;
 const totalSteps = 12;
 let estudianteRegistradoId = null;
@@ -255,7 +344,7 @@ let isPhase1Complete = false;
 let madreSkipped = false;
 let padreSkipped = false;
 
-// Inicialización cuando se carga la página
+// Inicialización cuando se carga la página (parte del flujo de registrar)
 window.onload = function () {
     cargarGrupos();
     updateButtons();
@@ -266,19 +355,22 @@ window.onload = function () {
     updateProgressBar();
 
     // Agregar novalidate al formulario para evitar validación automática del navegador
-    document.getElementById('formulario-completo').setAttribute('novalidate', '');
+    const formulario = document.getElementById('formulario-completo');
+    if (formulario) {
+        formulario.setAttribute('novalidate', '');
+    }
 };
 
 // ==================== FUNCIONES PARA MANEJO DE SKIP ====================
 
 function showSkipOptions(type) {
     const options = document.getElementById(type + '-skip-options');
-    options.classList.add('active');
+    if (options) options.classList.add('active');
 }
 
 function cancelSkip(type) {
     const options = document.getElementById(type + '-skip-options');
-    options.classList.remove('active');
+    if (options) options.classList.remove('active');
     // Limpiar radio buttons
     const radios = document.querySelectorAll(`input[name="${type}_skip_reason"]`);
     radios.forEach(radio => radio.checked = false);
@@ -293,11 +385,11 @@ function confirmSkip(type) {
     }
 
     const reason = selectedReason.value;
-    const reasonText = selectedReason.nextElementSibling.textContent;
+    const reasonText = selectedReason.nextElementSibling ? selectedReason.nextElementSibling.textContent : reason;
 
     // Validación mejorada: permitir que ambos padres no estén presentes, pero asegurar acudiente
     if (type === 'madre' && padreSkipped) {
-        const padreReason = document.getElementById('padre_skip_reason_value').value;
+        const padreReason = document.getElementById('padre_skip_reason_value') ? document.getElementById('padre_skip_reason_value').value : '';
         if (reason === 'no_presente' && padreReason === 'no_presente') {
             // Ambos padres no presentes es válido, pero recordar sobre el acudiente
             showAlert('Ambos padres marcados como no presentes. Asegúrese de registrar correctamente los datos del acudiente en el paso 3.', 'warning');
@@ -305,16 +397,15 @@ function confirmSkip(type) {
     }
 
     if (type === 'padre' && madreSkipped) {
-        const madreReason = document.getElementById('madre_skip_reason_value').value;
+        const madreReason = document.getElementById('madre_skip_reason_value') ? document.getElementById('madre_skip_reason_value').value : '';
         if (reason === 'no_presente' && madreReason === 'no_presente') {
-            // Ambos padres no presentes es válido, pero recordar sobre el acudiente
             showAlert('Ambos padres marcados como no presentes. Asegúrese de registrar correctamente los datos del acudiente en el paso 3.', 'warning');
         }
     }
 
     // Validación para evitar contradicciones: si un padre es "es_acudiente" y el otro también
     if (type === 'madre' && padreSkipped) {
-        const padreReason = document.getElementById('padre_skip_reason_value').value;
+        const padreReason = document.getElementById('padre_skip_reason_value') ? document.getElementById('padre_skip_reason_value').value : '';
         if (reason === 'es_acudiente' && padreReason === 'es_acudiente') {
             alert('No puede marcar ambos padres como acudientes. Solo uno puede ser el acudiente principal.');
             return;
@@ -322,7 +413,7 @@ function confirmSkip(type) {
     }
 
     if (type === 'padre' && madreSkipped) {
-        const madreReason = document.getElementById('madre_skip_reason_value').value;
+        const madreReason = document.getElementById('madre_skip_reason_value') ? document.getElementById('madre_skip_reason_value').value : '';
         if (reason === 'es_acudiente' && madreReason === 'es_acudiente') {
             alert('No puede marcar ambos padres como acudientes. Solo uno puede ser el acudiente principal.');
             return;
@@ -337,22 +428,33 @@ function confirmSkip(type) {
     }
 
     // Actualizar UI
-    document.getElementById(type + '-skip-options').classList.remove('active');
-    document.getElementById(type + '-skipped-info').style.display = 'block';
-    document.getElementById(type + '-skip-reason-text').textContent = reasonText;
-    document.getElementById(type + '-form-fields').classList.add('form-disabled');
+    const skipOptions = document.getElementById(type + '-skip-options');
+    if (skipOptions) skipOptions.classList.remove('active');
+
+    const skippedInfo = document.getElementById(type + '-skipped-info');
+    if (skippedInfo) skippedInfo.style.display = 'block';
+
+    const skipReasonText = document.getElementById(type + '-skip-reason-text');
+    if (skipReasonText) skipReasonText.textContent = reasonText;
+
+    const formFields = document.getElementById(type + '-form-fields');
+    if (formFields) formFields.classList.add('form-disabled');
 
     // Actualizar campos ocultos
-    document.getElementById(type + '_skipped').value = 'true';
-    document.getElementById(type + '_skip_reason_value').value = reason;
+    const skippedInput = document.getElementById(type + '_skipped');
+    if (skippedInput) skippedInput.value = 'true';
+
+    const skipReasonValue = document.getElementById(type + '_skip_reason_value');
+    if (skipReasonValue) skipReasonValue.value = reason;
 
     // Remover required de campos del formulario
-    const formFields = document.getElementById(type + '-form-fields');
-    const requiredFields = formFields.querySelectorAll('[required]');
-    requiredFields.forEach(field => {
-        field.removeAttribute('required');
-        field.setAttribute('data-was-required', 'true');
-    });
+    if (formFields) {
+        const requiredFields = formFields.querySelectorAll('[required]');
+        requiredFields.forEach(field => {
+            field.removeAttribute('required');
+            field.setAttribute('data-was-required', 'true');
+        });
+    }
 
     // Mostrar mensaje informativo según la razón
     let infoMessage = '';
@@ -408,12 +510,17 @@ function validateStep5() {
 
 function prefillCuidadorFields(parentType) {
     // Esta función se ejecuta cuando un padre será el acudiente
-    // Podría copiar algunos datos básicos si ya se llenaron
-    const parentName = document.getElementById(`${parentType}_nombre`).value;
-    const parentEducation = document.getElementById(`${parentType}_educacion`).value;
-    const parentEmail = document.getElementById(`${parentType}_email`).value;
-    const parentPhone = document.getElementById(`${parentType}_telefono`).value;
-    const parentPassword = document.getElementById(`${parentType}_contrasena`).value;
+    const parentNameEl = document.getElementById(`${parentType}_nombre`);
+    const parentEducationEl = document.getElementById(`${parentType}_educacion`);
+    const parentEmailEl = document.getElementById(`${parentType}_email`);
+    const parentPhoneEl = document.getElementById(`${parentType}_telefono`);
+    const parentPasswordEl = document.getElementById(`${parentType}_contrasena`);
+
+    const parentName = parentNameEl ? parentNameEl.value : '';
+    const parentEducation = parentEducationEl ? parentEducationEl.value : '';
+    const parentEmail = parentEmailEl ? parentEmailEl.value : '';
+    const parentPhone = parentPhoneEl ? parentPhoneEl.value : '';
+    const parentPassword = parentPasswordEl ? parentPasswordEl.value : '';
 
     // Solo pre-llenar si hay datos disponibles
     if (parentName) {
@@ -431,12 +538,19 @@ function applyCuidadorPrefill() {
     // Aplicar pre-llenado si está disponible
     const nombre = sessionStorage.getItem('prefill_cuidador_nombre');
     if (nombre) {
-        document.getElementById('cuidador_nombre').value = nombre;
-        document.getElementById('cuidador_educacion').value = sessionStorage.getItem('prefill_cuidador_educacion') || '';
-        document.getElementById('cuidador_email').value = sessionStorage.getItem('prefill_cuidador_email') || '';
-        document.getElementById('cuidador_telefono').value = sessionStorage.getItem('prefill_cuidador_telefono') || '';
-        document.getElementById('cuidador_contrasena').value = sessionStorage.getItem('prefill_cuidador_contrasena') || '';
-        document.getElementById('cuidador_parentesco').value = sessionStorage.getItem('prefill_cuidador_parentesco') || '';
+        const nombreEl = document.getElementById('cuidador_nombre');
+        const educacionEl = document.getElementById('cuidador_educacion');
+        const emailEl = document.getElementById('cuidador_email');
+        const telefonoEl = document.getElementById('cuidador_telefono');
+        const contrasenaEl = document.getElementById('cuidador_contrasena');
+        const parentescoEl = document.getElementById('cuidador_parentesco');
+
+        if (nombreEl) nombreEl.value = nombre;
+        if (educacionEl) educacionEl.value = sessionStorage.getItem('prefill_cuidador_educacion') || '';
+        if (emailEl) emailEl.value = sessionStorage.getItem('prefill_cuidador_email') || '';
+        if (telefonoEl) telefonoEl.value = sessionStorage.getItem('prefill_cuidador_telefono') || '';
+        if (contrasenaEl) contrasenaEl.value = sessionStorage.getItem('prefill_cuidador_contrasena') || '';
+        if (parentescoEl) parentescoEl.value = sessionStorage.getItem('prefill_cuidador_parentesco') || '';
 
         // Limpiar datos de sesión
         sessionStorage.removeItem('prefill_cuidador_nombre');
@@ -450,7 +564,6 @@ function applyCuidadorPrefill() {
     }
 }
 
-
 function undoSkip(type) {
     // Restaurar estado
     if (type === 'madre') {
@@ -460,20 +573,27 @@ function undoSkip(type) {
     }
 
     // Actualizar UI
-    document.getElementById(type + '-skipped-info').style.display = 'none';
-    document.getElementById(type + '-form-fields').classList.remove('form-disabled');
+    const skippedInfo = document.getElementById(type + '-skipped-info');
+    if (skippedInfo) skippedInfo.style.display = 'none';
+
+    const formFields = document.getElementById(type + '-form-fields');
+    if (formFields) formFields.classList.remove('form-disabled');
 
     // Limpiar campos ocultos
-    document.getElementById(type + '_skipped').value = 'false';
-    document.getElementById(type + '_skip_reason_value').value = '';
+    const skippedInput = document.getElementById(type + '_skipped');
+    if (skippedInput) skippedInput.value = 'false';
+
+    const skipReasonValue = document.getElementById(type + '_skip_reason_value');
+    if (skipReasonValue) skipReasonValue.value = '';
 
     // Restaurar required en campos del formulario
-    const formFields = document.getElementById(type + '-form-fields');
-    const wasRequiredFields = formFields.querySelectorAll('[data-was-required]');
-    wasRequiredFields.forEach(field => {
-        field.setAttribute('required', '');
-        field.removeAttribute('data-was-required');
-    });
+    if (formFields) {
+        const wasRequiredFields = formFields.querySelectorAll('[data-was-required]');
+        wasRequiredFields.forEach(field => {
+            field.setAttribute('required', '');
+            field.removeAttribute('data-was-required');
+        });
+    }
 
     // Limpiar radio buttons
     const radios = document.querySelectorAll(`input[name="${type}_skip_reason"]`);
@@ -483,11 +603,13 @@ function undoSkip(type) {
 }
 
 // ==================== CONFIGURACIÓN DE EVENT LISTENERS ====================
-
 function setupEventListeners() {
-    // Campos condicionales
-    document.getElementById('victima_conflicto').addEventListener('change', handleVictimaConflicto);
-    document.getElementById('grupo_etnico').addEventListener('change', handleGrupoEtnico);
+    // Campos condicionales (si existen los elementos)
+    const victimaEl = document.getElementById('victima_conflicto');
+    if (victimaEl) victimaEl.addEventListener('change', handleVictimaConflicto);
+
+    const etnicoEl = document.getElementById('grupo_etnico');
+    if (etnicoEl) etnicoEl.addEventListener('change', handleGrupoEtnico);
 
     // Prevenir envío accidental con Enter
     document.addEventListener('keydown', function (event) {
@@ -535,7 +657,6 @@ function setupEventListeners() {
 }
 
 // ==================== FUNCIONES DE VALIDACIÓN ====================
-
 function validateField(field) {
     const isRequired = field.hasAttribute('required') || field.hasAttribute('data-originally-required');
     const isEmpty = !field.value.trim();
@@ -577,6 +698,8 @@ function manageRequiredAttributes() {
 
 function validateCurrentStep() {
     const currentForm = document.getElementById('form-step-' + currentStep);
+    if (!currentForm) return true; // si no existe, no bloquear
+
     const requiredFields = currentForm.querySelectorAll('[required]');
     let isValid = true;
     let firstInvalidField = null;
@@ -617,22 +740,31 @@ function validateCurrentStep() {
 
 function validateStep4() {
     // Validar documento único
-    const documento = document.getElementById('no_documento').value;
+    const docEl = document.getElementById('no_documento');
+    const documento = docEl ? docEl.value : '';
     if (documento && documento.length < 6) {
         showAlert('El número de documento debe tener al menos 6 caracteres.', 'error');
-        document.getElementById('no_documento').focus();
+        if (docEl) docEl.focus();
         return false;
     }
 
     // Validar fecha de nacimiento
-    const fechaNac = new Date(document.getElementById('fecha_nacimiento').value);
-    const hoy = new Date();
-    const edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const fechaEl = document.getElementById('fecha_nacimiento');
+    if (fechaEl && fechaEl.value) {
+        const fechaNac = new Date(fechaEl.value);
+        const hoy = new Date();
+        let edad = hoy.getFullYear() - fechaNac.getFullYear();
+        // Ajuste por mes/día
+        const m = hoy.getMonth() - fechaNac.getMonth();
+        if (m < 0 || (m === 0 && hoy.getDate() < fechaNac.getDate())) {
+            edad--;
+        }
 
-    if (edad < 5 || edad > 25) {
-        showAlert('La edad del estudiante debe estar entre 5 y 25 años.', 'error');
-        document.getElementById('fecha_nacimiento').focus();
-        return false;
+        if (edad < 5 || edad > 25) {
+            showAlert('La edad del estudiante debe estar entre 5 y 25 años.', 'error');
+            fechaEl.focus();
+            return false;
+        }
     }
 
     return true;
@@ -644,6 +776,7 @@ function validateSteps1to5() {
 
     for (let step = 1; step <= 5; step++) {
         const stepElement = document.getElementById('form-step-' + step);
+        if (!stepElement) continue;
 
         // Skip validation for skipped parents
         if ((step === 1 && madreSkipped) || (step === 2 && padreSkipped)) {
@@ -678,6 +811,8 @@ function validateAllDescriptionSteps() {
 
     for (let step = 5; step <= totalSteps; step++) {
         const stepElement = document.getElementById('form-step-' + step);
+        if (!stepElement) continue;
+
         const fields = stepElement.querySelectorAll('[data-originally-required], [required]');
 
         for (let field of fields) {
@@ -700,19 +835,21 @@ function validateAllDescriptionSteps() {
 }
 
 // ==================== MANEJO DE CAMPOS CONDICIONALES ====================
-
 function handleVictimaConflicto() {
     const container = document.getElementById('victima_tipo_container');
     const campo = document.getElementById('victima_tipo');
 
-    if (this.value === 'Si') {
-        container.style.display = 'block';
-        campo.setAttribute('required', 'required');
+    const value = this && this.value ? this.value : (document.getElementById('victima_conflicto') ? document.getElementById('victima_conflicto').value : '');
+    if (value === 'Si') {
+        if (container) container.style.display = 'block';
+        if (campo) campo.setAttribute('required', 'required');
     } else {
-        container.style.display = 'none';
-        campo.removeAttribute('required');
-        campo.removeAttribute('data-originally-required');
-        campo.value = '';
+        if (container) container.style.display = 'none';
+        if (campo) {
+            campo.removeAttribute('required');
+            campo.removeAttribute('data-originally-required');
+            campo.value = '';
+        }
     }
 }
 
@@ -720,20 +857,23 @@ function handleGrupoEtnico() {
     const container = document.getElementById('etnico_tipo_container');
     const campo = document.getElementById('etnico_tipo');
 
-    if (this.value === 'Si') {
-        container.style.display = 'block';
-        campo.setAttribute('required', 'required');
+    const value = this && this.value ? this.value : (document.getElementById('grupo_etnico') ? document.getElementById('grupo_etnico').value : '');
+    if (value === 'Si') {
+        if (container) container.style.display = 'block';
+        if (campo) campo.setAttribute('required', 'required');
     } else {
-        container.style.display = 'none';
-        campo.removeAttribute('required');
-        campo.removeAttribute('data-originally-required');
-        campo.value = '';
+        if (container) container.style.display = 'none';
+        if (campo) {
+            campo.removeAttribute('required');
+            campo.removeAttribute('data-originally-required');
+            campo.value = '';
+        }
     }
 }
 
 // ==================== CARGA DE DATOS ====================
-
 function cargarGrupos() {
+    // Cargar select de grupos desde PHP
     fetch('php/Cargar_grupos.php')
         .then(response => {
             if (!response.ok) {
@@ -743,6 +883,7 @@ function cargarGrupos() {
         })
         .then(data => {
             const select = document.getElementById('id_grupo');
+            if (!select) return;
             select.innerHTML = '<option value="">Seleccione un grupo</option>';
 
             if (data.error) {
@@ -773,7 +914,6 @@ function cargarGrupos() {
 }
 
 // ==================== NAVEGACIÓN ENTRE PASOS ====================
-
 function nextStep() {
     if (validateCurrentStep()) {
         // Si estamos en el paso 5 (entorno educativo) y aún no se ha completado la fase 1, registrar estudiante
@@ -784,14 +924,20 @@ function nextStep() {
 
         if (currentStep < totalSteps) {
             // Ocultar paso actual
-            document.getElementById('form-step-' + currentStep).classList.remove('active');
-            document.getElementById('step' + currentStep).classList.remove('active');
-            document.getElementById('step' + currentStep).classList.add('completed');
+            const currentFormStep = document.getElementById('form-step-' + currentStep);
+            if (currentFormStep) currentFormStep.classList.remove('active');
+            const currentStepIndicator = document.getElementById('step' + currentStep);
+            if (currentStepIndicator) {
+                currentStepIndicator.classList.remove('active');
+                currentStepIndicator.classList.add('completed');
+            }
 
             // Mostrar siguiente paso
             currentStep++;
-            document.getElementById('form-step-' + currentStep).classList.add('active');
-            document.getElementById('step' + currentStep).classList.add('active');
+            const nextFormStep = document.getElementById('form-step-' + currentStep);
+            if (nextFormStep) nextFormStep.classList.add('active');
+            const nextStepIndicator = document.getElementById('step' + currentStep);
+            if (nextStepIndicator) nextStepIndicator.classList.add('active');
 
             // Si llegamos al paso 3 (acudiente), verificar y mostrar mensaje adecuado
             if (currentStep === 3) {
@@ -816,24 +962,28 @@ function nextStep() {
 
 function updateCuidadorStepMessage() {
     const warningDiv = document.querySelector('#form-step-3 .warning-text');
-    const madreReason = document.getElementById('madre_skip_reason_value').value;
-    const padreReason = document.getElementById('padre_skip_reason_value').value;
+    const madreReason = document.getElementById('madre_skip_reason_value') ? document.getElementById('madre_skip_reason_value').value : '';
+    const padreReason = document.getElementById('padre_skip_reason_value') ? document.getElementById('padre_skip_reason_value').value : '';
 
     let message = '<strong>Nota:</strong> ';
 
     if (madreSkipped && padreSkipped) {
         if (madreReason === 'no_presente' && padreReason === 'no_presente') {
             message += 'Ambos padres no están presentes. Es OBLIGATORIO registrar aquí los datos del acudiente responsable del menor (abuelo/a, tío/a, hermano/a mayor, tutor legal, etc.).';
-            warningDiv.style.backgroundColor = '#fff3cd';
-            warningDiv.style.borderColor = '#ffc107';
-            warningDiv.style.color = '#856404';
+            if (warningDiv) {
+                warningDiv.style.backgroundColor = '#fff3cd';
+                warningDiv.style.borderColor = '#ffc107';
+                warningDiv.style.color = '#856404';
+            }
         } else if ((madreReason === 'es_acudiente' && padreReason === 'no_presente') ||
             (madreReason === 'no_presente' && padreReason === 'es_acudiente')) {
             const parenteAcudiente = madreReason === 'es_acudiente' ? 'madre' : 'padre';
             message += `La ${parenteAcudiente} actuará como acudiente. Registre aquí los datos de la ${parenteAcudiente}.`;
-            warningDiv.style.backgroundColor = '#d1ecf1';
-            warningDiv.style.borderColor = '#bee5eb';
-            warningDiv.style.color = '#0c5460';
+            if (warningDiv) {
+                warningDiv.style.backgroundColor = '#d1ecf1';
+                warningDiv.style.borderColor = '#bee5eb';
+                warningDiv.style.color = '#0c5460';
+            }
 
             // Aplicar pre-llenado si está disponible
             applyCuidadorPrefill();
@@ -856,7 +1006,7 @@ function updateCuidadorStepMessage() {
         message += 'Este registro es obligatorio. Si la madre o el padre es el acudiente principal, registre aquí esa información.';
     }
 
-    warningDiv.innerHTML = message;
+    if (warningDiv) warningDiv.innerHTML = message;
 }
 
 function previousStep() {
@@ -868,14 +1018,20 @@ function previousStep() {
         }
 
         // Ocultar paso actual
-        document.getElementById('form-step-' + currentStep).classList.remove('active');
-        document.getElementById('step' + currentStep).classList.remove('active');
+        const currentFormStep = document.getElementById('form-step-' + currentStep);
+        if (currentFormStep) currentFormStep.classList.remove('active');
+        const currentStepIndicator = document.getElementById('step' + currentStep);
+        if (currentStepIndicator) currentStepIndicator.classList.remove('active');
 
         // Mostrar paso anterior
         currentStep--;
-        document.getElementById('form-step-' + currentStep).classList.add('active');
-        document.getElementById('step' + currentStep).classList.remove('completed');
-        document.getElementById('step' + currentStep).classList.add('active');
+        const prevFormStep = document.getElementById('form-step-' + currentStep);
+        if (prevFormStep) prevFormStep.classList.add('active');
+        const prevStepIndicator = document.getElementById('step' + currentStep);
+        if (prevStepIndicator) {
+            prevStepIndicator.classList.remove('completed');
+            prevStepIndicator.classList.add('active');
+        }
 
         // Gestionar atributos required
         manageRequiredAttributes();
@@ -897,13 +1053,17 @@ function goToStep(targetStep) {
     }
 
     // Ocultar paso actual
-    document.getElementById('form-step-' + currentStep).classList.remove('active');
-    document.getElementById('step' + currentStep).classList.remove('active');
+    const currentFormStep = document.getElementById('form-step-' + currentStep);
+    if (currentFormStep) currentFormStep.classList.remove('active');
+    const currentStepIndicator = document.getElementById('step' + currentStep);
+    if (currentStepIndicator) currentStepIndicator.classList.remove('active');
 
     // Mostrar paso objetivo
     currentStep = targetStep;
-    document.getElementById('form-step-' + currentStep).classList.add('active');
-    document.getElementById('step' + currentStep).classList.add('active');
+    const targetFormStep = document.getElementById('form-step-' + currentStep);
+    if (targetFormStep) targetFormStep.classList.add('active');
+    const targetStepIndicator = document.getElementById('step' + currentStep);
+    if (targetStepIndicator) targetStepIndicator.classList.add('active');
 
     // Gestionar required attributes
     manageRequiredAttributes();
@@ -915,7 +1075,6 @@ function goToStep(targetStep) {
 }
 
 // ==================== REGISTRO DE ESTUDIANTE (FASE 1) ====================
-
 function registerStudentPhase1() {
     showLoadingOverlay();
 
@@ -928,6 +1087,12 @@ function registerStudentPhase1() {
     }
 
     const form = document.getElementById('formulario-completo');
+    if (!form) {
+        hideLoadingOverlay();
+        showAlert('Formulario no encontrado en la página.', 'error');
+        return;
+    }
+
     const formData = new FormData(form);
     formData.set('phase', '1');
 
@@ -945,7 +1110,7 @@ function registerStudentPhase1() {
             if (data.success) {
                 isPhase1Complete = true;
                 estudianteRegistradoId = data.id_estudiante;
-                estudianteRegistradoNombre = data.data.nombre_completo;
+                estudianteRegistradoNombre = data.data && data.data.nombre_completo ? data.data.nombre_completo : '';
 
                 let message = `¡Estudiante registrado exitosamente! ID: ${data.id_estudiante}. `;
 
@@ -964,13 +1129,17 @@ function registerStudentPhase1() {
                 showAlert(message, 'success');
 
                 // Avanzar al paso 5
-                document.getElementById('form-step-' + currentStep).classList.remove('active');
-                document.getElementById('step' + currentStep).classList.remove('active');
-                document.getElementById('step' + currentStep).classList.add('completed');
+                const currentFormStep = document.getElementById('form-step-' + currentStep);
+                if (currentFormStep) currentFormStep.classList.remove('active');
+                const currentStepIndicator = document.getElementById('step' + currentStep);
+                if (currentStepIndicator) currentStepIndicator.classList.remove('active');
+                if (currentStepIndicator) currentStepIndicator.classList.add('completed');
 
                 currentStep = 5;
-                document.getElementById('form-step-' + currentStep).classList.add('active');
-                document.getElementById('step' + currentStep).classList.add('active');
+                const newFormStep = document.getElementById('form-step-' + currentStep);
+                if (newFormStep) newFormStep.classList.add('active');
+                const newStepIndicator = document.getElementById('step' + currentStep);
+                if (newStepIndicator) newStepIndicator.classList.add('active');
 
                 setupDescripcionStep();
                 manageRequiredAttributes();
@@ -995,13 +1164,16 @@ function registerStudentPhase1() {
 
 function setupDescripcionStep() {
     const selectEstudiante = document.getElementById('id_estudiante_descripcion');
+    if (!selectEstudiante) return;
 
     if (isPhase1Complete && estudianteRegistradoNombre) {
         selectEstudiante.innerHTML = `<option value="${estudianteRegistradoId}">${estudianteRegistradoNombre} (Recién registrado)</option>`;
         selectEstudiante.value = estudianteRegistradoId;
     } else {
-        const nombreEstudiante = document.getElementById('estudiante_nombre').value;
-        const apellidosEstudiante = document.getElementById('estudiante_apellidos').value;
+        const nombreEstudianteEl = document.getElementById('estudiante_nombre');
+        const apellidosEstudianteEl = document.getElementById('estudiante_apellidos');
+        const nombreEstudiante = nombreEstudianteEl ? nombreEstudianteEl.value : '';
+        const apellidosEstudiante = apellidosEstudianteEl ? apellidosEstudianteEl.value : '';
         selectEstudiante.innerHTML = `<option value="nuevo_estudiante">${nombreEstudiante} ${apellidosEstudiante} (Debe completar registro primero)</option>`;
     }
 }
@@ -1009,6 +1181,7 @@ function setupDescripcionStep() {
 function restoreAllRequiredAttributesForPhase1() {
     for (let step = 1; step <= 5; step++) { // Cambiar de 4 a 5
         const stepElement = document.getElementById('form-step-' + step);
+        if (!stepElement) continue;
         const fields = stepElement.querySelectorAll('[data-originally-required]');
         fields.forEach(field => {
             field.setAttribute('required', '');
@@ -1017,7 +1190,6 @@ function restoreAllRequiredAttributesForPhase1() {
 }
 
 // ==================== REGISTRO DE DESCRIPCIÓN (FASE 2) ====================
-
 function handleFormSubmit(event) {
     event.preventDefault();
 
@@ -1032,6 +1204,7 @@ function handleFormSubmit(event) {
     // Restaurar todos los required de la fase 2
     for (let step = 5; step <= totalSteps; step++) {
         const stepElement = document.getElementById('form-step-' + step);
+        if (!stepElement) continue;
         const fields = stepElement.querySelectorAll('[data-originally-required]');
         fields.forEach(field => {
             field.setAttribute('required', '');
@@ -1044,6 +1217,12 @@ function handleFormSubmit(event) {
     }
 
     const form = document.getElementById('formulario-completo');
+    if (!form) {
+        hideLoadingOverlay();
+        showAlert('Formulario no encontrado en la página.', 'error');
+        return;
+    }
+
     const formData = new FormData(form);
     formData.set('phase', '2');
     formData.set('id_estudiante', estudianteRegistradoId);
@@ -1079,11 +1258,11 @@ function handleFormSubmit(event) {
 }
 
 // ==================== FUNCIONES DE UI ====================
-
 function updateButtons() {
     const btnAnterior = document.getElementById('btnAnterior');
     const btnSiguiente = document.getElementById('btnSiguiente');
     const btnRegistrar = document.getElementById('btnRegistrar');
+
 
     // Mostrar/ocultar botón anterior
     btnAnterior.style.display = currentStep > 1 ? 'inline-block' : 'none';
@@ -1099,6 +1278,7 @@ function updateButtons() {
         btnSiguiente.style.display = 'inline-block';
         btnRegistrar.style.display = 'none';
         btnSiguiente.textContent = 'Siguiente';
+
     }
 }
 
@@ -1120,9 +1300,13 @@ function showAlert(message, type = 'success') {
     alertDiv.className = `alert alert-${type}`;
     alertDiv.textContent = message;
 
-    // Insertar después del título
+    // Insertar después del título si existe, si no, al principio del body
     const title = document.querySelector('.section h1');
-    title.parentNode.insertBefore(alertDiv, title.nextSibling);
+    if (title && title.parentNode) {
+        title.parentNode.insertBefore(alertDiv, title.nextSibling);
+    } else {
+        document.body.insertBefore(alertDiv, document.body.firstChild);
+    }
 
     // Auto-remover después de 5 segundos
     setTimeout(() => {
@@ -1159,7 +1343,7 @@ function hideLoadingOverlay() {
 
 function resetForm() {
     const form = document.getElementById('formulario-completo');
-    form.reset();
+    if (form) form.reset();
 
     currentStep = 1;
     estudianteRegistradoId = null;
@@ -1180,13 +1364,15 @@ function resetForm() {
     document.querySelectorAll('.form-step').forEach(step => {
         step.classList.remove('active');
     });
-    document.getElementById('form-step-1').classList.add('active');
+    const firstStep = document.getElementById('form-step-1');
+    if (firstStep) firstStep.classList.add('active');
 
     // Reiniciar indicadores de progreso
     document.querySelectorAll('.step-indicator').forEach(indicator => {
         indicator.classList.remove('active', 'completed');
     });
-    document.getElementById('step1').classList.add('active');
+    const step1Indicator = document.getElementById('step1');
+    if (step1Indicator) step1Indicator.classList.add('active');
 
     // Limpiar atributos data-originally-required
     document.querySelectorAll('[data-originally-required]').forEach(field => {
@@ -1195,15 +1381,21 @@ function resetForm() {
         field.style.borderColor = '#e9ecef';
     });
 
-    // Ocultar campos condicionales
-    document.getElementById('victima_tipo_container').style.display = 'none';
-    document.getElementById('etnico_tipo_container').style.display = 'none';
+    // Ocultar campos condicionales si existen
+    const victContainer = document.getElementById('victima_tipo_container');
+    if (victContainer) victContainer.style.display = 'none';
+    const etnContainer = document.getElementById('etnico_tipo_container');
+    if (etnContainer) etnContainer.style.display = 'none';
 
-    // Reset skip states
-    document.getElementById('madre-skipped-info').style.display = 'none';
-    document.getElementById('padre-skipped-info').style.display = 'none';
-    document.getElementById('madre-form-fields').classList.remove('form-disabled');
-    document.getElementById('padre-form-fields').classList.remove('form-disabled');
+    // Reset skip states UI si existen
+    const madreSkippedInfo = document.getElementById('madre-skipped-info');
+    if (madreSkippedInfo) madreSkippedInfo.style.display = 'none';
+    const padreSkippedInfo = document.getElementById('padre-skipped-info');
+    if (padreSkippedInfo) padreSkippedInfo.style.display = 'none';
+    const madreFormFields = document.getElementById('madre-form-fields');
+    if (madreFormFields) madreFormFields.classList.remove('form-disabled');
+    const padreFormFields = document.getElementById('padre-form-fields');
+    if (padreFormFields) padreFormFields.classList.remove('form-disabled');
 
     // Restaurar mensaje original del cuidador
     const warningDiv = document.querySelector('#form-step-3 .warning-text');
@@ -1224,7 +1416,6 @@ function resetForm() {
 }
 
 // ==================== NAVEGACIÓN CON TECLADO ====================
-
 function handleKeyNavigation(event) {
     if (event.ctrlKey) {
         switch (event.key) {
@@ -1245,7 +1436,6 @@ function handleKeyNavigation(event) {
 }
 
 // ==================== FUNCIONES DE UTILIDAD ====================
-
 function goBackOrRedirect(ruta) {
     if (ruta && ruta.trim() !== '') {
         window.location.href = ruta;
@@ -1273,11 +1463,13 @@ function debugInfo() {
     console.log('Campos originally required:', originallyRequired.length);
 }
 
-// ==================== INICIALIZACIÓN ====================
-
+// ==================== INICIALIZACIÓN ADICIONAL AL DOM CONTENT LOADED ====================
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('formulario-completo');
     if (form) {
         form.addEventListener('submit', handleFormSubmit);
     }
+
+    // Ejecutar verificación de rol (ya se hace arriba, llamada de seguridad)
+    verificarYAplicarRestricciones();
 });

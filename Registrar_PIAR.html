@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <!-- Header con menú extraíble -->
+    <!-- Header y Menú Extraíble -->
     <div class="header">
         <div class="left-section">
             <label class="burger" for="burger">
@@ -22,17 +22,17 @@
             </label>
             <span class="menu-text">MENÚ</span>
         </div>
-        
+
         <div class="center-section">
             <div class="title">LUDIK</div>
         </div>
-        
+
         <div class="right-section">
             <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
         </div>
     </div>
 
-    <!-- Overlay para cerrar menu -->
+    <!-- Overlay para cerrar menú -->
     <div class="overlay" id="overlay"></div>
 
     <!-- Menú lateral -->
@@ -41,6 +41,10 @@
             <div class="menu-title">Panel De Control</div>
         </div>
         <div class="menu-buttons">
+            <button class="menu-button">
+                <span class="menu-icon">🏠</span>
+                Volver a Interfaz
+            </button>
             <button class="menu-button">
                 <span class="menu-icon">👤</span>
                 Perfil
@@ -62,10 +66,6 @@
                 Registrar un nuevo estudiante
             </button>
             <button class="menu-button">
-                <span class="menu-icon">📋</span>
-                Registrar un PIAR y diagnóstico médico
-            </button>
-            <button class="menu-button">
                 <span class="menu-icon">📊</span>
                 Crear una Valoración Pedagógica
             </button>
@@ -77,14 +77,13 @@
                 <span class="menu-icon">❓</span>
                 Ayuda
             </button>
-        </div>
-        <div class="menu-bottom">
             <button class="menu-button close-session">
                 <span class="menu-icon">🚪</span>
                 Cerrar Sesión
             </button>
         </div>
     </div>
+
 
     <main class="main-content">
         <section class="section">
@@ -227,9 +226,6 @@
         </section>
     </main>
 
-    <button class="back-btn" onclick="goBackOrRedirect('Interfaz.html')">
-        ⬅ Regresar
-    </button>
 
     <footer class="pie-pagina">
         <p>&copy; 2025 LUDIK - Sistema de Gestión Educativa. Todos los derechos reservados.</p>

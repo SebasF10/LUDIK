@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <!-- NUEVO HEADER CON MENÚ EXTRAÍBLE -->
+  <!-- HEADER CON MENÚ EXTRAÍBLE -->
   <div class="header">
     <div class="left-section">
       <label class="burger" for="burger">
@@ -39,6 +39,10 @@
     </div>
     <div class="menu-buttons">
       <button class="menu-button">
+        <span class="menu-icon">🏠</span>
+        Volver a Interfaz
+      </button>
+      <button class="menu-button">
         <span class="menu-icon">👤</span>
         Perfil
       </button>
@@ -49,10 +53,6 @@
       <button class="menu-button" id="btnCrearCuentas">
         <span class="menu-icon">➕</span>
         Crear Cuentas
-      </button>
-      <button class="menu-button">
-        <span class="menu-icon">📚</span>
-        Actividades
       </button>
       <button class="menu-button">
         <span class="menu-icon">📝</span>
@@ -74,8 +74,6 @@
         <span class="menu-icon">❓</span>
         Ayuda
       </button>
-    </div>
-    <div class="menu-bottom">
       <button class="menu-button close-session">
         <span class="menu-icon">🚪</span>
         Cerrar Sesión
@@ -136,30 +134,6 @@
       <p>© 2025 Plataforma Inclusiva</p>
     </footer>
   </div>
-
-  <script>
-    // VERIFICAR ROL INMEDIATAMENTE - SIMPLIFICADO
-    document.addEventListener('DOMContentLoaded', function () {
-      const rol = localStorage.getItem('rol');
-      console.log('Rol en localStorage:', rol);
-
-      // Eliminar cualquier HR o línea que pueda existir
-      const lineas = document.querySelectorAll('hr, .separator, .line, .divider');
-      lineas.forEach(linea => {
-        console.log('Eliminando línea encontrada');
-        linea.remove();
-      });
-
-      // Si NO es admin, ocultar el botón
-      if (rol !== 'admin') {
-        const botonCrear = document.getElementById('btnCrearCuentas');
-        if (botonCrear) {
-          botonCrear.style.display = 'none';
-          console.log('Botón ocultado para rol:', rol);
-        }
-      }
-    });
-  </script>
 
   <script src="Js/Ejercicios.js"></script>
 </body>
