@@ -11,6 +11,7 @@
     <!-- Agregar jsPDF y html2canvas para generar PDFs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
 </head>
 
 <body>
@@ -31,7 +32,6 @@
         </div>
 
         <div class="right-section">
-            <!-- El indicador de rol se agregará dinámicamente aquí -->
             <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
         </div>
     </div>
@@ -166,10 +166,15 @@
             <div class="modal-header">
                 <!-- La foto del estudiante se agregará dinámicamente aquí -->
                 <h2 id="modalTitle">Información del Estudiante</h2>
-                <!-- Botón de descarga individual en el modal -->
-                <button id="downloadStudentPDF" class="btn-download-modal">
-                    📄 Descargar PDF
-                </button>
+                <!-- Botones de descarga en el modal -->
+                <div class="modal-download-buttons">
+                    <button id="downloadStudentPDF" class="btn-download-modal">
+                        📄 Descargar PIAR
+                    </button>
+                    <button id="downloadActaAcuerdo" class="btn-download-modal btn-acta">
+                        📋 Descargar Acta de Acuerdo
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <!-- Pestañas del modal -->
@@ -332,5 +337,4 @@
 
     <script src="Js/Estudiantes.js"></script>
 </body>
-
 </html>
