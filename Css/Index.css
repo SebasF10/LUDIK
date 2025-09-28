@@ -994,3 +994,22 @@ header {
         margin-top: 15px;
     }
 }
+
+/* Estilo para el collage */
+.collage-space {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.collage-img {
+    max-width: 90%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.collage-img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
