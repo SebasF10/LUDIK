@@ -529,3 +529,34 @@ body {
         border-radius: 12px;
     }
 }
+
+/* Ajuste input con ojito */
+.input-group {
+    position: relative;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 45px 15px 15px;
+    /* espacio a la derecha para el ojito */
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    font-size: 1rem;
+}
+
+/* Estilo del ojito */
+.toggle-pass {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #64748b;
+    transition: color 0.3s ease;
+    user-select: none;
+}
+
+.toggle-pass:hover {
+    color: #4f46e5;
+}
