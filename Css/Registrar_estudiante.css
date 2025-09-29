@@ -877,3 +877,297 @@ textarea {
         max-width: 250px;
     }
 }
+
+/* ==================== ESTILOS PARA FUNCIONALIDAD DE FOTO ==================== */
+
+.photo-section {
+    background: rgba(102, 126, 234, 0.05);
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.photo-section:hover {
+    background: rgba(102, 126, 234, 0.08);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.photo-section h3 {
+    color: #667eea;
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border: none;
+    padding: 0;
+}
+
+.photo-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.photo-preview {
+    width: 200px;
+    height: 200px;
+    border: 3px dashed #667eea;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+}
+
+.photo-preview:hover {
+    border-color: #764ba2;
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.photo-preview img:hover {
+    transform: scale(1.05);
+}
+
+.photo-placeholder {
+    color: #667eea;
+    font-size: 3rem;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.photo-preview:hover .photo-placeholder {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.file-input-wrapper input[type=file] {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+}
+
+.file-input-label {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    outline: none;
+}
+
+.file-input-label::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.file-input-label:hover::before {
+    left: 100%;
+}
+
+.file-input-label:hover {
+    background: linear-gradient(45deg, #5a6fd8, #6a4190);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.file-input-label:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(102, 126, 234, 0.2);
+}
+
+.photo-info {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin: 0.5rem 0;
+    line-height: 1.4;
+    max-width: 300px;
+}
+
+.remove-photo-btn {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+}
+
+.remove-photo-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.remove-photo-btn:hover::before {
+    left: 100%;
+}
+
+.remove-photo-btn:hover {
+    background: linear-gradient(45deg, #c82333, #a71e2a);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.remove-photo-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.2);
+}
+
+.photo-upload-error {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: none;
+    background: rgba(220, 53, 69, 0.1);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #dc3545;
+    max-width: 400px;
+    text-align: left;
+}
+
+.photo-upload-success {
+    color: #28a745 !important;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: none;
+    background: rgba(40, 167, 69, 0.1);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #28a745;
+    max-width: 400px;
+    text-align: left;
+}
+
+/* Efectos de carga para la foto */
+.photo-loading {
+    position: relative;
+}
+
+.photo-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(102, 126, 234, 0.3);
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    animation: photoSpin 1s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes photoSpin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Animación de fade-in para preview de foto */
+.photo-preview img {
+    animation: photoFadeIn 0.5s ease-in;
+}
+
+@keyframes photoFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive para la sección de foto */
+@media (max-width: 768px) {
+    .photo-section {
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+    }
+    
+    .photo-preview {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .file-input-label {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .photo-info {
+        font-size: 0.8rem;
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .photo-preview {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .file-input-label {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .photo-placeholder {
+        font-size: 2rem;
+    }
+}

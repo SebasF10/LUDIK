@@ -63,10 +63,11 @@ mysqli_close($conexion);
 /**
  * Obtener todos los estudiantes según el rol
  */
-function getAllStudents($conexion, $rol, $usuario) {
+function getAllStudents($conexion, $rol, $usuario)
+{
     try {
         $whereClause = getAccessControlClause($conexion, $rol, $usuario);
-        
+
         $sql = "
             SELECT DISTINCT
                 e.id_estudiante,
@@ -89,27 +90,26 @@ function getAllStudents($conexion, $rol, $usuario) {
             $whereClause
             ORDER BY e.apellidos, e.nombre
         ";
-        
+
         $result = mysqli_query($conexion, $sql);
-        
+
         if (!$result) {
             throw new Exception("Error en la consulta: " . mysqli_error($conexion));
         }
-        
+
         $students = [];
         while ($row = mysqli_fetch_assoc($result)) {
             // Procesar la URL de la foto
             $row['foto_url'] = getPhotoUrl($row['url_foto'], $row['id_estudiante']);
             $students[] = $row;
         }
-        
+
         echo json_encode([
             'success' => true,
             'students' => $students,
             'total' => count($students),
             'rol' => $rol
         ]);
-        
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
@@ -118,20 +118,21 @@ function getAllStudents($conexion, $rol, $usuario) {
 /**
  * Buscar estudiantes por término según el rol
  */
-function searchStudents($conexion, $rol, $usuario) {
+function searchStudents($conexion, $rol, $usuario)
+{
     $term = $_GET['term'] ?? '';
     $gradoFilter = $_GET['grado'] ?? '';
     $grupoFilter = $_GET['grupo'] ?? '';
-    
+
     if (empty($term)) {
         echo json_encode(['success' => false, 'error' => 'Término de búsqueda requerido']);
         return;
     }
-    
+
     try {
         $searchTerm = '%' . mysqli_real_escape_string($conexion, $term) . '%';
         $whereClause = getAccessControlClause($conexion, $rol, $usuario);
-        
+
         $sql = "
             SELECT DISTINCT
                 e.id_estudiante,
@@ -157,38 +158,37 @@ function searchStudents($conexion, $rol, $usuario) {
                 e.no_documento LIKE '$searchTerm' OR
                 CONCAT(e.nombre, ' ', e.apellidos) LIKE '$searchTerm')
         ";
-        
+
         // Añadir filtros opcionales
         if (!empty($gradoFilter)) {
             $gradoFilter = mysqli_real_escape_string($conexion, $gradoFilter);
             $sql .= " AND g.id_grado = '$gradoFilter'";
         }
-        
+
         if (!empty($grupoFilter)) {
             $grupoFilter = mysqli_real_escape_string($conexion, $grupoFilter);
             $sql .= " AND gr.id_grupo = '$grupoFilter'";
         }
-        
+
         $sql .= " ORDER BY e.apellidos, e.nombre";
-        
+
         $result = mysqli_query($conexion, $sql);
-        
+
         if (!$result) {
             throw new Exception("Error en la consulta: " . mysqli_error($conexion));
         }
-        
+
         $students = [];
         while ($row = mysqli_fetch_assoc($result)) {
             $row['foto_url'] = getPhotoUrl($row['url_foto'], $row['id_estudiante']);
             $students[] = $row;
         }
-        
+
         echo json_encode([
             'success' => true,
             'students' => $students,
             'total' => count($students)
         ]);
-        
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
@@ -197,37 +197,38 @@ function searchStudents($conexion, $rol, $usuario) {
 /**
  * Obtener detalles completos de un estudiante según el rol
  */
-function getStudentDetails($conexion, $rol, $usuario) {
+function getStudentDetails($conexion, $rol, $usuario)
+{
     $studentId = $_GET['id'] ?? '';
-    
+
     if (empty($studentId)) {
         echo json_encode(['success' => false, 'error' => 'ID de estudiante requerido']);
         return;
     }
-    
+
     try {
         // Verificar acceso al estudiante
         if (!hasAccessToStudent($conexion, $rol, $usuario, $studentId)) {
             echo json_encode(['success' => false, 'error' => 'No tiene acceso a este estudiante']);
             return;
         }
-        
+
         // Información básica del estudiante
         $studentData = getBasicStudentInfo($conexion, $studentId);
-        
+
         if (!$studentData) {
             echo json_encode(['success' => false, 'error' => 'Estudiante no encontrado']);
             return;
         }
-        
+
         // Procesar URL de foto
         $studentData['foto_url'] = getPhotoUrl($studentData['url_foto'], $studentData['id_estudiante']);
-        
+
         // Información adicional según el rol
         $studentData['madre'] = getParentInfo($conexion, $studentData['id_madre'], 'madre');
         $studentData['padre'] = getParentInfo($conexion, $studentData['id_padre'], 'padre');
         $studentData['acudiente'] = getParentInfo($conexion, $studentData['id_cuidador'], 'acudiente');
-        
+
         // Solo roles educativos pueden ver información médica y académica completa
         if (in_array($rol, ['admin', 'directivo', 'docente_apoyo', 'docente'])) {
             $studentData['entorno_educativo'] = getEducationalEnvironment($conexion, $studentId);
@@ -239,19 +240,18 @@ function getStudentDetails($conexion, $rol, $usuario) {
             // Padres solo ven información básica médica
             $studentData['info_medica'] = getMedicalInfoBasic($conexion, $studentId);
         }
-        
+
         // Información del grupo actual
         $groupInfo = getCurrentGroup($conexion, $studentId);
         if ($groupInfo) {
             $studentData['grado'] = $groupInfo['grado'];
             $studentData['grupo'] = $groupInfo['grupo'];
         }
-        
+
         echo json_encode([
             'success' => true,
             'student' => $studentData
         ]);
-        
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
@@ -260,10 +260,11 @@ function getStudentDetails($conexion, $rol, $usuario) {
 /**
  * Obtener filtros según el rol
  */
-function getFilters($conexion, $rol, $usuario) {
+function getFilters($conexion, $rol, $usuario)
+{
     try {
         $whereClause = getAccessControlClause($conexion, $rol, $usuario, 'filter');
-        
+
         // Obtener grados
         $gradosSQL = "
             SELECT DISTINCT g.id_grado, g.grado 
@@ -274,17 +275,17 @@ function getFilters($conexion, $rol, $usuario) {
             $whereClause
             ORDER BY g.grado
         ";
-        
+
         $gradosResult = mysqli_query($conexion, $gradosSQL);
         if (!$gradosResult) {
             throw new Exception("Error obteniendo grados: " . mysqli_error($conexion));
         }
-        
+
         $grados = [];
         while ($row = mysqli_fetch_assoc($gradosResult)) {
             $grados[] = $row;
         }
-        
+
         // Obtener grupos
         $gruposSQL = "
             SELECT DISTINCT gr.id_grupo, gr.grupo, g.grado 
@@ -295,23 +296,22 @@ function getFilters($conexion, $rol, $usuario) {
             $whereClause
             ORDER BY g.grado, gr.grupo
         ";
-        
+
         $gruposResult = mysqli_query($conexion, $gruposSQL);
         if (!$gruposResult) {
             throw new Exception("Error obteniendo grupos: " . mysqli_error($conexion));
         }
-        
+
         $grupos = [];
         while ($row = mysqli_fetch_assoc($gruposResult)) {
             $grupos[] = $row;
         }
-        
+
         echo json_encode([
             'success' => true,
             'grados' => $grados,
             'grupos' => $grupos
         ]);
-        
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
@@ -320,14 +320,15 @@ function getFilters($conexion, $rol, $usuario) {
 /**
  * Generar cláusula WHERE según el rol y usuario
  */
-function getAccessControlClause($conexion, $rol, $usuario, $context = 'main') {
+function getAccessControlClause($conexion, $rol, $usuario, $context = 'main')
+{
     switch ($rol) {
         case 'admin':
         case 'directivo':
         case 'docente_apoyo':
             // Acceso completo a todos los estudiantes
             return "WHERE 1=1";
-            
+
         case 'docente':
             // Solo estudiantes de los grupos que enseña
             $id_docente = mysqli_real_escape_string($conexion, $usuario['id_docente']);
@@ -335,22 +336,22 @@ function getAccessControlClause($conexion, $rol, $usuario, $context = 'main') {
                 INNER JOIN asignatura_docente_grupo adg ON gr.id_grupo = adg.id_grupo
                 WHERE adg.id_docente = '$id_docente'
             ";
-            
+
         case 'madre':
             // Solo sus hijos
             $id_madre = mysqli_real_escape_string($conexion, $usuario['id_madre']);
             return "WHERE e.id_madre = '$id_madre'";
-            
+
         case 'padre':
             // Solo sus hijos
             $id_padre = mysqli_real_escape_string($conexion, $usuario['id_padre']);
             return "WHERE e.id_padre = '$id_padre'";
-            
+
         case 'acudiente':
             // Solo estudiantes bajo su cuidado
             $id_acudiente = mysqli_real_escape_string($conexion, $usuario['id_acudiente']);
             return "WHERE e.id_cuidador = '$id_acudiente'";
-            
+
         default:
             // Sin acceso por defecto
             return "WHERE 1=0";
@@ -360,15 +361,16 @@ function getAccessControlClause($conexion, $rol, $usuario, $context = 'main') {
 /**
  * Verificar si el usuario tiene acceso a un estudiante específico
  */
-function hasAccessToStudent($conexion, $rol, $usuario, $studentId) {
+function hasAccessToStudent($conexion, $rol, $usuario, $studentId)
+{
     $studentId = mysqli_real_escape_string($conexion, $studentId);
-    
+
     switch ($rol) {
         case 'admin':
         case 'directivo':
         case 'docente_apoyo':
             return true; // Acceso completo
-            
+
         case 'docente':
             $id_docente = mysqli_real_escape_string($conexion, $usuario['id_docente']);
             $sql = "
@@ -380,67 +382,62 @@ function hasAccessToStudent($conexion, $rol, $usuario, $studentId) {
                 AND (ge.anio = YEAR(CURDATE()) OR ge.anio IS NULL)
             ";
             break;
-            
+
         case 'madre':
             $id_madre = mysqli_real_escape_string($conexion, $usuario['id_madre']);
             $sql = "SELECT COUNT(*) as count FROM estudiante WHERE id_estudiante = '$studentId' AND id_madre = '$id_madre'";
             break;
-            
+
         case 'padre':
             $id_padre = mysqli_real_escape_string($conexion, $usuario['id_padre']);
             $sql = "SELECT COUNT(*) as count FROM estudiante WHERE id_estudiante = '$studentId' AND id_padre = '$id_padre'";
             break;
-            
+
         case 'acudiente':
             $id_acudiente = mysqli_real_escape_string($conexion, $usuario['id_acudiente']);
             $sql = "SELECT COUNT(*) as count FROM estudiante WHERE id_estudiante = '$studentId' AND id_cuidador = '$id_acudiente'";
             break;
-            
+
         default:
             return false;
     }
-    
+
     $result = mysqli_query($conexion, $sql);
     if ($result) {
         $row = mysqli_fetch_assoc($result);
         return $row['count'] > 0;
     }
-    
+
     return false;
 }
 
 /**
  * Generar URL de foto del estudiante
  */
-function getPhotoUrl($urlFoto, $idEstudiante) {
-    // Si hay URL en la base de datos y el archivo existe, usarla
-    if (!empty($urlFoto) && file_exists("../$urlFoto")) {
-        return $urlFoto;
-    }
-
-    // Buscar foto por ID del estudiante en la carpeta photos
-    $extensions = ['jpg', 'jpeg', 'png', 'gif'];
-    foreach ($extensions as $ext) {
-        $photoPath = "photos/{$idEstudiante}.{$ext}";
-        if (file_exists("../$photoPath")) {
-            return $photoPath;
+function getPhotoUrl($urlFoto, $idEstudiante)
+{
+    // Si hay URL en la base de datos
+    if (!empty($urlFoto)) {
+        // Verificar si el archivo existe en la carpeta correcta
+        if (file_exists(__DIR__ . '/../photos/' . basename($urlFoto))) {
+            return '../photos/' . basename($urlFoto);
         }
     }
-
-    // Foto por defecto si no se encuentra
-    return "photos/default.png";
+    // Si no hay URL o el archivo no existe, usar foto por defecto
+    //return '../photos/default.png';
 }
 
 /**
  * Obtener información médica básica (para padres)
  */
-function getMedicalInfoBasic($conexion, $studentId) {
+function getMedicalInfoBasic($conexion, $studentId)
+{
     $medicalInfo = getMedicalInfo($conexion, $studentId);
-    
+
     if (!$medicalInfo) {
         return null;
     }
-    
+
     // Filtrar información sensible para padres
     return [
         'tiene_diagnosticos' => !empty($medicalInfo['diagnosticos']),
@@ -454,23 +451,26 @@ function getMedicalInfoBasic($conexion, $studentId) {
 }
 
 // Reutilizar las demás funciones del archivo original
-function getStudentsForPDF($conexion, $rol, $usuario) {
+function getStudentsForPDF($conexion, $rol, $usuario)
+{
     // Similar a getAllStudents pero optimizado para PDF
     getAllStudents($conexion, $rol, $usuario);
 }
 
-function getStudentFullDetails($conexion, $rol, $usuario) {
+function getStudentFullDetails($conexion, $rol, $usuario)
+{
     // Similar a getStudentDetails
     getStudentDetails($conexion, $rol, $usuario);
 }
 
-function exportStudentsCSV($conexion, $rol, $usuario) {
+function exportStudentsCSV($conexion, $rol, $usuario)
+{
     $type = $_GET['type'] ?? 'all';
     $searchTerm = $_GET['term'] ?? '';
-    
+
     try {
         $whereClause = getAccessControlClause($conexion, $rol, $usuario);
-        
+
         $sql = "
             SELECT DISTINCT
                 e.nombre,
@@ -494,54 +494,71 @@ function exportStudentsCSV($conexion, $rol, $usuario) {
             LEFT JOIN grado g ON gr.id_grado = g.id_grado
             $whereClause
         ";
-        
+
         if ($type === 'search' && !empty($searchTerm)) {
             $searchTerm = '%' . mysqli_real_escape_string($conexion, $searchTerm) . '%';
             $sql .= " AND (e.nombre LIKE '$searchTerm' OR 
-                     e.apellidos LIKE '$searchTerm' OR 
-                     e.no_documento LIKE '$searchTerm' OR
-                     CONCAT(e.nombre, ' ', e.apellidos) LIKE '$searchTerm')";
+                    e.apellidos LIKE '$searchTerm' OR 
+                    e.no_documento LIKE '$searchTerm' OR
+                    CONCAT(e.nombre, ' ', e.apellidos) LIKE '$searchTerm')";
         }
-        
+
         $sql .= " ORDER BY e.apellidos, e.nombre";
-        
+
         $result = mysqli_query($conexion, $sql);
-        
+
         if (!$result) {
             throw new Exception("Error en la consulta: " . mysqli_error($conexion));
         }
-        
+
         // Configurar headers para descarga de archivo
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename="estudiantes_' . date('Y-m-d') . '.csv"');
         header('Access-Control-Allow-Origin: *');
-        
+
         // Crear output
         $output = fopen('php://output', 'w');
-        
+
         // Headers del CSV
         fputcsv($output, [
-            'Nombre', 'Apellidos', 'Tipo Documento', 'No. Documento',
-            'Fecha Nacimiento', 'Teléfono', 'Correo', 'Grado', 'Grupo',
-            'Sector', 'Dirección', 'Víctima Conflicto', 'Grupo Étnico', 'Afiliación Salud'
+            'Nombre',
+            'Apellidos',
+            'Tipo Documento',
+            'No. Documento',
+            'Fecha Nacimiento',
+            'Teléfono',
+            'Correo',
+            'Grado',
+            'Grupo',
+            'Sector',
+            'Dirección',
+            'Víctima Conflicto',
+            'Grupo Étnico',
+            'Afiliación Salud'
         ]);
-        
+
         // Datos
         while ($row = mysqli_fetch_assoc($result)) {
             fputcsv($output, [
-                $row['nombre'] ?? '', $row['apellidos'] ?? '',
-                $row['tipo_documento'] ?? '', $row['no_documento'] ?? '',
-                $row['fecha_nacimiento'] ?? '', $row['telefono'] ?? '',
-                $row['correo'] ?? '', $row['grado'] ?? '', $row['grupo'] ?? '',
-                $row['sector'] ?? '', $row['direccion'] ?? '',
-                $row['victima_conflicto'] ?? '', $row['grupo_etnico'] ?? '',
+                $row['nombre'] ?? '',
+                $row['apellidos'] ?? '',
+                $row['tipo_documento'] ?? '',
+                $row['no_documento'] ?? '',
+                $row['fecha_nacimiento'] ?? '',
+                $row['telefono'] ?? '',
+                $row['correo'] ?? '',
+                $row['grado'] ?? '',
+                $row['grupo'] ?? '',
+                $row['sector'] ?? '',
+                $row['direccion'] ?? '',
+                $row['victima_conflicto'] ?? '',
+                $row['grupo_etnico'] ?? '',
                 $row['afiliacion_salud'] ?? ''
             ]);
         }
-        
+
         fclose($output);
         exit;
-        
     } catch (Exception $e) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
@@ -549,64 +566,68 @@ function exportStudentsCSV($conexion, $rol, $usuario) {
 }
 
 // Incluir las funciones auxiliares del archivo original
-function getBasicStudentInfo($conexion, $studentId) {
+function getBasicStudentInfo($conexion, $studentId)
+{
     $studentId = mysqli_real_escape_string($conexion, $studentId);
     $sql = "SELECT * FROM estudiante WHERE id_estudiante = '$studentId'";
     $result = mysqli_query($conexion, $sql);
-    
+
     if (!$result) {
         return null;
     }
-    
+
     return mysqli_fetch_assoc($result);
 }
 
-function getParentInfo($conexion, $parentId, $type) {
+function getParentInfo($conexion, $parentId, $type)
+{
     if (!$parentId) return null;
-    
+
     $table = $type;
     $idColumn = 'id_' . $type;
     $parentId = mysqli_real_escape_string($conexion, $parentId);
-    
+
     $sql = "SELECT * FROM $table WHERE $idColumn = '$parentId'";
     $result = mysqli_query($conexion, $sql);
-    
+
     if (!$result) {
         return null;
     }
-    
+
     return mysqli_fetch_assoc($result);
 }
 
-function getEducationalEnvironment($conexion, $studentId) {
+function getEducationalEnvironment($conexion, $studentId)
+{
     $studentId = mysqli_real_escape_string($conexion, $studentId);
     $sql = "SELECT * FROM entorno_educativo WHERE id_estudiante = '$studentId'";
     $result = mysqli_query($conexion, $sql);
-    
+
     if (!$result) {
         return null;
     }
-    
+
     return mysqli_fetch_assoc($result);
 }
 
-function getMedicalInfo($conexion, $studentId) {
+function getMedicalInfo($conexion, $studentId)
+{
     $medicalInfo = [];
-    
+
     try {
         $studentId = mysqli_real_escape_string($conexion, $studentId);
-        
+
         // Obtener PIAR del estudiante
         $piarSql = "SELECT id_piar FROM piar WHERE id_estudiante = '$studentId' ORDER BY fecha DESC LIMIT 1";
         $piarResult = mysqli_query($conexion, $piarSql);
-        
+
         if (!$piarResult || mysqli_num_rows($piarResult) == 0) {
             return null;
         }
-        
+
         $piar = mysqli_fetch_assoc($piarResult);
         $piarId = mysqli_real_escape_string($conexion, $piar['id_piar']);
-        
+
         // Obtener diagnósticos médicos con códigos CIE-10
         $diagnosticosSql = "
             SELECT dm.*, ddx.id_cie10, dx.descripcion as dx_descripcion, ddx.anio
@@ -616,13 +637,13 @@ function getMedicalInfo($conexion, $studentId) {
             WHERE dm.id_piar = '$piarId'
         ";
         $diagResult = mysqli_query($conexion, $diagnosticosSql);
-        
+
         // Organizar diagnósticos
         $medicalInfo['diagnosticos'] = [];
         $medicalInfo['dx_general'] = null;
         $medicalInfo['apoyos_tecnicos'] = null;
         $medicalInfo['soporte_dx'] = null;
-        
+
         if ($diagResult) {
             while ($diag = mysqli_fetch_assoc($diagResult)) {
                 if (!empty($diag['DX'])) {
@@ -643,7 +664,7 @@ function getMedicalInfo($conexion, $studentId) {
                 }
             }
         }
-        
+
         // Obtener medicamentos
         $medicamentosSql = "
             SELECT DISTINCT m.*
@@ -654,13 +675,13 @@ function getMedicalInfo($conexion, $studentId) {
         ";
         $medResult = mysqli_query($conexion, $medicamentosSql);
         $medicalInfo['medicamentos'] = [];
-        
+
         if ($medResult) {
             while ($med = mysqli_fetch_assoc($medResult)) {
                 $medicalInfo['medicamentos'][] = $med;
             }
         }
-        
+
         // Obtener tratamientos
         $tratamientosSql = "
             SELECT DISTINCT t.*
@@ -671,34 +692,35 @@ function getMedicalInfo($conexion, $studentId) {
         ";
         $tratResult = mysqli_query($conexion, $tratamientosSql);
         $medicalInfo['tratamientos'] = [];
-        
+
         if ($tratResult) {
             while ($trat = mysqli_fetch_assoc($tratResult)) {
                 $medicalInfo['tratamientos'][] = $trat;
             }
         }
-        
+
         return $medicalInfo;
-        
     } catch (Exception $e) {
         error_log("Error obteniendo información médica: " . $e->getMessage());
         return null;
     }
 }
 
-function getPiarInfo($conexion, $studentId) {
+function getPiarInfo($conexion, $studentId)
+{
     $studentId = mysqli_real_escape_string($conexion, $studentId);
     $sql = "SELECT * FROM piar WHERE id_estudiante = '$studentId' ORDER BY fecha DESC LIMIT 1";
     $result = mysqli_query($conexion, $sql);
-    
+
     if (!$result) {
         return null;
     }
-    
+
     return mysqli_fetch_assoc($result);
 }
 
-function getPedagogicalEvaluations($conexion, $studentId) {
+function getPedagogicalEvaluations($conexion, $studentId)
+{
     $studentId = mysqli_real_escape_string($conexion, $studentId);
     $sql = "
         SELECT 
@@ -711,18 +733,19 @@ function getPedagogicalEvaluations($conexion, $studentId) {
         ORDER BY vp.anio DESC, vp.periodo DESC
     ";
     $result = mysqli_query($conexion, $sql);
-    
+
     $evaluations = [];
     if ($result) {
         while ($row = mysqli_fetch_assoc($result)) {
             $evaluations[] = $row;
         }
     }
-    
+
     return $evaluations;
 }
 
-function getGeneralDescription($conexion, $studentId) {
+function getGeneralDescription($conexion, $studentId)
+{
     $studentId = mysqli_real_escape_string($conexion, $studentId);
     $sql = "
         SELECT 
@@ -743,15 +766,16 @@ function getGeneralDescription($conexion, $studentId) {
         WHERE dg.id_estudiante = '$studentId'
     ";
     $result = mysqli_query($conexion, $sql);
-    
+
     if (!$result) {
         return null;
     }
-    
+
     return mysqli_fetch_assoc($result);
 }
 
-function getCurrentGroup($conexion, $studentId) {
+function getCurrentGroup($conexion, $studentId)
+{
     $studentId = mysqli_real_escape_string($conexion, $studentId);
     $sql = "
         SELECT 
@@ -766,12 +790,10 @@ function getCurrentGroup($conexion, $studentId) {
         LIMIT 1
     ";
     $result = mysqli_query($conexion, $sql);
-    
+
     if (!$result) {
         return null;
     }
-    
+
     return mysqli_fetch_assoc($result);
 }
-
-?>
