@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-09-2025 a las 22:17:54
+-- Tiempo de generación: 29-09-2025 a las 05:10:06
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -49,7 +49,8 @@ INSERT INTO `acudiente` (`id_acudiente`, `nombre_completo`, `nivel_educativo`, `
 (16, 'Elias', 'Especialización', 'Tío', 'e@gmail.com', '3023331111', '1234'),
 (17, 'Álvaro Uribe Rodriguez Perez', 'Doctorado', 'Otro', 'alva@gmail.com', '3048894841', '1234'),
 (18, 'gvhbkj', 'cgvhbjnm', 'ghjok', 'ghj@gmail.com', 'yghujk', 'tyghj'),
-(22, 'Camilo Petro', 'Tecnológico', 'Tío/a', 'cp@gmail.com', '3145859876', '1234');
+(22, 'Camilo Petro', 'Tecnológico', 'Tío/a', 'cp@gmail.com', '3145859876', '1234'),
+(23, 'Edward Stiward Figueredo', 'Profesional', 'Tío/a', 'esf@gmail.com', '3144788924', '1234');
 
 -- --------------------------------------------------------
 
@@ -375,7 +376,8 @@ INSERT INTO `capacidad` (`id_capacidad`, `descripcion`) VALUES
 (10, 'qwertyuiop'),
 (11, 'qwertyuiop'),
 (12, 'Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas, etc.'),
-(13, 'Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas, etc.');
+(13, 'Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas, etc.'),
+(14, 'Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas');
 
 -- --------------------------------------------------------
 
@@ -403,7 +405,8 @@ INSERT INTO `descripcion_general` (`id_descripcion_general`, `id_capacidad`, `id
 (4, 10, 9, 9, 9, 9, 9, 15),
 (5, 11, 10, 10, 10, 10, 10, 16),
 (6, 12, 11, 11, 11, 11, 11, 17),
-(7, 13, 12, 12, 12, 12, 12, 20);
+(7, 13, 12, 12, 12, 12, 12, 20),
+(8, 14, 13, 13, 13, 13, 13, 21);
 
 -- --------------------------------------------------------
 
@@ -673,7 +676,8 @@ CREATE TABLE `entorno_educativo` (
 INSERT INTO `entorno_educativo` (`id_entorno_edu`, `estado`, `ultimo_grado_cursado`, `vinculado_otra_inst`, `informe_pedagogico`, `modalidad_proveniente`, `asiste_programas_complementarios`, `observacion`, `id_estudiante`) VALUES
 (2, 0, '10', 'Si - Detalles: Colegio privado', 0, NULL, 'No', 'Hello world', 6),
 (3, NULL, NULL, NULL, 0, NULL, NULL, NULL, 7),
-(4, 1, '10°', 'No', 0, 'Presencial', 'No', 'Ninguna', 20);
+(4, 1, '10°', 'No', 0, 'Presencial', 'No', 'Ninguna', 20),
+(5, 1, '10°', 'No', 1, 'Presencial', 'No', 'Nada más que decir', 21);
 
 -- --------------------------------------------------------
 
@@ -747,13 +751,14 @@ CREATE TABLE `estudiante` (
 --
 
 INSERT INTO `estudiante` (`id_estudiante`, `url_foto`, `nombre`, `apellidos`, `tipo_documento`, `no_documento`, `lugar_nacimiento`, `fecha_nacimiento`, `sector`, `direccion`, `telefono`, `correo`, `contrasena`, `victima_conflicto`, `registro_victima`, `centro_proteccion`, `grupo_etnico`, `no_hermanos`, `lugar_que_ocupa`, `con_quien_vive`, `quien_apoya_crianza`, `afiliacion_salud`, `id_madre`, `id_padre`, `id_cuidador`) VALUES
-(1, NULL, 'Max', 'Henriquez Pimiento', 'TI', NULL, 'San Gil, Santander', '2007-06-09', 'Urbano', 'Calle 1 #5-12', '3124567890', 'max@gmail.com', '12345', 'No', NULL, 'No', 'Albino', 1, '1', 'Padre, madre, hermana, gatos.', 'Madre, padre', 'Si', 1, 1, 1),
-(6, NULL, 'Sebastian', 'Feo Murillo', 'TI', '11017433478', 'Cosorro', '2009-12-04', 'Urbano', 'Altamira', '3549871245', 'feo@gmail.com', '1234', 'No', 'No', 'No', 'No', 2, '1', 'Familia', 'Familia', 'Si', 8, 8, 6),
+(1, 'photos/1.png', 'Max', 'Henriquez Pimiento', 'TI', NULL, 'San Gil, Santander', '2007-06-09', 'Urbano', 'Calle 1 #5-12', '3124567890', 'max@gmail.com', '12345', 'No', NULL, 'No', 'Albino', 1, '1', 'Padre, madre, hermana, gatos.', 'Madre, padre', 'Si', 1, 1, 1),
+(6, 'photos/6.png', 'Sebastian', 'Feo Murillo', 'TI', '11017433478', 'Cosorro', '2009-12-04', 'Urbano', 'Altamira', '3549871245', 'feo@gmail.com', '1234', 'No', 'No', 'No', 'No', 2, '1', 'Familia', 'Familia', 'Si', 8, 8, 6),
 (14, NULL, 'Hela', 'Merlano', 'TI', '11025468645', 'Hospital', '2005-12-04', 'Urbano', 'no se', '345251515451', 'noce@gmail.com', '1234', 'No', 'No', 'No', 'No', 2, '1', 'No c', 'No c', 'Si', 16, 16, 14),
 (16, NULL, 'Mario', 'Rodriguez Gonzalez', 'CE', '1877329857', 'Venezuela', '2004-04-04', 'Rural', 'Una finca', '30203048541', 'mrg@gmail.com', '1234', 'No', 'No', 'No', 'No', 3, '1', 'Familia', 'Familia', 'Si', 18, 18, 16),
 (17, NULL, 'Pepito', 'Pérez', 'TI', '1100457742', 'Madrid', '2010-05-05', 'Urbano', 'Una casa', '3214567890', 'pepito@gmail.com', '1234', 'No', 'No', 'No', 'No', 3, '1', 'Padre y madre', 'Familia', 'Si', 19, 19, 17),
 (18, NULL, 'dfcghj', 'gvhbnm', 'TI', 'hjk', 'gvhbjk', '2005-04-04', 'Urbano', 'zsghj', 'xrcvuj', 'xfgvhj@gmail.com', 'cgvhjk', 'No', 'No', 'No', 'No', 3, '2', 'cgvhjk', 'fcgvhbjnkm', 'Si', 20, 20, 18),
-(20, NULL, 'Andrés Felipe', 'Ruiz Medina', 'TI', '1111548464', 'Tunja', '2007-07-07', 'Urbano', 'Coovip', '3211231234', 'ruiz@gmail.com', '1234', 'No', 'No', 'No', 'No', 5, '2', 'Familia', 'Familia', 'No', 24, 24, 22);
+(20, 'photos/20.png', 'Andrés Felipe', 'Ruiz Medina', 'TI', '1111548464', 'Tunja', '2007-07-07', 'Urbano', 'Coovip', '3211231234', 'ruiz@gmail.com', '1234', 'No', 'No', 'No', 'No', 5, '2', 'Familia', 'Familia', 'No', 24, 24, 22),
+(21, 'photos/student_21_1759110179.png', 'Alfredo Gómez Bolaños', 'Gamez Bolaños', 'TI', '1098756324', 'Medellin', '2007-04-04', 'Urbano', 'Bella vista', '3336668888', 'agb@gmail.com', '1234', 'No', 'No', 'No', 'No', 2, '2', 'Familia', 'Familia', 'Si', 25, 25, 23);
 
 -- --------------------------------------------------------
 
@@ -776,7 +781,8 @@ INSERT INTO `expectativa` (`id_expectativa`, `descripcion`) VALUES
 (9, 'qwertyuip'),
 (10, 'qwertyuiop'),
 (11, 'Quiere graduarse, ir a la universidad, aprender un oficio, etc.'),
-(12, 'Quiere graduarse, ir a la universidad, aprender un oficio, etc.');
+(12, 'Quiere graduarse, ir a la universidad, aprender un oficio, etc.'),
+(13, 'Quiere graduarse, ir a la universidad, aprender un oficio');
 
 -- --------------------------------------------------------
 
@@ -799,7 +805,8 @@ INSERT INTO `expectativa_familia` (`id_expectativa_familia`, `descripcion`) VALU
 (9, 'qwertyuiop'),
 (10, 'qwertyuiop'),
 (11, 'Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro, etc'),
-(12, 'Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro, etc.');
+(12, 'Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro, etc.'),
+(13, 'Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro');
 
 -- --------------------------------------------------------
 
@@ -911,7 +918,8 @@ INSERT INTO `grupo_estudiante` (`id_grupo_estudiante`, `id_grupo`, `id_estudiant
 (9, 111, 15, '2025'),
 (10, 113, 16, '2025'),
 (11, 666, 17, '2025'),
-(12, 114, 20, '2025');
+(12, 114, 20, '2025'),
+(13, 112, 21, '2025');
 
 -- --------------------------------------------------------
 
@@ -947,7 +955,8 @@ INSERT INTO `gusto_interes` (`id_gusto_e_interes`, `descripcion`) VALUES
 (9, 'qwertyuiop'),
 (10, 'qwertyuiop'),
 (11, 'Le gusta la música, los deportes, la lectura, los videojuegos, etc.'),
-(12, 'Le gusta la música, los deportes, la lectura, los videojuegos, etc.');
+(12, 'Le gusta la música, los deportes, la lectura, los videojuegos, etc.'),
+(13, 'Le gusta la música, los deportes, la lectura, los videojuegos');
 
 -- --------------------------------------------------------
 
@@ -979,7 +988,8 @@ INSERT INTO `madre` (`id_madre`, `nombre_completo`, `nivel_educativo`, `ocupacio
 (18, 'María Gonzalez', 'Técnico', 'Abogada', 'mg@gmail.com', '1234', '3014447777'),
 (19, 'María Fernanda Merlano', 'Profesional', 'Trabajadora social', 'mmerlano@gmail.com', '1234', '3214567890'),
 (20, 'dcfvghbjn|cfvghbj', 'xfcvgbnjm', 'cgvbhnj', 'cvhbjn@gmsil.com', 'cgvhbn', ''),
-(24, 'Mariely Medina', 'Profesional', 'No c', 'mm@gmail.com', '1234', '3014447777');
+(24, 'Mariely Medina', 'Profesional', 'No c', 'mm@gmail.com', '1234', '3014447777'),
+(25, 'Albertana Ramirez', 'Tecnológico', 'Peluquera', 'ar@gmail.com', '1234', '3001794515');
 
 -- --------------------------------------------------------
 
@@ -1037,7 +1047,8 @@ INSERT INTO `otra_descripcion` (`id_otra_descripcion`, `descripcion`) VALUES
 (9, 'qwertyuiop'),
 (10, 'qwertyuiop'),
 (11, 'Cualquier otra información importante sobre el estudiante que considere relevante mencionar.'),
-(12, 'No');
+(12, 'No'),
+(13, 'Nada más que agregar.');
 
 -- --------------------------------------------------------
 
@@ -1069,7 +1080,8 @@ INSERT INTO `padre` (`id_padre`, `nombre_completo`, `nivel_educativo`, `ocupacio
 (18, 'Mario Rodriguez', 'Profesional', 'Locutor', 'mr@gmail.com', '1234', '3003332222'),
 (19, 'Gustavo Humberto Ballesteros', 'Maestría', 'Abogado', 'ghba@gmail.com', '1234', '3224672882'),
 (20, 'tfyghjk|tfyghjiyghuji', 'vbj', 'tfyghj', 'cvbhjnm@gmail.com', 'fyghj', ''),
-(24, 'Andrés Ruiz', 'Profesional', 'No c', 'ar@gmail.com', '1234', '3003332222');
+(24, 'Andrés Ruiz', 'Profesional', 'No c', 'ar@gmail.com', '1234', '3003332222'),
+(25, 'NO_REGISTRADO', 'N/A', 'No presente', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1119,7 +1131,8 @@ INSERT INTO `red_apoyo` (`id_red_apoyo`, `descripcion`) VALUES
 (9, 'qwertyuiop'),
 (10, 'qwertyuiop'),
 (11, 'Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante.'),
-(12, 'Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante.');
+(12, 'Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante.'),
+(13, 'Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante.');
 
 -- --------------------------------------------------------
 
@@ -1194,17 +1207,19 @@ CREATE TABLE `valoracion_pedagogica` (
   `barrera` text DEFAULT NULL,
   `tipo_ajuste` text DEFAULT NULL,
   `apoyo_requerido` text DEFAULT NULL,
-  `seguimiento` text DEFAULT NULL
+  `seguimiento` text DEFAULT NULL,
+  `creado_por_rol` int(100) DEFAULT NULL,
+  `creado_por_nombre` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `valoracion_pedagogica`
 --
 
-INSERT INTO `valoracion_pedagogica` (`id_valoracion_pedagogica`, `id_piar`, `id_asignatura`, `periodo`, `anio`, `objetivo`, `barrera`, `tipo_ajuste`, `apoyo_requerido`, `seguimiento`) VALUES
-(1, 13, 1, '4', '2025', '1234567890', 'qwertyuiop', 'asdfghjklñ', 'zxcvbnm,.-', 'wawsdfrgthyujik'),
-(2, 14, 5, '4', '2025', 'dfghjk', 'cvbnm', 'wertyu', 'cfgvbhnjmk', 'h jbnk'),
-(3, 16, 1, '4', '2025', 'Pasar el año escolar', 'Dificultad del (la) \\r\\nestudiante para \\r\\ntrabajar con sus \\r\\npares.', 'Dificultad del (la) \\r\\nestudiante para \\r\\ntrabajar con sus \\r\\npares.', 'Brindarle más tiempo \\r\\npara que desarrolle las \\r\\nactividades propuestas \\r\\nen clase.', 'Se requiere el seguimiento del docente de apoyo de manera mensual');
+INSERT INTO `valoracion_pedagogica` (`id_valoracion_pedagogica`, `id_piar`, `id_asignatura`, `periodo`, `anio`, `objetivo`, `barrera`, `tipo_ajuste`, `apoyo_requerido`, `seguimiento`, `creado_por_rol`, `creado_por_nombre`) VALUES
+(1, 13, 1, '4', '2025', '1234567890', 'qwertyuiop', 'asdfghjklñ', 'zxcvbnm,.-', 'wawsdfrgthyujik', 0, NULL),
+(2, 14, 5, '4', '2025', 'dfghjk', 'cvbnm', 'wertyu', 'cfgvbhnjmk', 'h jbnk', 0, NULL),
+(3, 16, 1, '4', '2025', 'Pasar el año escolar', 'Dificultad del (la) \\r\\nestudiante para \\r\\ntrabajar con sus \\r\\npares.', 'Dificultad del (la) \\r\\nestudiante para \\r\\ntrabajar con sus \\r\\npares.', 'Brindarle más tiempo \\r\\npara que desarrolle las \\r\\nactividades propuestas \\r\\nen clase.', 'Se requiere el seguimiento del docente de apoyo de manera mensual', 0, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -1452,7 +1467,7 @@ ALTER TABLE `valoracion_pedagogica`
 -- AUTO_INCREMENT de la tabla `acudiente`
 --
 ALTER TABLE `acudiente`
-  MODIFY `id_acudiente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_acudiente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `admin`
@@ -1482,13 +1497,13 @@ ALTER TABLE `atencion_medica`
 -- AUTO_INCREMENT de la tabla `capacidad`
 --
 ALTER TABLE `capacidad`
-  MODIFY `id_capacidad` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_capacidad` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `descripcion_general`
 --
 ALTER TABLE `descripcion_general`
-  MODIFY `id_descripcion_general` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_descripcion_general` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `diagnostico_medico`
@@ -1530,7 +1545,7 @@ ALTER TABLE `documento`
 -- AUTO_INCREMENT de la tabla `entorno_educativo`
 --
 ALTER TABLE `entorno_educativo`
-  MODIFY `id_entorno_edu` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_entorno_edu` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `entorno_salud`
@@ -1542,25 +1557,25 @@ ALTER TABLE `entorno_salud`
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `id_estudiante` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_estudiante` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `expectativa`
 --
 ALTER TABLE `expectativa`
-  MODIFY `id_expectativa` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_expectativa` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `expectativa_familia`
 --
 ALTER TABLE `expectativa_familia`
-  MODIFY `id_expectativa_familia` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_expectativa_familia` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `grupo_estudiante`
 --
 ALTER TABLE `grupo_estudiante`
-  MODIFY `id_grupo_estudiante` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_grupo_estudiante` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `grupo_sede`
@@ -1572,13 +1587,13 @@ ALTER TABLE `grupo_sede`
 -- AUTO_INCREMENT de la tabla `gusto_interes`
 --
 ALTER TABLE `gusto_interes`
-  MODIFY `id_gusto_e_interes` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_gusto_e_interes` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `madre`
 --
 ALTER TABLE `madre`
-  MODIFY `id_madre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_madre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `medicamento`
@@ -1590,13 +1605,13 @@ ALTER TABLE `medicamento`
 -- AUTO_INCREMENT de la tabla `otra_descripcion`
 --
 ALTER TABLE `otra_descripcion`
-  MODIFY `id_otra_descripcion` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_otra_descripcion` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `padre`
 --
 ALTER TABLE `padre`
-  MODIFY `id_padre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_padre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `piar`
@@ -1608,7 +1623,7 @@ ALTER TABLE `piar`
 -- AUTO_INCREMENT de la tabla `red_apoyo`
 --
 ALTER TABLE `red_apoyo`
-  MODIFY `id_red_apoyo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_red_apoyo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `sede`
@@ -1626,7 +1641,7 @@ ALTER TABLE `tratamiento`
 -- AUTO_INCREMENT de la tabla `valoracion_pedagogica`
 --
 ALTER TABLE `valoracion_pedagogica`
-  MODIFY `id_valoracion_pedagogica` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_valoracion_pedagogica` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas

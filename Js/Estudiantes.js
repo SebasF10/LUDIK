@@ -77,16 +77,16 @@ async function downloadActaAcuerdos() {
                     console.log('Error añadiendo logo:', e);
                 }
             }
-            
+
             doc.setFontSize(14);
             doc.setFont('helvetica', 'bold');
             doc.text('ACTA DE ACUERDO', margin + 35, 20);
-            
+
             doc.setFontSize(10);
             doc.setFont('helvetica', 'normal');
             doc.text('COLEGIO SAN JOSÉ DE GUANENTÁ', margin + 35, 28);
             doc.text('San Gil', margin + 35, 35);
-            
+
             doc.line(margin, 45, pageWidth - margin, 45);
             yPosition = 55;
         }
@@ -166,7 +166,7 @@ La Familia se compromete a cumplir y firmar los compromisos señalados en el PIA
         // Dibujar encabezados de tabla
         doc.setFillColor(230, 230, 230);
         doc.rect(margin, yPosition, pageWidth - 2 * margin, 8, 'F');
-        
+
         doc.setFontSize(8);
         doc.setFont('helvetica', 'bold');
         doc.text(tableHeaders[0], margin + 2, yPosition + 5);
@@ -177,7 +177,7 @@ La Familia se compromete a cumplir y firmar los compromisos señalados en el PIA
         // Dibujar filas de tabla
         actividades.forEach((actividad, index) => {
             const rowHeight = Math.max(20, Math.ceil(actividad[1].length / 50) * 6);
-            
+
             if (yPosition + rowHeight > pageHeight - margin) {
                 doc.addPage();
                 addHeader();
@@ -191,14 +191,14 @@ La Familia se compromete a cumplir y firmar los compromisos señalados en el PIA
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
             doc.text(actividad[0], margin + 2, yPosition + 5);
-            
+
             doc.setFont('helvetica', 'normal');
             const descripcion = doc.splitTextToSize(actividad[1], 90);
             doc.text(descripcion, margin + 45, yPosition + 5);
-            
+
             doc.setFont('helvetica', 'bold');
             doc.text(actividad[2], pageWidth - margin - 10, yPosition + 5);
-            
+
             yPosition += rowHeight + 2;
         });
 
@@ -231,10 +231,10 @@ La Familia se compromete a cumplir y firmar los compromisos señalados en el PIA
             doc.setFont('helvetica', 'normal');
             doc.text(`${fila[0]}:`, margin, yPosition);
             doc.line(margin + 35, yPosition, margin + 85, yPosition);
-            
+
             doc.text(`${fila[1]}:`, margin + 100, yPosition);
             doc.line(margin + 135, yPosition, pageWidth - margin, yPosition);
-            
+
             yPosition += 20;
         });
 
@@ -242,7 +242,7 @@ La Familia se compromete a cumplir y firmar los compromisos señalados en el PIA
         doc.setFontSize(8);
         doc.setTextColor(128, 128, 128);
         doc.text(`PIAR - Decreto 1421/2017`, margin, pageHeight - 10);
-        doc.text(`Generado el ${new Date().toLocaleDateString('es-ES')}`, pageWidth/2 - 30, pageHeight - 10);
+        doc.text(`Generado el ${new Date().toLocaleDateString('es-ES')}`, pageWidth / 2 - 30, pageHeight - 10);
         doc.text('V15. 08/2020', pageWidth - margin - 20, pageHeight - 10);
 
         doc.save(`Acta_Acuerdo_${currentStudentData.nombre}_${currentStudentData.apellidos}_${new Date().toISOString().split('T')[0]}.pdf`);
@@ -270,8 +270,8 @@ function canViewAcademicInfo() {
 }
 
 function canViewFamilyInfo() {
-    return ['admin', 'directivo', 'docente_apoyo', 'docente'].includes(currentUserRole) || 
-           ['madre', 'padre', 'acudiente'].includes(currentUserRole);
+    return ['admin', 'directivo', 'docente_apoyo', 'docente'].includes(currentUserRole) ||
+        ['madre', 'padre', 'acudiente'].includes(currentUserRole);
 }
 
 function canViewMedicalInfo() {
@@ -658,7 +658,7 @@ function setupEventListeners() {
     if (searchBtn) {
         searchBtn.addEventListener('click', performSearch);
     }
-    
+
     if (searchInput) {
         searchInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
@@ -679,7 +679,7 @@ function setupEventListeners() {
     if (closeModal) {
         closeModal.addEventListener('click', closeStudentModal);
     }
-    
+
     window.addEventListener('click', function (e) {
         if (e.target === modal) {
             closeStudentModal();
@@ -1041,7 +1041,7 @@ function applyFilters() {
  */
 function updatePaginationInfo() {
     if (!pageInfo) return;
-    
+
     const totalPages = Math.ceil(allStudents.length / studentsPerPage);
     pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
 
@@ -1197,7 +1197,7 @@ async function loadFilters() {
  */
 async function performSearch() {
     if (!searchInput) return;
-    
+
     const searchTerm = searchInput.value.trim();
 
     if (searchTerm.length < 2) {
@@ -1228,7 +1228,7 @@ async function performSearch() {
  */
 function displaySearchResults(students) {
     if (!searchResults) return;
-    
+
     searchResults.innerHTML = '';
 
     if (students.length === 0) {
@@ -1265,7 +1265,7 @@ async function loadAllStudents() {
  */
 function displayStudentsList() {
     if (!studentsGrid) return;
-    
+
     const startIndex = (currentPage - 1) * studentsPerPage;
     const endIndex = startIndex + studentsPerPage;
     const studentsToShow = allStudents.slice(startIndex, endIndex);
@@ -1308,7 +1308,9 @@ function createStudentCard(student) {
     // Crear elemento de foto
     let photoElement;
     if (student.foto_url && student.foto_url !== 'photos/default.png') {
-        photoElement = `<img src="${student.foto_url}" alt="Foto de ${fullName}" class="student-photo" onerror="this.outerHTML='<div class=\\'student-photo default\\'>${getInitials(fullName)}</div>'">`;
+        // Asegurarse de que la ruta tenga el prefijo correcto
+        const photoPath = student.foto_url.startsWith('php/') ? student.foto_url : `php/${student.foto_url}`;
+        photoElement = `<img src="${photoPath}" alt="Foto de ${fullName}" class="student-photo" onerror="this.outerHTML='<div class=\\'student-photo default\\'>${getInitials(fullName)}</div>'">`;
     } else {
         photoElement = `<div class="student-photo default">${getInitials(fullName)}</div>`;
     }
@@ -1316,7 +1318,7 @@ function createStudentCard(student) {
     // Badge especial para padres
     let badgeClass = 'student-badge';
     let badgeText = `${grado} - ${grupo}`;
-    
+
     if (['madre', 'padre', 'acudiente'].includes(currentUserRole)) {
         badgeClass += ' parent-relation';
         badgeText = getParentRelationText(currentUserRole);
@@ -1356,7 +1358,7 @@ function getInitials(fullName) {
 function getParentRelationText(role) {
     const relations = {
         'madre': 'Mi hijo/a',
-        'padre': 'Mi hijo/a', 
+        'padre': 'Mi hijo/a',
         'acudiente': 'A mi cargo'
     };
     return relations[role] || 'Estudiante';
@@ -1374,7 +1376,7 @@ async function showStudentDetails(studentId) {
         // Actualizar título del modal con foto
         const modalTitle = document.getElementById('modalTitle');
         const modalHeader = document.querySelector('.modal-header');
-        
+
         if (modalTitle && modalHeader) {
             // Limpiar header anterior
             const existingPhoto = modalHeader.querySelector('.modal-student-photo');
@@ -1387,12 +1389,13 @@ async function showStudentDetails(studentId) {
             // Agregar foto al modal
             let photoElement;
             if (student.foto_url && student.foto_url !== 'photos/default.png') {
+                const photoPath = student.foto_url.startsWith('php/') ? student.foto_url : `php/${student.foto_url}`;
                 photoElement = document.createElement('img');
-                photoElement.src = student.foto_url;
+                photoElement.src = photoPath;
                 photoElement.alt = `Foto de ${student.nombre} ${student.apellidos}`;
                 photoElement.className = 'modal-student-photo';
-                photoElement.onerror = function() {
-                    this.outerHTML = `<div class="modal-student-photo default">${getInitials(student.nombre + ' ' + student.apellidos)}</div>`;
+                photoElement.onerror = function () {
+                    this.outerHTML = `<div class="modal-student-photo default">${getInitials(student.nombre + ' ' + student.apellitos)}</div>`;
                 };
             } else {
                 photoElement = document.createElement('div');
@@ -1475,7 +1478,7 @@ function fillPersonalInfoForParents(student) {
 
     // Campos restringidos para padres
     const restrictedFields = ['lugarNacimiento', 'sector', 'direccion', 'victimaConflicto', 'grupoEtnico', 'conQuienVive'];
-    
+
     Object.keys(fields).forEach(fieldId => {
         const element = document.getElementById(fieldId);
         if (element) {
@@ -1499,7 +1502,7 @@ function fillPersonalInfoForParents(student) {
 function fillAcademicInfo(student) {
     const gradoActual = document.getElementById('gradoActual');
     const grupoActual = document.getElementById('grupoActual');
-    
+
     if (gradoActual) {
         gradoActual.textContent = student.grado || 'No asignado';
     }
@@ -1548,7 +1551,7 @@ function fillAcademicInfo(student) {
 function fillAcademicInfoForParents(student) {
     const gradoActual = document.getElementById('gradoActual');
     const grupoActual = document.getElementById('grupoActual');
-    
+
     if (gradoActual) {
         gradoActual.textContent = student.grado || 'No asignado';
     }
@@ -1621,7 +1624,7 @@ function hideParentSection(containerId, parentType) {
 function fillParentInfo(containerId, parentData, parentType) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    
+
     container.innerHTML = '';
 
     if (!parentData) {
@@ -1664,7 +1667,7 @@ function fillParentInfo(containerId, parentData, parentType) {
 function fillMedicalInfo(student) {
     const container = document.getElementById('infoMedica');
     if (!container) return;
-    
+
     container.innerHTML = '';
 
     if (!student.info_medica) {
@@ -1715,7 +1718,7 @@ function fillMedicalInfo(student) {
 function fillMedicalInfoForParents(student) {
     const container = document.getElementById('infoMedica');
     if (!container) return;
-    
+
     container.innerHTML = '';
 
     if (!student.info_medica) {
@@ -1724,7 +1727,7 @@ function fillMedicalInfoForParents(student) {
     }
 
     const medicalInfo = student.info_medica;
-    
+
     container.innerHTML = `
         <div class="parent-limited-info">
             <h4>Resumen de Información Médica</h4>
@@ -1882,7 +1885,7 @@ function getRoleDisplayName(rol) {
         'padre': 'Padre de Familia',
         'acudiente': 'Acudiente'
     };
-    
+
     return roles[rol] || 'Usuario';
 }
 
@@ -1923,21 +1926,21 @@ async function downloadIndividualStudentPDF() {
                     console.log('Error añadiendo logo:', e);
                 }
             }
-            
+
             // Título del documento
             doc.setFontSize(14);
             doc.setFont('helvetica', 'bold');
             doc.text(title, margin + 35, 20);
-            
+
             // Información del colegio
             doc.setFontSize(10);
             doc.setFont('helvetica', 'normal');
             doc.text('COLEGIO SAN JOSÉ DE GUANENTÁ', margin + 30, 28);
             doc.text('San Gil, Santander', margin + 30, 35);
-            
+
             // Línea separadora
             doc.line(margin, 45, pageWidth - margin, 45);
-            
+
             yPosition = 55;
         }
 
@@ -1968,7 +1971,7 @@ async function downloadIndividualStudentPDF() {
         // Función para agregar sección con fondo gris
         function addSectionHeader(title) {
             checkPageBreak(15);
-            
+
             doc.setFillColor(230, 230, 230);
             doc.rect(margin, yPosition - 3, pageWidth - 2 * margin, 8, 'F');
             doc.setFontSize(11);
@@ -2024,14 +2027,14 @@ async function downloadIndividualStudentPDF() {
 
         // 2. Entorno Salud
         addSectionHeader('2. Entorno Salud');
-        
+
         addText(`Afiliación al sistema de salud: ${currentStudentData.afiliacion_salud || 'No especificada'}`, 9);
-        
+
         if (currentStudentData.info_medica) {
             if (currentStudentData.info_medica.dx_general) {
                 addText(`Cuenta con diagnóstico médico: Sí - ${currentStudentData.info_medica.dx_general}`, 9);
             }
-            
+
             if (currentStudentData.info_medica.medicamentos && currentStudentData.info_medica.medicamentos.length > 0) {
                 addText('¿Consume medicamentos? Sí', 9);
                 currentStudentData.info_medica.medicamentos.forEach(med => {
@@ -2040,7 +2043,7 @@ async function downloadIndividualStudentPDF() {
             } else {
                 addText('¿Consume medicamentos? No', 9);
             }
-            
+
             if (currentStudentData.info_medica.apoyos_tecnicos) {
                 addText(`Apoyos técnicos: ${currentStudentData.info_medica.apoyos_tecnicos}`, 9);
             }
@@ -2053,19 +2056,19 @@ async function downloadIndividualStudentPDF() {
 
         // 3. Entorno Hogar
         addSectionHeader('3. Entorno Hogar');
-        
+
         if (currentStudentData.madre) {
             addText(`Nombre de la madre: ${currentStudentData.madre.nombre_completo || 'No registrado'}`, 9);
             addText(`Ocupación: ${currentStudentData.madre.ocupacion || 'No especificada'}`, 9);
             addText(`Nivel educativo: ${currentStudentData.madre.nivel_educativo || 'No especificado'}`, 9);
         }
-        
+
         if (currentStudentData.padre) {
             addText(`Nombre del padre: ${currentStudentData.padre.nombre_completo || 'No registrado'}`, 9);
             addText(`Ocupación: ${currentStudentData.padre.ocupacion || 'No especificada'}`, 9);
             addText(`Nivel educativo: ${currentStudentData.padre.nivel_educativo || 'No especificado'}`, 9);
         }
-        
+
         if (currentStudentData.acudiente) {
             addText(`Nombre cuidador: ${currentStudentData.acudiente.nombre_completo || 'No registrado'}`, 9);
             addText(`Parentesco: ${currentStudentData.acudiente.parentesco || 'No especificado'}`, 9);
@@ -2073,12 +2076,12 @@ async function downloadIndividualStudentPDF() {
         }
 
         addText(`Con quien vive: ${currentStudentData.con_quien_vive || 'No especificado'}`, 9);
-        
+
         yPosition += 10;
 
         // Entorno Educativo
         addSectionHeader('Entorno Educativo');
-        
+
         if (currentStudentData.entorno_educativo) {
             const entorno = currentStudentData.entorno_educativo;
             addText(`¿Ha estado vinculado en otra institución?: ${entorno.vinculado_otra_inst || 'No especificado'}`, 9);
@@ -2094,23 +2097,23 @@ async function downloadIndividualStudentPDF() {
         if (currentStudentData.valoraciones && currentStudentData.valoraciones.length > 0) {
             checkPageBreak(30);
             addSectionHeader('2.2. Valoración por áreas');
-            
+
             currentStudentData.valoraciones.forEach(valoracion => {
                 checkPageBreak(25);
-                
+
                 doc.setFillColor(248, 250, 252);
                 doc.rect(margin, yPosition - 3, pageWidth - 2 * margin, 20, 'F');
-                
+
                 doc.setFontSize(10);
                 doc.setFont('helvetica', 'bold');
                 doc.text(`Área/asignatura: ${valoracion.nombre_asig}`, margin + 2, yPosition + 3);
                 doc.text(`Período: ${valoracion.periodo} ${valoracion.anio}`, margin + 2, yPosition + 9);
-                
+
                 yPosition += 25;
-                
+
                 doc.setFontSize(8);
                 doc.setFont('helvetica', 'normal');
-                
+
                 if (valoracion.objetivo) {
                     addText(`Objetivo: ${valoracion.objetivo}`, 8);
                 }
@@ -2126,7 +2129,7 @@ async function downloadIndividualStudentPDF() {
                 if (valoracion.seguimiento) {
                     addText(`Seguimiento/evaluación: ${valoracion.seguimiento}`, 8);
                 }
-                
+
                 yPosition += 5;
             });
         }
@@ -2139,7 +2142,7 @@ async function downloadIndividualStudentPDF() {
             doc.setTextColor(128, 128, 128);
             doc.text(`Página ${i} de ${totalPages}`, pageWidth - margin - 30, pageHeight - 10);
             doc.text(`PIAR - Decreto 1421/2017`, margin, pageHeight - 10);
-            doc.text(`Generado el ${new Date().toLocaleDateString('es-ES')}`, pageWidth/2 - 30, pageHeight - 10);
+            doc.text(`Generado el ${new Date().toLocaleDateString('es-ES')}`, pageWidth / 2 - 30, pageHeight - 10);
         }
 
         // Guardar PDF
