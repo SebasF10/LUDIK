@@ -79,6 +79,113 @@
             font-size: 0.9rem;
             margin-top: 1rem;
         }
+
+        /* Estilos para la funcionalidad de foto */
+        .photo-section {
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .photo-upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .photo-preview {
+            width: 200px;
+            height: 200px;
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .photo-preview:hover {
+            border-color: #764ba2;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .photo-placeholder {
+            color: #667eea;
+            font-size: 3rem;
+            opacity: 0.5;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .file-input-label:hover {
+            background: linear-gradient(45deg, #5a6fd8, #6a4190);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .photo-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+
+        .remove-photo-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-photo-btn:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .photo-upload-error {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
     </style>
 </head>
 
@@ -178,7 +285,7 @@
                     <div class="step-indicator" id="step12">12</div>
                 </div>
 
-                <form id="formulario-completo" method="POST">
+                <form id="formulario-completo" method="POST" enctype="multipart/form-data">
 
                     <!-- PASO 1: INFORMACIÓN DE LA MADRE -->
                     <div class="form-step active" id="form-step-1">
@@ -290,7 +397,7 @@
                                 <option value="">Seleccione</option>
                                 <option value="Primaria">Primaria</option>
                                 <option value="Bachillerato">Bachillerato</option>
-                                <option value="TÃ©cnico">Técnico</option>
+                                <option value="Técnico">Técnico</option>
                                 <option value="Tecnológico">Tecnológico</option>
                                 <option value="Profesional">Profesional</option>
                                 <option value="Especialización">Especialización</option>
@@ -371,6 +478,28 @@
 
                         <label for="estudiante_apellidos">Apellidos *</label>
                         <input type="text" id="estudiante_apellidos" name="estudiante_apellidos" required>
+
+                        <!-- SECCIÓN DE FOTO DEL ESTUDIANTE -->
+                        <div class="photo-section">
+                            <h3>Foto del Estudiante</h3>
+                            <div class="photo-upload-container">
+                                <div class="photo-preview" id="photoPreview">
+                                    <div class="photo-placeholder">📷</div>
+                                </div>
+                                <div class="file-input-wrapper">
+                                    <input type="file" id="student_photo" name="student_photo" accept="image/*">
+                                    <label for="student_photo" class="file-input-label">Seleccionar Foto</label>
+                                </div>
+                                <div class="photo-info">
+                                    Formatos admitidos: JPG, PNG, GIF<br>
+                                    Tamaño máximo: 2MB
+                                </div>
+                                <button type="button" class="remove-photo-btn" id="removePhotoBtn" style="display: none;">
+                                    Quitar Foto
+                                </button>
+                                <div class="photo-upload-error" id="photoError"></div>
+                            </div>
+                        </div>
 
                         <label for="tipo_documento">Tipo de Documento *</label>
                         <select id="tipo_documento" name="tipo_documento" required>
@@ -687,10 +816,82 @@
                     console.log('Botón ocultado para rol:', rol);
                 }
             }
+
+            // Inicializar funcionalidad de foto
+            initPhotoUpload();
         });
+
+        // Funcionalidad para manejo de foto
+        function initPhotoUpload() {
+            const photoInput = document.getElementById('student_photo');
+            const photoPreview = document.getElementById('photoPreview');
+            const removePhotoBtn = document.getElementById('removePhotoBtn');
+            const photoError = document.getElementById('photoError');
+
+            if (photoInput) {
+                photoInput.addEventListener('change', handlePhotoChange);
+            }
+
+            if (removePhotoBtn) {
+                removePhotoBtn.addEventListener('click', removePhoto);
+            }
+        }
+
+        function handlePhotoChange(event) {
+            const file = event.target.files[0];
+            const photoPreview = document.getElementById('photoPreview');
+            const removePhotoBtn = document.getElementById('removePhotoBtn');
+            const photoError = document.getElementById('photoError');
+
+            // Limpiar errores previos
+            photoError.style.display = 'none';
+            photoError.textContent = '';
+
+            if (!file) {
+                return;
+            }
+
+            // Validar tipo de archivo
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            if (!allowedTypes.includes(file.type)) {
+                showPhotoError('Por favor seleccione un archivo de imagen válido (JPG, PNG, GIF)');
+                event.target.value = '';
+                return;
+            }
+
+            // Validar tamaño (2MB máximo)
+            const maxSize = 2 * 1024 * 1024; // 2MB en bytes
+            if (file.size > maxSize) {
+                showPhotoError('La imagen es demasiado grande. El tamaño máximo es 2MB');
+                event.target.value = '';
+                return;
+            }
+
+            // Crear preview de la imagen
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                photoPreview.innerHTML = `<img src="${e.target.result}" alt="Foto del estudiante">`;
+                removePhotoBtn.style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removePhoto() {
+            const photoInput = document.getElementById('student_photo');
+            const photoPreview = document.getElementById('photoPreview');
+            const removePhotoBtn = document.getElementById('removePhotoBtn');
+
+            photoInput.value = '';
+            photoPreview.innerHTML = '<div class="photo-placeholder">📷</div>';
+            removePhotoBtn.style.display = 'none';
+        }
+
+        function showPhotoError(message) {
+            const photoError = document.getElementById('photoError');
+            photoError.textContent = message;
+            photoError.style.display = 'block';
+        }
     </script>
-
-
 
     <script src="Js\Registrar_estudiante.js"></script>
 </body>
