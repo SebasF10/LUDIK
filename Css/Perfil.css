@@ -23,7 +23,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px;
+    padding: 12px 40px;
+    /* Menos espacio vertical */
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -54,6 +55,8 @@ body {
     align-items: center;
     flex: 1;
     justify-content: flex-end;
+    gap: 24px;
+    /* Espacio entre los logos */
 }
 
 .menu-text {
@@ -78,13 +81,6 @@ body {
     background: none !important;
     padding: 0 !important;
     cursor: default;
-    outline: none !important;
-    border: none !important;
-}
-
-.header-logo:hover {
-    transform: scale(1.05) rotate(5deg);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     outline: none !important;
     border: none !important;
 }
@@ -750,3 +746,52 @@ body {
     /* 👈 evita que se bloquee el scroll */
     overflow-y: auto;
 }
+
+
+.centro {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Cambia flex-end por center */
+    margin: 0;
+    /* Asegúrate de que no tenga margen */
+    padding: 0;
+}
+
+
+.titulo-ludik {
+    margin: 0;
+    /* Elimina margen extra */
+    padding: 0;
+}
+
+
+.imagen-ludik-header {
+    height: 80px;
+    width: auto;
+    display: inline-block;
+    margin: 0;
+    /* Elimina margen extra */
+    padding: 0;
+    vertical-align: middle;
+}
+
+
+
+.logo-institucion,
+.logo-ludik {
+    width: 50px;
+    height: auto;
+    /* mantiene proporción natural */
+    object-fit: contain;
+    /* muestra la imagen completa sin recortes */
+    border-radius: 0;
+    /* elimina bordes redondeados */
+    box-shadow: none;
+    /* elimina la sombra blanca alrededor */
+}
+
