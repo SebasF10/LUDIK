@@ -676,21 +676,29 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px;
-    background: rgba(255, 255, 255, 0.95);
+    padding: 0 48px;
+    /* Más espacio horizontal */
+    min-height: 89px;
+    background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
+    left: 0;
+    width: 100vw;
     z-index: 1001;
+    margin: 0;
+    border-right: none;
+    box-sizing: border-box;
+    /* Asegura que el padding no desborde */
 }
 
-.left-section {
+.left-section,
+.right-section {
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
-    gap: 15px;
-    flex: 1;
 }
 
 .center-section {
@@ -707,6 +715,9 @@ body {
     align-items: center;
     flex: 1;
     justify-content: flex-end;
+    gap: 25px;
+    padding-right: 8px;
+    /* <-- Añade esta línea para separar los logos */
 }
 
 .menu-text {
@@ -735,13 +746,6 @@ body {
     border: none !important;
 }
 
-.header-logo:hover {
-    transform: scale(1.05) rotate(5deg);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    outline: none !important;
-    border: none !important;
-}
-
 .title {
     font-size: 3.2rem;
     font-weight: 700;
@@ -754,4 +758,53 @@ body {
     filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.2));
 }
 
-/*
+.imagen-ludik-header {
+    height: 80px;
+    /* ajusta tamaño según tu preferencia */
+    width: auto;
+    display: inline-block;
+}
+
+.centro {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Cambia flex-end por center */
+    margin: 0;
+    /* Asegúrate de que no tenga margen */
+    padding: 0;
+}
+
+.titulo-ludik {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagen-ludik-header {
+    height: 80px;
+    width: auto;
+    display: inline-block;
+    margin: 0 12px;
+    vertical-align: middle;
+    z-index: 2;
+    position: relative;
+}
+
+.header-logo,
+.logo-institucion {
+    width: 56px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+}
