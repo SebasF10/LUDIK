@@ -805,6 +805,14 @@ body {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    text-align: center;
+    /* ← AGREGAR */
+    display: flex;
+    /* ← AGREGAR */
+    flex-direction: column;
+    /* ← AGREGAR */
+    align-items: center;
+    /* ← AGREGAR */
 }
 
 .card::before {
@@ -993,7 +1001,7 @@ body {
     font-size: 1rem;
     font-weight: 600;
     transition: all 0.3s ease;
-    min-width: 140px;
+    min-width: 130px;
     position: relative;
     overflow: hidden;
     text-decoration: none;
@@ -1325,6 +1333,129 @@ footer.pie-pagina {
     background-color: #095bb5;
 }
 
+/* ===== FOTO EN MODAL DE DETALLES ===== */
+.info-header-with-photo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.modal-student-photo-detail {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #667eea;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.modal-student-photo-detail.default {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 600;
+    border: 3px solid #667eea;
+}
+
+.info-header-text {
+    flex: 1;
+}
+
+.info-header-text h3 {
+    color: #667eea;
+    margin-bottom: 8px;
+    font-size: 1.4rem;
+}
+
+.info-header-text p {
+    color: #64748b;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Responsive para foto en modal de detalles */
+@media (max-width: 768px) {
+    .info-header-with-photo {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .modal-student-photo-detail {
+        width: 70px;
+        height: 70px;
+    }
+
+    .modal-student-photo-detail.default {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-student-photo-detail {
+        width: 60px;
+        height: 60px;
+    }
+
+    .modal-student-photo-detail.default {
+        font-size: 1.3rem;
+    }
+
+    .info-header-text h3 {
+        font-size: 1.2rem;
+    }
+
+    .info-header-text p {
+        font-size: 0.85rem;
+    }
+}
+
+/* ===== FOTOS DE ESTUDIANTES EN CARDS ===== */
+.student-photo-card {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e2e8f0;
+    margin: 0 auto 15px;
+    display: block;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover .student-photo-card {
+    border-color: #667eea;
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.student-photo-card.default {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 600;
+    border: 3px solid #667eea;
+}
+
+.card.selected .student-photo-card {
+    border-color: #667eea;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.card.selected .student-photo-card.default {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
     .header {
@@ -1416,6 +1547,32 @@ footer.pie-pagina {
     .estudiante-cards {
         grid-template-columns: 1fr;
         gap: 15px;
+    }
+
+    @media (max-width: 768px) {
+        /* ... código existente ... */
+
+        .student-photo-card {
+            width: 60px;
+            height: 60px;
+        }
+
+        .student-photo-card.default {
+            font-size: 1.4rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        /* ... código existente ... */
+
+        .student-photo-card {
+            width: 50px;
+            height: 50px;
+        }
+
+        .student-photo-card.default {
+            font-size: 1.2rem;
+        }
     }
 }
 

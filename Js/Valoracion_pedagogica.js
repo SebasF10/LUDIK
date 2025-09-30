@@ -480,13 +480,33 @@ async function verValoracion(idValoracion) {
                 '4': 'Cuarto Período'
             }[val.periodo] || `Período ${val.periodo}`;
 
+            // Crear elemento de foto
+            const fullName = `${val.estudiante_nombre} ${val.estudiante_apellidos}`;
+            const initials = getInitials(fullName);
+            let photoElement;
+            
+            if (val.foto_url && val.foto_url !== 'photos/default.png') {
+                const photoPath = val.foto_url.startsWith('photos/') ? val.foto_url : `photos/${val.foto_url}`;
+                photoElement = `
+                    <img src="${photoPath}" 
+                         alt="Foto de ${fullName}" 
+                         class="modal-student-photo-detail" 
+                         onerror="this.outerHTML='<div class=\\'modal-student-photo-detail default\\'>${initials}</div>'">
+                `;
+            } else {
+                photoElement = `<div class="modal-student-photo-detail default">${initials}</div>`;
+            }
+
             const contenido = `
                 <div class="valoracion-detalle">
-                    <div class="info-header">
-                        <h3>${val.estudiante_nombre} ${val.estudiante_apellidos}</h3>
-                        <p><strong>Grupo:</strong> ${val.grupo} - ${val.grado} | 
-                        <strong>Asignatura:</strong> ${val.nombre_asig} | 
-                        <strong>Período:</strong> ${periodoTexto} ${val.anio}</p>
+                    <div class="info-header-with-photo">
+                        ${photoElement}
+                        <div class="info-header-text">
+                            <h3>${val.estudiante_nombre} ${val.estudiante_apellidos}</h3>
+                            <p><strong>Grupo:</strong> ${val.grupo} - ${val.grado} | 
+                            <strong>Asignatura:</strong> ${val.nombre_asig} | 
+                            <strong>Período:</strong> ${periodoTexto} ${val.anio}</p>
+                        </div>
                     </div>
                     
                     <div class="detalle-grid">
@@ -875,21 +895,36 @@ function mostrarEstudiantes(estudiantes) {
         return;
     }
 
-    container.innerHTML = estudiantes.map(estudiante => `
-        <div class="card" onclick="seleccionarEstudiante(${JSON.stringify(estudiante).replace(/"/g, '&quot;')})">
-            <div class="card-title">${estudiante.nombre} ${estudiante.apellidos}</div>
-            <div class="card-subtitle">Documento: ${estudiante.no_documento}</div>
-            <div class="card-info">
-                <div>📧 ${estudiante.correo}</div>
-                <div>📞 ${estudiante.telefono}</div>
-                <div class="piar-status ${estudiante.tiene_piar ? 'tiene-piar' : 'sin-piar'}">
-                    ${estudiante.tiene_piar ? '✅ Tiene PIAR' : '❌ Sin PIAR'}
+    container.innerHTML = estudiantes.map(estudiante => {
+        const fullName = `${estudiante.nombre} ${estudiante.apellidos}`;
+        const initials = getInitials(fullName);
+
+        // Ajustar la ruta de la foto para que apunte a la carpeta correcta
+        let photoElement;
+        if (estudiante.url_foto && estudiante.url_foto !== 'photos/default.png') {
+            // Si la ruta ya empieza por 'photos/', usarla tal cual, si no, anteponer 'photos/'
+            const photoPath = estudiante.url_foto.startsWith('photos/') ? estudiante.url_foto : `photos/${estudiante.url_foto}`;
+            photoElement = `<img src="${photoPath}" alt="Foto de ${fullName}" class="student-photo-card" onerror="this.outerHTML='<div class=\\'student-photo-card default\\'>${initials}</div>'">`;
+        } else {
+            photoElement = `<div class="student-photo-card default">${initials}</div>`;
+        }
+
+        return `
+            <div class="card" onclick="seleccionarEstudiante(${JSON.stringify(estudiante).replace(/"/g, '&quot;')})">
+                ${photoElement}
+                <div class="card-title">${fullName}</div>
+                <div class="card-subtitle">Documento: ${estudiante.no_documento}</div>
+                <div class="card-info">
+                    <div>📧 ${estudiante.correo}</div>
+                    <div>📞 ${estudiante.telefono}</div>
+                    <div class="piar-status ${estudiante.tiene_piar ? 'tiene-piar' : 'sin-piar'}">
+                        ${estudiante.tiene_piar ? '✅ Tiene PIAR' : '❌ Sin PIAR'}
+                    </div>
                 </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
-
 // ===== FUNCIONES DE SELECCIÓN =====
 function seleccionarGrupo(grupo) {
     document.querySelectorAll('#grupoCards .card').forEach(card => {
@@ -1055,3 +1090,16 @@ function goBackOrRedirect(ruta) {
     }
 }
 
+// Obtener iniciales de un nombre completo
+
+function getInitials(fullName) {
+    if (!fullName) return '??';
+
+    const names = fullName.trim().split(' ').filter(n => n.length > 0);
+
+    if (names.length === 0) return '??';
+    if (names.length === 1) return names[0].substring(0, 2).toUpperCase();
+
+    // Tomar primera letra del primer nombre y primera letra del último apellido
+    return (names[0][0] + names[names.length - 1][0]).toUpperCase();
+}

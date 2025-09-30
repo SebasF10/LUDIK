@@ -15,11 +15,6 @@ try {
         throw new Exception('Método no permitido');
     }
     
-    // Usar la conexión del archivo incluido (convertir MySQLi a PDO para consistencia)
-    // Si prefieres mantener MySQLi, podemos modificar el código para usarlo
-    $pdo_conn = new PDO("mysql:host=" . HOST . ";dbname=" . BD . ";charset=utf8mb4", USER, PW);
-    $pdo_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
     // Obtener datos del formulario
     $id_estudiante = $_POST['id_estudiante'] ?? null;
     $fecha = $_POST['fecha'] ?? null;
@@ -42,7 +37,7 @@ try {
     
     // Insertar el PIAR
     $consulta = "INSERT INTO piar (id_estudiante, fecha, ajuste, apoyo, barrera) 
-                 VALUES (?, ?, ?, ?, ?)";
+                VALUES (?, ?, ?, ?, ?)";
     
     $stmt = $pdo_conn->prepare($consulta);
     $stmt->execute([$id_estudiante, $fecha, $ajuste, $apoyo, $barrera]);
