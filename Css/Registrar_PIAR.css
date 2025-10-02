@@ -54,7 +54,12 @@ body {
     align-items: center;
     flex: 1;
     justify-content: flex-end;
+    gap: 32px;
+    /* Más separación entre logos */
+    padding-right: 8px;
+    /* Un poco de espacio a la derecha */
 }
+
 
 .menu-text {
     font-size: 1.9rem;
@@ -78,13 +83,6 @@ body {
     background: none !important;
     padding: 0 !important;
     cursor: default;
-    outline: none !important;
-    border: none !important;
-}
-
-.header-logo:hover {
-    transform: scale(1.05) rotate(5deg);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     outline: none !important;
     border: none !important;
 }
@@ -863,4 +861,44 @@ footer.pie-pagina {
     .progress-indicator {
         gap: 10px;
     }
+}
+
+.centro {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    min-width: 0;
+}
+
+.titulo-ludik {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagen-ludik-header {
+    height: 80px;
+    width: auto;
+    display: inline-block;
+    margin: 0 12px;
+    vertical-align: middle;
+    z-index: 2;
+    position: relative;
+}
+
+.header-logo,
+.logo-institucion {
+    width: 56px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    padding: 0;
+    margin: 0;
 }
