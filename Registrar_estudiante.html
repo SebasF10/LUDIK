@@ -252,6 +252,11 @@
                 <span class="menu-icon">💬</span>
                 Comunicate
             </button>
+            <a href="manual.pdf" download class="menu-button">
+                <span class="menu-icon">📘</span>
+                Manual de Usuario
+            </a>
+
             <button class="menu-button">
                 <span class="menu-icon">❓</span>
                 Ayuda
@@ -494,7 +499,8 @@
                                     Formatos admitidos: JPG, PNG, GIF<br>
                                     Tamaño máximo: 2MB
                                 </div>
-                                <button type="button" class="remove-photo-btn" id="removePhotoBtn" style="display: none;">
+                                <button type="button" class="remove-photo-btn" id="removePhotoBtn"
+                                    style="display: none;">
                                     Quitar Foto
                                 </button>
                                 <div class="photo-upload-error" id="photoError"></div>
@@ -869,7 +875,7 @@
 
             // Crear preview de la imagen
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 photoPreview.innerHTML = `<img src="${e.target.result}" alt="Foto del estudiante">`;
                 removePhotoBtn.style.display = 'inline-block';
             };

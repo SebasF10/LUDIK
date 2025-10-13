@@ -410,3 +410,97 @@ setTimeout(() => {
 
 console.log("✅ Interfaz.js completamente cargado y configurado");
 
+document.addEventListener('DOMContentLoaded', function () {
+    // ACCIONES RÁPIDAS SEGÚN ROL
+    const acciones = document.getElementById('accionesRapidas');
+    if (!acciones) return;
+
+    const rol = (localStorage.getItem('rol') || '').toLowerCase();
+    acciones.innerHTML = ''; // Limpia acciones previas
+
+    // Cargar cantidad real de estudiantes
+    fetch('php/contar_estudiantes.php')
+        .then(response => response.json())
+        .then(data => {
+            const num = document.getElementById('numEstudiantes');
+            if (num && data.total !== undefined) {
+                num.textContent = data.total;
+            }
+        })
+        .catch(err => {
+            console.error('Error al cargar el número de estudiantes:', err);
+        });
+
+    if (['padre', 'madre', 'acudiente'].includes(rol)) {
+        // Botón de Ayuda
+        acciones.innerHTML += `
+            <div class="action-card">
+                <div class="action-icon">❓</div>
+                <h3>Ayuda</h3>
+                <p>Preguntas frecuentes con nuestra plataforma</p>
+                <button class="action-btn" id="btnAyuda">Ir a Ayuda</button>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">📊</div>
+                <h3>Ver Progreso</h3>
+                <p>Consulta el progreso de tu hijo</p>
+                <button class="action-btn" id="btnProgresoHijo">Ver Progreso</button>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">💬</div>
+                <h3>Comunícate</h3>
+                <p>Comunícate con docentes y directivos</p>
+                <button class="action-btn" id="btnComunicacion">Abrir Chat</button>
+            </div>
+        `;
+    } else {
+        // Botón de IA Nubi
+        acciones.innerHTML += `
+            <div class="action-card">
+                <div class="action-icon">🤖</div>
+                <h3>Diseña actividades con nuestra IA Nubi</h3>
+                <p>Genera actividades adaptadas con inteligencia artificial</p>
+                <button class="action-btn" id="btnNubiIA">Comenzar</button>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">📊</div>
+                <h3>Valoraciones Pedagógicas</h3>
+                <p>Crea valoraciones pedagógicas para tus estudiantes</p>
+                <button class="action-btn" id="btnValoracion">Crear Valoración</button>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">💬</div>
+                <h3>Comunícate</h3>
+                <p>Comunícate con padres y estudiantes</p>
+                <button class="action-btn" id="btnComunicacion">Abrir Chat</button>
+            </div>
+        `;
+    }
+
+    // Asignar eventos a los botones
+    if (document.getElementById('btnNubiIA')) {
+        document.getElementById('btnNubiIA').addEventListener('click', function () {
+            window.open('https://ia-ludik-1.onrender.com/', '_blank');
+        });
+    }
+    if (document.getElementById('btnValoracion')) {
+        document.getElementById('btnValoracion').addEventListener('click', function () {
+            window.location.href = 'Valoracion_pedagogica.html';
+        });
+    }
+    if (document.getElementById('btnAyuda')) {
+        document.getElementById('btnAyuda').addEventListener('click', function () {
+            window.location.href = 'Ayuda.html';
+        });
+    }
+    if (document.getElementById('btnProgresoHijo')) {
+        document.getElementById('btnProgresoHijo').addEventListener('click', function () {
+            window.location.href = 'Estudiantes.html';
+        });
+    }
+    if (document.getElementById('btnComunicacion')) {
+        document.getElementById('btnComunicacion').addEventListener('click', function () {
+            window.location.href = 'Comunicacion.html';
+        });
+    }
+});

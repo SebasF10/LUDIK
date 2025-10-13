@@ -291,14 +291,21 @@ function mostrarFormulario(tipo) {
     document.getElementById('mensaje_cuenta').style.display = 'none';
 
     // Mostrar el formulario seleccionado
-    document.getElementById('form_' + tipo).style.display = 'block';
+    const form = document.getElementById('form_' + tipo);
+    form.style.display = 'block';
 
     // Cargar datos específicos según el tipo
     if (tipo === 'docente') {
         cargarGrupos();
         cargarMaterias();
     }
+
+    // Hacer scroll al formulario para mayor comodidad
+    setTimeout(() => {
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
 }
+
 
 // Función para cargar las materias desde la base de datos
 function cargarMaterias() {
