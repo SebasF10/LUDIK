@@ -82,11 +82,10 @@
                 <span class="menu-icon">💬</span>
                 Comunicate
             </button>
-            <button class="menu-button">
+            <a href="manual.pdf" download class="menu-button">
                 <span class="menu-icon">📘</span>
-                <a href="manual.pdf" download></a>
                 Manual de Usuario
-            </button>
+            </a>
             <button class="menu-button">
                 <span class="menu-icon">❓</span>
                 Ayuda
@@ -108,7 +107,7 @@
                     <div class="stat-icon">👥</div>
                     <div class="stat-content">
                         <h3>Estudiantes</h3>
-                        <p class="stat-number">350+</p>
+                        <p class="stat-number" id="numEstudiantes">...</p>
                         <p class="stat-desc">Estudiantes activos</p>
                     </div>
                 </div>
@@ -116,9 +115,9 @@
                 <div class="stat-card">
                     <div class="stat-icon">📚</div>
                     <div class="stat-content">
-                        <h3>Actividades</h3>
-                        <p class="stat-number">25+</p>
-                        <p class="stat-desc">Actividades disponibles</p>
+                        <h3>Actividades </h3>
+                        <p class="stat-number">+8</p>
+                        <p class="stat-desc">Discapacidades con actividades</p>
                     </div>
                 </div>
 
@@ -126,38 +125,20 @@
                     <div class="stat-icon">🎯</div>
                     <div class="stat-content">
                         <h3>Inclusión</h3>
-                        <p class="stat-number">33%</p>
-                        <p class="stat-desc">Estudiantes con atención especial</p>
+                        <p class="stat-number">36%</p>
+                        <p class="stat-desc">Estudiantes con atención especial en el colegio</p>
                     </div>
                 </div>
             </div>
 
             <div class="quick-actions">
                 <h2>Acciones Rápidas</h2>
-                <div class="actions-grid">
-                    <div class="action-card">
-                        <div class="action-icon">📝</div>
-                        <h3>Crear Actividad</h3>
-                        <p>Diseña nuevas actividades adaptadas</p>
-                        <button class="action-btn">Comenzar</button>
-                    </div>
-
-                    <div class="action-card">
-                        <div class="action-icon">📊</div>
-                        <h3>Ver Reportes</h3>
-                        <p>Consulta el progreso estudiantil</p>
-                        <button class="action-btn">Ver Datos</button>
-                    </div>
-
-                    <div class="action-card">
-                        <div class="action-icon">💬</div>
-                        <h3>Mensajes</h3>
-                        <p>Comunícate con padres y estudiantes</p>
-                        <button class="action-btn">Abrir Chat</button>
-                    </div>
+                <div class="actions-grid" id="accionesRapidas">
+                    <!-- Los botones se insertan por JS -->
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <script>
