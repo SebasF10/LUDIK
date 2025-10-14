@@ -582,12 +582,14 @@ function obtenerValoracion($conexion, $rol) {
                 e.nombre as estudiante_nombre,
                 e.apellidos as estudiante_apellidos,
                 e.no_documento,
-                e.url_foto,  /* ← AGREGAR ESTA LÍNEA */
+                e.url_foto,
                 a.nombre_asig,
                 g.id_grupo,
                 g.grupo,
                 gr.grado,
-                p.id_piar
+                p.id_piar,
+                d.nombre_completo as docente_nombre,
+                d.email as docente_email
             FROM valoracion_pedagogica vp
             INNER JOIN piar p ON vp.id_piar = p.id_piar
             INNER JOIN estudiante e ON p.id_estudiante = e.id_estudiante
@@ -596,6 +598,9 @@ function obtenerValoracion($conexion, $rol) {
                 AND (ge.anio = vp.anio OR ge.anio IS NULL)
             INNER JOIN grupo g ON ge.id_grupo = g.id_grupo
             INNER JOIN grado gr ON g.id_grado = gr.id_grado
+            INNER JOIN asignatura_docente_grupo adg ON a.id_asignatura = adg.id_asignatura 
+                AND g.id_grupo = adg.id_grupo
+            INNER JOIN docente d ON adg.id_docente = d.id_docente
             WHERE vp.id_valoracion_pedagogica = ?
         ";
         $stmt = mysqli_prepare($conexion, $query);
@@ -609,12 +614,14 @@ function obtenerValoracion($conexion, $rol) {
                 e.nombre as estudiante_nombre,
                 e.apellidos as estudiante_apellidos,
                 e.no_documento,
-                e.url_foto,  /* ← AGREGAR ESTA LÍNEA */
+                e.url_foto,
                 a.nombre_asig,
                 g.id_grupo,
                 g.grupo,
                 gr.grado,
-                p.id_piar
+                p.id_piar,
+                d.nombre_completo as docente_nombre,
+                d.email as docente_email
             FROM valoracion_pedagogica vp
             INNER JOIN piar p ON vp.id_piar = p.id_piar
             INNER JOIN estudiante e ON p.id_estudiante = e.id_estudiante
@@ -625,6 +632,7 @@ function obtenerValoracion($conexion, $rol) {
                 AND ge.id_grupo = adg.id_grupo
             INNER JOIN grupo g ON ge.id_grupo = g.id_grupo
             INNER JOIN grado gr ON g.id_grado = gr.id_grado
+            INNER JOIN docente d ON adg.id_docente = d.id_docente
             WHERE vp.id_valoracion_pedagogica = ? AND adg.id_docente = ?
         ";
         $stmt = mysqli_prepare($conexion, $query);
@@ -636,7 +644,7 @@ function obtenerValoracion($conexion, $rol) {
     
     if ($row = mysqli_fetch_assoc($result)) {
         // Procesar la foto antes de enviar
-        $row['foto_url'] = getPhotoUrl($row['url_foto'], $row['id_estudiante']);  /* ← AGREGAR ESTA LÍNEA */
+        $row['foto_url'] = getPhotoUrl($row['url_foto'], $row['id_estudiante']);
         
         echo json_encode([
             'success' => true,
