@@ -489,9 +489,9 @@ async function verValoracion(idValoracion) {
                 const photoPath = val.foto_url.startsWith('photos/') ? val.foto_url : `photos/${val.foto_url}`;
                 photoElement = `
                     <img src="${photoPath}" 
-                         alt="Foto de ${fullName}" 
-                         class="modal-student-photo-detail" 
-                         onerror="this.outerHTML='<div class=\\'modal-student-photo-detail default\\'>${initials}</div>'">
+                        alt="Foto de ${fullName}" 
+                        class="modal-student-photo-detail" 
+                        onerror="this.outerHTML='<div class=\\'modal-student-photo-detail default\\'>${initials}</div>'">
                 `;
             } else {
                 photoElement = `<div class="modal-student-photo-detail default">${initials}</div>`;
@@ -506,6 +506,7 @@ async function verValoracion(idValoracion) {
                             <p><strong>Grupo:</strong> ${val.grupo} - ${val.grado} | 
                             <strong>Asignatura:</strong> ${val.nombre_asig} | 
                             <strong>Período:</strong> ${periodoTexto} ${val.anio}</p>
+                            <p><strong>Docente:</strong> ${val.docente_nombre}</p>
                         </div>
                     </div>
                     
