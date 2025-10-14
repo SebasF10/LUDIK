@@ -725,10 +725,23 @@ function getPedagogicalEvaluations($conexion, $studentId)
     $sql = "
         SELECT 
             vp.*,
-            a.nombre_asig
+            a.nombre_asig,
+            d.nombre_completo as docente_nombre,
+            d.email as docente_email
         FROM valoracion_pedagogica vp
         JOIN piar p ON vp.id_piar = p.id_piar
         JOIN asignatura a ON vp.id_asignatura = a.id_asignatura
+        LEFT JOIN asignatura_docente_grupo adg ON (
+            adg.id_asignatura = vp.id_asignatura 
+            AND adg.id_grupo = (
+                SELECT ge.id_grupo 
+                FROM grupo_estudiante ge 
+                WHERE ge.id_estudiante = p.id_estudiante 
+                AND ge.anio = vp.anio
+                LIMIT 1
+            )
+        )
+        LEFT JOIN docente d ON adg.id_docente = d.id_docente
         WHERE p.id_estudiante = '$studentId'
         ORDER BY vp.anio DESC, vp.periodo DESC
     ";

@@ -1798,6 +1798,12 @@ function fillPiarInfo(student) {
                 valoracionDiv.className = 'valoracion-item';
                 valoracionDiv.innerHTML = `
                     <h4>${valoracion.nombre_asig} - ${valoracion.periodo} ${valoracion.anio}</h4>
+                    ${valoracion.docente_nombre ? `
+                    <div class="info-item" style="margin-bottom: 10px; padding: 8px; background-color: #f0f9ff; border-left: 3px solid #3b82f6; border-radius: 4px;">
+                        <span class="label" style="color: #1e40af; font-weight: 600;">👨‍🏫 Docente:</span>
+                        <span class="value" style="color: #1e40af;">${valoracion.docente_nombre}</span>
+                    </div>
+                    ` : ''}
                     <div class="info-grid">
                         <div class="info-item">
                             <span class="label">Objetivo:</span>
@@ -2099,17 +2105,24 @@ async function downloadIndividualStudentPDF() {
             addSectionHeader('2.2. Valoración por áreas');
 
             currentStudentData.valoraciones.forEach(valoracion => {
-                checkPageBreak(25);
+                checkPageBreak(30); // ← AUMENTADO de 25 a 30 para dar espacio al docente
 
                 doc.setFillColor(248, 250, 252);
-                doc.rect(margin, yPosition - 3, pageWidth - 2 * margin, 20, 'F');
+                doc.rect(margin, yPosition - 3, pageWidth - 2 * margin, 25, 'F'); // ← AUMENTADO de 20 a 25
 
                 doc.setFontSize(10);
                 doc.setFont('helvetica', 'bold');
                 doc.text(`Área/asignatura: ${valoracion.nombre_asig}`, margin + 2, yPosition + 3);
                 doc.text(`Período: ${valoracion.periodo} ${valoracion.anio}`, margin + 2, yPosition + 9);
+                
+                // ⭐ NUEVO: Agregar nombre del docente
+                if (valoracion.docente_nombre) {
+                    doc.setFontSize(9);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(`Docente: ${valoracion.docente_nombre}`, margin + 2, yPosition + 15);
+                }
 
-                yPosition += 25;
+                yPosition += 30; // ← AUMENTADO de 25 a 30
 
                 doc.setFontSize(8);
                 doc.setFont('helvetica', 'normal');
