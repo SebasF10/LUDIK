@@ -378,48 +378,24 @@ body {
 /* MENÚ LATERAL */
 
 .side-menu {
-
     position: fixed;
+    top: 89px;
+    left: -380px;
+    width: 380px;
+    height: calc(100vh - 89px);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     flex-direction: column;
-    top: 89px;
-
-    left: -380px;
-
-    width: 380px;
-
-    height: calc(100vh - 89px);
-
-    background: rgba(255, 255, 255, 0.95);
-
-    backdrop-filter: blur(20px);
-
-    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-
-    z-index: 1000;
-
-    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
-
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
-
-    overflow: hidden !important;
-
     outline: none !important;
-
-    border-bottom: none !important;
-
-    border-top: none !important;
-
-    border-left: none !important;
-
 }
 
-
-
 .side-menu.active {
-
     left: 0;
-
 }
 
 
@@ -476,135 +452,166 @@ body {
     display: flex;
     flex-direction: column;
     padding: 20px 0;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
+    overflow-y: auto;
+    overflow-x: hidden;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+    /* Scroll personalizado */
     scrollbar-width: thin;
     scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
-.menu-button {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-    padding: 18px 30px;
-
-    background: transparent !important;
-
-    color: #667eea;
-
-    font-size: 1rem;
-
-    font-weight: 500;
-
-    cursor: pointer;
-
-    text-align: left;
-
-    transition: all 0.3s ease;
-
-    position: relative;
-
-    font-family: 'Inter', Arial, sans-serif;
-
-    border: none !important;
-
-    outline: none !important;
-
-    box-shadow: none !important;
-
-    overflow: hidden !important;
-
-    width: 100% !important;
-
-    max-width: 380px !important;
-
+/* Scroll personalizado para webkit */
+.menu-buttons::-webkit-scrollbar {
+    width: 6px;
 }
 
+.menu-buttons::-webkit-scrollbar-track {
+    background: transparent;
+}
 
+.menu-buttons::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
+
+.menu-button {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 30px;
+    background: transparent !important;
+    color: #667eea;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    position: relative;
+    font-family: 'Inter', Arial, sans-serif;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    max-width: 380px !important;
+    margin: 2px 0;
+}
 
 .menu-button:focus,
-
 .menu-button:active,
-
 .menu-button:visited {
-
     outline: none !important;
-
     border: none !important;
-
     box-shadow: none !important;
-
 }
-
-
 
 .menu-button:hover {
-
     background: rgba(102, 126, 234, 0.1) !important;
-
     color: #667eea;
-
     transform: translateX(8px);
-
     outline: none !important;
-
     border: none !important;
-
     box-shadow: none !important;
-
 }
 
-
-
+/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
-
     content: '';
-
     position: absolute;
-
     left: 0;
-
     top: 0;
-
     bottom: 0;
-
     width: 4px;
-
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-
     border-radius: 0 4px 4px 0;
-
 }
 
-
+.menu-button::after,
+.menu-button:hover::after,
+.menu-button:focus::after,
+.menu-button:active::after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+    background: none !important;
+}
 
 .menu-icon {
-
     font-size: 1.2rem;
-
     width: 24px;
-
     text-align: center;
-
     filter: grayscale(0);
-
     transition: filter 0.3s ease;
-
 }
 
-
-
 .menu-button:hover .menu-icon {
-
     filter: grayscale(0);
+}
 
+/* CERRAR SESIÓN COMO BOTÓN NORMAL */
+.menu-button.close-session {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 30px;
+    background: transparent !important;
+    color: #d32f2f;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    position: relative;
+    font-family: 'Inter', Arial, sans-serif;
+    width: 100%;
+    margin: 2px 0;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    max-width: 380px !important;
+}
+
+.menu-button.close-session:focus,
+.menu-button.close-session:active {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.menu-button.close-session:hover {
+    background: rgba(211, 47, 47, 0.1) !important;
+    color: #b71c1c;
+    transform: translateX(8px);
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.menu-button.close-session:hover::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #d32f2f;
+    border-radius: 0 4px 4px 0;
+}
+
+.menu-button.close-session::after,
+.menu-button.close-session:hover::after {
+    display: none !important;
+    content: none !important;
 }
 
 
