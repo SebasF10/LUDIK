@@ -99,6 +99,9 @@ function verificarYAplicarRestricciones() {
 
     // Aplicar restricciones por rol
     eliminarBotonesPorRol();
+
+    // Ocultar acciones/controles adicionales para padres/madres/acudientes
+    ocultarAccionesYControlesParaPadres();
 }
 
 // ======= FUNCIÓN PARA ELIMINAR BOTONES SEGÚN ROL =======
@@ -112,6 +115,9 @@ function eliminarBotonesPorRol() {
     // Buscar TODOS los botones del menú
     const todosLosBotones = document.querySelectorAll('.menu-button');
     console.log("Botones encontrados:", todosLosBotones.length);
+
+    const padres = ['padre', 'madre', 'acudiente'];
+    const esPadre = padres.includes((rol || '').toLowerCase());
 
     todosLosBotones.forEach(function (boton, index) {
         const textoDelBoton = boton.textContent.trim().toLowerCase();
@@ -138,15 +144,74 @@ function eliminarBotonesPorRol() {
             }
 
         } else {
+            // Reglas generales para roles no administrativos
             if (textoDelBoton.includes("crear cuenta") ||
                 textoDelBoton.includes("registrar un nuevo estudiante") ||
+                textoDelBoton.includes("valoracion") ||
                 textoDelBoton.includes("registrar un piar")) {
+                boton.remove();
+            }
+        }
+
+        // Reglas adicionales específicas para padres/madres/acudientes:
+        if (esPadre) {
+            if (
+                textoDelBoton.includes("crear valor") ||
+                textoDelBoton.includes("valoracion") ||
+                textoDelBoton.includes("documentos") ||
+                textoDelBoton.includes("nubi") ||
+                textoDelBoton.includes("ia") ||
+                textoDelBoton.includes("diseña actividades")
+            ) {
+                console.log(`🗑️ ELIMINANDO para padre/madre/acudiente: ${textoDelBoton}`);
                 boton.remove();
             }
         }
     });
 
     // Inspección adicional después de eliminar botones
+    setTimeout(inspeccionarYEliminar, 100);
+}
+
+// Nueva función: oculta/remueve botones y tarjetas de acciones para padres/madres/acudientes
+function ocultarAccionesYControlesParaPadres() {
+    const rol = (localStorage.getItem('rol') || '').toLowerCase();
+    const padres = ['padre', 'madre', 'acudiente'];
+    if (!padres.includes(rol)) return;
+
+    console.log('Ocultando controles restringidos para rol padre/madre/acudiente');
+
+    // IDs conocidos en la UI
+    const idsAEliminar = ['btnIA', 'btnValoracion', 'btnDocumentos'];
+
+    idsAEliminar.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.remove();
+            console.log(`Eliminado elemento con id: ${id}`);
+        }
+    });
+
+    // Eliminar tarjetas de acciones que contengan textos relacionados (acciones rápidas)
+    const actionCards = Array.from(document.querySelectorAll('#accionesRapidas .action-card'));
+    actionCards.forEach(card => {
+        const txt = (card.textContent || '').toLowerCase();
+        if (txt.includes('diseña actividades') || txt.includes('ia') || txt.includes('valoraciones pedagogicas') || txt.includes('valoración') || txt.includes('documentos')) {
+            card.remove();
+            console.log('Eliminada action-card restringida para padres');
+        }
+    });
+
+    // También intentar remover enlaces o botones sueltos con texto relevante
+    const botones = Array.from(document.querySelectorAll('button, a, .menu-button'));
+    botones.forEach(b => {
+        const txt = (b.textContent || '').toLowerCase();
+        if (txt.includes('documentos') || txt.includes('valoración') || txt.includes('valoracion') || txt.includes('ia') || txt.includes('nubi') || txt.includes('diseña actividades')) {
+            b.remove();
+        }
+    });
+
+    // Re-ejecutar inspección para limpiar residuos DOM
     setTimeout(inspeccionarYEliminar, 100);
 }
 
