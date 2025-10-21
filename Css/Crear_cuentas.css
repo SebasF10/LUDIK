@@ -54,6 +54,8 @@ body {
     align-items: center;
     flex: 1;
     justify-content: flex-end;
+    gap: 24px;
+    /* Espacio entre los logos */
 }
 
 .menu-text {
@@ -82,12 +84,54 @@ body {
     border: none !important;
 }
 
-.header-logo:hover {
-    transform: scale(1.05) rotate(5deg);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    outline: none !important;
-    border: none !important;
+
+.centro {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Cambia flex-end por center */
+    margin: 0;
+    /* Asegúrate de que no tenga margen */
+    padding: 0;
 }
+
+
+.titulo-ludik {
+    margin: 0;
+    /* Elimina margen extra */
+    padding: 0;
+}
+
+
+.imagen-ludik-header {
+    height: 80px;
+    width: auto;
+    display: inline-block;
+    margin: 0;
+    /* Elimina margen extra */
+    padding: 0;
+    vertical-align: middle;
+}
+
+
+
+.logo-institucion,
+.logo-ludik {
+    width: 50px;
+    height: auto;
+    /* mantiene proporción natural */
+    object-fit: contain;
+    /* muestra la imagen completa sin recortes */
+    border-radius: 0;
+    /* elimina bordes redondeados */
+    box-shadow: none;
+    /* elimina la sombra blanca alrededor */
+}
+
 
 .title {
     font-size: 3.2rem;
@@ -758,4 +802,30 @@ body {
     .header-content h1 {
         font-size: 1.5rem;
     }
+}
+
+
+.alerta-flotante {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #2ecc71;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 9999;
+    font-family: "Inter", sans-serif;
+}
+
+.alerta-flotante.error {
+    background-color: #e74c3c;
+}
+
+.alerta-flotante.mostrar {
+    opacity: 1;
+    transform: translateY(0);
 }
