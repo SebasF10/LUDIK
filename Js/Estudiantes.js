@@ -1878,9 +1878,9 @@ function calculateAge(birthDate) {
     return age + ' años';
 }
 
-/**
- * Obtener nombre de rol para mostrar
- */
+
+// Obtener nombre de rol para mostrar
+
 function getRoleDisplayName(rol) {
     const roles = {
         'admin': 'Administrador',
@@ -1896,8 +1896,46 @@ function getRoleDisplayName(rol) {
 }
 
 /**
- * Descargar PDF de estudiante individual con formato PIAR
+ * Convertir imagen a Base64 para usar en jsPDF
+ * @param {string} imageUrl - Ruta de la imagen
+ * @returns {Promise<string>} - Imagen en formato Base64
  */
+function convertImageToBase64(imageUrl) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'Anonymous'; // Para evitar problemas de CORS
+        
+        img.onload = function() {
+            try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Establecer dimensiones del canvas
+                canvas.width = img.width;
+                canvas.height = img.height;
+                
+                // Dibujar imagen en el canvas
+                ctx.drawImage(img, 0, 0);
+                
+                // Convertir a Base64
+                const dataURL = canvas.toDataURL('image/jpeg', 0.8);
+                resolve(dataURL);
+            } catch (error) {
+                reject(error);
+            }
+        };
+        
+        img.onerror = function(error) {
+            reject(new Error(`Error cargando imagen: ${imageUrl}`));
+        };
+        
+        // Cargar la imagen
+        img.src = imageUrl;
+    });
+}
+
+// Descargar PDF de estudiante individual con formato PIAR
+
 async function downloadIndividualStudentPDF() {
     if (!currentStudentData) {
         alert('No hay datos de estudiante para descargar');
@@ -1922,9 +1960,23 @@ async function downloadIndividualStudentPDF() {
         const margin = 20;
         let yPosition = margin;
 
+        // Convertir foto del estudiante a Base64
+        let studentPhotoBase64 = null;
+        if (currentStudentData.foto_url && currentStudentData.foto_url !== 'photos/default.png') {
+            try {
+                let photoPath = currentStudentData.foto_url;
+                if (!photoPath.startsWith('php/')) {
+                    photoPath = `php/${photoPath}`;
+                }
+                studentPhotoBase64 = await convertImageToBase64(photoPath);
+            } catch (e) {
+                console.log('Error convirtiendo foto del estudiante:', e);
+            }
+        }
+
         // Función para agregar encabezado con logo
         function addHeader(title) {
-            // Logo (si está disponible)
+            // Logo del colegio (izquierda)
             if (logoBase64 && logoBase64.length > 100) {
                 try {
                     doc.addImage(logoBase64, 'PNG', margin, 10, 30, 35);
@@ -1941,8 +1993,8 @@ async function downloadIndividualStudentPDF() {
             // Información del colegio
             doc.setFontSize(10);
             doc.setFont('helvetica', 'normal');
-            doc.text('COLEGIO SAN JOSÉ DE GUANENTÁ', margin + 30, 28);
-            doc.text('San Gil, Santander', margin + 30, 35);
+            doc.text('COLEGIO SAN JOSÉ DE GUANENTÁ', margin + 30, 30);
+            doc.text('San Gil, Santander', margin + 30, 37);
 
             // Línea separadora
             doc.line(margin, 45, pageWidth - margin, 45);
@@ -2009,6 +2061,9 @@ async function downloadIndividualStudentPDF() {
         // 1. Información general del estudiante
         addSectionHeader('1. Información general del estudiante');
 
+        // Guardar posición inicial para la foto
+        const studentInfoStartY = yPosition;
+
         // Datos del estudiante en formato tabla
         const studentInfo = [
             [`Nombres: ${currentStudentData.nombre}`, `Apellidos: ${currentStudentData.apellidos}`],
@@ -2029,6 +2084,24 @@ async function downloadIndividualStudentPDF() {
             yPosition += 6;
         });
 
+        // Agregar foto del estudiante DESPUÉS de calcular el texto
+        if (studentPhotoBase64) {
+            try {
+                const photoSize = 30;
+                const photoX = pageWidth - margin - photoSize;
+                const photoY = studentInfoStartY;
+                
+                doc.addImage(studentPhotoBase64, 'JPEG', photoX, photoY, photoSize, photoSize);
+                
+                // Borde alrededor de la foto
+                doc.setDrawColor(200, 200, 200);
+                doc.setLineWidth(0.5);
+                doc.rect(photoX, photoY, photoSize, photoSize);
+            } catch (e) {
+                console.log('Error añadiendo foto del estudiante:', e);
+            }
+        }
+
         yPosition += 10;
 
         // 2. Entorno Salud
@@ -2037,25 +2110,91 @@ async function downloadIndividualStudentPDF() {
         addText(`Afiliación al sistema de salud: ${currentStudentData.afiliacion_salud || 'No especificada'}`, 9);
 
         if (currentStudentData.info_medica) {
-            if (currentStudentData.info_medica.dx_general) {
-                addText(`Cuenta con diagnóstico médico: Sí - ${currentStudentData.info_medica.dx_general}`, 9);
+            const medicalInfo = currentStudentData.info_medica;
+
+            // 2.1 Diagnóstico general (si existe)
+            if (medicalInfo.dx_general) {
+                addText(`Diagnóstico general: ${medicalInfo.dx_general}`, 9);
+                yPosition += 3;
             }
 
-            if (currentStudentData.info_medica.medicamentos && currentStudentData.info_medica.medicamentos.length > 0) {
-                addText('¿Consume medicamentos? Sí', 9);
-                currentStudentData.info_medica.medicamentos.forEach(med => {
-                    addText(`  • ${med.descripcion} - ${med.frecuencia_horario}`, 8);
+            // 2.2 Diagnósticos detallados con CIE-10
+            if (medicalInfo.diagnosticos && medicalInfo.diagnosticos.length > 0) {
+                checkPageBreak(15);
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Diagnósticos médicos:', margin, yPosition);
+                yPosition += 7;
+
+                medicalInfo.diagnosticos.forEach((diagnostico, index) => {
+                    checkPageBreak(12);
+                    doc.setFillColor(248, 250, 252);
+                    doc.rect(margin, yPosition - 2, pageWidth - 2 * margin, 10, 'F');
+                    
+                    doc.setFontSize(9);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(`${index + 1}. CIE-10: ${diagnostico.id_cie10}`, margin + 2, yPosition + 3);
+                    
+                    doc.setFont('helvetica', 'normal');
+                    const descText = doc.splitTextToSize(diagnostico.descripcion, pageWidth - 2 * margin - 4);
+                    doc.text(descText, margin + 2, yPosition + 7);
+                    
+                    yPosition += 10 + (descText.length - 1) * 3;
                 });
+                yPosition += 5;
             } else {
-                addText('¿Consume medicamentos? No', 9);
+                addText('Diagnósticos médicos: No especificados', 9);
             }
 
-            if (currentStudentData.info_medica.apoyos_tecnicos) {
-                addText(`Apoyos técnicos: ${currentStudentData.info_medica.apoyos_tecnicos}`, 9);
+            // 2.3 Medicamentos
+            if (medicalInfo.medicamentos && medicalInfo.medicamentos.length > 0) {
+                checkPageBreak(15);
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Medicamentos:', margin, yPosition);
+                yPosition += 7;
+
+                medicalInfo.medicamentos.forEach((med, index) => {
+                    checkPageBreak(8);
+                    doc.setFontSize(9);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(`${index + 1}. ${med.descripcion} - ${med.frecuencia_horario}`, margin + 4, yPosition);
+                    yPosition += 6;
+                });
+                yPosition += 3;
+            } else {
+                addText('Medicamentos: No consume medicamentos', 9);
             }
+
+            // 2.4 Tratamientos
+            if (medicalInfo.tratamientos && medicalInfo.tratamientos.length > 0) {
+                checkPageBreak(15);
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Tratamientos:', margin, yPosition);
+                yPosition += 7;
+
+                medicalInfo.tratamientos.forEach((trat, index) => {
+                    checkPageBreak(8);
+                    doc.setFontSize(9);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(`${index + 1}. ${trat.descripcion} - Frecuencia: ${trat.frecuencia}`, margin + 4, yPosition);
+                    yPosition += 6;
+                });
+                yPosition += 3;
+            } else {
+                addText('Tratamientos: No registrados', 9);
+            }
+
+            // 2.5 Apoyos técnicos
+            if (medicalInfo.apoyos_tecnicos) {
+                addText(`Apoyos técnicos: ${medicalInfo.apoyos_tecnicos}`, 9);
+            } else {
+                addText('Apoyos técnicos: No requiere', 9);
+            }
+
         } else {
-            addText('Cuenta con diagnóstico médico: No especificado', 9);
-            addText('¿Consume medicamentos? No especificado', 9);
+            addText('No hay información médica registrada.', 9);
         }
 
         yPosition += 10;
@@ -2105,24 +2244,24 @@ async function downloadIndividualStudentPDF() {
             addSectionHeader('2.2. Valoración por áreas');
 
             currentStudentData.valoraciones.forEach(valoracion => {
-                checkPageBreak(30); // ← AUMENTADO de 25 a 30 para dar espacio al docente
+                checkPageBreak(30);
 
                 doc.setFillColor(248, 250, 252);
-                doc.rect(margin, yPosition - 3, pageWidth - 2 * margin, 25, 'F'); // ← AUMENTADO de 20 a 25
+                doc.rect(margin, yPosition - 3, pageWidth - 2 * margin, 25, 'F');
 
                 doc.setFontSize(10);
                 doc.setFont('helvetica', 'bold');
                 doc.text(`Área/asignatura: ${valoracion.nombre_asig}`, margin + 2, yPosition + 3);
                 doc.text(`Período: ${valoracion.periodo} ${valoracion.anio}`, margin + 2, yPosition + 9);
                 
-                // ⭐ NUEVO: Agregar nombre del docente
+                // Agregar nombre del docente
                 if (valoracion.docente_nombre) {
                     doc.setFontSize(9);
                     doc.setFont('helvetica', 'normal');
                     doc.text(`Docente: ${valoracion.docente_nombre}`, margin + 2, yPosition + 15);
                 }
 
-                yPosition += 30; // ← AUMENTADO de 25 a 30
+                yPosition += 30;
 
                 doc.setFontSize(8);
                 doc.setFont('helvetica', 'normal');
