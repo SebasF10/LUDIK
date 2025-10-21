@@ -24,12 +24,16 @@
             <span class="menu-text">MENÚ</span>
         </div>
 
-        <div class="center-section">
-            <div class="title">LUDIK</div>
+        <div class="centro">
+            <h1 class="titulo-ludik">
+                <img src="img\LUDIK_texto.png" alt="LUDIK" class="imagen-ludik-header">
+            </h1>
         </div>
 
         <div class="right-section">
             <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+            <img src="img/sistemas.png" alt="Sistemas" class="logo-institucion">
+            <img src="img/logoguanenta.png" alt="Colegio" class="logo-institucion">
         </div>
     </div>
 
@@ -112,7 +116,7 @@
             <!-- Formularios -->
             <section class="formularios">
                 <!-- Formulario Administrador -->
-                <form id="form_admin" class="form" method="POST" action="php/Crear_cuentas.php">
+                <form id="form_admin" class="form" method="POST">
                     <h2>Crear cuenta de Administrador</h2>
                     <input type="hidden" name="rol" value="admin">
 
@@ -140,7 +144,7 @@
                 </form>
 
                 <!-- Formulario docente -->
-                <form id="form_docente" class="form" method="POST" action="php/Crear_cuentas.php" style="display:none;">
+                <form id="form_docente" class="form" method="POST" style="display:none;">
                     <h2>Crear cuenta de docente</h2>
                     <input type="hidden" name="rol" value="docente">
 
@@ -195,7 +199,7 @@
                 </form>
 
                 <!-- Formulario Directivos -->
-                <form id="form_directivos" class="form" method="POST" action="php/Crear_cuentas.php">
+                <form id="form_directivos" class="form" method="POST">
                     <h2>Crear cuenta de directivo</h2>
                     <input type="hidden" name="rol" value="directivos">
 
