@@ -28,7 +28,11 @@
             <div class="Botones_usuarios">
                 <button class="btn_adm" onclick="mostrarFormulario('admin')">
                     <span class="btn-icon">👨‍💼</span>
-                    Administrador
+                    Admin
+                </button>
+                <button class="btn_dir" onclick="mostrarFormulario('directivo')">
+                    <span class="btn-icon">👩‍💼</span>
+                    Directivo
                 </button>
                 <button class="btn_prof" onclick="mostrarFormulario('docente')">
                     <span class="btn-icon">👨‍🏫</span>
@@ -39,6 +43,7 @@
                     Acudiente
                 </button>
             </div>
+
 
             <div class="Formularios_sesion">
                 <div id="mensaje_rol" class="mensaje-inicial">
@@ -63,6 +68,27 @@
                         <button class="login-btn" type="submit">Iniciar Sesión</button>
                     </form>
                 </div>
+
+                <!-- Formulario Directivo -->
+                <div id="form_directivo" class="formulario_directivo" style="display: none;">
+                    <h3>Acceso Directivo</h3>
+                    <div class="form-icon-container">
+                        <img src="img/directivoimg.png" alt="Logo de directivo" width="120" height="120">
+                    </div>
+                    <form method="POST" action="php/Login.php">
+                        <input type="hidden" name="rol" value="directivo">
+                        <div class="input-group">
+                            <input type="text" name="email" placeholder="Usuario o Email" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="contrasena" placeholder="Contraseña" required
+                                id="pass_directivo">
+                            <span class="toggle-pass" onclick="togglePassword('pass_directivo', this)">👁</span>
+                        </div>
+                        <button class="login-btn" type="submit">Iniciar Sesión</button>
+                    </form>
+                </div>
+
 
                 <!-- Formulario Docente -->
                 <div id="form_docente" class="formulario_docente">
@@ -115,10 +141,10 @@
     </footer>
 
     <script>
-        // Mostrar formulario y desplazar a él
         function mostrarFormulario(rol) {
             document.getElementById('mensaje_rol').style.display = 'none';
             document.getElementById('form_admin').style.display = 'none';
+            document.getElementById('form_directivo').style.display = 'none';
             document.getElementById('form_docente').style.display = 'none';
             document.getElementById('form_acudiente').style.display = 'none';
 
@@ -130,6 +156,9 @@
             if (rol === 'admin') {
                 formId = 'form_admin';
                 document.querySelector('.btn_adm').classList.add('active');
+            } else if (rol === 'directivo') {
+                formId = 'form_directivo';
+                document.querySelector('.btn_dir').classList.add('active');
             } else if (rol === 'docente') {
                 formId = 'form_docente';
                 document.querySelector('.btn_prof').classList.add('active');
