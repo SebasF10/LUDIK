@@ -28,15 +28,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $rol_final = "docente_apoyo";
             }
         }
+    }
 
-        // directivo
-        if (!$usuario) {
-            $query = "SELECT * FROM directivo WHERE email='$email' AND contrasena='$contrasena'";
-            $resultado = $conexion->query($query);
-            if ($resultado && $resultado->num_rows > 0) {
-                $usuario = $resultado->fetch_assoc();
-                $rol_final = "directivo";
-            }
+    elseif ($rol === "directivo") {
+        $query = "SELECT * FROM directivo WHERE email='$email' AND contrasena='$contrasena'";
+        $resultado = $conexion->query($query);
+        if ($resultado && $resultado->num_rows > 0) {
+            $usuario = $resultado->fetch_assoc();
+            $rol_final = "directivo";
         }
     }
 
