@@ -1934,6 +1934,13 @@ function convertImageToBase64(imageUrl) {
     });
 }
 
+/**
+ * Verificar si puede descargar datos del estudiante
+ */
+function canDownloadStudentData() {
+    return ['admin', 'directivo', 'docente_apoyo', 'docente'].includes(currentUserRole);
+}
+
 // Descargar PDF de estudiante individual con formato PIAR
 
 async function downloadIndividualStudentPDF() {
