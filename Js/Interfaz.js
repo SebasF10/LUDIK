@@ -106,70 +106,81 @@ function verificarYAplicarRestricciones() {
 
 // ======= FUNCIÓN PARA ELIMINAR BOTONES SEGÚN ROL =======
 function eliminarBotonesPorRol() {
-    const rol = localStorage.getItem("rol");
+    const rol = (localStorage.getItem("rol") || '').toLowerCase();
     console.log("Verificando rol:", rol);
 
     // PRIMERO: INSPECCIONAR Y ELIMINAR ELEMENTOS EXTRAÑOS
     inspeccionarYEliminar();
 
     // Buscar TODOS los botones del menú
-    const todosLosBotones = document.querySelectorAll('.menu-button');
+    const todosLosBotones = Array.from(document.querySelectorAll('.menu-button'));
     console.log("Botones encontrados:", todosLosBotones.length);
 
     const padres = ['padre', 'madre', 'acudiente'];
-    const esPadre = padres.includes((rol || '').toLowerCase());
+    const esPadre = padres.includes(rol);
+
+    // listas de palabras clave
+    const bloqueadasGenerales = ['crear cuenta', 'registrar un nuevo estudiante', 'registrar un piar', 'valoracion', 'valoración'];
+    // palabras permitidas específicamente para padres (variantes sin/acento)
+    const permitidasPadres = ['perfil', 'estudiantes', 'estudiante', 'econ', 'económica', 'economica', 'ayuda', 'manual', 'manual de usuario', 'cerrar sesión', 'cerrar sesion'];
 
     todosLosBotones.forEach(function (boton, index) {
-        const textoDelBoton = boton.textContent.trim().toLowerCase();
+        const textoDelBoton = (boton.textContent || '').trim().toLowerCase();
         console.log(`Botón ${index}: "${textoDelBoton}"`);
 
+        // Admin: ver todo
         if (rol === "admin") {
-            console.log("Usuario es admin, todos los botones visibles");
-
-        } else if (rol === "docente_apoyo") {
-            if (textoDelBoton.includes("crear cuenta")) {
-                console.log("¡Eliminando botón Crear Cuentas para docente_apoyo!");
-                boton.remove();
-            }
-
-        } else if (rol === "docente") {
-            if (textoDelBoton.includes("crear cuenta")) {
-                boton.remove();
-            }
-            if (textoDelBoton.includes("registrar un nuevo estudiante")) {
-                boton.remove();
-            }
-            if (textoDelBoton.includes("registrar un piar")) {
-                boton.remove();
-            }
-
-        } else {
-            // Reglas generales para roles no administrativos
-            if (textoDelBoton.includes("crear cuenta") ||
-                textoDelBoton.includes("registrar un nuevo estudiante") ||
-                textoDelBoton.includes("valoracion") ||
-                textoDelBoton.includes("registrar un piar")) {
-                boton.remove();
-            }
+            boton.style.display = '';
+            return;
         }
 
-        // Reglas adicionales específicas para padres/madres/acudientes:
-        if (esPadre) {
-            if (
-                textoDelBoton.includes("crear valor") ||
-                textoDelBoton.includes("valoracion") ||
-                textoDelBoton.includes("documentos") ||
-                textoDelBoton.includes("nubi") ||
-                textoDelBoton.includes("ia") ||
-                textoDelBoton.includes("diseña actividades")
-            ) {
-                console.log(`🗑️ ELIMINANDO para padre/madre/acudiente: ${textoDelBoton}`);
-                boton.remove();
+        // Docente de apoyo: todo menos "crear cuenta"
+        if (rol === "docente_apoyo") {
+            boton.style.display = textoDelBoton.includes("crear cuenta") ? 'none' : '';
+            return;
+        }
+
+        // Docente: quitar creación de cuentas y registros de estudiantes/piar
+        if (rol === "docente") {
+            if (textoDelBoton.includes("crear cuenta") ||
+                textoDelBoton.includes("registrar un nuevo estudiante") ||
+                textoDelBoton.includes("registrar un piar")) {
+                boton.style.display = 'none';
+            } else {
+                boton.style.display = '';
             }
+            return;
+        }
+
+        // Directivo: quitar cuentas, registrar estudiante, registrar PIAR, valoraciones
+        if (rol === "directivo") {
+            boton.style.display = bloqueadasGenerales.some(k => textoDelBoton.includes(k)) ? 'none' : '';
+            return;
+        }
+
+        // Padres/madres/acudientes: mostrar SOLO los permitidos en permitidasPadres
+        if (esPadre) {
+            const permitido = permitidasPadres.some(k => textoDelBoton.includes(k));
+            boton.style.display = permitido ? '' : 'none';
+            return;
+        }
+
+        // Otros roles: ocultar botones administrativos generales
+        if (bloqueadasGenerales.some(k => textoDelBoton.includes(k))) {
+            boton.style.display = 'none';
+        } else {
+            boton.style.display = '';
         }
     });
 
-    // Inspección adicional después de eliminar botones
+    // Forzar visibilidad de botones clave por id (si existen)
+    const idsMostrar = ['btnPerfil', 'btnEstudiantes', 'btnEconomica', 'btnAyuda', 'btnManual', 'btnCerrarSesion'];
+    idsMostrar.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = '';
+    });
+
+    // Inspección adicional después de ocultar botones
     setTimeout(inspeccionarYEliminar, 100);
 }
 
