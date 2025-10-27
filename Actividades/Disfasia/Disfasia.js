@@ -1,3 +1,6 @@
+// =============================
+// 🎯 CONFIGURACIÓN PRINCIPAL
+// =============================
 let correctos = 0;
 const maxCorrectos = 10;
 
@@ -6,9 +9,12 @@ const sonidoCorrecto = new Audio("Sounds_Disfasia/correcto.mp3");
 const sonidoIncorrecto = new Audio("Sounds_Disfasia/incorrecto.mp3");
 const sonidoFin = new Audio("Sounds_Disfasia/fin.mp3");
 
+// =============================
+// 🎵 FUNCIONES DE SONIDO Y FEEDBACK
+// =============================
 function mostrarFeedback(texto, correcto = true) {
   const div = document.createElement("div");
-  div.className = `feedback ${correcto ? 'correcto' : 'incorrecto'}`;
+  div.className = `feedback ${correcto ? "correcto" : "incorrecto"}`;
   div.textContent = texto;
   document.body.appendChild(div);
 
@@ -34,15 +40,24 @@ function actualizarMarcador() {
 function finalizarActividad() {
   mostrarFeedback("¡Actividad terminada!", true);
   correctos = 0;
-  setTimeout(mostrarMenu, 2000);
+  setTimeout(mostrarMenu, 15);
 }
 
+// =============================
+// 🔊 LECTOR DE VOZ
+// =============================
 function leerTexto(texto) {
   const msg = new SpeechSynthesisUtterance(texto);
+  msg.lang = "es-ES";
+  msg.rate = 1;
+  msg.pitch = 1;
+  window.speechSynthesis.cancel();
   window.speechSynthesis.speak(msg);
 }
 
-/* --- Mostrar menú y ocultar botón principal cuando entramos a actividad --- */
+// =============================
+// 🧩 MENÚ PRINCIPAL
+// =============================
 function mostrarMenu() {
   document.getElementById("menu-principal").style.display = "block";
   document.getElementById("vista-actividad").hidden = true;
@@ -55,14 +70,20 @@ function ocultarMenuPrincipal() {
   document.getElementById("btnRegresarPrincipal").style.display = "none";
 }
 
-/********************
- * Actividad Sílabas
- ********************/
+// =============================
+// 🟢 ACTIVIDAD: SÍLABAS
+// =============================
 const silabas = [
-  { id: 'ma', texto: 'ma' }, { id: 'me', texto: 'me' }, { id: 'mi', texto: 'mi' },
-  { id: 'mo', texto: 'mo' }, { id: 'mu', texto: 'mu' },
-  { id: 'pa', texto: 'pa' }, { id: 'pe', texto: 'pe' }, { id: 'pi', texto: 'pi' },
-  { id: 'po', texto: 'po' }, { id: 'pu', texto: 'pu' }
+  { id: "ma", texto: "ma" },
+  { id: "me", texto: "me" },
+  { id: "mi", texto: "mi" },
+  { id: "mo", texto: "mo" },
+  { id: "mu", texto: "mu" },
+  { id: "pa", texto: "pa" },
+  { id: "pe", texto: "pe" },
+  { id: "pi", texto: "pi" },
+  { id: "po", texto: "po" },
+  { id: "pu", texto: "pu" },
 ];
 
 function iniciarSilabas() {
@@ -80,7 +101,7 @@ function iniciarSilabas() {
   actualizarMarcador();
 
   function mostrarSiguiente() {
-    contenedor.querySelectorAll("#instruccion, .opciones").forEach(el => el.remove());
+    contenedor.querySelectorAll("#instruccion, .opciones").forEach((el) => el.remove());
 
     const target = silabas[Math.floor(Math.random() * silabas.length)];
     const instruccion = document.createElement("div");
@@ -91,24 +112,34 @@ function iniciarSilabas() {
     const opcionesDiv = document.createElement("div");
     opcionesDiv.className = "opciones";
 
-    silabas.forEach(s => {
+    silabas.forEach((s) => {
       const btn = document.createElement("button");
       btn.className = "tarjeta-bonita";
       btn.textContent = s.texto;
       btn.addEventListener("click", () => {
+        // Si ya está bloqueado, no hacer nada
+        if (contenedor.classList.contains("bloqueado")) return;
+      
         if (s.id === target.id) {
+          contenedor.classList.add("bloqueado"); // Bloquear clics
           mostrarFeedback("¡Correcto!");
           correctos++;
           actualizarMarcador();
+      
           if (correctos >= maxCorrectos) {
             finalizarActividad();
+            contenedor.classList.remove("bloqueado");
           } else {
-            setTimeout(mostrarSiguiente, 600);
+            setTimeout(() => {
+              contenedor.classList.remove("bloqueado"); // Desbloquear antes de la siguiente ronda
+              mostrarSiguiente();
+            }, 800);
           }
         } else {
           mostrarFeedback("Intenta otra vez", false);
         }
       });
+      
       opcionesDiv.appendChild(btn);
     });
 
@@ -118,9 +149,9 @@ function iniciarSilabas() {
   mostrarSiguiente();
 }
 
-/********************
- * Palabras con imagen
- ********************/
+// =============================
+// 🐾 ACTIVIDAD: VOCABULARIO CON EMOJIS
+// =============================
 function iniciarVocabulario() {
   const contenedor = document.getElementById("vista-actividad");
   contenedor.hidden = false;
@@ -140,10 +171,10 @@ function iniciarVocabulario() {
 
   const categorias = [
     { nombre: "Animales", key: "animales", icono: "🐾" },
-    { nombre: "Objetos", key: "objetos", icono: "📦" }
+    { nombre: "Objetos", key: "objetos", icono: "📦" },
   ];
 
-  categorias.forEach(cat => {
+  categorias.forEach((cat) => {
     const item = document.createElement("div");
     item.className = "tarjeta-bonita";
     item.innerHTML = `<div style="font-size:3rem">${cat.icono}</div><p>${cat.nombre}</p>`;
@@ -154,9 +185,70 @@ function iniciarVocabulario() {
   contenedor.appendChild(apartados);
 }
 
-/********************
- * Historias
- ********************/
+// =============================
+// 📚 CATEGORÍAS DE VOCABULARIO
+// =============================
+function mostrarCategoriaVocabulario(categoria, contenedor) {
+  contenedor.innerHTML = "";
+
+  const btnBack = document.createElement("button");
+  btnBack.className = "btn-regresar";
+  btnBack.textContent = "⬅ Volver";
+  btnBack.addEventListener("click", iniciarVocabulario);
+  contenedor.appendChild(btnBack);
+
+  const titulo = document.createElement("h2");
+  titulo.style.textAlign = "center";
+  titulo.style.marginTop = "10px";
+  titulo.style.color = "var(--color-principal)";
+  titulo.textContent = categoria === "animales" ? "Animales" : "Objetos";
+  contenedor.appendChild(titulo);
+
+  const vocabulario = {
+    animales: [
+      "🐶 Perro", "🐱 Gato", "🐮 Vaca", "🐦 Pájaro", "🦁 León",
+      "🐴 Caballo", "🐸 Rana", "🐢 Tortuga", "🐍 Serpiente", "🐰 Conejo",
+    ],
+    objetos: [
+      "🔔 Campana", "📱 Teléfono", "🥁 Tambor", "⌚ Reloj", "🚪 Puerta",
+      "🪑 Silla", "💡 Bombillo", "🧸 Juguete", "🖊️ Lápiz", "📚 Libro",
+    ],
+  };
+
+  const lista = vocabulario[categoria] || [];
+
+  const grid = document.createElement("div");
+  grid.className = "opciones";
+  grid.style.display = "grid";
+  grid.style.gridTemplateColumns = "repeat(5, 1fr)";
+  grid.style.gap = "15px";
+  grid.style.marginTop = "20px";
+  grid.style.justifyItems = "center";
+
+  lista.forEach((item) => {
+    const [emoji, ...resto] = item.split(" ");
+    const nombre = resto.join(" ");
+
+    const card = document.createElement("div");
+    card.className = "tarjeta-bonita";
+    card.innerHTML = `
+      <div style="font-size:3rem;">${emoji}</div>
+      <p style="font-size:1.2rem; margin:8px 0;">${nombre}</p>
+      <button class="btn-escuchar">🔊 Escuchar</button>
+    `;
+
+    const btn = card.querySelector(".btn-escuchar");
+    btn.addEventListener("click", () => leerTexto(nombre));
+
+    grid.appendChild(card);
+  });
+
+  contenedor.appendChild(grid);
+}
+
+// =============================
+// 🧠 ACTIVIDAD: HISTORIAS (con emojis)
+// =============================
 function iniciarHistorias() {
   const contenedor = document.getElementById("vista-actividad");
   contenedor.hidden = false;
@@ -164,8 +256,99 @@ function iniciarHistorias() {
   contenedor.innerHTML = "";
 
   let indice = 0;
-  const historias = [ /* tus historias */ ];
-
+  const historias = [
+    {
+      texto: "El 🐶 juega con una 🧸",
+      opciones: [
+        { palabra: "Pelota", imagen: "⚽" },
+        { palabra: "Juguete", imagen: "🧸" },
+        { palabra: "Libro", imagen: "📚" },
+      ],
+      respuesta: "Juguete",
+    },
+    {
+      texto: "El 🐱 duerme sobre la 🪑",
+      opciones: [
+        { palabra: "Silla", imagen: "🪑" },
+        { palabra: "Puerta", imagen: "🚪" },
+        { palabra: "Ventana", imagen: "🪟" },
+      ],
+      respuesta: "Silla",
+    },
+    {
+      texto: "El 👧 come una 🍎",
+      opciones: [
+        { palabra: "Manzana", imagen: "🍎" },
+        { palabra: "Banano", imagen: "🍌" },
+        { palabra: "Sandía", imagen: "🍉" },
+      ],
+      respuesta: "Manzana",
+    },
+    {
+      texto: "El 🚗 cruza el 🌉",
+      opciones: [
+        { palabra: "Puente", imagen: "🌉" },
+        { palabra: "Camino", imagen: "🛣️" },
+        { palabra: "Casa", imagen: "🏠" },
+      ],
+      respuesta: "Puente",
+    },
+    {
+      texto: "El 🦋 vuela sobre la 🌸",
+      opciones: [
+        { palabra: "Flor", imagen: "🌸" },
+        { palabra: "Hoja", imagen: "🍃" },
+        { palabra: "Roca", imagen: "🪨" },
+      ],
+      respuesta: "Flor",
+    },
+    {
+      texto: "El 👦 bebe 🥛",
+      opciones: [
+        { palabra: "Leche", imagen: "🥛" },
+        { palabra: "Agua", imagen: "💧" },
+        { palabra: "Jugo", imagen: "🧃" },
+      ],
+      respuesta: "Leche",
+    },
+    {
+      texto: "El 🐦 está en el 🌳",
+      opciones: [
+        { palabra: "Árbol", imagen: "🌳" },
+        { palabra: "Cielo", imagen: "☁️" },
+        { palabra: "Flor", imagen: "🌸" },
+      ],
+      respuesta: "Árbol",
+    },
+    {
+      texto: "El 🍞 está sobre la 🍽️",
+      opciones: [
+        { palabra: "Mesa", imagen: "🍽️" },
+        { palabra: "Cama", imagen: "🛏️" },
+        { palabra: "Silla", imagen: "🪑" },
+      ],
+      respuesta: "Mesa",
+    },
+    {
+      texto: "La 🚲 está junto al 🏠",
+      opciones: [
+        { palabra: "Casa", imagen: "🏠" },
+        { palabra: "Parque", imagen: "🏞️" },
+        { palabra: "Árbol", imagen: "🌳" },
+      ],
+      respuesta: "Casa",
+    },
+    {
+      texto: "El 🌞 brilla en el 🌈",
+      opciones: [
+        { palabra: "Cielo", imagen: "🌈" },
+        { palabra: "Agua", imagen: "💧" },
+        { palabra: "Montaña", imagen: "⛰️" },
+      ],
+      respuesta: "Cielo",
+    },
+  ];
+  
   function mostrarHistoria() {
     contenedor.innerHTML = "";
     if (indice >= historias.length) {
@@ -190,20 +373,30 @@ function iniciarHistorias() {
     const grid = document.createElement("div");
     grid.className = "opciones";
 
-    h.opciones.forEach(op => {
+    h.opciones.forEach((op) => {
       const item = document.createElement("div");
       item.className = "tarjeta-bonita";
       item.innerHTML = `<div style="font-size:3rem">${op.imagen}</div><p>${op.palabra}</p>`;
       item.addEventListener("click", () => {
+        // Evitar que el jugador pueda hacer clic varias veces
+        if (contenedor.classList.contains("bloqueado")) return;
+      
         if (op.palabra === h.respuesta) {
+          contenedor.classList.add("bloqueado"); // Bloquear más clics
           mostrarFeedback("¡Correcto!");
           correctos++;
           actualizarMarcador();
-          setTimeout(() => { indice++; mostrarHistoria(); }, 600);
+      
+          setTimeout(() => {
+            contenedor.classList.remove("bloqueado"); // Desbloquear
+            indice++;
+            mostrarHistoria();
+          }, 800);
         } else {
           mostrarFeedback("Intenta otra vez", false);
         }
       });
+      
       grid.appendChild(item);
     });
 
@@ -213,12 +406,16 @@ function iniciarHistorias() {
   mostrarHistoria();
 }
 
-/* --- Botones menú principal --- */
-document.querySelectorAll(".menu-actividades button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const act = btn.dataset.actividad;
-    if (act === "silabas") iniciarSilabas();
-    if (act === "palabras") iniciarVocabulario();
-    if (act === "historias") iniciarHistorias();
+// =============================
+// 🔗 CONECTAR BOTONES DEL MENÚ
+// =============================
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("#menu-principal button").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      const actividad = boton.dataset.actividad;
+      if (actividad === "silabas") iniciarSilabas();
+      if (actividad === "palabras") iniciarVocabulario();
+      if (actividad === "historias") iniciarHistorias();
+    });
   });
 });

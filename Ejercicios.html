@@ -7,10 +7,20 @@
   <title>Plataforma Inclusiva</title>
   <link rel="stylesheet" href="Css\Ejercicos.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Pequeño arreglo para que el burger no quede bajo el overlay -->
+  <style>
+    /* Sólo z-indexs preventivos: si tu CSS ya define bien los z-index, esto no rompe nada */
+    .header { position: relative; z-index: 3000; }
+    .header .left-section { position: relative; z-index: 3001; }
+    .header .burger { cursor: pointer; }
+    #overlay { z-index: 2500; }
+    #sideMenu { z-index: 2600; }
+  </style>
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=TU_API_KEY"></script>
 </head>
 
 <body>
-  <!-- NUEVO HEADER CON MENÚ EXTRAÍBLE -->
+  <!-- NUEVO HEADER CON MENÚ EXTRAÍBLE (igual al tuyo) -->
   <div class="header">
     <div class="left-section">
       <label class="burger" for="burger">
@@ -83,85 +93,167 @@
     </div>
   </div>
 
-  <!-- CONTENIDO ORIGINAL DE EJERCICIOS -->
+  <!-- CONTENIDO UNIFICADO: Categorías / Trastornos / Discapacidades (una sola página) -->
   <div class="content-wrapper">
-    <header class="ejercicios-header">
-      <h1>Plataforma Inclusiva LUDIK</h1>
-      <p>Selecciona una de las actividades educativas</p>
-    </header>
+    <!-- Vista principal: Categorías -->
+    <section id="vista-categorias">
+      <header class="ejercicios-header">
+        <h1>Plataforma Inclusiva LUDIK</h1>
+        <p>Elige una opción para explorar actividades adaptadas</p>
+      </header>
 
-    <main class="menu-principal">
-      <div class="categoria">
-        <h3>Autismo</h3>
-        <a href="Actividades\Autismo\Austismo.html" class="tarjeta-bonita">Ingresar</a>
-      </div>
+      <main class="menu-principal">
+        <div class="categoria">
+          <h3>Trastornos</h3>
+          <button class="tarjeta-bonita" data-ver="trastornos">Ingresar</button>
+        </div>
 
-      <div class="categoria">
-        <h3>Discalculia</h3>
-        <a href="Actividades\Discalculia\Discalculia.html" class="tarjeta-bonita">Ingresar</a>
-      </div>
+        <div class="categoria">
+          <h3>Discapacidades</h3>
+          <button class="tarjeta-bonita" data-ver="discapacidades">Ingresar</button>
+        </div>
+      </main>
+    </section>
 
-      <div class="categoria">
-        <h3>Discapacidad Motriz</h3>
-        <a href="Actividades\Discapacidad Motriz\Motriz.html" class="tarjeta-bonita">Ingresar</a>
-      </div>
+    <!-- Vista Trastornos -->
+    <section id="vista-trastornos" hidden>
+      <header class="ejercicios-header">
+        <h1>Actividades para Trastornos</h1>
+        <p>Selecciona una actividad educativa relacionada con el trastorno que deseas explorar.</p>
+      </header>
 
-      <div class="categoria">
-        <h3>Disfasia</h3>
-        <a href="Actividades\Disfasia\Disfasia.html" class="tarjeta-bonita">Ingresar</a>
-      </div>
+      <button class="btn--regresar" data-regresar>⬅ Regresar</button>
 
-      <div class="categoria">
-        <h3>Dispraxia</h3>
-        <a href="Actividades\Dispraxia\Dispraxia.html" class="tarjeta-bonita">Ingresar</a>
-      </div>
+      <main class="menu-principal">
+        <div class="categoria">
+          <h3>Autismo (TEA)</h3>
+          <a href="Actividades\Autismo\Austismo.html" class="tarjeta-bonita">Ingresar</a>
+        </div>
 
-      <div class="categoria">
-        <h3>Epilepsia</h3>
-        <a href="Actividades\Epilepsia\Epilepsia.html" class="tarjeta-bonita">Ingresar</a>
-      </div>
+        <div class="categoria">
+          <h3>Discalculia</h3>
+          <a href="Actividades\Discalculia\Discalculia.html" class="tarjeta-bonita">Ingresar</a>
+        </div>
 
-      <div class="categoria">
-        <h3>Ceguera</h3>
-        <a href="Actividades\Discapacidad Visual\Ceguera.html" class="tarjeta-bonita">Ingresar</a>
-      </div>
+        <div class="categoria">
+          <h3>Disfasia (TEL)</h3>
+          <a href="Actividades\Disfasia\Disfasia.html" class="tarjeta-bonita">Ingresar</a>
+        </div>
 
-      <div class="categoria">
-        <h3>Síndrome de Down</h3>
-        <a href="Actividades\Down\Down.html" class="tarjeta-bonita">Ingresar</a>
-      </div>
-    </main>
+        <div class="categoria">
+          <h3>Dispraxia (TDC)</h3>
+          <a href="Actividades\Dispraxia\Dispraxia.html" class="tarjeta-bonita">Ingresar</a>
+        </div>
+      </main>
+    </section>
+
+    <!-- Vista Discapacidades -->
+    <section id="vista-discapacidades" hidden>
+      <header class="ejercicios-header">
+        <h1>Actividades para Discapacidades</h1>
+        <p>Selecciona una actividad</p>
+      </header>
+
+      <button class="btn---regresar" data-regresar>⬅ Regresar</button>
+
+      <main class="menu-principal">
+        <div class="categoria">
+          <h3>Discapacidad Motriz</h3>
+          <a href="Actividades\Discapacidad Motriz\Motriz.html" class="tarjeta-bonita">Ingresar</a>
+        </div>
+
+        <div class="categoria">
+          <h3>Discapacidad Visual</h3>
+          <a href="Actividades\Discapacidad Visual\Ceguera.html" class="tarjeta-bonita">Ingresar</a>
+        </div>
+
+        <div class="categoria">
+          <h3>Síndrome de Down</h3>
+          <a href="Actividades\Down\Down.html" class="tarjeta-bonita">Ingresar</a>
+        </div>
+      </main>
+    </section>
 
     <footer>
-      <p>© 2025 Plataforma Inclusiva</p>
+      <p>© 2025 Actividades LUDIK</p>
     </footer>
   </div>
 
   <script>
-    // VERIFICAR ROL INMEDIATAMENTE - SIMPLIFICADO
+    // verifica rol y oculta botones como en tu original
     document.addEventListener('DOMContentLoaded', function () {
       const rol = localStorage.getItem('rol');
-      console.log('Rol en localStorage:', rol);
-
-      // Eliminar cualquier HR o línea que pueda existir
+      // eliminar líneas si existen (como en tu script original)
       const lineas = document.querySelectorAll('hr, .separator, .line, .divider');
-      lineas.forEach(linea => {
-        console.log('Eliminando línea encontrada');
-        linea.remove();
-      });
+      lineas.forEach(linea => linea.remove());
 
-      // Si NO es admin, ocultar el botón
       if (rol !== 'admin') {
         const botonCrear = document.getElementById('btnCrearCuentas');
-        if (botonCrear) {
-          botonCrear.style.display = 'none';
-          console.log('Botón ocultado para rol:', rol);
-        }
+        if (botonCrear) botonCrear.style.display = 'none';
       }
     });
   </script>
 
-  <script src="Js/Ejercicios.js"></script>
+  <!-- Script extra para asegurar que el burger y overlay funcionen correctamente -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const burger = document.getElementById('burger');
+      const sideMenu = document.getElementById('sideMenu');
+      const overlay = document.getElementById('overlay');
+
+      // Sincroniza el estado del checkbox con clases para que CSS pueda mostrar/ocultar el menu
+      function updateMenuState() {
+        if (!burger || !sideMenu || !overlay) return;
+        if (burger.checked) {
+          sideMenu.classList.add('open');
+          overlay.classList.add('active');
+        } else {
+          sideMenu.classList.remove('open');
+          overlay.classList.remove('active');
+        }
+      }
+
+      if (burger) {
+        // cuando cambia el checkbox (label hace toggle automáticamente)
+        burger.addEventListener('change', updateMenuState);
+      }
+
+      if (overlay) {
+        // click en overlay cierra el menú (y desmarca el checkbox)
+        overlay.addEventListener('click', function () {
+          if (burger) burger.checked = false;
+          updateMenuState();
+        });
+      }
+
+      // Inicializar estado al cargar
+      updateMenuState();
+
+      // ----- navegación entre vistas (categorías / listas) -----
+      document.querySelectorAll('[data-ver]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const vista = btn.dataset.ver;
+          document.getElementById('vista-categorias').hidden = true;
+          document.getElementById('vista-trastornos').hidden = true;
+          document.getElementById('vista-discapacidades').hidden = true;
+          document.getElementById('vista-' + vista).hidden = false;
+          // cerrar menú lateral si estaba abierto
+          if (burger) { burger.checked = false; updateMenuState(); }
+        });
+      });
+
+      document.querySelectorAll('[data-regresar]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('vista-categorias').hidden = false;
+          document.getElementById('vista-trastornos').hidden = true;
+          document.getElementById('vista-discapacidades').hidden = true;
+        });
+      });
+    });
+  </script>
+
+<!-- Sistema de Accesibilidad -->
+<script src="Js/accesibilidad-global.js"></script>
 </body>
 
 </html>
