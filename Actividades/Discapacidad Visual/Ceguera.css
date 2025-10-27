@@ -176,3 +176,20 @@ footer {
   font-weight: bold;
   transition: background 0.3s ease, transform 0.2s ease;
 }
+.opcion-boton {
+  background: var(--color-acento);
+  color: black;
+  border: none;
+  padding: 14px 25px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.opcion-boton:hover {
+  background: #fcd34d;
+  transform: scale(1.05);
+}

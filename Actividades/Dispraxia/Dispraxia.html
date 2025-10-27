@@ -12,20 +12,24 @@
     <h1>Actividades para Dispraxia</h1>
     <p>Ejercicios interactivos para trabajar coordinación y motricidad</p>
   </header>
-  <a href="../../Ejercicios.html" class="btn--regresar">
+  <a id="btn-menu-regresar" href="../../Ejercicios.html" class="btn--regresar">
     ⬅ Regresar
   </a>
+  
   <!-- Pantalla inicial deshabilitada -->
   <div id="pantalla-inicial" hidden></div>
 
   <!-- Vista de actividades -->
-  <div id="vista-actividad" class="contenedor"></div>
-
+  <div id="menu-dispraxia" class="contenedor"></div>
+  <div id="vista-actividad" hidden></div>
+  
   <footer>
     <p>© 2025 Actividades LUDIK</p>
   </footer>
 
   <script src="Dispraxia.js"></script>
+    <!-- Cargar el sistema de accesibilidad global -->
+    <script src="../../Js/accesibilidad-global.js"></script>
   <script>
     // Iniciar directamente en Dispraxia
     document.addEventListener("DOMContentLoaded", () => {

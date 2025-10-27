@@ -94,7 +94,7 @@ function iniciarSilabas() {
 
   const btnBack = document.createElement("button");
   btnBack.className = "btn-regresar";
-  btnBack.textContent = "⬅ Volver a apartados";
+  btnBack.textContent = "⬅ Regresar";
   btnBack.addEventListener("click", mostrarMenu);
   contenedor.appendChild(btnBack);
 
@@ -116,30 +116,36 @@ function iniciarSilabas() {
       const btn = document.createElement("button");
       btn.className = "tarjeta-bonita";
       btn.textContent = s.texto;
+
       btn.addEventListener("click", () => {
         // Si ya está bloqueado, no hacer nada
         if (contenedor.classList.contains("bloqueado")) return;
-      
+
+        // Bloquear todos los botones temporalmente
+        const botones = opcionesDiv.querySelectorAll("button");
+        botones.forEach(b => b.disabled = true);
+
         if (s.id === target.id) {
-          contenedor.classList.add("bloqueado"); // Bloquear clics
           mostrarFeedback("¡Correcto!");
           correctos++;
           actualizarMarcador();
-      
+
           if (correctos >= maxCorrectos) {
             finalizarActividad();
             contenedor.classList.remove("bloqueado");
           } else {
             setTimeout(() => {
-              contenedor.classList.remove("bloqueado"); // Desbloquear antes de la siguiente ronda
+              botones.forEach(b => b.disabled = false);
               mostrarSiguiente();
             }, 800);
           }
         } else {
           mostrarFeedback("Intenta otra vez", false);
+          // 🔓 Permitir intentar de nuevo tras breve pausa
+          setTimeout(() => botones.forEach(b => b.disabled = false), 800);
         }
       });
-      
+
       opcionesDiv.appendChild(btn);
     });
 
@@ -148,6 +154,7 @@ function iniciarSilabas() {
 
   mostrarSiguiente();
 }
+
 
 // =============================
 // 🐾 ACTIVIDAD: VOCABULARIO CON EMOJIS
@@ -160,7 +167,7 @@ function iniciarVocabulario() {
 
   const btnBack = document.createElement("button");
   btnBack.className = "btn-regresar";
-  btnBack.textContent = "⬅ Volver a apartados";
+  btnBack.textContent = "⬅ Regresar";
   btnBack.addEventListener("click", mostrarMenu);
   contenedor.appendChild(btnBack);
 
@@ -359,7 +366,7 @@ function iniciarHistorias() {
     const h = historias[indice];
     const btnBack = document.createElement("button");
     btnBack.className = "btn-regresar";
-    btnBack.textContent = "⬅ Volver a apartados";
+    btnBack.textContent = "⬅ Regresar";
     btnBack.addEventListener("click", mostrarMenu);
     contenedor.appendChild(btnBack);
 
@@ -378,24 +385,40 @@ function iniciarHistorias() {
       item.className = "tarjeta-bonita";
       item.innerHTML = `<div style="font-size:3rem">${op.imagen}</div><p>${op.palabra}</p>`;
       item.addEventListener("click", () => {
-        // Evitar que el jugador pueda hacer clic varias veces
+        // Evitar doble clic si ya está procesando
         if (contenedor.classList.contains("bloqueado")) return;
+        contenedor.classList.add("bloqueado");
+      
+        // Bloquear interacción con las opciones visualmente
+        const opciones = grid.querySelectorAll(".tarjeta-bonita");
+        opciones.forEach(o => o.style.pointerEvents = "none");
       
         if (op.palabra === h.respuesta) {
-          contenedor.classList.add("bloqueado"); // Bloquear más clics
           mostrarFeedback("¡Correcto!");
+          sonidoCorrecto.play?.();
           correctos++;
           actualizarMarcador();
       
           setTimeout(() => {
-            contenedor.classList.remove("bloqueado"); // Desbloquear
+            // Desbloquear y avanzar a la siguiente historia
+            opciones.forEach(o => o.style.pointerEvents = "auto");
+            contenedor.classList.remove("bloqueado");
             indice++;
             mostrarHistoria();
           }, 800);
         } else {
           mostrarFeedback("Intenta otra vez", false);
+          sonidoIncorrecto.play?.();
+      
+          setTimeout(() => {
+            // Desbloquear para reintentar la misma historia
+            opciones.forEach(o => o.style.pointerEvents = "auto");
+            contenedor.classList.remove("bloqueado");
+          }, 800);
         }
       });
+      
+  
       
       grid.appendChild(item);
     });

@@ -12,7 +12,7 @@ function speak(text, keepAudio = false) {
 // ====== ACTIVIDADES ======
 const actividades = {
   entorno: [
-{ id: "lluvia", sonido: "Sounds_Ceguera/lluvia.mp3", respuesta: "lluvia" },
+    { id: "lluvia", sonido: "Sounds_Ceguera/lluvia.mp3", respuesta: "lluvia" },
     { id: "aplausos", sonido: "Sounds_Ceguera/aplausos.mp3", respuesta: "aplausos" },
     { id: "auto", sonido: "Sounds_Ceguera/auto.mp3", respuesta: "auto" },
     { id: "pajaro", sonido: "Sounds_Ceguera/pajaro.mp3", respuesta: "pájaro" },
@@ -20,13 +20,23 @@ const actividades = {
     { id: "perro", sonido: "Sounds_Ceguera/perro.mp3", respuesta: "perro" },
     { id: "gato", sonido: "Sounds_Ceguera/gato.mp3", respuesta: "gato" },
     { id: "sirena", sonido: "Sounds_Ceguera/sirena.mp3", respuesta: "sirena" },
-    { id: "fuego", sonido: "Sounds_Ceguera/fuego.mp3", respuesta: "fuego" },
+    { id: "fuego", sonido: "Sounds_Ceguera/fuego.mp3", respuesta: "fuego" },
   ],
-  memoria: ["do", "re", "mi", "fa"],
-  historia: [
-    "Juan camina por un bosque.",
-    "A la izquierda escucha un río, a la derecha un perro.",
-    "¿Quieres ir al río o al perro?"
+
+  objetos: [
+    { pista: "Sirve para escribir en el cuaderno.", respuesta: "lápiz" },
+    { pista: "Sirve para cortar papel.", respuesta: "tijeras" },
+    { pista: "Sirve para leer.", respuesta: "libro" },
+    { pista: "Sirve para medir.", respuesta: "regla" },
+    { pista: "Sirve para borrar lo que escribes.", respuesta: "borrador" }
+  ],
+
+  acciones: [
+    { frase: "Estoy escribiendo en un cuaderno.", respuesta: "escribir" },
+    { frase: "Estoy comiendo una manzana.", respuesta: "comer" },
+    { frase: "Estoy corriendo por el parque.", respuesta: "correr" },
+    { frase: "Estoy durmiendo en la cama.", respuesta: "dormir" },
+    { frase: "Estoy leyendo un libro.", respuesta: "leer" }
   ]
 };
 
@@ -35,7 +45,7 @@ let modo = "";
 let idx = 0;
 let preguntas = [];
 let audioPlayer = new Audio();
-let isListening = false; // control del micro
+let isListening = false;
 
 // ====== ELEMENTOS ======
 const menu = $("#menu");
@@ -57,8 +67,10 @@ function iniciar(tipo) {
 
   if (modo === "entorno") {
     preguntas = barajar(actividades.entorno);
-  } else if (modo === "historia") {
-    preguntas = actividades.historia;
+  } else if (modo === "objetos") {
+    preguntas = actividades.objetos;
+  } else if (modo === "acciones") {
+    preguntas = actividades.acciones;
   }
 
   menu.style.display = "none";
@@ -67,11 +79,12 @@ function iniciar(tipo) {
   if (modo === "entorno") {
     speak("Escucha el sonido y dime qué es.");
     reproducirSonido();
-  } else if (modo === "memoria") {
-    speak("Escucha la secuencia de notas y repítelas.");
-  } else if (modo === "historia") {
-    speak(preguntas[idx]);
-    instruccion.textContent = preguntas[idx];
+  } else if (modo === "objetos") {
+    speak("Escucha la pista y di qué objeto es.");
+    mostrarPistaObjeto();
+  } else if (modo === "acciones") {
+    speak("Escucha la frase y di qué acción realiza la persona.");
+    mostrarFraseAccion();
   }
 }
 
@@ -83,7 +96,7 @@ function reproducirSonido() {
   audioPlayer.play()
     .then(() => {
       instruccion.textContent = "¿Qué sonido es?";
-      marcador.textContent = `Sonido ${idx+1} de ${preguntas.length}`;
+      marcador.textContent = `Sonido ${idx + 1} de ${preguntas.length}`;
     })
     .catch(err => {
       console.warn("Error al reproducir audio:", err);
@@ -91,9 +104,32 @@ function reproducirSonido() {
     });
 }
 
+function mostrarPistaObjeto() {
+  if (idx < preguntas.length) {
+    const actual = preguntas[idx];
+    instruccion.textContent = actual.pista;
+    speak(actual.pista);
+  } else {
+    instruccion.textContent = "¡Actividad completada!";
+    speak("¡Actividad completada!");
+  }
+}
+
+function mostrarFraseAccion() {
+  if (idx < preguntas.length) {
+    const actual = preguntas[idx];
+    instruccion.textContent = actual.frase;
+    speak(actual.frase);
+  } else {
+    instruccion.textContent = "¡Actividad completada!";
+    speak("¡Actividad completada!");
+  }
+}
+
 btnRepetir.addEventListener("click", () => {
   if (modo === "entorno") reproducirSonido();
-  else if (modo === "historia") speak(preguntas[idx]);
+  else if (modo === "objetos") mostrarPistaObjeto();
+  else if (modo === "acciones") mostrarFraseAccion();
 });
 
 btnVolver.addEventListener("click", () => {
@@ -131,20 +167,40 @@ if (recognition) {
       if (texto.includes(correcto)) {
         retro.textContent = "¡Correcto! 🎉";
         speak("¡Correcto!", true);
-
+        idx++;
         setTimeout(() => {
-          idx++;
-          if (idx < preguntas.length) {
-            reproducirSonido();
-          } else {
-            retro.textContent = "¡Actividad completada!";
-            speak("Actividad completada", true);
-          }
+          if (idx < preguntas.length) reproducirSonido();
+          else { retro.textContent = "¡Actividad completada!"; speak("Actividad completada", true); }
         }, 2000);
-
       } else {
         retro.textContent = "Intenta de nuevo";
         speak("Intenta de nuevo", true);
+      }
+    }
+
+    else if (modo === "objetos") {
+      const correcto = preguntas[idx].respuesta.toLowerCase();
+      if (texto.includes(correcto)) {
+        retro.textContent = "¡Muy bien! 🎉";
+        speak("¡Muy bien!", true);
+        idx++;
+        setTimeout(() => mostrarPistaObjeto(), 2000);
+      } else {
+        retro.textContent = "Intenta de nuevo.";
+        speak("Intenta de nuevo.", true);
+      }
+    }
+
+    else if (modo === "acciones") {
+      const correcto = preguntas[idx].respuesta.toLowerCase();
+      if (texto.includes(correcto)) {
+        retro.textContent = "¡Excelente! 🎉";
+        speak("¡Excelente!", true);
+        idx++;
+        setTimeout(() => mostrarFraseAccion(), 2000);
+      } else {
+        retro.textContent = "Intenta otra vez.";
+        speak("Intenta otra vez.", true);
       }
     }
   };
@@ -154,7 +210,7 @@ if (recognition) {
     console.warn("Error:", event.error);
   };
 
-  // activar con barra espaciadora
+  // 🔹 Activar reconocimiento con la barra espaciadora
   document.addEventListener("keydown", (e) => {
     if (e.code === "Space" && !isListening) {
       e.preventDefault();
