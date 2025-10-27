@@ -893,6 +893,9 @@ document.addEventListener('click', function (e) {
             window.location.href = 'Descripción_general.html';
         } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
             window.location.href = 'Valoracion_pedagogica.html';
+        } else if (textoLower.includes('documentos')) {
+            console.log("-> Redirigiendo a documentos");
+            window.location.href = 'Documentos.html';
         } else if (textoLower.includes('comunicate')) {
             window.location.href = 'Comunicacion.html';
         } else if (textoLower.includes('ayuda')) {
@@ -1904,19 +1907,19 @@ function convertImageToBase64(imageUrl) {
     return new Promise((resolve, reject) => {
         const img = new Image();
         img.crossOrigin = 'Anonymous'; // Para evitar problemas de CORS
-        
-        img.onload = function() {
+
+        img.onload = function () {
             try {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
-                
+
                 // Establecer dimensiones del canvas
                 canvas.width = img.width;
                 canvas.height = img.height;
-                
+
                 // Dibujar imagen en el canvas
                 ctx.drawImage(img, 0, 0);
-                
+
                 // Convertir a Base64
                 const dataURL = canvas.toDataURL('image/jpeg', 0.8);
                 resolve(dataURL);
@@ -1924,11 +1927,11 @@ function convertImageToBase64(imageUrl) {
                 reject(error);
             }
         };
-        
-        img.onerror = function(error) {
+
+        img.onerror = function (error) {
             reject(new Error(`Error cargando imagen: ${imageUrl}`));
         };
-        
+
         // Cargar la imagen
         img.src = imageUrl;
     });
@@ -2097,9 +2100,9 @@ async function downloadIndividualStudentPDF() {
                 const photoSize = 30;
                 const photoX = pageWidth - margin - photoSize;
                 const photoY = studentInfoStartY;
-                
+
                 doc.addImage(studentPhotoBase64, 'JPEG', photoX, photoY, photoSize, photoSize);
-                
+
                 // Borde alrededor de la foto
                 doc.setDrawColor(200, 200, 200);
                 doc.setLineWidth(0.5);
@@ -2137,15 +2140,15 @@ async function downloadIndividualStudentPDF() {
                     checkPageBreak(12);
                     doc.setFillColor(248, 250, 252);
                     doc.rect(margin, yPosition - 2, pageWidth - 2 * margin, 10, 'F');
-                    
+
                     doc.setFontSize(9);
                     doc.setFont('helvetica', 'bold');
                     doc.text(`${index + 1}. CIE-10: ${diagnostico.id_cie10}`, margin + 2, yPosition + 3);
-                    
+
                     doc.setFont('helvetica', 'normal');
                     const descText = doc.splitTextToSize(diagnostico.descripcion, pageWidth - 2 * margin - 4);
                     doc.text(descText, margin + 2, yPosition + 7);
-                    
+
                     yPosition += 10 + (descText.length - 1) * 3;
                 });
                 yPosition += 5;
@@ -2260,7 +2263,7 @@ async function downloadIndividualStudentPDF() {
                 doc.setFont('helvetica', 'bold');
                 doc.text(`Área/asignatura: ${valoracion.nombre_asig}`, margin + 2, yPosition + 3);
                 doc.text(`Período: ${valoracion.periodo} ${valoracion.anio}`, margin + 2, yPosition + 9);
-                
+
                 // Agregar nombre del docente
                 if (valoracion.docente_nombre) {
                     doc.setFontSize(9);
