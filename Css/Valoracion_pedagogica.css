@@ -1,4 +1,4 @@
-/* valoracion_pedagogica.css - Estilos completos con Header y Menú integrado */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* ===== ESTILOS BASE ===== */
 * {
@@ -10,14 +10,15 @@
 }
 
 body {
+    font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #2c3e50;
-    font-family: 'Inter', Arial, sans-serif;
     min-height: 100vh;
+    color: #333;
+    overflow-x: hidden;
     line-height: 1.6;
 }
 
-/* ===== HEADER Y MENÚ EXTRAÍBLE ===== */
+/* ======= ESTILOS DEL HEADER Y MENÚ - FUSIONADOS ======= */
 .header {
     display: flex;
     align-items: center;
@@ -30,7 +31,6 @@ body {
     position: sticky;
     top: 0;
     z-index: 1001;
-    margin-bottom: 30px;
 }
 
 .left-section {
@@ -101,7 +101,7 @@ body {
     filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.2));
 }
 
-/* Burger menu styles */
+/* Burger menu styles mejorado con X asimétrica */
 .burger {
     position: relative;
     width: 60px;
@@ -169,6 +169,7 @@ body {
     transform: translate(-50%, -50%) rotate(45deg);
     top: 50%;
     width: 38px;
+    /* Línea más corta */
 }
 
 .burger input:checked~span:nth-of-type(2) {
@@ -180,9 +181,10 @@ body {
     transform: translate(-50%, -50%) rotate(-45deg);
     top: 50%;
     width: 48px;
+    /* Línea más larga */
 }
 
-/* MENÚ LATERAL */
+/* MENÚ LATERAL - CON SCROLL */
 .side-menu {
     position: fixed;
     top: 89px;
@@ -195,11 +197,9 @@ body {
     z-index: 1000;
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
     outline: none !important;
-    border-bottom: none !important;
-    border-top: none !important;
-    border-left: none !important;
 }
 
 .side-menu.active {
@@ -207,6 +207,7 @@ body {
 }
 
 .menu-header {
+    flex-shrink: 0;
     padding: 35px 40px 35px 40px;
     border-bottom: none !important;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
@@ -229,23 +230,45 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* CONTENEDOR DE BOTONES */
+/* CONTENEDOR DE BOTONES CON SCROLL */
 .menu-buttons {
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 35px 0 35px 0;
-    height: auto !important;
-    min-height: calc(100vh - 300px);
-    overflow: visible !important;
-    overflow-x: visible !important;
-    overflow-y: visible !important;
+    padding: 20px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+    /* Scroll personalizado */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
+}
+
+/* Scroll personalizado para webkit */
+.menu-buttons::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu-buttons::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
 }
 
 /* BOTONES DEL MENÚ */
 .menu-button {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -265,6 +288,7 @@ body {
     overflow: hidden !important;
     width: 100% !important;
     max-width: 380px !important;
+    margin: 2px 0;
 }
 
 .menu-button:focus,
@@ -284,6 +308,7 @@ body {
     box-shadow: none !important;
 }
 
+/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
     content: '';
     position: absolute;
@@ -317,38 +342,9 @@ body {
     filter: grayscale(0);
 }
 
-/* Overlay para cerrar menu */
-.overlay {
-    position: fixed;
-    top: 89px;
-    left: 0;
-    width: 100vw;
-    height: calc(100vh - 89px);
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    display: none;
-    z-index: 999;
-    transition: all 0.3s ease;
-}
-
-.overlay.active {
-    display: block;
-}
-
-/* MENÚ BOTTOM */
-.menu-bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 0;
-    background: transparent;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-}
-
+/* CERRAR SESIÓN COMO BOTÓN NORMAL */
 .menu-button.close-session {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -362,9 +358,8 @@ body {
     transition: all 0.3s ease;
     position: relative;
     font-family: 'Inter', Arial, sans-serif;
-    justify-content: center;
     width: 100%;
-    margin: 0;
+    margin: 2px 0;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -405,6 +400,24 @@ body {
     content: none !important;
 }
 
+/* Overlay para cerrar menu */
+.overlay {
+    position: fixed;
+    top: 89px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 89px);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: none;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.overlay.active {
+    display: block;
+}
+
 /* ===== CONTENIDO PRINCIPAL ===== */
 .main-content {
     display: flex;
@@ -421,7 +434,7 @@ body {
     padding: 40px;
     max-width: 1200px;
     width: 100%;
-    margin: 0 auto;
+    margin: 30px auto 0;
     position: relative;
     overflow: hidden;
 }
@@ -792,6 +805,14 @@ body {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    text-align: center;
+    /* ← AGREGAR */
+    display: flex;
+    /* ← AGREGAR */
+    flex-direction: column;
+    /* ← AGREGAR */
+    align-items: center;
+    /* ← AGREGAR */
 }
 
 .card::before {
@@ -980,7 +1001,7 @@ body {
     font-size: 1rem;
     font-weight: 600;
     transition: all 0.3s ease;
-    min-width: 140px;
+    min-width: 130px;
     position: relative;
     overflow: hidden;
     text-decoration: none;
@@ -1312,22 +1333,147 @@ footer.pie-pagina {
     background-color: #095bb5;
 }
 
+/* ===== FOTO EN MODAL DE DETALLES ===== */
+.info-header-with-photo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.modal-student-photo-detail {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #667eea;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.modal-student-photo-detail.default {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 600;
+    border: 3px solid #667eea;
+}
+
+.info-header-text {
+    flex: 1;
+}
+
+.info-header-text h3 {
+    color: #667eea;
+    margin-bottom: 8px;
+    font-size: 1.4rem;
+}
+
+.info-header-text p {
+    color: #64748b;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Responsive para foto en modal de detalles */
+@media (max-width: 768px) {
+    .info-header-with-photo {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .modal-student-photo-detail {
+        width: 70px;
+        height: 70px;
+    }
+
+    .modal-student-photo-detail.default {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-student-photo-detail {
+        width: 60px;
+        height: 60px;
+    }
+
+    .modal-student-photo-detail.default {
+        font-size: 1.3rem;
+    }
+
+    .info-header-text h3 {
+        font-size: 1.2rem;
+    }
+
+    .info-header-text p {
+        font-size: 0.85rem;
+    }
+}
+
+/* ===== FOTOS DE ESTUDIANTES EN CARDS ===== */
+.student-photo-card {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e2e8f0;
+    margin: 0 auto 15px;
+    display: block;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover .student-photo-card {
+    border-color: #667eea;
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.student-photo-card.default {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 600;
+    border: 3px solid #667eea;
+}
+
+.card.selected .student-photo-card {
+    border-color: #667eea;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.card.selected .student-photo-card.default {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
     .header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
         padding: 15px 20px;
     }
 
     .title {
-        font-size: 2rem;
+        font-size: 2.5rem;
         letter-spacing: 2px;
     }
 
     .menu-text {
-        font-size: 0.9rem;
+        font-size: 1.5rem;
+    }
+
+    .header-logo {
+        width: 50px !important;
+        height: 50px !important;
     }
 
     .side-menu {
@@ -1335,23 +1481,9 @@ footer.pie-pagina {
         left: -320px;
     }
 
-    .menu-header {
-        padding: 30px 25px 30px 25px;
-        min-height: 70px;
-    }
-
-    .menu-title {
-        font-size: 1.2rem;
-    }
-
     .menu-button {
-        padding: 15px 25px;
+        padding: 16px 25px;
         font-size: 0.95rem;
-        min-width: 320px !important;
-    }
-
-    .menu-button.close-session {
-        padding: 15px 25px;
     }
 
     .dashboard-header {
@@ -1415,6 +1547,32 @@ footer.pie-pagina {
     .estudiante-cards {
         grid-template-columns: 1fr;
         gap: 15px;
+    }
+
+    @media (max-width: 768px) {
+        /* ... código existente ... */
+
+        .student-photo-card {
+            width: 60px;
+            height: 60px;
+        }
+
+        .student-photo-card.default {
+            font-size: 1.4rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        /* ... código existente ... */
+
+        .student-photo-card {
+            width: 50px;
+            height: 50px;
+        }
+
+        .student-photo-card.default {
+            font-size: 1.2rem;
+        }
     }
 }
 

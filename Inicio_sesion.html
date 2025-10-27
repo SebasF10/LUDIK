@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUDIK - Inicio de Sesión</title>
     <link rel="icon" href="img/Ludik2.png" type="image/x-icon">
-    <link rel="stylesheet" href="Css\Inicio_sesion.css">
+    <link rel="stylesheet" href="Css/Inicio_sesion.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Contenido principal con la nueva estética -->
+    <!-- Contenido principal -->
     <main class="main-content">
         <div class="Inicio_sesion">
             <div class="Sesion_titulo">
@@ -28,7 +28,11 @@
             <div class="Botones_usuarios">
                 <button class="btn_adm" onclick="mostrarFormulario('admin')">
                     <span class="btn-icon">👨‍💼</span>
-                    Administrador
+                    Admin
+                </button>
+                <button class="btn_dir" onclick="mostrarFormulario('directivo')">
+                    <span class="btn-icon">👩‍💼</span>
+                    Directivo
                 </button>
                 <button class="btn_prof" onclick="mostrarFormulario('docente')">
                     <span class="btn-icon">👨‍🏫</span>
@@ -39,6 +43,7 @@
                     Acudiente
                 </button>
             </div>
+
 
             <div class="Formularios_sesion">
                 <div id="mensaje_rol" class="mensaje-inicial">
@@ -57,11 +62,33 @@
                             <input type="text" name="email" placeholder="Usuario o Email" required>
                         </div>
                         <div class="input-group">
-                            <input type="password" name="contrasena" placeholder="Contraseña" required>
+                            <input type="password" name="contrasena" placeholder="Contraseña" required id="pass_admin">
+                            <span class="toggle-pass" onclick="togglePassword('pass_admin', this)">👁</span>
                         </div>
                         <button class="login-btn" type="submit">Iniciar Sesión</button>
                     </form>
                 </div>
+
+                <!-- Formulario Directivo -->
+                <div id="form_directivo" class="formulario_directivo" style="display: none;">
+                    <h3>Acceso Directivo</h3>
+                    <div class="form-icon-container">
+                        <img src="img/directivoimg.png" alt="Logo de directivo" width="120" height="120">
+                    </div>
+                    <form method="POST" action="php/Login.php">
+                        <input type="hidden" name="rol" value="directivo">
+                        <div class="input-group">
+                            <input type="text" name="email" placeholder="Usuario o Email" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="contrasena" placeholder="Contraseña" required
+                                id="pass_directivo">
+                            <span class="toggle-pass" onclick="togglePassword('pass_directivo', this)">👁</span>
+                        </div>
+                        <button class="login-btn" type="submit">Iniciar Sesión</button>
+                    </form>
+                </div>
+
 
                 <!-- Formulario Docente -->
                 <div id="form_docente" class="formulario_docente">
@@ -75,7 +102,9 @@
                             <input type="text" name="email" placeholder="Usuario o Email" required>
                         </div>
                         <div class="input-group">
-                            <input type="password" name="contrasena" placeholder="Contraseña" required>
+                            <input type="password" name="contrasena" placeholder="Contraseña" required
+                                id="pass_docente">
+                            <span class="toggle-pass" onclick="togglePassword('pass_docente', this)">👁</span>
                         </div>
                         <button class="login-btn" type="submit">Iniciar Sesión</button>
                     </form>
@@ -93,7 +122,9 @@
                             <input type="text" name="email" placeholder="Usuario o Email" required>
                         </div>
                         <div class="input-group">
-                            <input type="password" name="contrasena" placeholder="Contraseña" required>
+                            <input type="password" name="contrasena" placeholder="Contraseña" required
+                                id="pass_acudiente">
+                            <span class="toggle-pass" onclick="togglePassword('pass_acudiente', this)">👁</span>
                         </div>
                         <button class="login-btn" type="submit">Iniciar Sesión</button>
                     </form>
@@ -101,98 +132,65 @@
             </div>
         </div>
     </main>
-    <!-- Botón regresar -->
-    <button class="back-btn" onclick="goBackOrRedirect('index.html')">
-        ⬅ Regresar
-    </button>
 
+    <!-- Botón regresar -->
+    <button class="back-btn" onclick="goBackOrRedirect('index.html')">⬅ Regresar</button>
 
     <footer class="pie-pagina">
         Copyright © 2025 Todos los derechos reservados | Sistemas 11 | Colegio San José de Guanentá
     </footer>
 
     <script>
-        // Función para mostrar formulario según rol seleccionado
         function mostrarFormulario(rol) {
-            // Ocultar mensaje inicial
             document.getElementById('mensaje_rol').style.display = 'none';
-
-            // Ocultar todos los formularios
             document.getElementById('form_admin').style.display = 'none';
+            document.getElementById('form_directivo').style.display = 'none';
             document.getElementById('form_docente').style.display = 'none';
             document.getElementById('form_acudiente').style.display = 'none';
 
-            // Remover clase active de todos los botones
             document.querySelectorAll('.Botones_usuarios button').forEach(btn => {
                 btn.classList.remove('active');
             });
 
-            // Mostrar el formulario correspondiente y activar botón
+            let formId = '';
             if (rol === 'admin') {
-                document.getElementById('form_admin').style.display = 'block';
+                formId = 'form_admin';
                 document.querySelector('.btn_adm').classList.add('active');
+            } else if (rol === 'directivo') {
+                formId = 'form_directivo';
+                document.querySelector('.btn_dir').classList.add('active');
             } else if (rol === 'docente') {
-                document.getElementById('form_docente').style.display = 'block';
+                formId = 'form_docente';
                 document.querySelector('.btn_prof').classList.add('active');
             } else if (rol === 'acudiente') {
-                document.getElementById('form_acudiente').style.display = 'block';
+                formId = 'form_acudiente';
                 document.querySelector('.btn_padr').classList.add('active');
+            }
+
+            if (formId) {
+                const formElement = document.getElementById(formId);
+                formElement.style.display = 'block';
+                formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
-        // Animación de entrada para los elementos
-        document.addEventListener('DOMContentLoaded', function () {
-            // Animar elementos al cargar
-            const elements = document.querySelectorAll('.titulo, .subtitulo, .logo-container, .btn_adm, .btn_prof, .btn_padr');
-            elements.forEach((element, index) => {
-                element.style.opacity = '0';
-                element.style.transform = 'translateY(30px)';
-
-                setTimeout(() => {
-                    element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }, index * 200);
-            });
-        });
-
-        // Efecto hover mejorado para los botones
-        document.querySelectorAll('.Botones_usuarios button').forEach(button => {
-            button.addEventListener('mouseenter', function () {
-                this.style.transform = 'translateY(-3px) scale(1.05)';
-            });
-
-            button.addEventListener('mouseleave', function () {
-                if (!this.classList.contains('active')) {
-                    this.style.transform = 'translateY(0) scale(1)';
-                }
-            });
-        });
-
-        // Validación de formularios
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', function (e) {
-                const email = this.querySelector('input[name="email"]').value;
-                const password = this.querySelector('input[name="contrasena"]').value;
-
-                if (!email || !password) {
-                    e.preventDefault();
-                    alert('Por favor, completa todos los campos');
-                    return false;
-                }
-
-                // Mostrar indicador de carga
-                const submitBtn = this.querySelector('.login-btn');
-                submitBtn.textContent = 'Iniciando...';
-                submitBtn.disabled = true;
-            });
-        });
+        // Mostrar / ocultar contraseña
+        function togglePassword(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.textContent = "🗙";
+            } else {
+                input.type = "password";
+                icon.textContent = "👁";
+            }
+        }
 
         function goBackOrRedirect(ruta) {
             if (ruta && ruta.trim() !== '') {
-                window.location.href = ruta;   // Ir a la ruta que pongas
+                window.location.href = ruta;
             } else {
-                window.history.back();         // Si está vacío, volver atrás
+                window.history.back();
             }
         }
     </script>

@@ -21,13 +21,17 @@
             </label>
             <span class="menu-text">MENÚ</span>
         </div>
-        
-        <div class="center-section">
-            <div class="title">LUDIK</div>
+
+        <div class="centro">
+            <h1 class="titulo-ludik">
+                <img src="img\LUDIK_texto.png" alt="LUDIK" class="imagen-ludik-header">
+            </h1>
         </div>
-        
+
         <div class="right-section">
             <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+            <img src="img/sistemas.png" alt="Sistemas" class="logo-institucion">
+            <img src="img/logoguanenta.png" alt="Colegio" class="logo-institucion">
         </div>
     </div>
 
@@ -40,7 +44,7 @@
         <div class="menu-buttons">
             <button class="menu-button">
                 <span class="menu-icon">👤</span>
-            Perfil
+                Perfil
             </button>
             <button class="menu-button">
                 <span class="menu-icon">👥</span>
@@ -54,6 +58,10 @@
                 <span class="menu-icon">📚</span>
                 Actividades
             </button>
+            <button class="menu-button" id="btnIA">
+                <span class="menu-icon">🤖</span>
+                Asistente IA
+            </button>
             <button class="menu-button">
                 <span class="menu-icon">📝</span>
                 Registrar un nuevo estudiante
@@ -63,21 +71,25 @@
                 Registrar un PIAR y diagnóstico médico
             </button>
             <button class="menu-button">
-
                 <span class="menu-icon">📊</span>
-                Crear una Valoración Pedagógica
-
+                Valoraciones Pedagógicas
+            </button>
+            <button class="menu-button" id="btnDocumentos">
+                <span class="menu-icon">📁</span>
+                Documentos
             </button>
             <button class="menu-button">
                 <span class="menu-icon">💬</span>
                 Comunicate
             </button>
+            <a href="manual.pdf" download class="menu-button">
+                <span class="menu-icon">📘</span>
+                Manual de Usuario
+            </a>
             <button class="menu-button">
                 <span class="menu-icon">❓</span>
                 Ayuda
             </button>
-        </div>
-        <div class="menu-bottom">
             <button class="menu-button close-session">
                 <span class="menu-icon">🚪</span>
                 Cerrar Sesión
@@ -89,81 +101,81 @@
         <div class="welcome-section">
             <h1>Bienvenido a LUDIK</h1>
             <p class="subtitle">Plataforma educativa inclusiva para el Colegio San José de Guanentá</p>
-            
+
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon">👥</div>
                     <div class="stat-content">
                         <h3>Estudiantes</h3>
-                        <p class="stat-number">350+</p>
+                        <p class="stat-number" id="numEstudiantes">...</p>
                         <p class="stat-desc">Estudiantes activos</p>
                     </div>
                 </div>
-                
+
                 <div class="stat-card">
                     <div class="stat-icon">📚</div>
                     <div class="stat-content">
-                        <h3>Actividades</h3>
-                        <p class="stat-number">25+</p>
-                        <p class="stat-desc">Actividades disponibles</p>
+                        <h3>Actividades </h3>
+                        <p class="stat-number">+8</p>
+                        <p class="stat-desc">Discapacidades con actividades</p>
                     </div>
                 </div>
-                
+
                 <div class="stat-card">
                     <div class="stat-icon">🎯</div>
                     <div class="stat-content">
                         <h3>Inclusión</h3>
-                        <p class="stat-number">33%</p>
-                        <p class="stat-desc">Estudiantes con atención especial</p>
+                        <p class="stat-number">36%</p>
+                        <p class="stat-desc">Estudiantes con atención especial en el colegio</p>
                     </div>
                 </div>
             </div>
-            
+
             <div class="quick-actions">
                 <h2>Acciones Rápidas</h2>
-                <div class="actions-grid">
-                    <div class="action-card">
-                        <div class="action-icon">📝</div>
-                        <h3>Crear Actividad</h3>
-                        <p>Diseña nuevas actividades adaptadas</p>
-                        <button class="action-btn">Comenzar</button>
-                    </div>
-                    
-                    <div class="action-card">
-                        <div class="action-icon">📊</div>
-                        <h3>Ver Reportes</h3>
-                        <p>Consulta el progreso estudiantil</p>
-                        <button class="action-btn">Ver Datos</button>
-                    </div>
-                    
-                    <div class="action-card">
-                        <div class="action-icon">💬</div>
-                        <h3>Mensajes</h3>
-                        <p>Comunícate con padres y estudiantes</p>
-                        <button class="action-btn">Abrir Chat</button>
-                    </div>
+                <div class="actions-grid" id="accionesRapidas">
+                    <!-- Los botones se insertan por JS -->
                 </div>
             </div>
         </div>
     </div>
+    </div>
 
-    <!-- SCRIPT INLINE SÚPER SIMPLE -->
     <script>
-        // VERIFICAR ROL INMEDIATAMENTE
-        const rol = localStorage.getItem('rol');
-        console.log('Rol en localStorage:', rol);
-
-        // Si NO es admin, eliminar el botón AHORA MISMO
-        if (rol !== 'admin') {
-            const botonCrear = document.getElementById('btnCrearCuentas');
-            if (botonCrear) {
-                botonCrear.style.display = 'none';
-                console.log('Botón ocultado para rol:', rol);
+        // VERIFICAR ROL INMEDIATAMENTE - SIMPLIFICADO
+        document.addEventListener('DOMContentLoaded', function () {
+            // Abre el menú lateral automáticamente
+            const burgerInput = document.getElementById('burger');
+            const sideMenu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('overlay');
+            if (burgerInput && sideMenu && overlay) {
+                burgerInput.checked = true;
+                sideMenu.classList.add('active');
+                overlay.classList.add('active');
             }
-        }
+            const rol = localStorage.getItem('rol');
+            console.log('Rol en localStorage:', rol);
+
+            // Eliminar cualquier HR o línea que pueda existir
+            const lineas = document.querySelectorAll('hr, .separator, .line, .divider');
+            lineas.forEach(linea => {
+                console.log('Eliminando línea encontrada');
+                linea.remove();
+            });
+
+            // Si NO es admin, ocultar el botón
+            if (rol !== 'admin') {
+                const botonCrear = document.getElementById('btnCrearCuentas');
+                if (botonCrear) {
+                    botonCrear.style.display = 'none';
+                    console.log('Botón ocultado para rol:', rol);
+                }
+            }
+        });
     </script>
 
-    <script src="Js/Interfaz.js"></script>
+    <script src="Js\Interfaz.js"></script>
+    <script src="js/Roles_menu.js"></script>
 </body>
 
 </html>

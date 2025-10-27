@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUDIK - Documentos</title>
+    <link rel="icon" href="img/Ludik2.png" type="image/x-icon">
+    <link rel="stylesheet" href="Css/Documentos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header con diseño moderno -->
+    <div class="header">
+        <div class="left-section">
+            <label class="burger" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <span class="menu-text">MENÚ</span>
+        </div>
+
+        <div class="centro">
+            <h1 class="titulo-ludik">
+                <img src="img\LUDIK_texto.png" alt="LUDIK" class="imagen-ludik-header">
+            </h1>
+        </div>
+
+        <div class="right-section">
+            <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+            <img src="img/sistemas.png" alt="Sistemas" class="logo-institucion">
+            <img src="img/logoguanenta.png" alt="Colegio" class="logo-institucion">
+        </div>
+
+    </div>
+
+    <!-- Overlay para cerrar menú -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Menú lateral -->
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-header">
+            <div class="menu-title">Panel De Control</div>
+        </div>
+        <div class="menu-buttons">
+            <button class="menu-button">
+                <span class="menu-icon">🏠</span>
+                Volver a Interfaz
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">👤</span>
+                Perfil
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">👥</span>
+                Estudiantes
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">➕</span>
+                Crear Cuentas
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📚</span>
+                Actividades
+            </button>
+            <button class="menu-button" id="btnIA">
+                <span class="menu-icon">🤖</span>
+                Asistente IA
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📝</span>
+                Registrar un nuevo estudiante
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📋</span>
+                Registrar un PIAR y diagnóstico médico
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📊</span>
+                Crear una Valoración Pedagógica
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">💬</span>
+                Comunicate
+            </button>
+            <a href="manual.pdf" download class="menu-button">
+                <span class="menu-icon">📘</span>
+                Manual de Usuario
+            </a>
+
+            <button class="menu-button">
+                <span class="menu-icon">❓</span>
+                Ayuda
+            </button>
+            <button class="menu-button close-session">
+                <span class="menu-icon">🚪</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <div class="section active">
+            <h1>Gestión de Documentos</h1>
+
+            <!-- Formulario de subida -->
+            <div class="upload-container">
+                <div class="upload-header">
+                    <h2>Subir Nuevo Documento</h2>
+                    <p>Formatos permitidos: PDF, DOCX, XLSX, imágenes (PNG, JPG, JPEG)... etc</p>
+                </div>
+
+                <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
+                    <div class="file-input-container">
+                        <input type="file" id="fileInput" name="archivo" accept=".pdf,.docx,.xlsx,.png,.jpg,.jpeg"
+                            required>
+                        <label for="fileInput" class="file-input-label">
+                            <span class="file-icon">📄</span>
+                            <span class="file-text">Seleccionar archivo</span>
+                        </label>
+                        <div class="file-name" id="fileName"></div>
+                    </div>
+
+                    <button type="submit" class="btn-upload" id="btnUpload">
+                        <span class="upload-icon">⬆️</span>
+                        Subir Documento
+                    </button>
+                </form>
+            </div>
+
+            <!-- Cuadrícula de documentos -->
+            <div class="documents-section">
+                <div class="documents-header">
+                    <h2>Documentos Disponibles</h2>
+                    <div class="documents-count" id="documentsCount">
+                        <span class="count-number">0</span>
+                        <span class="count-text">documentos</span>
+                    </div>
+                </div>
+
+                <div class="documents-grid" id="documentsGrid">
+                    <!-- Los documentos se cargarán aquí desde PHP -->
+                </div>
+            </div>
+
+            <!-- Loading spinner -->
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>Procesando documento...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver documentos -->
+    <div id="documentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Visualizar Documento</h2>
+                <span class="close" id="closeModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <iframe id="documentViewer" src="" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="Js/Documentos.js"></script>
+    <script src="js/Roles_menu.js"></script>
+</body>
+
+</html>

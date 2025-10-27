@@ -1,4 +1,6 @@
-/* Estilos base y reset */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* RESET Y BASE */
 * {
     margin: 0;
     padding: 0;
@@ -8,14 +10,15 @@
 }
 
 body {
-    font-family: 'Inter', Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    color: #2c3e50;
+    color: #333;
+    overflow-x: hidden;
     line-height: 1.6;
 }
 
-/* ===== HEADER CON MENÚ EXTRAÍBLE ===== */
+/* ======= ESTILOS DEL HEADER Y MENÚ ======= */
 .header {
     display: flex;
     align-items: center;
@@ -28,7 +31,6 @@ body {
     position: sticky;
     top: 0;
     z-index: 1001;
-    position: relative;
 }
 
 .left-section {
@@ -52,7 +54,12 @@ body {
     align-items: center;
     flex: 1;
     justify-content: flex-end;
+    gap: 32px;
+    /* Más separación entre logos */
+    padding-right: 8px;
+    /* Un poco de espacio a la derecha */
 }
+
 
 .menu-text {
     font-size: 1.9rem;
@@ -80,13 +87,6 @@ body {
     border: none !important;
 }
 
-.header-logo:hover {
-    transform: scale(1.05) rotate(5deg);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    outline: none !important;
-    border: none !important;
-}
-
 .title {
     font-size: 3.2rem;
     font-weight: 700;
@@ -99,7 +99,7 @@ body {
     filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.2));
 }
 
-/* ===== BURGER MENU ===== */
+/* Burger menu styles mejorado con X asimétrica */
 .burger {
     position: relative;
     width: 60px;
@@ -140,6 +140,7 @@ body {
     border: none !important;
 }
 
+/* Líneas simétricas en estado normal */
 .burger span:nth-of-type(1) {
     width: 50px;
     top: 12px;
@@ -161,11 +162,12 @@ body {
     transform-origin: center;
 }
 
-/* Animación X asimétrica */
+/* Animación de transformación a X ASIMÉTRICA */
 .burger input:checked~span:nth-of-type(1) {
     transform: translate(-50%, -50%) rotate(45deg);
     top: 50%;
     width: 38px;
+    /* Línea más corta */
 }
 
 .burger input:checked~span:nth-of-type(2) {
@@ -177,9 +179,10 @@ body {
     transform: translate(-50%, -50%) rotate(-45deg);
     top: 50%;
     width: 48px;
+    /* Línea más larga */
 }
 
-/* ===== MENÚ LATERAL ===== */
+/* MENÚ LATERAL - CON SCROLL */
 .side-menu {
     position: fixed;
     top: 89px;
@@ -192,11 +195,9 @@ body {
     z-index: 1000;
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
     outline: none !important;
-    border-bottom: none !important;
-    border-top: none !important;
-    border-left: none !important;
 }
 
 .side-menu.active {
@@ -204,6 +205,7 @@ body {
 }
 
 .menu-header {
+    flex-shrink: 0;
     padding: 35px 40px 35px 40px;
     border-bottom: none !important;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
@@ -226,21 +228,45 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* CONTENEDOR DE BOTONES CON SCROLL */
 .menu-buttons {
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 35px 0 35px 0;
-    height: auto !important;
-    min-height: calc(100vh - 300px);
-    overflow: visible !important;
-    overflow-x: visible !important;
-    overflow-y: visible !important;
+    padding: 20px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+    /* Scroll personalizado */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
+/* Scroll personalizado para webkit */
+.menu-buttons::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu-buttons::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
+
+/* BOTONES DEL MENÚ */
 .menu-button {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -260,6 +286,7 @@ body {
     overflow: hidden !important;
     width: 100% !important;
     max-width: 380px !important;
+    margin: 2px 0;
 }
 
 .menu-button:focus,
@@ -279,6 +306,7 @@ body {
     box-shadow: none !important;
 }
 
+/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
     content: '';
     position: absolute;
@@ -312,19 +340,9 @@ body {
     filter: grayscale(0);
 }
 
-.menu-bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 0;
-    background: transparent;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-}
-
+/* CERRAR SESIÓN COMO BOTÓN NORMAL */
 .menu-button.close-session {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -338,9 +356,8 @@ body {
     transition: all 0.3s ease;
     position: relative;
     font-family: 'Inter', Arial, sans-serif;
-    justify-content: center;
     width: 100%;
-    margin: 0;
+    margin: 2px 0;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -381,7 +398,7 @@ body {
     content: none !important;
 }
 
-/* ===== OVERLAY ===== */
+/* Overlay para cerrar menu */
 .overlay {
     position: fixed;
     top: 89px;
@@ -755,19 +772,24 @@ footer.pie-pagina {
     box-shadow: 0 -2px 12px rgba(102, 126, 234, 0.07);
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* RESPONSIVE - MOBILE */
 @media (max-width: 768px) {
     .header {
         padding: 15px 20px;
     }
 
     .title {
-        font-size: 2rem;
+        font-size: 2.5rem;
         letter-spacing: 2px;
     }
 
     .menu-text {
-        font-size: 0.9rem;
+        font-size: 1.5rem;
+    }
+
+    .header-logo {
+        width: 50px !important;
+        height: 50px !important;
     }
 
     .side-menu {
@@ -775,23 +797,9 @@ footer.pie-pagina {
         left: -320px;
     }
 
-    .menu-header {
-        padding: 30px 25px 30px 25px;
-        min-height: 70px;
-    }
-
-    .menu-title {
-        font-size: 1.2rem;
-    }
-
     .menu-button {
-        padding: 15px 25px;
+        padding: 16px 25px;
         font-size: 0.95rem;
-        min-width: 320px !important;
-    }
-
-    .menu-button.close-session {
-        padding: 15px 25px;
     }
 
     .section {
@@ -853,4 +861,44 @@ footer.pie-pagina {
     .progress-indicator {
         gap: 10px;
     }
+}
+
+.centro {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    min-width: 0;
+}
+
+.titulo-ludik {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagen-ludik-header {
+    height: 80px;
+    width: auto;
+    display: inline-block;
+    margin: 0 12px;
+    vertical-align: middle;
+    z-index: 2;
+    position: relative;
+}
+
+.header-logo,
+.logo-institucion {
+    width: 56px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    padding: 0;
+    margin: 0;
 }

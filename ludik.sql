@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: sql112.infinityfree.com
--- Generation Time: Sep 19, 2025 at 02:21 PM
--- Server version: 11.4.7-MariaDB
--- PHP Version: 7.2.22
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 29-09-2025 a las 05:10:06
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `if0_39975666_ludik`
+-- Base de datos: `ludik`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `acudiente`
+-- Estructura de tabla para la tabla `acudiente`
 --
 
 CREATE TABLE `acudiente` (
@@ -39,7 +38,7 @@ CREATE TABLE `acudiente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `acudiente`
+-- Volcado de datos para la tabla `acudiente`
 --
 
 INSERT INTO `acudiente` (`id_acudiente`, `nombre_completo`, `nivel_educativo`, `parentesco`, `email`, `telefono`, `contrasena`) VALUES
@@ -48,12 +47,15 @@ INSERT INTO `acudiente` (`id_acudiente`, `nombre_completo`, `nivel_educativo`, `
 (6, 'Fernando', 'Postgrado', 'Tío', 'f@gmail.com', '3145859876', '1234'),
 (14, 'Loky', 'Doctorado', 'Tío', 'lk@gmail.com', '3461856454', '1234'),
 (16, 'Elias', 'Especialización', 'Tío', 'e@gmail.com', '3023331111', '1234'),
-(17, 'Álvaro Uribe Rodriguez Perez', 'Doctorado', 'Otro', 'alva@gmail.com', '3048894841', '1234');
+(17, 'Álvaro Uribe Rodriguez Perez', 'Doctorado', 'Otro', 'alva@gmail.com', '3048894841', '1234'),
+(18, 'gvhbkj', 'cgvhbjnm', 'ghjok', 'ghj@gmail.com', 'yghujk', 'tyghj'),
+(22, 'Camilo Petro', 'Tecnológico', 'Tío/a', 'cp@gmail.com', '3145859876', '1234'),
+(23, 'Edward Stiward Figueredo', 'Profesional', 'Tío/a', 'esf@gmail.com', '3144788924', '1234');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Estructura de tabla para la tabla `admin`
 --
 
 CREATE TABLE `admin` (
@@ -64,7 +66,7 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `admin`
+-- Volcado de datos para la tabla `admin`
 --
 
 INSERT INTO `admin` (`id_admin`, `nombre`, `email`, `contrasena`) VALUES
@@ -76,7 +78,7 @@ INSERT INTO `admin` (`id_admin`, `nombre`, `email`, `contrasena`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `asignatura`
+-- Estructura de tabla para la tabla `asignatura`
 --
 
 CREATE TABLE `asignatura` (
@@ -85,7 +87,7 @@ CREATE TABLE `asignatura` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `asignatura`
+-- Volcado de datos para la tabla `asignatura`
 --
 
 INSERT INTO `asignatura` (`id_asignatura`, `nombre_asig`) VALUES
@@ -116,7 +118,7 @@ INSERT INTO `asignatura` (`id_asignatura`, `nombre_asig`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `asignatura_docente_grupo`
+-- Estructura de tabla para la tabla `asignatura_docente_grupo`
 --
 
 CREATE TABLE `asignatura_docente_grupo` (
@@ -128,7 +130,7 @@ CREATE TABLE `asignatura_docente_grupo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `asignatura_docente_grupo`
+-- Volcado de datos para la tabla `asignatura_docente_grupo`
 --
 
 INSERT INTO `asignatura_docente_grupo` (`id_asig_doc_grup`, `id_docente`, `id_grupo`, `id_asignatura`, `anio`) VALUES
@@ -179,150 +181,150 @@ INSERT INTO `asignatura_docente_grupo` (`id_asig_doc_grup`, `id_docente`, `id_gr
 (65, 10, 114, 5, NULL),
 (66, 10, 112, 6, NULL),
 (67, 10, 114, 6, NULL),
-(68, 11, 111, 1, 2025),
-(69, 11, 111, 5, 2025),
-(70, 11, 113, 1, 2025),
-(71, 11, 115, 1, 2025),
-(72, 11, 115, 5, 2025),
-(73, 12, 111, 1, 2025),
-(74, 12, 111, 2, 2025),
-(75, 12, 111, 3, 2025),
-(76, 12, 112, 1, 2025),
-(77, 12, 112, 2, 2025),
-(78, 12, 112, 3, 2025),
-(79, 12, 113, 4, 2025),
-(80, 12, 113, 5, 2025),
-(81, 12, 113, 6, 2025),
-(82, 12, 114, 4, 2025),
-(83, 12, 114, 5, 2025),
-(84, 12, 114, 6, 2025),
-(85, 12, 115, 1, 2025),
-(86, 13, 111, 1, 2025),
-(87, 13, 111, 3, 2025),
-(88, 13, 113, 1, 2025),
-(89, 13, 113, 3, 2025),
-(90, 13, 113, 4, 2025),
-(91, 13, 113, 5, 2025),
-(92, 13, 115, 4, 2025),
-(93, 13, 115, 5, 2025),
-(174, 17, 64, 15, 2025),
-(175, 17, 65, 15, 2025),
-(176, 17, 66, 15, 2025),
-(177, 17, 84, 15, 2025),
-(178, 17, 85, 15, 2025),
-(179, 17, 86, 15, 2025),
-(180, 18, 61, 16, 2025),
-(181, 18, 61, 17, 2025),
-(182, 18, 62, 16, 2025),
-(183, 18, 62, 17, 2025),
-(184, 18, 63, 16, 2025),
-(185, 18, 63, 17, 2025),
-(186, 18, 64, 16, 2025),
-(187, 18, 64, 17, 2025),
-(188, 18, 65, 16, 2025),
-(189, 18, 65, 17, 2025),
-(190, 18, 66, 16, 2025),
-(191, 18, 66, 17, 2025),
-(192, 19, 111, 3, 2025),
-(193, 19, 112, 3, 2025),
-(194, 19, 113, 3, 2025),
-(195, 19, 114, 3, 2025),
-(196, 19, 115, 3, 2025),
-(197, 20, 111, 22, 2025),
-(198, 20, 112, 22, 2025),
-(199, 20, 113, 22, 2025),
-(200, 20, 114, 22, 2025),
-(201, 20, 115, 22, 2025),
-(202, 21, 101, 22, 2025),
-(203, 21, 102, 22, 2025),
-(204, 21, 103, 22, 2025),
-(205, 21, 104, 22, 2025),
-(206, 21, 105, 22, 2025),
-(207, 21, 106, 22, 2025),
-(208, 21, 107, 22, 2025),
-(209, 21, 111, 22, 2025),
-(210, 21, 112, 22, 2025),
-(211, 21, 113, 22, 2025),
-(212, 21, 114, 22, 2025),
-(213, 21, 115, 22, 2025),
-(214, 22, 61, 7, 2025),
-(215, 22, 62, 7, 2025),
-(216, 22, 63, 7, 2025),
-(217, 22, 64, 7, 2025),
-(218, 23, 55, 3, 2025),
-(219, 23, 55, 6, 2025),
-(220, 23, 55, 7, 2025),
-(221, 23, 55, 8, 2025),
-(222, 23, 55, 9, 2025),
-(223, 23, 55, 12, 2025),
-(224, 23, 55, 15, 2025),
-(225, 23, 55, 17, 2025),
-(226, 23, 55, 19, 2025),
-(227, 23, 55, 20, 2025),
-(228, 23, 55, 21, 2025),
-(229, 24, 61, 15, 2025),
-(230, 24, 62, 15, 2025),
-(231, 24, 63, 15, 2025),
-(232, 24, 64, 15, 2025),
-(233, 25, 75, 6, 2025),
-(234, 25, 76, 6, 2025),
-(235, 25, 95, 6, 2025),
-(236, 25, 96, 6, 2025),
-(237, 26, 71, 17, 2025),
-(238, 26, 72, 17, 2025),
-(239, 26, 73, 17, 2025),
-(240, 26, 74, 17, 2025),
-(241, 26, 75, 17, 2025),
-(242, 26, 76, 17, 2025),
-(243, 26, 91, 17, 2025),
-(244, 26, 92, 17, 2025),
-(245, 26, 93, 17, 2025),
-(246, 26, 94, 17, 2025),
-(247, 26, 95, 17, 2025),
-(248, 26, 96, 17, 2025),
-(249, 27, 52, 6, 2025),
-(250, 27, 52, 7, 2025),
-(251, 27, 52, 8, 2025),
-(252, 27, 52, 9, 2025),
-(253, 27, 52, 12, 2025),
-(254, 27, 52, 13, 2025),
-(255, 27, 52, 15, 2025),
-(256, 27, 52, 16, 2025),
-(257, 27, 52, 17, 2025),
-(258, 27, 52, 19, 2025),
-(259, 27, 52, 20, 2025),
-(260, 27, 52, 21, 2025),
-(261, 28, 53, 2, 2025),
-(262, 28, 53, 6, 2025),
-(263, 28, 53, 7, 2025),
-(264, 28, 53, 8, 2025),
-(265, 28, 53, 9, 2025),
-(266, 28, 53, 12, 2025),
-(267, 28, 53, 13, 2025),
-(268, 28, 53, 15, 2025),
-(269, 28, 53, 16, 2025),
-(270, 28, 53, 17, 2025),
-(271, 28, 53, 19, 2025),
-(272, 28, 53, 20, 2025),
-(273, 28, 53, 21, 2025),
-(274, 17, 666, 23, 2025),
-(275, 18, 666, 23, 2025),
-(276, 19, 666, 23, 2025),
-(277, 20, 666, 23, 2025),
-(278, 21, 666, 23, 2025),
-(279, 22, 666, 23, 2025),
-(280, 23, 666, 23, 2025),
-(281, 23, 666, 23, 2025),
-(282, 24, 666, 23, 2025),
-(283, 25, 666, 23, 2025),
-(284, 26, 666, 23, 2025),
-(285, 27, 666, 23, 2025),
-(286, 28, 666, 23, 2025);
+(68, 11, 111, 1, '2025'),
+(69, 11, 111, 5, '2025'),
+(70, 11, 113, 1, '2025'),
+(71, 11, 115, 1, '2025'),
+(72, 11, 115, 5, '2025'),
+(73, 12, 111, 1, '2025'),
+(74, 12, 111, 2, '2025'),
+(75, 12, 111, 3, '2025'),
+(76, 12, 112, 1, '2025'),
+(77, 12, 112, 2, '2025'),
+(78, 12, 112, 3, '2025'),
+(79, 12, 113, 4, '2025'),
+(80, 12, 113, 5, '2025'),
+(81, 12, 113, 6, '2025'),
+(82, 12, 114, 4, '2025'),
+(83, 12, 114, 5, '2025'),
+(84, 12, 114, 6, '2025'),
+(85, 12, 115, 1, '2025'),
+(86, 13, 111, 1, '2025'),
+(87, 13, 111, 3, '2025'),
+(88, 13, 113, 1, '2025'),
+(89, 13, 113, 3, '2025'),
+(90, 13, 113, 4, '2025'),
+(91, 13, 113, 5, '2025'),
+(92, 13, 115, 4, '2025'),
+(93, 13, 115, 5, '2025'),
+(174, 17, 64, 15, '2025'),
+(175, 17, 65, 15, '2025'),
+(176, 17, 66, 15, '2025'),
+(177, 17, 84, 15, '2025'),
+(178, 17, 85, 15, '2025'),
+(179, 17, 86, 15, '2025'),
+(180, 18, 61, 16, '2025'),
+(181, 18, 61, 17, '2025'),
+(182, 18, 62, 16, '2025'),
+(183, 18, 62, 17, '2025'),
+(184, 18, 63, 16, '2025'),
+(185, 18, 63, 17, '2025'),
+(186, 18, 64, 16, '2025'),
+(187, 18, 64, 17, '2025'),
+(188, 18, 65, 16, '2025'),
+(189, 18, 65, 17, '2025'),
+(190, 18, 66, 16, '2025'),
+(191, 18, 66, 17, '2025'),
+(192, 19, 111, 3, '2025'),
+(193, 19, 112, 3, '2025'),
+(194, 19, 113, 3, '2025'),
+(195, 19, 114, 3, '2025'),
+(196, 19, 115, 3, '2025'),
+(197, 20, 111, 22, '2025'),
+(198, 20, 112, 22, '2025'),
+(199, 20, 113, 22, '2025'),
+(200, 20, 114, 22, '2025'),
+(201, 20, 115, 22, '2025'),
+(202, 21, 101, 22, '2025'),
+(203, 21, 102, 22, '2025'),
+(204, 21, 103, 22, '2025'),
+(205, 21, 104, 22, '2025'),
+(206, 21, 105, 22, '2025'),
+(207, 21, 106, 22, '2025'),
+(208, 21, 107, 22, '2025'),
+(209, 21, 111, 22, '2025'),
+(210, 21, 112, 22, '2025'),
+(211, 21, 113, 22, '2025'),
+(212, 21, 114, 22, '2025'),
+(213, 21, 115, 22, '2025'),
+(214, 22, 61, 7, '2025'),
+(215, 22, 62, 7, '2025'),
+(216, 22, 63, 7, '2025'),
+(217, 22, 64, 7, '2025'),
+(218, 23, 55, 3, '2025'),
+(219, 23, 55, 6, '2025'),
+(220, 23, 55, 7, '2025'),
+(221, 23, 55, 8, '2025'),
+(222, 23, 55, 9, '2025'),
+(223, 23, 55, 12, '2025'),
+(224, 23, 55, 15, '2025'),
+(225, 23, 55, 17, '2025'),
+(226, 23, 55, 19, '2025'),
+(227, 23, 55, 20, '2025'),
+(228, 23, 55, 21, '2025'),
+(229, 24, 61, 15, '2025'),
+(230, 24, 62, 15, '2025'),
+(231, 24, 63, 15, '2025'),
+(232, 24, 64, 15, '2025'),
+(233, 25, 75, 6, '2025'),
+(234, 25, 76, 6, '2025'),
+(235, 25, 95, 6, '2025'),
+(236, 25, 96, 6, '2025'),
+(237, 26, 71, 17, '2025'),
+(238, 26, 72, 17, '2025'),
+(239, 26, 73, 17, '2025'),
+(240, 26, 74, 17, '2025'),
+(241, 26, 75, 17, '2025'),
+(242, 26, 76, 17, '2025'),
+(243, 26, 91, 17, '2025'),
+(244, 26, 92, 17, '2025'),
+(245, 26, 93, 17, '2025'),
+(246, 26, 94, 17, '2025'),
+(247, 26, 95, 17, '2025'),
+(248, 26, 96, 17, '2025'),
+(249, 27, 52, 6, '2025'),
+(250, 27, 52, 7, '2025'),
+(251, 27, 52, 8, '2025'),
+(252, 27, 52, 9, '2025'),
+(253, 27, 52, 12, '2025'),
+(254, 27, 52, 13, '2025'),
+(255, 27, 52, 15, '2025'),
+(256, 27, 52, 16, '2025'),
+(257, 27, 52, 17, '2025'),
+(258, 27, 52, 19, '2025'),
+(259, 27, 52, 20, '2025'),
+(260, 27, 52, 21, '2025'),
+(261, 28, 53, 2, '2025'),
+(262, 28, 53, 6, '2025'),
+(263, 28, 53, 7, '2025'),
+(264, 28, 53, 8, '2025'),
+(265, 28, 53, 9, '2025'),
+(266, 28, 53, 12, '2025'),
+(267, 28, 53, 13, '2025'),
+(268, 28, 53, 15, '2025'),
+(269, 28, 53, 16, '2025'),
+(270, 28, 53, 17, '2025'),
+(271, 28, 53, 19, '2025'),
+(272, 28, 53, 20, '2025'),
+(273, 28, 53, 21, '2025'),
+(274, 17, 666, 23, '2025'),
+(275, 18, 666, 23, '2025'),
+(276, 19, 666, 23, '2025'),
+(277, 20, 666, 23, '2025'),
+(278, 21, 666, 23, '2025'),
+(279, 22, 666, 23, '2025'),
+(280, 23, 666, 23, '2025'),
+(281, 23, 666, 23, '2025'),
+(282, 24, 666, 23, '2025'),
+(283, 25, 666, 23, '2025'),
+(284, 26, 666, 23, '2025'),
+(285, 27, 666, 23, '2025'),
+(286, 28, 666, 23, '2025');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `atencion_medica`
+-- Estructura de tabla para la tabla `atencion_medica`
 --
 
 CREATE TABLE `atencion_medica` (
@@ -332,7 +334,7 @@ CREATE TABLE `atencion_medica` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `atencion_medica`
+-- Volcado de datos para la tabla `atencion_medica`
 --
 
 INSERT INTO `atencion_medica` (`id_atencion`, `descripcion`, `frecuencia`) VALUES
@@ -349,12 +351,13 @@ INSERT INTO `atencion_medica` (`id_atencion`, `descripcion`, `frecuencia`) VALUE
 (890294, 'rcvtybn', 'crtvybn'),
 (890295, 'jyhtgrf', 'jnyhbtgvrfc'),
 (890296, 'fghjkl', 'fghjkl'),
-(890297, 'Controles por medicina familiar.', 'Cada 3 meses.');
+(890297, 'Controles por medicina familiar.', 'Cada 3 meses.'),
+(890298, 'Consultas médicas de control', 'Cada 2 meses');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `capacidad`
+-- Estructura de tabla para la tabla `capacidad`
 --
 
 CREATE TABLE `capacidad` (
@@ -363,7 +366,7 @@ CREATE TABLE `capacidad` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `capacidad`
+-- Volcado de datos para la tabla `capacidad`
 --
 
 INSERT INTO `capacidad` (`id_capacidad`, `descripcion`) VALUES
@@ -372,12 +375,14 @@ INSERT INTO `capacidad` (`id_capacidad`, `descripcion`) VALUES
 (3, 'qwertyuiop'),
 (10, 'qwertyuiop'),
 (11, 'qwertyuiop'),
-(12, 'Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas, etc.');
+(12, 'Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas, etc.'),
+(13, 'Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas, etc.'),
+(14, 'Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `descripcion_general`
+-- Estructura de tabla para la tabla `descripcion_general`
 --
 
 CREATE TABLE `descripcion_general` (
@@ -392,19 +397,21 @@ CREATE TABLE `descripcion_general` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `descripcion_general`
+-- Volcado de datos para la tabla `descripcion_general`
 --
 
 INSERT INTO `descripcion_general` (`id_descripcion_general`, `id_capacidad`, `id_gusto_e_interes`, `id_expectativa`, `id_expectativa_familia`, `id_red_apoyo`, `id_otra_descripcion`, `id_estudiante`) VALUES
 (2, 2, 2, 2, 2, 2, 2, 1),
 (4, 10, 9, 9, 9, 9, 9, 15),
 (5, 11, 10, 10, 10, 10, 10, 16),
-(6, 12, 11, 11, 11, 11, 11, 17);
+(6, 12, 11, 11, 11, 11, 11, 17),
+(7, 13, 12, 12, 12, 12, 12, 20),
+(8, 14, 13, 13, 13, 13, 13, 21);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `diagnostico_dx_cie10`
+-- Estructura de tabla para la tabla `diagnostico_dx_cie10`
 --
 
 CREATE TABLE `diagnostico_dx_cie10` (
@@ -415,28 +422,29 @@ CREATE TABLE `diagnostico_dx_cie10` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
--- Dumping data for table `diagnostico_dx_cie10`
+-- Volcado de datos para la tabla `diagnostico_dx_cie10`
 --
 
 INSERT INTO `diagnostico_dx_cie10` (`id_diagnostico_dx_cie10`, `id_cie10`, `id_diag_med`, `anio`) VALUES
-(0, 'F 840', 2, 2025),
-(0, 'G 409', 3, 2025),
-(0, 'F 639', 4, 2025),
-(0, 'F 708', 4, 2025),
-(0, 'F 711', 4, 2025),
-(0, 'F 799', 4, 2025),
-(0, 'F 708', 5, 2025),
-(0, 'F 711', 5, 2025),
-(0, 'F 799', 5, 2025),
-(0, 'F 638', 6, 2025),
-(0, 'F 808', 6, 2025),
-(0, 'F 809', 6, 2025),
-(0, 'R 480', 6, 2025);
+(0, 'F 840', 2, '2025'),
+(0, 'G 409', 3, '2025'),
+(0, 'F 639', 4, '2025'),
+(0, 'F 708', 4, '2025'),
+(0, 'F 711', 4, '2025'),
+(0, 'F 799', 4, '2025'),
+(0, 'F 708', 5, '2025'),
+(0, 'F 711', 5, '2025'),
+(0, 'F 799', 5, '2025'),
+(0, 'F 638', 6, '2025'),
+(0, 'F 808', 6, '2025'),
+(0, 'F 809', 6, '2025'),
+(0, 'R 480', 6, '2025'),
+(0, 'R 480', 7, '2025');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `diagnostico_medico`
+-- Estructura de tabla para la tabla `diagnostico_medico`
 --
 
 CREATE TABLE `diagnostico_medico` (
@@ -449,7 +457,7 @@ CREATE TABLE `diagnostico_medico` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `diagnostico_medico`
+-- Volcado de datos para la tabla `diagnostico_medico`
 --
 
 INSERT INTO `diagnostico_medico` (`id_diag_med`, `id_piar`, `DX`, `apoyos_tecnicos`, `url_soporte_dx`, `id_entorno_salud`) VALUES
@@ -457,12 +465,13 @@ INSERT INTO `diagnostico_medico` (`id_diag_med`, `id_piar`, `DX`, `apoyos_tecnic
 (3, 11, 'excrtvybnm', 'xctvybn', NULL, 10),
 (4, 12, 'nybtvc', 'u6hyg5tfrd', NULL, 11),
 (5, 13, 'dfghjkop', 'tcyvghbjk', NULL, 12),
-(6, 15, 'El estudiante tiene x enfermedad.', 'Se soporta con exámenes médicos el diagnostico.', NULL, 13);
+(6, 15, 'El estudiante tiene x enfermedad.', 'Se soporta con exámenes médicos el diagnostico.', NULL, 13),
+(7, 16, 'Se detecto una enfermedad x', 'No c', NULL, 14);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `directivo`
+-- Estructura de tabla para la tabla `directivo`
 --
 
 CREATE TABLE `directivo` (
@@ -475,7 +484,7 @@ CREATE TABLE `directivo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `directivo`
+-- Volcado de datos para la tabla `directivo`
 --
 
 INSERT INTO `directivo` (`id_directivo`, `nombre`, `email`, `contrasena`, `cargo`, `telefono`) VALUES
@@ -486,7 +495,7 @@ INSERT INTO `directivo` (`id_directivo`, `nombre`, `email`, `contrasena`, `cargo
 -- --------------------------------------------------------
 
 --
--- Table structure for table `docente`
+-- Estructura de tabla para la tabla `docente`
 --
 
 CREATE TABLE `docente` (
@@ -499,7 +508,7 @@ CREATE TABLE `docente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `docente`
+-- Volcado de datos para la tabla `docente`
 --
 
 INSERT INTO `docente` (`id_docente`, `nombre_completo`, `email`, `contrasena`, `telefono`, `es_director`) VALUES
@@ -530,7 +539,7 @@ INSERT INTO `docente` (`id_docente`, `nombre_completo`, `email`, `contrasena`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `docente_apoyo`
+-- Estructura de tabla para la tabla `docente_apoyo`
 --
 
 CREATE TABLE `docente_apoyo` (
@@ -543,7 +552,7 @@ CREATE TABLE `docente_apoyo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `docente_apoyo`
+-- Volcado de datos para la tabla `docente_apoyo`
 --
 
 INSERT INTO `docente_apoyo` (`id_docente_apoyo`, `nombre`, `email`, `contrasena`, `profesion`, `telefono`) VALUES
@@ -552,7 +561,7 @@ INSERT INTO `docente_apoyo` (`id_docente_apoyo`, `nombre`, `email`, `contrasena`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `docente_grupo`
+-- Estructura de tabla para la tabla `docente_grupo`
 --
 
 CREATE TABLE `docente_grupo` (
@@ -563,22 +572,44 @@ CREATE TABLE `docente_grupo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `docente_grupo`
+-- Volcado de datos para la tabla `docente_grupo`
 --
 
 INSERT INTO `docente_grupo` (`id_docente_grupo`, `id_docente`, `id_grupo`, `anio`) VALUES
 (1, 6, 111, NULL),
-(2, 7, 112, 2025),
-(5, 10, 113, 2025),
-(6, 11, 111, 2025),
-(7, 12, 113, 2025),
-(8, 13, 113, 2025),
-(9, 23, 55, 2025);
+(2, 7, 112, '2025'),
+(5, 10, 113, '2025'),
+(6, 11, 111, '2025'),
+(7, 12, 113, '2025'),
+(8, 13, 113, '2025'),
+(9, 23, 55, '2025');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dx_cie10`
+-- Estructura de tabla para la tabla `documento`
+--
+
+CREATE TABLE `documento` (
+  `id_doc` int(11) NOT NULL,
+  `url_doc` varchar(1000) NOT NULL,
+  `tipo_archivo` varchar(50) DEFAULT NULL,
+  `tamaño_archivo` int(11) DEFAULT NULL,
+  `nombre_doc` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `documento`
+--
+
+INSERT INTO `documento` (`id_doc`, `url_doc`, `tipo_archivo`, `tamaño_archivo`, `nombre_doc`) VALUES
+(1, 'uploads/68d344bf5dc6d_1758676159.pdf', NULL, NULL, 'estudiante_Sebastian_Feo Murillo_2025-09-23.pdf'),
+(2, 'uploads/68d9853c6677b_1759085884.pdf', NULL, NULL, 'Acta_de_Acuerdo[1].pdf');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `dx_cie10`
 --
 
 CREATE TABLE `dx_cie10` (
@@ -587,7 +618,7 @@ CREATE TABLE `dx_cie10` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
--- Dumping data for table `dx_cie10`
+-- Volcado de datos para la tabla `dx_cie10`
 --
 
 INSERT INTO `dx_cie10` (`id_cie10`, `descripcion`) VALUES
@@ -623,7 +654,7 @@ INSERT INTO `dx_cie10` (`id_cie10`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `entorno_educativo`
+-- Estructura de tabla para la tabla `entorno_educativo`
 --
 
 CREATE TABLE `entorno_educativo` (
@@ -639,17 +670,19 @@ CREATE TABLE `entorno_educativo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `entorno_educativo`
+-- Volcado de datos para la tabla `entorno_educativo`
 --
 
 INSERT INTO `entorno_educativo` (`id_entorno_edu`, `estado`, `ultimo_grado_cursado`, `vinculado_otra_inst`, `informe_pedagogico`, `modalidad_proveniente`, `asiste_programas_complementarios`, `observacion`, `id_estudiante`) VALUES
 (2, 0, '10', 'Si - Detalles: Colegio privado', 0, NULL, 'No', 'Hello world', 6),
-(3, NULL, NULL, NULL, 0, NULL, NULL, NULL, 7);
+(3, NULL, NULL, NULL, 0, NULL, NULL, NULL, 7),
+(4, 1, '10°', 'No', 0, 'Presencial', 'No', 'Ninguna', 20),
+(5, 1, '10°', 'No', 1, 'Presencial', 'No', 'Nada más que decir', 21);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `entorno_salud`
+-- Estructura de tabla para la tabla `entorno_salud`
 --
 
 CREATE TABLE `entorno_salud` (
@@ -660,7 +693,7 @@ CREATE TABLE `entorno_salud` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `entorno_salud`
+-- Volcado de datos para la tabla `entorno_salud`
 --
 
 INSERT INTO `entorno_salud` (`id_entorno_salud`, `id_tratamiento`, `id_medicamento`, `id_atencion`) VALUES
@@ -676,12 +709,13 @@ INSERT INTO `entorno_salud` (`id_entorno_salud`, `id_tratamiento`, `id_medicamen
 (10, 11, 13, 890294),
 (11, 12, 14, 890295),
 (12, 13, 15, 890296),
-(13, 15, 16, 890297);
+(13, 15, 16, 890297),
+(14, 16, 17, 890298);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `estudiante`
+-- Estructura de tabla para la tabla `estudiante`
 --
 
 CREATE TABLE `estudiante` (
@@ -713,20 +747,23 @@ CREATE TABLE `estudiante` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `estudiante`
+-- Volcado de datos para la tabla `estudiante`
 --
 
 INSERT INTO `estudiante` (`id_estudiante`, `url_foto`, `nombre`, `apellidos`, `tipo_documento`, `no_documento`, `lugar_nacimiento`, `fecha_nacimiento`, `sector`, `direccion`, `telefono`, `correo`, `contrasena`, `victima_conflicto`, `registro_victima`, `centro_proteccion`, `grupo_etnico`, `no_hermanos`, `lugar_que_ocupa`, `con_quien_vive`, `quien_apoya_crianza`, `afiliacion_salud`, `id_madre`, `id_padre`, `id_cuidador`) VALUES
-(1, NULL, 'Max', 'Henriquez Pimiento', 'TI', NULL, 'San Gil, Santander', '2007-06-09', 'Urbano', 'Calle 1 #5-12', '3124567890', 'max@gmail.com', '12345', 'No', NULL, 'No', 'Albino', 1, '1', 'Padre, madre, hermana, gatos.', 'Madre, padre', 'Si', 1, 1, 1),
-(6, NULL, 'Sebastian', 'Feo Murillo', 'TI', '11017433478', 'Cosorro', '2009-12-04', 'Urbano', 'Altamira', '3549871245', 'feo@gmail.com', '1234', 'No', 'No', 'No', 'No', 2, '1', 'Familia', 'Familia', 'Si', 8, 8, 6),
+(1, 'photos/1.png', 'Max', 'Henriquez Pimiento', 'TI', NULL, 'San Gil, Santander', '2007-06-09', 'Urbano', 'Calle 1 #5-12', '3124567890', 'max@gmail.com', '12345', 'No', NULL, 'No', 'Albino', 1, '1', 'Padre, madre, hermana, gatos.', 'Madre, padre', 'Si', 1, 1, 1),
+(6, 'photos/6.png', 'Sebastian', 'Feo Murillo', 'TI', '11017433478', 'Cosorro', '2009-12-04', 'Urbano', 'Altamira', '3549871245', 'feo@gmail.com', '1234', 'No', 'No', 'No', 'No', 2, '1', 'Familia', 'Familia', 'Si', 8, 8, 6),
 (14, NULL, 'Hela', 'Merlano', 'TI', '11025468645', 'Hospital', '2005-12-04', 'Urbano', 'no se', '345251515451', 'noce@gmail.com', '1234', 'No', 'No', 'No', 'No', 2, '1', 'No c', 'No c', 'Si', 16, 16, 14),
 (16, NULL, 'Mario', 'Rodriguez Gonzalez', 'CE', '1877329857', 'Venezuela', '2004-04-04', 'Rural', 'Una finca', '30203048541', 'mrg@gmail.com', '1234', 'No', 'No', 'No', 'No', 3, '1', 'Familia', 'Familia', 'Si', 18, 18, 16),
-(17, NULL, 'Pepito', 'Pérez', 'TI', '1100457742', 'Madrid', '2010-05-05', 'Urbano', 'Una casa', '3214567890', 'pepito@gmail.com', '1234', 'No', 'No', 'No', 'No', 3, '1', 'Padre y madre', 'Familia', 'Si', 19, 19, 17);
+(17, NULL, 'Pepito', 'Pérez', 'TI', '1100457742', 'Madrid', '2010-05-05', 'Urbano', 'Una casa', '3214567890', 'pepito@gmail.com', '1234', 'No', 'No', 'No', 'No', 3, '1', 'Padre y madre', 'Familia', 'Si', 19, 19, 17),
+(18, NULL, 'dfcghj', 'gvhbnm', 'TI', 'hjk', 'gvhbjk', '2005-04-04', 'Urbano', 'zsghj', 'xrcvuj', 'xfgvhj@gmail.com', 'cgvhjk', 'No', 'No', 'No', 'No', 3, '2', 'cgvhjk', 'fcgvhbjnkm', 'Si', 20, 20, 18),
+(20, 'photos/20.png', 'Andrés Felipe', 'Ruiz Medina', 'TI', '1111548464', 'Tunja', '2007-07-07', 'Urbano', 'Coovip', '3211231234', 'ruiz@gmail.com', '1234', 'No', 'No', 'No', 'No', 5, '2', 'Familia', 'Familia', 'No', 24, 24, 22),
+(21, 'photos/student_21_1759110179.png', 'Alfredo Gómez Bolaños', 'Gamez Bolaños', 'TI', '1098756324', 'Medellin', '2007-04-04', 'Urbano', 'Bella vista', '3336668888', 'agb@gmail.com', '1234', 'No', 'No', 'No', 'No', 2, '2', 'Familia', 'Familia', 'Si', 25, 25, 23);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `expectativa`
+-- Estructura de tabla para la tabla `expectativa`
 --
 
 CREATE TABLE `expectativa` (
@@ -735,7 +772,7 @@ CREATE TABLE `expectativa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `expectativa`
+-- Volcado de datos para la tabla `expectativa`
 --
 
 INSERT INTO `expectativa` (`id_expectativa`, `descripcion`) VALUES
@@ -743,12 +780,14 @@ INSERT INTO `expectativa` (`id_expectativa`, `descripcion`) VALUES
 (2, 'yrjmnhtebgsr'),
 (9, 'qwertyuip'),
 (10, 'qwertyuiop'),
-(11, 'Quiere graduarse, ir a la universidad, aprender un oficio, etc.');
+(11, 'Quiere graduarse, ir a la universidad, aprender un oficio, etc.'),
+(12, 'Quiere graduarse, ir a la universidad, aprender un oficio, etc.'),
+(13, 'Quiere graduarse, ir a la universidad, aprender un oficio');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `expectativa_familia`
+-- Estructura de tabla para la tabla `expectativa_familia`
 --
 
 CREATE TABLE `expectativa_familia` (
@@ -757,7 +796,7 @@ CREATE TABLE `expectativa_familia` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `expectativa_familia`
+-- Volcado de datos para la tabla `expectativa_familia`
 --
 
 INSERT INTO `expectativa_familia` (`id_expectativa_familia`, `descripcion`) VALUES
@@ -765,12 +804,14 @@ INSERT INTO `expectativa_familia` (`id_expectativa_familia`, `descripcion`) VALU
 (2, 'hgfl thkutj h'),
 (9, 'qwertyuiop'),
 (10, 'qwertyuiop'),
-(11, 'Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro, etc');
+(11, 'Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro, etc'),
+(12, 'Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro, etc.'),
+(13, 'Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `grado`
+-- Estructura de tabla para la tabla `grado`
 --
 
 CREATE TABLE `grado` (
@@ -779,7 +820,7 @@ CREATE TABLE `grado` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `grado`
+-- Volcado de datos para la tabla `grado`
 --
 
 INSERT INTO `grado` (`id_grado`, `grado`) VALUES
@@ -798,7 +839,7 @@ INSERT INTO `grado` (`id_grado`, `grado`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `grupo`
+-- Estructura de tabla para la tabla `grupo`
 --
 
 CREATE TABLE `grupo` (
@@ -808,7 +849,7 @@ CREATE TABLE `grupo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `grupo`
+-- Volcado de datos para la tabla `grupo`
 --
 
 INSERT INTO `grupo` (`id_grupo`, `id_grado`, `grupo`) VALUES
@@ -857,7 +898,7 @@ INSERT INTO `grupo` (`id_grupo`, `id_grado`, `grupo`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `grupo_estudiante`
+-- Estructura de tabla para la tabla `grupo_estudiante`
 --
 
 CREATE TABLE `grupo_estudiante` (
@@ -868,20 +909,22 @@ CREATE TABLE `grupo_estudiante` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `grupo_estudiante`
+-- Volcado de datos para la tabla `grupo_estudiante`
 --
 
 INSERT INTO `grupo_estudiante` (`id_grupo_estudiante`, `id_grupo`, `id_estudiante`, `anio`) VALUES
-(1, 113, 7, 2025),
-(8, 113, 14, 2025),
-(9, 111, 15, 2025),
-(10, 113, 16, 2025),
-(11, 666, 17, 2025);
+(1, 113, 7, '2025'),
+(8, 113, 14, '2025'),
+(9, 111, 15, '2025'),
+(10, 113, 16, '2025'),
+(11, 666, 17, '2025'),
+(12, 114, 20, '2025'),
+(13, 112, 21, '2025');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `grupo_sede`
+-- Estructura de tabla para la tabla `grupo_sede`
 --
 
 CREATE TABLE `grupo_sede` (
@@ -894,7 +937,7 @@ CREATE TABLE `grupo_sede` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gusto_interes`
+-- Estructura de tabla para la tabla `gusto_interes`
 --
 
 CREATE TABLE `gusto_interes` (
@@ -903,7 +946,7 @@ CREATE TABLE `gusto_interes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `gusto_interes`
+-- Volcado de datos para la tabla `gusto_interes`
 --
 
 INSERT INTO `gusto_interes` (`id_gusto_e_interes`, `descripcion`) VALUES
@@ -911,12 +954,14 @@ INSERT INTO `gusto_interes` (`id_gusto_e_interes`, `descripcion`) VALUES
 (2, 'ñoyli.k,ujfmnhdbg svc'),
 (9, 'qwertyuiop'),
 (10, 'qwertyuiop'),
-(11, 'Le gusta la música, los deportes, la lectura, los videojuegos, etc.');
+(11, 'Le gusta la música, los deportes, la lectura, los videojuegos, etc.'),
+(12, 'Le gusta la música, los deportes, la lectura, los videojuegos, etc.'),
+(13, 'Le gusta la música, los deportes, la lectura, los videojuegos');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `madre`
+-- Estructura de tabla para la tabla `madre`
 --
 
 CREATE TABLE `madre` (
@@ -930,7 +975,7 @@ CREATE TABLE `madre` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `madre`
+-- Volcado de datos para la tabla `madre`
 --
 
 INSERT INTO `madre` (`id_madre`, `nombre_completo`, `nivel_educativo`, `ocupacion`, `email`, `contrasena`, `telefono`) VALUES
@@ -941,12 +986,15 @@ INSERT INTO `madre` (`id_madre`, `nombre_completo`, `nivel_educativo`, `ocupacio
 (8, 'Leticia', 'Bachiller', 'ama de casa', 'l@gmail.com', '1234', '3214567890'),
 (16, 'Catalina', 'Profesional', 'Trabajadora social', 'cata@gmail.com', '1324', '321564668454'),
 (18, 'María Gonzalez', 'Técnico', 'Abogada', 'mg@gmail.com', '1234', '3014447777'),
-(19, 'María Fernanda Merlano', 'Profesional', 'Trabajadora social', 'mmerlano@gmail.com', '1234', '3214567890');
+(19, 'María Fernanda Merlano', 'Profesional', 'Trabajadora social', 'mmerlano@gmail.com', '1234', '3214567890'),
+(20, 'dcfvghbjn|cfvghbj', 'xfcvgbnjm', 'cgvbhnj', 'cvhbjn@gmsil.com', 'cgvhbn', ''),
+(24, 'Mariely Medina', 'Profesional', 'No c', 'mm@gmail.com', '1234', '3014447777'),
+(25, 'Albertana Ramirez', 'Tecnológico', 'Peluquera', 'ar@gmail.com', '1234', '3001794515');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicamento`
+-- Estructura de tabla para la tabla `medicamento`
 --
 
 CREATE TABLE `medicamento` (
@@ -956,7 +1004,7 @@ CREATE TABLE `medicamento` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `medicamento`
+-- Volcado de datos para la tabla `medicamento`
 --
 
 INSERT INTO `medicamento` (`id_medicamento`, `descripcion`, `frecuencia_horario`) VALUES
@@ -975,12 +1023,13 @@ INSERT INTO `medicamento` (`id_medicamento`, `descripcion`, `frecuencia_horario`
 (13, 'rctvybunm,', 'excrtvybnm'),
 (14, 'u7n6bytvgrfc', 'nhbtgvrfce'),
 (15, 'fghjkl', 'fghjkl'),
-(16, 'Acetaminofén.', 'Cada 12 horas.');
+(16, 'Acetaminofén.', 'Cada 12 horas.'),
+(17, 'Paracetamol', 'Cada 24 horas');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `otra_descripcion`
+-- Estructura de tabla para la tabla `otra_descripcion`
 --
 
 CREATE TABLE `otra_descripcion` (
@@ -989,7 +1038,7 @@ CREATE TABLE `otra_descripcion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `otra_descripcion`
+-- Volcado de datos para la tabla `otra_descripcion`
 --
 
 INSERT INTO `otra_descripcion` (`id_otra_descripcion`, `descripcion`) VALUES
@@ -997,12 +1046,14 @@ INSERT INTO `otra_descripcion` (`id_otra_descripcion`, `descripcion`) VALUES
 (2, 'uetnbgrsvf'),
 (9, 'qwertyuiop'),
 (10, 'qwertyuiop'),
-(11, 'Cualquier otra información importante sobre el estudiante que considere relevante mencionar.');
+(11, 'Cualquier otra información importante sobre el estudiante que considere relevante mencionar.'),
+(12, 'No'),
+(13, 'Nada más que agregar.');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `padre`
+-- Estructura de tabla para la tabla `padre`
 --
 
 CREATE TABLE `padre` (
@@ -1016,7 +1067,7 @@ CREATE TABLE `padre` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `padre`
+-- Volcado de datos para la tabla `padre`
 --
 
 INSERT INTO `padre` (`id_padre`, `nombre_completo`, `nivel_educativo`, `ocupacion`, `email`, `contrasena`, `telefono`) VALUES
@@ -1027,12 +1078,15 @@ INSERT INTO `padre` (`id_padre`, `nombre_completo`, `nivel_educativo`, `ocupacio
 (8, 'Alberto', 'Tecnologo', 'Analista de redes', 'albert@gmail.com', '1234', '3222555674'),
 (16, 'Hermes', 'Profesional', 'Contador', 'hm@gmail.com', '1234', '32156456445'),
 (18, 'Mario Rodriguez', 'Profesional', 'Locutor', 'mr@gmail.com', '1234', '3003332222'),
-(19, 'Gustavo Humberto Ballesteros', 'Maestría', 'Abogado', 'ghba@gmail.com', '1234', '3224672882');
+(19, 'Gustavo Humberto Ballesteros', 'Maestría', 'Abogado', 'ghba@gmail.com', '1234', '3224672882'),
+(20, 'tfyghjk|tfyghjiyghuji', 'vbj', 'tfyghj', 'cvbhjnm@gmail.com', 'fyghj', ''),
+(24, 'Andrés Ruiz', 'Profesional', 'No c', 'ar@gmail.com', '1234', '3003332222'),
+(25, 'NO_REGISTRADO', 'N/A', 'No presente', '', '', '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `piar`
+-- Estructura de tabla para la tabla `piar`
 --
 
 CREATE TABLE `piar` (
@@ -1045,7 +1099,7 @@ CREATE TABLE `piar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `piar`
+-- Volcado de datos para la tabla `piar`
 --
 
 INSERT INTO `piar` (`id_piar`, `id_estudiante`, `fecha`, `ajuste`, `apoyo`, `barrera`) VALUES
@@ -1053,12 +1107,13 @@ INSERT INTO `piar` (`id_piar`, `id_estudiante`, `fecha`, `ajuste`, `apoyo`, `bar
 (5, 6, '2025-09-11', 'EDNHANR', 'ANGshg', 'qeh'),
 (13, 15, '2025-09-15', 'qawsedfrgthyujik', 'awsedfrgthyuj', 'awsedfrgthyuj\r\n'),
 (14, 16, '2025-09-15', 'asdfghjklñ', 'qwertyuiop', 'zxcvbnm'),
-(15, 17, '2025-09-19', 'Se le deben asignar actividades al estudiante según sus capacidades.', 'Se le proporciona ayuda del docente, material, apoyo por parte de sus compañeros y familia.', 'Dificultad del (la) estudiante para trabajar con sus padres. ');
+(15, 17, '2025-09-19', 'Se le deben asignar actividades al estudiante según sus capacidades.', 'Se le proporciona ayuda del docente, material, apoyo por parte de sus compañeros y familia.', 'Dificultad del (la) estudiante para trabajar con sus padres. '),
+(16, 20, '2025-09-28', 'Trabajar en lo posible en \r\nbloques cortos con \r\npausas breves. ', 'Actividades de trabajo \r\nen equipo con el \r\npropósito de que el \r\nestudiante se integre y \r\nfortalezca su \r\nparticipación con sus \r\npares. ', 'Resistencia de la \r\nmadre a aceptar el \r\ndiagnóstico y las \r\nbarreras de su hijo \r\n(a) ');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `red_apoyo`
+-- Estructura de tabla para la tabla `red_apoyo`
 --
 
 CREATE TABLE `red_apoyo` (
@@ -1067,7 +1122,7 @@ CREATE TABLE `red_apoyo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `red_apoyo`
+-- Volcado de datos para la tabla `red_apoyo`
 --
 
 INSERT INTO `red_apoyo` (`id_red_apoyo`, `descripcion`) VALUES
@@ -1075,12 +1130,14 @@ INSERT INTO `red_apoyo` (`id_red_apoyo`, `descripcion`) VALUES
 (2, 'mjryenthbsgrvfec'),
 (9, 'qwertyuiop'),
 (10, 'qwertyuiop'),
-(11, 'Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante.');
+(11, 'Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante.'),
+(12, 'Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante.'),
+(13, 'Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante.');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sede`
+-- Estructura de tabla para la tabla `sede`
 --
 
 CREATE TABLE `sede` (
@@ -1089,7 +1146,7 @@ CREATE TABLE `sede` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `sede`
+-- Volcado de datos para la tabla `sede`
 --
 
 INSERT INTO `sede` (`id_sede`, `sede`) VALUES
@@ -1103,7 +1160,7 @@ INSERT INTO `sede` (`id_sede`, `sede`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tratamiento`
+-- Estructura de tabla para la tabla `tratamiento`
 --
 
 CREATE TABLE `tratamiento` (
@@ -1113,7 +1170,7 @@ CREATE TABLE `tratamiento` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `tratamiento`
+-- Volcado de datos para la tabla `tratamiento`
 --
 
 INSERT INTO `tratamiento` (`id_tratamiento`, `descripcion`, `frecuencia`) VALUES
@@ -1131,12 +1188,13 @@ INSERT INTO `tratamiento` (`id_tratamiento`, `descripcion`, `frecuencia`) VALUES
 (12, 'n6b5gtvf4cd3x', '6nuyb5tv4rc'),
 (13, 'qwertyuio', 'sdfgh'),
 (14, 'qwertyuiop', '12345'),
-(15, 'Terapias de lenguaje.', 'Una vez por semana.');
+(15, 'Terapias de lenguaje.', 'Una vez por semana.'),
+(16, 'Terapias de lenguaje', 'Dos veces a la semana');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `valoracion_pedagogica`
+-- Estructura de tabla para la tabla `valoracion_pedagogica`
 --
 
 CREATE TABLE `valoracion_pedagogica` (
@@ -1149,41 +1207,44 @@ CREATE TABLE `valoracion_pedagogica` (
   `barrera` text DEFAULT NULL,
   `tipo_ajuste` text DEFAULT NULL,
   `apoyo_requerido` text DEFAULT NULL,
-  `seguimiento` text DEFAULT NULL
+  `seguimiento` text DEFAULT NULL,
+  `creado_por_rol` int(100) DEFAULT NULL,
+  `creado_por_nombre` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `valoracion_pedagogica`
+-- Volcado de datos para la tabla `valoracion_pedagogica`
 --
 
-INSERT INTO `valoracion_pedagogica` (`id_valoracion_pedagogica`, `id_piar`, `id_asignatura`, `periodo`, `anio`, `objetivo`, `barrera`, `tipo_ajuste`, `apoyo_requerido`, `seguimiento`) VALUES
-(1, 13, 1, '4', 2025, '1234567890', 'qwertyuiop', 'asdfghjklñ', 'zxcvbnm,.-', 'wawsdfrgthyujik'),
-(2, 14, 5, '4', 2025, 'dfghjk', 'cvbnm', 'wertyu', 'cfgvbhnjmk', 'h jbnk');
+INSERT INTO `valoracion_pedagogica` (`id_valoracion_pedagogica`, `id_piar`, `id_asignatura`, `periodo`, `anio`, `objetivo`, `barrera`, `tipo_ajuste`, `apoyo_requerido`, `seguimiento`, `creado_por_rol`, `creado_por_nombre`) VALUES
+(1, 13, 1, '4', '2025', '1234567890', 'qwertyuiop', 'asdfghjklñ', 'zxcvbnm,.-', 'wawsdfrgthyujik', 0, NULL),
+(2, 14, 5, '4', '2025', 'dfghjk', 'cvbnm', 'wertyu', 'cfgvbhnjmk', 'h jbnk', 0, NULL),
+(3, 16, 1, '4', '2025', 'Pasar el año escolar', 'Dificultad del (la) \\r\\nestudiante para \\r\\ntrabajar con sus \\r\\npares.', 'Dificultad del (la) \\r\\nestudiante para \\r\\ntrabajar con sus \\r\\npares.', 'Brindarle más tiempo \\r\\npara que desarrolle las \\r\\nactividades propuestas \\r\\nen clase.', 'Se requiere el seguimiento del docente de apoyo de manera mensual', 0, NULL);
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `acudiente`
+-- Indices de la tabla `acudiente`
 --
 ALTER TABLE `acudiente`
   ADD PRIMARY KEY (`id_acudiente`);
 
 --
--- Indexes for table `admin`
+-- Indices de la tabla `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`);
 
 --
--- Indexes for table `asignatura`
+-- Indices de la tabla `asignatura`
 --
 ALTER TABLE `asignatura`
   ADD PRIMARY KEY (`id_asignatura`);
 
 --
--- Indexes for table `asignatura_docente_grupo`
+-- Indices de la tabla `asignatura_docente_grupo`
 --
 ALTER TABLE `asignatura_docente_grupo`
   ADD PRIMARY KEY (`id_asig_doc_grup`),
@@ -1192,19 +1253,19 @@ ALTER TABLE `asignatura_docente_grupo`
   ADD KEY `id_asignatura` (`id_asignatura`);
 
 --
--- Indexes for table `atencion_medica`
+-- Indices de la tabla `atencion_medica`
 --
 ALTER TABLE `atencion_medica`
   ADD PRIMARY KEY (`id_atencion`);
 
 --
--- Indexes for table `capacidad`
+-- Indices de la tabla `capacidad`
 --
 ALTER TABLE `capacidad`
   ADD PRIMARY KEY (`id_capacidad`);
 
 --
--- Indexes for table `descripcion_general`
+-- Indices de la tabla `descripcion_general`
 --
 ALTER TABLE `descripcion_general`
   ADD PRIMARY KEY (`id_descripcion_general`),
@@ -1217,14 +1278,14 @@ ALTER TABLE `descripcion_general`
   ADD KEY `id_estudiante` (`id_estudiante`);
 
 --
--- Indexes for table `diagnostico_dx_cie10`
+-- Indices de la tabla `diagnostico_dx_cie10`
 --
 ALTER TABLE `diagnostico_dx_cie10`
   ADD KEY `id_cie10` (`id_cie10`,`id_diag_med`),
   ADD KEY `id_diag_med` (`id_diag_med`);
 
 --
--- Indexes for table `diagnostico_medico`
+-- Indices de la tabla `diagnostico_medico`
 --
 ALTER TABLE `diagnostico_medico`
   ADD PRIMARY KEY (`id_diag_med`),
@@ -1232,25 +1293,25 @@ ALTER TABLE `diagnostico_medico`
   ADD KEY `id_entorno_salud` (`id_entorno_salud`);
 
 --
--- Indexes for table `directivo`
+-- Indices de la tabla `directivo`
 --
 ALTER TABLE `directivo`
   ADD PRIMARY KEY (`id_directivo`);
 
 --
--- Indexes for table `docente`
+-- Indices de la tabla `docente`
 --
 ALTER TABLE `docente`
   ADD PRIMARY KEY (`id_docente`);
 
 --
--- Indexes for table `docente_apoyo`
+-- Indices de la tabla `docente_apoyo`
 --
 ALTER TABLE `docente_apoyo`
   ADD PRIMARY KEY (`id_docente_apoyo`);
 
 --
--- Indexes for table `docente_grupo`
+-- Indices de la tabla `docente_grupo`
 --
 ALTER TABLE `docente_grupo`
   ADD PRIMARY KEY (`id_docente_grupo`),
@@ -1258,20 +1319,26 @@ ALTER TABLE `docente_grupo`
   ADD KEY `id_grupo` (`id_grupo`);
 
 --
--- Indexes for table `dx_cie10`
+-- Indices de la tabla `documento`
+--
+ALTER TABLE `documento`
+  ADD PRIMARY KEY (`id_doc`);
+
+--
+-- Indices de la tabla `dx_cie10`
 --
 ALTER TABLE `dx_cie10`
   ADD PRIMARY KEY (`id_cie10`);
 
 --
--- Indexes for table `entorno_educativo`
+-- Indices de la tabla `entorno_educativo`
 --
 ALTER TABLE `entorno_educativo`
   ADD PRIMARY KEY (`id_entorno_edu`),
   ADD KEY `id_estudiante` (`id_estudiante`);
 
 --
--- Indexes for table `entorno_salud`
+-- Indices de la tabla `entorno_salud`
 --
 ALTER TABLE `entorno_salud`
   ADD PRIMARY KEY (`id_entorno_salud`),
@@ -1280,7 +1347,7 @@ ALTER TABLE `entorno_salud`
   ADD KEY `id_atencion` (`id_atencion`);
 
 --
--- Indexes for table `estudiante`
+-- Indices de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
   ADD PRIMARY KEY (`id_estudiante`),
@@ -1289,32 +1356,32 @@ ALTER TABLE `estudiante`
   ADD KEY `id_cuidador` (`id_cuidador`);
 
 --
--- Indexes for table `expectativa`
+-- Indices de la tabla `expectativa`
 --
 ALTER TABLE `expectativa`
   ADD PRIMARY KEY (`id_expectativa`);
 
 --
--- Indexes for table `expectativa_familia`
+-- Indices de la tabla `expectativa_familia`
 --
 ALTER TABLE `expectativa_familia`
   ADD PRIMARY KEY (`id_expectativa_familia`);
 
 --
--- Indexes for table `grado`
+-- Indices de la tabla `grado`
 --
 ALTER TABLE `grado`
   ADD PRIMARY KEY (`id_grado`);
 
 --
--- Indexes for table `grupo`
+-- Indices de la tabla `grupo`
 --
 ALTER TABLE `grupo`
   ADD PRIMARY KEY (`id_grupo`),
   ADD KEY `id_grado` (`id_grado`);
 
 --
--- Indexes for table `grupo_estudiante`
+-- Indices de la tabla `grupo_estudiante`
 --
 ALTER TABLE `grupo_estudiante`
   ADD PRIMARY KEY (`id_grupo_estudiante`),
@@ -1322,7 +1389,7 @@ ALTER TABLE `grupo_estudiante`
   ADD KEY `id_estudiante` (`id_estudiante`);
 
 --
--- Indexes for table `grupo_sede`
+-- Indices de la tabla `grupo_sede`
 --
 ALTER TABLE `grupo_sede`
   ADD PRIMARY KEY (`id_grupo_sede`),
@@ -1330,62 +1397,62 @@ ALTER TABLE `grupo_sede`
   ADD KEY `id_grupo` (`id_grupo`);
 
 --
--- Indexes for table `gusto_interes`
+-- Indices de la tabla `gusto_interes`
 --
 ALTER TABLE `gusto_interes`
   ADD PRIMARY KEY (`id_gusto_e_interes`);
 
 --
--- Indexes for table `madre`
+-- Indices de la tabla `madre`
 --
 ALTER TABLE `madre`
   ADD PRIMARY KEY (`id_madre`);
 
 --
--- Indexes for table `medicamento`
+-- Indices de la tabla `medicamento`
 --
 ALTER TABLE `medicamento`
   ADD PRIMARY KEY (`id_medicamento`);
 
 --
--- Indexes for table `otra_descripcion`
+-- Indices de la tabla `otra_descripcion`
 --
 ALTER TABLE `otra_descripcion`
   ADD PRIMARY KEY (`id_otra_descripcion`);
 
 --
--- Indexes for table `padre`
+-- Indices de la tabla `padre`
 --
 ALTER TABLE `padre`
   ADD PRIMARY KEY (`id_padre`);
 
 --
--- Indexes for table `piar`
+-- Indices de la tabla `piar`
 --
 ALTER TABLE `piar`
   ADD PRIMARY KEY (`id_piar`),
   ADD KEY `id_estudiante` (`id_estudiante`);
 
 --
--- Indexes for table `red_apoyo`
+-- Indices de la tabla `red_apoyo`
 --
 ALTER TABLE `red_apoyo`
   ADD PRIMARY KEY (`id_red_apoyo`);
 
 --
--- Indexes for table `sede`
+-- Indices de la tabla `sede`
 --
 ALTER TABLE `sede`
   ADD PRIMARY KEY (`id_sede`);
 
 --
--- Indexes for table `tratamiento`
+-- Indices de la tabla `tratamiento`
 --
 ALTER TABLE `tratamiento`
   ADD PRIMARY KEY (`id_tratamiento`);
 
 --
--- Indexes for table `valoracion_pedagogica`
+-- Indices de la tabla `valoracion_pedagogica`
 --
 ALTER TABLE `valoracion_pedagogica`
   ADD PRIMARY KEY (`id_valoracion_pedagogica`),
@@ -1393,189 +1460,195 @@ ALTER TABLE `valoracion_pedagogica`
   ADD KEY `id_asignatura` (`id_asignatura`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `acudiente`
+-- AUTO_INCREMENT de la tabla `acudiente`
 --
 ALTER TABLE `acudiente`
-  MODIFY `id_acudiente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_acudiente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT for table `admin`
+-- AUTO_INCREMENT de la tabla `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id_admin` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `asignatura`
+-- AUTO_INCREMENT de la tabla `asignatura`
 --
 ALTER TABLE `asignatura`
   MODIFY `id_asignatura` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT for table `asignatura_docente_grupo`
+-- AUTO_INCREMENT de la tabla `asignatura_docente_grupo`
 --
 ALTER TABLE `asignatura_docente_grupo`
   MODIFY `id_asig_doc_grup` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=287;
 
 --
--- AUTO_INCREMENT for table `atencion_medica`
+-- AUTO_INCREMENT de la tabla `atencion_medica`
 --
 ALTER TABLE `atencion_medica`
-  MODIFY `id_atencion` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=890298;
+  MODIFY `id_atencion` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=890299;
 
 --
--- AUTO_INCREMENT for table `capacidad`
+-- AUTO_INCREMENT de la tabla `capacidad`
 --
 ALTER TABLE `capacidad`
-  MODIFY `id_capacidad` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_capacidad` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT for table `descripcion_general`
+-- AUTO_INCREMENT de la tabla `descripcion_general`
 --
 ALTER TABLE `descripcion_general`
-  MODIFY `id_descripcion_general` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_descripcion_general` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `diagnostico_medico`
+-- AUTO_INCREMENT de la tabla `diagnostico_medico`
 --
 ALTER TABLE `diagnostico_medico`
-  MODIFY `id_diag_med` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_diag_med` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `directivo`
+-- AUTO_INCREMENT de la tabla `directivo`
 --
 ALTER TABLE `directivo`
   MODIFY `id_directivo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `docente`
+-- AUTO_INCREMENT de la tabla `docente`
 --
 ALTER TABLE `docente`
   MODIFY `id_docente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT for table `docente_apoyo`
+-- AUTO_INCREMENT de la tabla `docente_apoyo`
 --
 ALTER TABLE `docente_apoyo`
   MODIFY `id_docente_apoyo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `docente_grupo`
+-- AUTO_INCREMENT de la tabla `docente_grupo`
 --
 ALTER TABLE `docente_grupo`
   MODIFY `id_docente_grupo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `entorno_educativo`
+-- AUTO_INCREMENT de la tabla `documento`
+--
+ALTER TABLE `documento`
+  MODIFY `id_doc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `entorno_educativo`
 --
 ALTER TABLE `entorno_educativo`
-  MODIFY `id_entorno_edu` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_entorno_edu` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `entorno_salud`
+-- AUTO_INCREMENT de la tabla `entorno_salud`
 --
 ALTER TABLE `entorno_salud`
-  MODIFY `id_entorno_salud` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_entorno_salud` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT for table `estudiante`
+-- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `id_estudiante` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_estudiante` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT for table `expectativa`
+-- AUTO_INCREMENT de la tabla `expectativa`
 --
 ALTER TABLE `expectativa`
-  MODIFY `id_expectativa` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_expectativa` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `expectativa_familia`
+-- AUTO_INCREMENT de la tabla `expectativa_familia`
 --
 ALTER TABLE `expectativa_familia`
-  MODIFY `id_expectativa_familia` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_expectativa_familia` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `grupo_estudiante`
+-- AUTO_INCREMENT de la tabla `grupo_estudiante`
 --
 ALTER TABLE `grupo_estudiante`
-  MODIFY `id_grupo_estudiante` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_grupo_estudiante` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `grupo_sede`
+-- AUTO_INCREMENT de la tabla `grupo_sede`
 --
 ALTER TABLE `grupo_sede`
   MODIFY `id_grupo_sede` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `gusto_interes`
+-- AUTO_INCREMENT de la tabla `gusto_interes`
 --
 ALTER TABLE `gusto_interes`
-  MODIFY `id_gusto_e_interes` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_gusto_e_interes` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `madre`
+-- AUTO_INCREMENT de la tabla `madre`
 --
 ALTER TABLE `madre`
-  MODIFY `id_madre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_madre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT for table `medicamento`
+-- AUTO_INCREMENT de la tabla `medicamento`
 --
 ALTER TABLE `medicamento`
-  MODIFY `id_medicamento` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_medicamento` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `otra_descripcion`
+-- AUTO_INCREMENT de la tabla `otra_descripcion`
 --
 ALTER TABLE `otra_descripcion`
-  MODIFY `id_otra_descripcion` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_otra_descripcion` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `padre`
+-- AUTO_INCREMENT de la tabla `padre`
 --
 ALTER TABLE `padre`
-  MODIFY `id_padre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_padre` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT for table `piar`
+-- AUTO_INCREMENT de la tabla `piar`
 --
 ALTER TABLE `piar`
-  MODIFY `id_piar` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_piar` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `red_apoyo`
+-- AUTO_INCREMENT de la tabla `red_apoyo`
 --
 ALTER TABLE `red_apoyo`
-  MODIFY `id_red_apoyo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_red_apoyo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `sede`
+-- AUTO_INCREMENT de la tabla `sede`
 --
 ALTER TABLE `sede`
   MODIFY `id_sede` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `tratamiento`
+-- AUTO_INCREMENT de la tabla `tratamiento`
 --
 ALTER TABLE `tratamiento`
-  MODIFY `id_tratamiento` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_tratamiento` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `valoracion_pedagogica`
+-- AUTO_INCREMENT de la tabla `valoracion_pedagogica`
 --
 ALTER TABLE `valoracion_pedagogica`
-  MODIFY `id_valoracion_pedagogica` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_valoracion_pedagogica` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `asignatura_docente_grupo`
+-- Filtros para la tabla `asignatura_docente_grupo`
 --
 ALTER TABLE `asignatura_docente_grupo`
   ADD CONSTRAINT `asignatura_docente_grupo_ibfk_1` FOREIGN KEY (`id_docente`) REFERENCES `docente` (`id_docente`),
@@ -1583,7 +1656,7 @@ ALTER TABLE `asignatura_docente_grupo`
   ADD CONSTRAINT `asignatura_docente_grupo_ibfk_3` FOREIGN KEY (`id_asignatura`) REFERENCES `asignatura` (`id_asignatura`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `diagnostico_dx_cie10`
+-- Filtros para la tabla `diagnostico_dx_cie10`
 --
 ALTER TABLE `diagnostico_dx_cie10`
   ADD CONSTRAINT `diagnostico_dx_cie10_ibfk_2` FOREIGN KEY (`id_cie10`) REFERENCES `dx_cie10` (`id_cie10`) ON DELETE CASCADE ON UPDATE CASCADE,

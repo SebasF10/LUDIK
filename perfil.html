@@ -23,13 +23,17 @@
             </label>
             <span class="menu-text">MENÚ</span>
         </div>
-        
-        <div class="center-section">
-            <div class="title">LUDIK</div>
+
+        <div class="centro">
+            <h1 class="titulo-ludik">
+                <img src="img\LUDIK_texto.png" alt="LUDIK" class="imagen-ludik-header">
+            </h1>
         </div>
-        
+
         <div class="right-section">
             <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+            <img src="img/sistemas.png" alt="Sistemas" class="logo-institucion">
+            <img src="img/logoguanenta.png" alt="Colegio" class="logo-institucion">
         </div>
     </div>
 
@@ -41,8 +45,8 @@
         </div>
         <div class="menu-buttons">
             <button class="menu-button">
-                <span class="menu-icon">👤</span>
-                Perfil
+                <span class="menu-icon">🏠</span>
+                Volver a Interfaz
             </button>
             <button class="menu-button">
                 <span class="menu-icon">👥</span>
@@ -56,6 +60,10 @@
                 <span class="menu-icon">📚</span>
                 Actividades
             </button>
+            <button class="menu-button" id="btnIA">
+                <span class="menu-icon">🤖</span>
+                Asistente IA
+            </button>
             <button class="menu-button">
                 <span class="menu-icon">📝</span>
                 Registrar un nuevo estudiante
@@ -68,16 +76,23 @@
                 <span class="menu-icon">📊</span>
                 Crear una Valoración Pedagógica
             </button>
+            <button class="menu-button" id="btnDocumentos">
+                <span class="menu-icon">📁</span>
+                Documentos
+            </button>
             <button class="menu-button">
                 <span class="menu-icon">💬</span>
                 Comunicate
             </button>
+            <a href="manual.pdf" download class="menu-button">
+                <span class="menu-icon">📘</span>
+                Manual de Usuario
+            </a>
+
             <button class="menu-button">
                 <span class="menu-icon">❓</span>
                 Ayuda
             </button>
-        </div>
-        <div class="menu-bottom">
             <button class="menu-button close-session">
                 <span class="menu-icon">🚪</span>
                 Cerrar Sesión
@@ -117,11 +132,6 @@
         </div>
     </div>
 
-    <!-- Botón regresar -->
-    <button class="back-btn" onclick="goBackOrRedirect('Interfaz.html')">
-        <i class="fas fa-arrow-left"></i> Regresar
-    </button>
-
     <!-- Loading -->
     <div id="loading" class="loading">
         <div class="spinner"></div>
@@ -131,7 +141,7 @@
     <!-- Scripts del Menú -->
     <script>
         // VERIFICAR ROL INMEDIATAMENTE - SIMPLIFICADO
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const rol = localStorage.getItem('rol');
             console.log('Rol en localStorage:', rol);
 
@@ -154,6 +164,7 @@
     </script>
 
     <script src="Js\Perfil.js"></script>
+    <script src="js/Roles_menu.js"></script>
 </body>
 
 </html>

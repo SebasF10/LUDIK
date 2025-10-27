@@ -1,5 +1,5 @@
 <?php
-// Registrar_estudiante.php - MODIFIED VERSION WITH SKIP FUNCTIONALITY
+// Registrar_estudiante.php - MODIFIED VERSION WITH PHOTO UPLOAD AND SKIP FUNCTIONALITY
 header('Content-Type: application/json; charset=utf-8');
 
 // Incluir archivo de conexión universal
@@ -45,9 +45,69 @@ try {
 }
 // Nota: No cerramos la conexión aquí ya que se maneja en conexion.php
 
+// Función para manejar la subida de foto
+function handlePhotoUpload($studentId) {
+    if (!isset($_FILES['student_photo']) || $_FILES['student_photo']['error'] === UPLOAD_ERR_NO_FILE) {
+        return null; // No se subió foto, no es error
+    }
+    
+    $file = $_FILES['student_photo'];
+    
+    // Verificar errores de subida
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        throw new Exception('Error en la subida del archivo: ' . $file['error']);
+    }
+    
+    // Validar tipo de archivo
+    $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    $fileType = strtolower($file['type']);
+    if (!in_array($fileType, $allowedTypes)) {
+        throw new Exception('Tipo de archivo no válido. Solo se permiten JPG, PNG y GIF.');
+    }
+    
+    // Validar tamaño (2MB máximo)
+    $maxSize = 2 * 1024 * 1024; // 2MB
+    if ($file['size'] > $maxSize) {
+        throw new Exception('El archivo es demasiado grande. Máximo 2MB.');
+    }
+    
+    // Validar que es realmente una imagen
+    $imageInfo = getimagesize($file['tmp_name']);
+    if ($imageInfo === false) {
+        throw new Exception('El archivo no es una imagen válida.');
+    }
+    
+    // Validar dimensiones mínimas
+    if ($imageInfo[0] < 100 || $imageInfo[1] < 100) {
+        throw new Exception('La imagen es demasiado pequeña. Mínimo 100x100 píxeles.');
+    }
+    
+    // Crear nombre único para el archivo
+    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if ($extension === 'jpeg') $extension = 'jpg';
+    
+    $fileName = 'student_' . $studentId . '_' . time() . '.' . $extension;
+    $uploadPath = '../photos/' . $fileName;
+    
+    // Verificar que el directorio photos existe
+    if (!is_dir('../photos/')) {
+        if (!mkdir('../photos/', 0755, true)) {
+            throw new Exception('No se pudo crear el directorio de fotos.');
+        }
+    }
+    
+    // Mover el archivo subido
+    if (!move_uploaded_file($file['tmp_name'], $uploadPath)) {
+        throw new Exception('Error al guardar la foto en el servidor.');
+    }
+    
+    // Returnar la ruta relativa para guardar en BD
+    return 'photos/' . $fileName;
+}
+
 function registerStudentAndFamily($conn) {
     $ids = [];
-    
+
     // STEP 1: Register Mother (with skip handling)
     $madre_skipped = $_POST['madre_skipped'] ?? 'false';
     
@@ -204,7 +264,8 @@ function registerStudentAndFamily($conn) {
         'lugar_que_ocupa' => trim($_POST['lugar_que_ocupa'] ?? ''),
         'con_quien_vive' => trim($_POST['con_quien_vive'] ?? ''),
         'quien_apoya_crianza' => trim($_POST['quien_apoya_crianza'] ?? ''),
-        'afiliacion_salud' => trim($_POST['afiliacion_salud'] ?? '')
+        'afiliacion_salud' => trim($_POST['afiliacion_salud'] ?? ''),
+        'url_foto' => null // Se asignará después del registro
     ];
     
     // Validation
@@ -229,11 +290,11 @@ function registerStudentAndFamily($conn) {
         nombre, apellidos, tipo_documento, no_documento, lugar_nacimiento, fecha_nacimiento, 
         sector, direccion, telefono, correo, contrasena, victima_conflicto, registro_victima, 
         centro_proteccion, grupo_etnico, no_hermanos, lugar_que_ocupa, con_quien_vive, 
-        quien_apoya_crianza, afiliacion_salud, id_madre, id_padre, id_cuidador
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        quien_apoya_crianza, afiliacion_salud, id_madre, id_padre, id_cuidador, url_foto
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     $stmt->bind_param(
-        "sssssssssssssssissssiii",
+        "sssssssssssssssissssiiii",
         $estudiante_data['nombre'], $estudiante_data['apellidos'], $estudiante_data['tipo_documento'], 
         $estudiante_data['no_documento'], $estudiante_data['lugar_nacimiento'], $estudiante_data['fecha_nacimiento'], 
         $estudiante_data['sector'], $estudiante_data['direccion'], $estudiante_data['telefono'], 
@@ -241,7 +302,7 @@ function registerStudentAndFamily($conn) {
         $estudiante_data['registro_victima'], $estudiante_data['centro_proteccion'], $estudiante_data['grupo_etnico'], 
         $estudiante_data['no_hermanos'], $estudiante_data['lugar_que_ocupa'], $estudiante_data['con_quien_vive'], 
         $estudiante_data['quien_apoya_crianza'], $estudiante_data['afiliacion_salud'], 
-        $id_madre, $id_padre, $id_cuidador
+        $id_madre, $id_padre, $id_cuidador, $estudiante_data['url_foto']
     );
     
     if (!$stmt->execute()) {
@@ -250,11 +311,96 @@ function registerStudentAndFamily($conn) {
     $id_estudiante = $conn->insert_id;
     $stmt->close();
     
-    // STEP 5: Assign to group if provided
+    // Handle photo upload after student registration
+    $photo_info = null;
+    try {
+        $photo_path = handlePhotoUpload($id_estudiante);
+        if ($photo_path) {
+            // Update student record with photo path
+            $stmt = $conn->prepare("UPDATE estudiante SET url_foto = ? WHERE id_estudiante = ?");
+            $stmt->bind_param("si", $photo_path, $id_estudiante);
+            if (!$stmt->execute()) {
+                throw new Exception("Error actualizando ruta de foto: " . $stmt->error);
+            }
+            $stmt->close();
+            $photo_info = "Foto guardada correctamente en " . $photo_path;
+        }
+    } catch (Exception $photoError) {
+        // Log photo error but don't fail the entire registration
+        error_log("Error subiendo foto para estudiante $id_estudiante: " . $photoError->getMessage());
+        $photo_info = "Error al subir foto: " . $photoError->getMessage();
+    }
+    
+    // STEP 5: Register Educational Environment
+    $entorno_data = [
+        'ultimo_grado_cursado' => trim($_POST['ultimo_grado_cursado'] ?? ''),
+        'vinculado_otra_inst' => trim($_POST['vinculado_otra_inst'] ?? ''),
+        'nombre_institucion_anterior' => isset($_POST['nombre_institucion_anterior']) && $_POST['vinculado_otra_inst'] === 'Si' ? trim($_POST['nombre_institucion_anterior']) : null,
+        'informe_pedagogico' => intval($_POST['informe_pedagogico'] ?? 0),
+        'modalidad_proveniente' => isset($_POST['modalidad_proveniente']) ? trim($_POST['modalidad_proveniente']) : null,
+        'asiste_programas_complementarios' => trim($_POST['asiste_programas_complementarios'] ?? ''),
+        'detalle_programas_complementarios' => isset($_POST['detalle_programas_complementarios']) && $_POST['asiste_programas_complementarios'] === 'Si' ? trim($_POST['detalle_programas_complementarios']) : null,
+        'observacion' => isset($_POST['observacion_entorno']) ? trim($_POST['observacion_entorno']) : null,
+        'estado' => 1 // Activo por defecto
+    ];
+
+    // Validación de campos obligatorios del entorno educativo
+    $required_entorno_fields = ['ultimo_grado_cursado', 'vinculado_otra_inst', 'asiste_programas_complementarios'];
+    foreach ($required_entorno_fields as $field) {
+        if (empty($entorno_data[$field])) {
+            throw new Exception("Faltan datos obligatorios del entorno educativo: $field");
+        }
+    }
+
+    // Validar campo condicional de institución anterior
+    if ($entorno_data['vinculado_otra_inst'] === 'Si' && empty($entorno_data['nombre_institucion_anterior'])) {
+        throw new Exception("Debe especificar el nombre de la institución educativa anterior");
+    }
+
+    // Validar campo condicional de programas complementarios
+    if ($entorno_data['asiste_programas_complementarios'] === 'Si' && empty($entorno_data['detalle_programas_complementarios'])) {
+        throw new Exception("Debe especificar los programas complementarios a los que asiste");
+    }
+
+    // Preparar observación completa
+    $observacion_completa = $entorno_data['observacion'];
+    if ($entorno_data['nombre_institucion_anterior']) {
+        $observacion_completa = ($observacion_completa ? $observacion_completa . ' | ' : '') .
+                               'Institución anterior: ' . $entorno_data['nombre_institucion_anterior'];
+    }
+    if ($entorno_data['detalle_programas_complementarios']) {
+        $observacion_completa = ($observacion_completa ? $observacion_completa . ' | ' : '') .
+                               'Programas complementarios: ' . $entorno_data['detalle_programas_complementarios'];
+    }
+
+    $stmt = $conn->prepare("INSERT INTO entorno_educativo (
+        estado, ultimo_grado_cursado, vinculado_otra_inst, informe_pedagogico,
+        modalidad_proveniente, asiste_programas_complementarios, observacion, id_estudiante
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    
+    $stmt->bind_param(
+        "ississsi",
+        $entorno_data['estado'],
+        $entorno_data['ultimo_grado_cursado'],
+        $entorno_data['vinculado_otra_inst'],
+        $entorno_data['informe_pedagogico'],
+        $entorno_data['modalidad_proveniente'],
+        $entorno_data['asiste_programas_complementarios'],
+        $observacion_completa,
+        $id_estudiante
+    );
+    
+    if (!$stmt->execute()) {
+        throw new Exception("Error insertando entorno educativo: " . $stmt->error);
+    }
+    $id_entorno_educativo = $conn->insert_id;
+    $stmt->close();
+
+    // STEP 6: Assign to group if provided
     if (isset($_POST['id_grupo']) && !empty($_POST['id_grupo'])) {
         $id_grupo = intval($_POST['id_grupo']);
         $anio_actual = date('Y');
-        
+
         // Verify group exists
         $stmt = $conn->prepare("SELECT id_grupo FROM grupo WHERE id_grupo = ?");
         $stmt->bind_param("i", $id_grupo);
@@ -264,16 +410,16 @@ function registerStudentAndFamily($conn) {
             throw new Exception("El grupo especificado no existe");
         }
         $stmt->close();
-        
+
         $stmt = $conn->prepare("INSERT INTO grupo_estudiante (id_grupo, id_estudiante, anio) VALUES (?, ?, ?)");
         $stmt->bind_param("iii", $id_grupo, $id_estudiante, $anio_actual);
-        
+
         if (!$stmt->execute()) {
             throw new Exception("Error asignando grupo al estudiante: " . $stmt->error);
         }
         $stmt->close();
     }
-    
+
     // Prepare response with skip information
     $skip_info = [];
     if ($madre_skipped === 'true') {
@@ -282,17 +428,20 @@ function registerStudentAndFamily($conn) {
     if ($padre_skipped === 'true') {
         $skip_info['padre'] = $_POST['padre_skip_reason_value'] ?? '';
     }
-    
+
     return [
         'success' => true,
         'phase' => 1,
         'id_estudiante' => $id_estudiante,
-        'message' => 'Estudiante y familia registrados exitosamente. Ahora puede proceder con la descripción general.',
+        'id_entorno_educativo' => $id_entorno_educativo,
+        'message' => 'Estudiante, familia y entorno educativo registrados exitosamente. Ahora puede proceder con la descripción general.',
         'skip_info' => $skip_info,
+        'photo_info' => $photo_info,
         'data' => [
             'id_madre' => $id_madre,
             'id_padre' => $id_padre,
             'id_cuidador' => $id_cuidador,
+            'id_entorno_educativo' => $id_entorno_educativo,
             'nombre_completo' => $estudiante_data['nombre'] . ' ' . $estudiante_data['apellidos']
         ]
     ];
@@ -416,5 +565,57 @@ function registerDescription($conn) {
         'student_name' => $student['nombre'] . ' ' . $student['apellidos'],
         'complete' => true
     ];
+}
+
+// Función opcional para actualizar entorno educativo
+function updateEntornoEducativo($conn, $id_estudiante, $entorno_data) {
+    $stmt = $conn->prepare("UPDATE entorno_educativo SET 
+        ultimo_grado_cursado = ?, 
+        vinculado_otra_inst = ?, 
+        informe_pedagogico = ?, 
+        modalidad_proveniente = ?, 
+        asiste_programas_complementarios = ?, 
+        observacion = ?
+        WHERE id_estudiante = ?");
+    
+    $stmt->bind_param(
+        "sssissi",
+        $entorno_data['ultimo_grado_cursado'],
+        $entorno_data['vinculado_otra_inst'],
+        $entorno_data['informe_pedagogico'],
+        $entorno_data['modalidad_proveniente'],
+        $entorno_data['asiste_programas_complementarios'],
+        $entorno_data['observacion'],
+        $id_estudiante
+    );
+    
+    if (!$stmt->execute()) {
+        throw new Exception("Error actualizando entorno educativo: " . $stmt->error);
+    }
+    
+    $stmt->close();
+    return true;
+}
+
+// Función para obtener entorno educativo de un estudiante
+function getEntornoEducativo($conn, $id_estudiante) {
+    $stmt = $conn->prepare("SELECT * FROM entorno_educativo WHERE id_estudiante = ?");
+    $stmt->bind_param("i", $id_estudiante);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        return $result->fetch_assoc();
+    }
+    
+    $stmt->close();
+    return null;
+}
+
+// Función para eliminar foto de estudiante
+function deleteStudentPhoto($photoPath) {
+    if (!empty($photoPath) && file_exists('../' . $photoPath)) {
+        unlink('../' . $photoPath);
+    }
 }
 ?>

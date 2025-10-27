@@ -11,6 +11,7 @@
     <!-- Agregar jsPDF y html2canvas para generar PDFs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 </head>
 
 <body>
@@ -26,31 +27,35 @@
             <span class="menu-text">MENÚ</span>
         </div>
 
-        <div class="center-section">
-            <div class="title">LUDIK</div>
+        <div class="centro">
+            <h1 class="titulo-ludik">
+                <img src="img\LUDIK_texto.png" alt="LUDIK" class="imagen-ludik-header">
+            </h1>
         </div>
 
         <div class="right-section">
             <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+            <img src="img/sistemas.png" alt="Sistemas" class="logo-institucion">
+            <img src="img/logoguanenta.png" alt="Colegio" class="logo-institucion">
         </div>
     </div>
 
     <!-- Overlay para cerrar menú -->
     <div class="overlay" id="overlay"></div>
 
-    <!-- Menú Lateral -->
+    <!-- Menú lateral -->
     <div class="side-menu" id="sideMenu">
         <div class="menu-header">
             <div class="menu-title">Panel De Control</div>
         </div>
         <div class="menu-buttons">
             <button class="menu-button">
-                <span class="menu-icon">👤</span>
-                Perfil
+                <span class="menu-icon">🏠</span>
+                Volver a Interfaz
             </button>
             <button class="menu-button">
-                <span class="menu-icon">👥</span>
-                Estudiantes
+                <span class="menu-icon">👤</span>
+                Perfil
             </button>
             <button class="menu-button" id="btnCrearCuentas">
                 <span class="menu-icon">➕</span>
@@ -59,6 +64,10 @@
             <button class="menu-button">
                 <span class="menu-icon">📚</span>
                 Actividades
+            </button>
+            <button class="menu-button" id="btnIA">
+                <span class="menu-icon">🤖</span>
+                Asistente IA
             </button>
             <button class="menu-button">
                 <span class="menu-icon">📝</span>
@@ -70,18 +79,24 @@
             </button>
             <button class="menu-button">
                 <span class="menu-icon">📊</span>
-                Crear una Valoración Pedagógica
+                Valoraciones Pedagógicas
+            </button>
+            <button class="menu-button" id="btnDocumentos">
+                <span class="menu-icon">📁</span>
+                Documentos
             </button>
             <button class="menu-button">
                 <span class="menu-icon">💬</span>
                 Comunicate
             </button>
+            <a href="manual.pdf" download class="menu-button">
+                <span class="menu-icon">📘</span>
+                Manual de Usuario
+            </a>
             <button class="menu-button">
                 <span class="menu-icon">❓</span>
                 Ayuda
             </button>
-        </div>
-        <div class="menu-bottom">
             <button class="menu-button close-session">
                 <span class="menu-icon">🚪</span>
                 Cerrar Sesión
@@ -165,11 +180,17 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div class="modal-header">
+                <!-- La foto del estudiante se agregará dinámicamente aquí -->
                 <h2 id="modalTitle">Información del Estudiante</h2>
-                <!-- Botón de descarga individual en el modal -->
-                <button id="downloadStudentPDF" class="btn-download-modal">
-                    📄 Descargar PDF
-                </button>
+                <!-- Botones de descarga en el modal -->
+                <div class="modal-download-buttons">
+                    <button id="downloadStudentPDF" class="btn-download-modal">
+                        📄 Descargar PIAR
+                    </button>
+                    <button id="downloadActaAcuerdo" class="btn-download-modal btn-acta">
+                        📋 Descargar Acta de Acuerdo
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <!-- Pestañas del modal -->
@@ -330,11 +351,8 @@
         <p>Generando PDF...</p>
     </div>
 
-    <button class="back-btn" onclick="goBackOrRedirect('Interfaz.html')">
-        ⬅ Regresar
-    </button>
-
     <script src="Js/Estudiantes.js"></script>
+    <script src="js/Roles_menu.js"></script>    
 </body>
 
 </html>

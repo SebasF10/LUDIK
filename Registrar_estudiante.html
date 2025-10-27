@@ -8,82 +8,10 @@
     <link rel="icon" href="img/Ludik2.png" type="image/x-icon">
     <link rel="stylesheet" href="Css\Registrar_estudiante.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        .skip-section {
-            background: rgba(255, 193, 7, 0.1);
-            border: 2px solid #ffc107;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .skip-btn {
-            background: linear-gradient(45deg, #ffc107, #fd7e14);
-            color: #212529;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0.5rem;
-        }
-
-        .skip-btn:hover {
-            background: linear-gradient(45deg, #e0a800, #e8650e);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
-        }
-
-        .skip-options {
-            display: none;
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
-        }
-
-        .skip-options.active {
-            display: block;
-        }
-
-        .skip-radio {
-            margin: 0.5rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .skip-radio input[type="radio"] {
-            margin-right: 0.5rem;
-        }
-
-        .skipped-info {
-            background: rgba(40, 167, 69, 0.1);
-            border: 2px solid #28a745;
-            border-radius: 10px;
-            padding: 1rem;
-            margin: 1rem 0;
-            color: #155724;
-            display: none;
-        }
-
-        .form-disabled {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .warning-text {
-            color: #856404;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-top: 1rem;
-        }
-    </style>
 </head>
 
 <body>
-    <!-- NUEVO HEADER CON MENÚ EXTRAÍBLE -->
+    <!-- HEADER CON MENÚ EXTRAÍBLE -->
     <div class="header">
         <div class="left-section">
             <label class="burger" for="burger">
@@ -94,23 +22,33 @@
             </label>
             <span class="menu-text">MENÚ</span>
         </div>
-        
-        <div class="center-section">
-            <div class="title">LUDIK</div>
+
+        <div class="centro">
+            <h1 class="titulo-ludik">
+                <img src="img\LUDIK_texto.png" alt="LUDIK" class="imagen-ludik-header">
+            </h1>
         </div>
-        
+
         <div class="right-section">
             <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+            <img src="img/sistemas.png" alt="Sistemas" class="logo-institucion">
+            <img src="img/logoguanenta.png" alt="Colegio" class="logo-institucion">
         </div>
     </div>
 
+    <!-- Overlay para cerrar menú -->
     <div class="overlay" id="overlay"></div>
 
+    <!-- Menú lateral -->
     <div class="side-menu" id="sideMenu">
         <div class="menu-header">
             <div class="menu-title">Panel De Control</div>
         </div>
         <div class="menu-buttons">
+            <button class="menu-button">
+                <span class="menu-icon">🏠</span>
+                Volver a Interfaz
+            </button>
             <button class="menu-button">
                 <span class="menu-icon">👤</span>
                 Perfil
@@ -128,10 +66,6 @@
                 Actividades
             </button>
             <button class="menu-button">
-                <span class="menu-icon">📝</span>
-                Registrar un nuevo estudiante
-            </button>
-            <button class="menu-button">
                 <span class="menu-icon">📋</span>
                 Registrar un PIAR y diagnóstico médico
             </button>
@@ -143,12 +77,15 @@
                 <span class="menu-icon">💬</span>
                 Comunicate
             </button>
+            <a href="manual.pdf" download class="menu-button">
+                <span class="menu-icon">📘</span>
+                Manual de Usuario
+            </a>
+
             <button class="menu-button">
                 <span class="menu-icon">❓</span>
                 Ayuda
             </button>
-        </div>
-        <div class="menu-bottom">
             <button class="menu-button close-session">
                 <span class="menu-icon">🚪</span>
                 Cerrar Sesión
@@ -162,7 +99,7 @@
             <section class="section">
                 <h1>Registro Completo de Estudiante</h1>
 
-                <!-- Indicador de progreso -->
+                <!-- Indicador de progreso ACTUALIZADO -->
                 <div class="progress-indicator">
                     <div class="step-indicator active" id="step1">1</div>
                     <div class="step-indicator" id="step2">2</div>
@@ -175,9 +112,10 @@
                     <div class="step-indicator" id="step9">9</div>
                     <div class="step-indicator" id="step10">10</div>
                     <div class="step-indicator" id="step11">11</div>
+                    <div class="step-indicator" id="step12">12</div>
                 </div>
 
-                <form id="formulario-completo" method="POST">
+                <form id="formulario-completo" method="POST" enctype="multipart/form-data">
 
                     <!-- PASO 1: INFORMACIÓN DE LA MADRE -->
                     <div class="form-step active" id="form-step-1">
@@ -189,14 +127,16 @@
                             <button type="button" class="skip-btn" onclick="showSkipOptions('madre')">
                                 Saltar Registro de Madre
                             </button>
-                            
+
                             <div id="madre-skip-options" class="skip-options">
                                 <div class="skip-radio">
-                                    <input type="radio" id="madre-no-presente" name="madre_skip_reason" value="no_presente">
+                                    <input type="radio" id="madre-no-presente" name="madre_skip_reason"
+                                        value="no_presente">
                                     <label for="madre-no-presente">La madre no está presente</label>
                                 </div>
                                 <div class="skip-radio">
-                                    <input type="radio" id="madre-es-acudiente" name="madre_skip_reason" value="es_acudiente">
+                                    <input type="radio" id="madre-es-acudiente" name="madre_skip_reason"
+                                        value="es_acudiente">
                                     <label for="madre-es-acudiente">La madre será registrada como acudiente</label>
                                 </div>
                                 <button type="button" class="skip-btn" onclick="confirmSkip('madre')">Confirmar</button>
@@ -206,7 +146,8 @@
 
                         <div id="madre-skipped-info" class="skipped-info">
                             <strong>✓ Registro de madre omitido:</strong> <span id="madre-skip-reason-text"></span>
-                            <button type="button" class="skip-btn" onclick="undoSkip('madre')" style="margin-left: 1rem; padding: 0.5rem 1rem;">
+                            <button type="button" class="skip-btn" onclick="undoSkip('madre')"
+                                style="margin-left: 1rem; padding: 0.5rem 1rem;">
                                 Deshacer
                             </button>
                         </div>
@@ -252,14 +193,16 @@
                             <button type="button" class="skip-btn" onclick="showSkipOptions('padre')">
                                 Saltar Registro de Padre
                             </button>
-                            
+
                             <div id="padre-skip-options" class="skip-options">
                                 <div class="skip-radio">
-                                    <input type="radio" id="padre-no-presente" name="padre_skip_reason" value="no_presente">
+                                    <input type="radio" id="padre-no-presente" name="padre_skip_reason"
+                                        value="no_presente">
                                     <label for="padre-no-presente">El padre no está presente</label>
                                 </div>
                                 <div class="skip-radio">
-                                    <input type="radio" id="padre-es-acudiente" name="padre_skip_reason" value="es_acudiente">
+                                    <input type="radio" id="padre-es-acudiente" name="padre_skip_reason"
+                                        value="es_acudiente">
                                     <label for="padre-es-acudiente">El padre será registrado como acudiente</label>
                                 </div>
                                 <button type="button" class="skip-btn" onclick="confirmSkip('padre')">Confirmar</button>
@@ -269,7 +212,8 @@
 
                         <div id="padre-skipped-info" class="skipped-info">
                             <strong>✓ Registro de padre omitido:</strong> <span id="padre-skip-reason-text"></span>
-                            <button type="button" class="skip-btn" onclick="undoSkip('padre')" style="margin-left: 1rem; padding: 0.5rem 1rem;">
+                            <button type="button" class="skip-btn" onclick="undoSkip('padre')"
+                                style="margin-left: 1rem; padding: 0.5rem 1rem;">
                                 Deshacer
                             </button>
                         </div>
@@ -310,7 +254,8 @@
                         <h2>Información del Cuidador/Acudiente</h2>
 
                         <div class="warning-text">
-                            <strong>Nota:</strong> Este registro es obligatorio. Si la madre o el padre es el acudiente principal, 
+                            <strong>Nota:</strong> Este registro es obligatorio. Si la madre o el padre es el acudiente
+                            principal,
                             registre aquí esa información.
                         </div>
 
@@ -363,6 +308,29 @@
 
                         <label for="estudiante_apellidos">Apellidos *</label>
                         <input type="text" id="estudiante_apellidos" name="estudiante_apellidos" required>
+
+                        <!-- SECCIÓN DE FOTO DEL ESTUDIANTE -->
+                        <div class="photo-section">
+                            <h3>Foto del Estudiante</h3>
+                            <div class="photo-upload-container">
+                                <div class="photo-preview" id="photoPreview">
+                                    <div class="photo-placeholder">📷</div>
+                                </div>
+                                <div class="file-input-wrapper">
+                                    <input type="file" id="student_photo" name="student_photo" accept="image/*">
+                                    <label for="student_photo" class="file-input-label">Seleccionar Foto</label>
+                                </div>
+                                <div class="photo-info">
+                                    Formatos admitidos: JPG, PNG, GIF<br>
+                                    Tamaño máximo: 2MB
+                                </div>
+                                <button type="button" class="remove-photo-btn" id="removePhotoBtn"
+                                    style="display: none;">
+                                    Quitar Foto
+                                </button>
+                                <div class="photo-upload-error" id="photoError"></div>
+                            </div>
+                        </div>
 
                         <label for="tipo_documento">Tipo de Documento *</label>
                         <select id="tipo_documento" name="tipo_documento" required>
@@ -480,9 +448,88 @@
                         </div>
                     </div>
 
-                    <!-- Pasos 5-11 permanecen igual -->
-                    <!-- PASO 5: SELECCIÓN DE ESTUDIANTE PARA DESCRIPCIÓN -->
+                    <!-- PASO 5: ENTORNO EDUCATIVO -->
                     <div class="form-step" id="form-step-5">
+                        <h2>Entorno Educativo</h2>
+                        <h3>Información académica y educativa del estudiante</h3>
+
+                        <label for="ultimo_grado_cursado">Último Grado Cursado *</label>
+                        <select id="ultimo_grado_cursado" name="ultimo_grado_cursado" required>
+                            <option value="">Seleccione</option>
+                            <option value="Preescolar">Preescolar</option>
+                            <option value="1°">1° Primaria</option>
+                            <option value="2°">2° Primaria</option>
+                            <option value="3°">3° Primaria</option>
+                            <option value="4°">4° Primaria</option>
+                            <option value="5°">5° Primaria</option>
+                            <option value="6°">6° Bachillerato</option>
+                            <option value="7°">7° Bachillerato</option>
+                            <option value="8°">8° Bachillerato</option>
+                            <option value="9°">9° Bachillerato</option>
+                            <option value="10°">10° Bachillerato</option>
+                            <option value="11°">11° Bachillerato</option>
+                            <option value="No ha cursado">No ha cursado ningún grado</option>
+                        </select>
+
+                        <label for="vinculado_otra_inst">¿Estuvo vinculado a otra institución educativa? *</label>
+                        <select id="vinculado_otra_inst" name="vinculado_otra_inst" required>
+                            <option value="">Seleccione</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+
+                        <div id="institucion_anterior_container" class="conditional-container">
+                            <label for="nombre_institucion_anterior">Nombre de la institución anterior</label>
+                            <input type="text" id="nombre_institucion_anterior" name="nombre_institucion_anterior"
+                                placeholder="Ingrese el nombre de la institución educativa anterior">
+                        </div>
+
+                        <label for="informe_pedagogico">¿Cuenta con informe pedagógico? *</label>
+                        <select id="informe_pedagogico" name="informe_pedagogico" required>
+                            <option value="">Seleccione</option>
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
+
+                        <label for="modalidad_proveniente">Modalidad de la que proviene</label>
+                        <select id="modalidad_proveniente" name="modalidad_proveniente">
+                            <option value="">Seleccione</option>
+                            <option value="Presencial">Presencial</option>
+                            <option value="Virtual">Virtual</option>
+                            <option value="Semipresencial">Semipresencial</option>
+                            <option value="Flexible">Flexible</option>
+                            <option value="No aplica">No aplica</option>
+                        </select>
+
+                        <label for="asiste_programas_complementarios">¿Asiste a programas complementarios? *</label>
+                        <select id="asiste_programas_complementarios" name="asiste_programas_complementarios" required>
+                            <option value="">Seleccione</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+
+                        <div id="programas_complementarios_container" class="conditional-container">
+                            <label for="detalle_programas_complementarios">Especifique los programas
+                                complementarios</label>
+                            <textarea id="detalle_programas_complementarios" name="detalle_programas_complementarios"
+                                placeholder="Ejemplo: Terapia ocupacional, fonoaudiología, psicología, deportes, música, etc."
+                                rows="3"></textarea>
+                        </div>
+
+                        <label for="observacion_entorno">Observaciones adicionales sobre el entorno educativo</label>
+                        <textarea id="observacion_entorno" name="observacion_entorno"
+                            placeholder="Ingrese cualquier observación relevante sobre la situación educativa del estudiante"
+                            rows="4"></textarea>
+
+                        <div class="warning-text">
+                            <strong>Nota:</strong> Esta información es crucial para el diseño del plan educativo
+                            personalizado del estudiante.
+                        </div>
+                    </div>
+
+                    <!-- Pasos 6-11 permanecen igual -->
+                    <!-- PASO 6: SELECCIÓN DE ESTUDIANTE PARA DESCRIPCIÓN -->
+                    <div class="form-step" id="form-step-6">
                         <h2>Descripción General - Selección de Estudiante</h2>
                         <p>Ahora procederemos a crear la descripción general del estudiante registrado.</p>
 
@@ -492,17 +539,18 @@
                         </select>
                     </div>
 
-                    <!-- PASO 6: CAPACIDADES -->
-                    <div class="form-step" id="form-step-6">
+                    <!-- PASO 7: CAPACIDADES -->
+                    <div class="form-step" id="form-step-7">
                         <h2>Capacidades del Estudiante</h2>
 
-                        <label for="capacidades">Describa las capacidades y habilidades especiales del estudiante *</label>
+                        <label for="capacidades">Describa las capacidades y habilidades especiales del estudiante
+                            *</label>
                         <textarea id="capacidades" name="capacidades" required
                             placeholder="Ejemplo: Tiene habilidades artísticas, es bueno en matemáticas, tiene facilidad para los idiomas, etc."></textarea>
                     </div>
 
-                    <!-- PASO 7: GUSTOS E INTERESES -->
-                    <div class="form-step" id="form-step-7">
+                    <!-- PASO 8: GUSTOS E INTERESES -->
+                    <div class="form-step" id="form-step-8">
                         <h2>Gustos e Intereses</h2>
 
                         <label for="gustos_intereses">Describa los gustos e intereses del estudiante *</label>
@@ -510,26 +558,28 @@
                             placeholder="Ejemplo: Le gusta la música, los deportes, la lectura, los videojuegos, etc."></textarea>
                     </div>
 
-                    <!-- PASO 8: EXPECTATIVAS DEL ESTUDIANTE -->
-                    <div class="form-step" id="form-step-8">
+                    <!-- PASO 9: EXPECTATIVAS DEL ESTUDIANTE -->
+                    <div class="form-step" id="form-step-9">
                         <h2>Expectativas del Estudiante</h2>
 
-                        <label for="expectativas_estudiante">¿Cuáles son las expectativas y metas del estudiante? *</label>
+                        <label for="expectativas_estudiante">¿Cuáles son las expectativas y metas del estudiante?
+                            *</label>
                         <textarea id="expectativas_estudiante" name="expectativas_estudiante" required
                             placeholder="Ejemplo: Quiere graduarse, ir a la universidad, aprender un oficio, etc."></textarea>
                     </div>
 
-                    <!-- PASO 9: EXPECTATIVAS DE LA FAMILIA -->
-                    <div class="form-step" id="form-step-9">
+                    <!-- PASO 10: EXPECTATIVAS DE LA FAMILIA -->
+                    <div class="form-step" id="form-step-10">
                         <h2>Expectativas de la Familia</h2>
 
-                        <label for="expectativas_familia">¿Cuáles son las expectativas de la familia para el estudiante? *</label>
+                        <label for="expectativas_familia">¿Cuáles son las expectativas de la familia para el estudiante?
+                            *</label>
                         <textarea id="expectativas_familia" name="expectativas_familia" required
                             placeholder="Ejemplo: Que termine sus estudios, que sea una persona de bien, que tenga un buen futuro, etc."></textarea>
                     </div>
 
-                    <!-- PASO 10: RED DE APOYO -->
-                    <div class="form-step" id="form-step-10">
+                    <!-- PASO 11: RED DE APOYO -->
+                    <div class="form-step" id="form-step-11">
                         <h2>Red de Apoyo</h2>
 
                         <label for="red_apoyo">Describa la red de apoyo del estudiante *</label>
@@ -537,8 +587,8 @@
                             placeholder="Ejemplo: Familia, amigos, vecinos, organizaciones, instituciones que apoyan al estudiante."></textarea>
                     </div>
 
-                    <!-- PASO 11: OTRAS DESCRIPCIONES -->
-                    <div class="form-step" id="form-step-11">
+                    <!-- PASO 12: OTRAS DESCRIPCIONES -->
+                    <div class="form-step" id="form-step-12">
                         <h2>Información Adicional</h2>
 
                         <label for="otra_descripcion">Información adicional relevante *</label>
@@ -575,9 +625,10 @@
         </footer>
     </div>
 
+
     <script>
         // VERIFICAR ROL INMEDIATAMENTE - SIMPLIFICADO
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const rol = localStorage.getItem('rol');
             console.log('Rol en localStorage:', rol);
 
@@ -596,10 +647,85 @@
                     console.log('Botón ocultado para rol:', rol);
                 }
             }
+
+            // Inicializar funcionalidad de foto
+            initPhotoUpload();
         });
+
+        // Funcionalidad para manejo de foto
+        function initPhotoUpload() {
+            const photoInput = document.getElementById('student_photo');
+            const photoPreview = document.getElementById('photoPreview');
+            const removePhotoBtn = document.getElementById('removePhotoBtn');
+            const photoError = document.getElementById('photoError');
+
+            if (photoInput) {
+                photoInput.addEventListener('change', handlePhotoChange);
+            }
+
+            if (removePhotoBtn) {
+                removePhotoBtn.addEventListener('click', removePhoto);
+            }
+        }
+
+        function handlePhotoChange(event) {
+            const file = event.target.files[0];
+            const photoPreview = document.getElementById('photoPreview');
+            const removePhotoBtn = document.getElementById('removePhotoBtn');
+            const photoError = document.getElementById('photoError');
+
+            // Limpiar errores previos
+            photoError.style.display = 'none';
+            photoError.textContent = '';
+
+            if (!file) {
+                return;
+            }
+
+            // Validar tipo de archivo
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            if (!allowedTypes.includes(file.type)) {
+                showPhotoError('Por favor seleccione un archivo de imagen válido (JPG, PNG, GIF)');
+                event.target.value = '';
+                return;
+            }
+
+            // Validar tamaño (2MB máximo)
+            const maxSize = 2 * 1024 * 1024; // 2MB en bytes
+            if (file.size > maxSize) {
+                showPhotoError('La imagen es demasiado grande. El tamaño máximo es 2MB');
+                event.target.value = '';
+                return;
+            }
+
+            // Crear preview de la imagen
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                photoPreview.innerHTML = `<img src="${e.target.result}" alt="Foto del estudiante">`;
+                removePhotoBtn.style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removePhoto() {
+            const photoInput = document.getElementById('student_photo');
+            const photoPreview = document.getElementById('photoPreview');
+            const removePhotoBtn = document.getElementById('removePhotoBtn');
+
+            photoInput.value = '';
+            photoPreview.innerHTML = '<div class="photo-placeholder">📷</div>';
+            removePhotoBtn.style.display = 'none';
+        }
+
+        function showPhotoError(message) {
+            const photoError = document.getElementById('photoError');
+            photoError.textContent = message;
+            photoError.style.display = 'block';
+        }
     </script>
 
     <script src="Js\Registrar_estudiante.js"></script>
+    <script src="js/Roles_menu.js"></script>
 </body>
 
 </html>

@@ -321,6 +321,7 @@ function obtenerEstudiantes($conexion, $rol) {
                 e.no_documento,
                 e.correo,
                 e.telefono,
+                e.url_foto,
                 CASE 
                     WHEN p.id_piar IS NOT NULL THEN 1 
                     ELSE 0 
@@ -365,6 +366,7 @@ function obtenerEstudiantes($conexion, $rol) {
                 e.no_documento,
                 e.correo,
                 e.telefono,
+                e.url_foto,
                 CASE 
                     WHEN p.id_piar IS NOT NULL THEN 1 
                     ELSE 0 
@@ -394,7 +396,8 @@ function obtenerEstudiantes($conexion, $rol) {
             'correo' => $row['correo'] ?: 'No registrado',
             'telefono' => $row['telefono'] ?: 'No registrado',
             'tiene_piar' => (bool)$row['tiene_piar'],
-            'id_piar' => $row['id_piar']
+            'id_piar' => $row['id_piar'],
+            'url_foto' => $row['url_foto'] ?: 'No disponible'
         ];
     }
     
@@ -425,6 +428,9 @@ function crearValoracion($conexion, $rol) {
     $tipo_ajuste = mysqli_real_escape_string($conexion, trim($_POST['tipo_ajuste'] ?? ''));
     $apoyo_requerido = mysqli_real_escape_string($conexion, trim($_POST['apoyo_requerido'] ?? ''));
     $seguimiento = mysqli_real_escape_string($conexion, trim($_POST['seguimiento'] ?? ''));
+    
+    // ⭐ NUEVO: CAPTURAR FECHA ACTUAL AUTOMÁTICAMENTE
+    $fecha_actual = date('Y-m-d');
     
     // Validar campos requeridos
     if (empty($id_grupo) || empty($id_asignatura) || empty($id_estudiante) || 
@@ -466,11 +472,11 @@ function crearValoracion($conexion, $rol) {
         if (empty($id_piar)) {
             $query_piar = "
                 INSERT INTO piar (id_estudiante, fecha, ajuste, apoyo, barrera) 
-                VALUES (?, CURDATE(), 'Ajuste inicial generado automáticamente', 'Apoyo inicial', 'Barrera inicial identificada')
+                VALUES (?, ?, 'Ajuste inicial generado automáticamente', 'Apoyo inicial', 'Barrera inicial identificada')
             ";
             
             $stmt_piar = mysqli_prepare($conexion, $query_piar);
-            mysqli_stmt_bind_param($stmt_piar, "i", $id_estudiante);
+            mysqli_stmt_bind_param($stmt_piar, "is", $id_estudiante, $fecha_actual);
             
             if (!mysqli_stmt_execute($stmt_piar)) {
                 throw new Exception('Error al crear PIAR: ' . mysqli_error($conexion));
@@ -498,29 +504,31 @@ function crearValoracion($conexion, $rol) {
         
         mysqli_stmt_close($stmt_existente);
         
-        // Insertar la valoración pedagógica
+        // ⭐ MODIFICADO: Insertar la valoración pedagógica CON FECHA AUTOMÁTICA
         $query_valoracion = "
             INSERT INTO valoracion_pedagogica (
                 id_piar, 
                 id_asignatura, 
                 periodo, 
                 anio, 
+                fecha,
                 objetivo, 
                 barrera, 
                 tipo_ajuste, 
                 apoyo_requerido, 
                 seguimiento
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ";
         
         $stmt_valoracion = mysqli_prepare($conexion, $query_valoracion);
         mysqli_stmt_bind_param(
             $stmt_valoracion, 
-            "ississsss", 
+            "isisssssss", 
             $id_piar, 
             $id_asignatura, 
             $periodo, 
-            $anio, 
+            $anio,
+            $fecha_actual,
             $objetivo, 
             $barrera, 
             $tipo_ajuste, 
@@ -542,7 +550,8 @@ function crearValoracion($conexion, $rol) {
         echo json_encode([
             'success' => true,
             'message' => 'Valoración pedagógica registrada exitosamente',
-            'id_valoracion' => $id_valoracion
+            'id_valoracion' => $id_valoracion,
+            'fecha_registro' => $fecha_actual
         ]);
         
     } catch (Exception $e) {
@@ -573,11 +582,14 @@ function obtenerValoracion($conexion, $rol) {
                 e.nombre as estudiante_nombre,
                 e.apellidos as estudiante_apellidos,
                 e.no_documento,
+                e.url_foto,
                 a.nombre_asig,
                 g.id_grupo,
                 g.grupo,
                 gr.grado,
-                p.id_piar
+                p.id_piar,
+                d.nombre_completo as docente_nombre,
+                d.email as docente_email
             FROM valoracion_pedagogica vp
             INNER JOIN piar p ON vp.id_piar = p.id_piar
             INNER JOIN estudiante e ON p.id_estudiante = e.id_estudiante
@@ -586,6 +598,9 @@ function obtenerValoracion($conexion, $rol) {
                 AND (ge.anio = vp.anio OR ge.anio IS NULL)
             INNER JOIN grupo g ON ge.id_grupo = g.id_grupo
             INNER JOIN grado gr ON g.id_grado = gr.id_grado
+            INNER JOIN asignatura_docente_grupo adg ON a.id_asignatura = adg.id_asignatura 
+                AND g.id_grupo = adg.id_grupo
+            INNER JOIN docente d ON adg.id_docente = d.id_docente
             WHERE vp.id_valoracion_pedagogica = ?
         ";
         $stmt = mysqli_prepare($conexion, $query);
@@ -599,11 +614,14 @@ function obtenerValoracion($conexion, $rol) {
                 e.nombre as estudiante_nombre,
                 e.apellidos as estudiante_apellidos,
                 e.no_documento,
+                e.url_foto,
                 a.nombre_asig,
                 g.id_grupo,
                 g.grupo,
                 gr.grado,
-                p.id_piar
+                p.id_piar,
+                d.nombre_completo as docente_nombre,
+                d.email as docente_email
             FROM valoracion_pedagogica vp
             INNER JOIN piar p ON vp.id_piar = p.id_piar
             INNER JOIN estudiante e ON p.id_estudiante = e.id_estudiante
@@ -614,6 +632,7 @@ function obtenerValoracion($conexion, $rol) {
                 AND ge.id_grupo = adg.id_grupo
             INNER JOIN grupo g ON ge.id_grupo = g.id_grupo
             INNER JOIN grado gr ON g.id_grado = gr.id_grado
+            INNER JOIN docente d ON adg.id_docente = d.id_docente
             WHERE vp.id_valoracion_pedagogica = ? AND adg.id_docente = ?
         ";
         $stmt = mysqli_prepare($conexion, $query);
@@ -624,6 +643,9 @@ function obtenerValoracion($conexion, $rol) {
     $result = mysqli_stmt_get_result($stmt);
     
     if ($row = mysqli_fetch_assoc($result)) {
+        // Procesar la foto antes de enviar
+        $row['foto_url'] = getPhotoUrl($row['url_foto'], $row['id_estudiante']);
+        
         echo json_encode([
             'success' => true,
             'valoracion' => $row
@@ -649,6 +671,9 @@ function actualizarValoracion($conexion, $rol) {
     $tipo_ajuste = mysqli_real_escape_string($conexion, trim($_POST['tipo_ajuste'] ?? ''));
     $apoyo_requerido = mysqli_real_escape_string($conexion, trim($_POST['apoyo_requerido'] ?? ''));
     $seguimiento = mysqli_real_escape_string($conexion, trim($_POST['seguimiento'] ?? ''));
+    
+    // ⭐ NUEVO: CAPTURAR FECHA ACTUAL AUTOMÁTICAMENTE
+    $fecha_actual = date('Y-m-d');
     
     if (empty($id_valoracion) || empty($periodo) || empty($anio) || empty($objetivo) || 
         empty($barrera) || empty($tipo_ajuste) || empty($apoyo_requerido) || empty($seguimiento)) {
@@ -719,24 +744,25 @@ function actualizarValoracion($conexion, $rol) {
     
     mysqli_stmt_close($stmt_duplicado);
     
-    // Actualizar la valoración
+    // ⭐ MODIFICADO: Actualizar la valoración CON FECHA AUTOMÁTICA
     $query_update = "
         UPDATE valoracion_pedagogica 
-        SET periodo = ?, anio = ?, objetivo = ?, barrera = ?, tipo_ajuste = ?, 
+        SET periodo = ?, anio = ?, fecha = ?, objetivo = ?, barrera = ?, tipo_ajuste = ?, 
             apoyo_requerido = ?, seguimiento = ?
         WHERE id_valoracion_pedagogica = ?
     ";
     
     $stmt_update = mysqli_prepare($conexion, $query_update);
-    mysqli_stmt_bind_param($stmt_update, "sisssssi", 
-        $periodo, $anio, $objetivo, $barrera, $tipo_ajuste, 
+    mysqli_stmt_bind_param($stmt_update, "sissssssi", 
+        $periodo, $anio, $fecha_actual, $objetivo, $barrera, $tipo_ajuste, 
         $apoyo_requerido, $seguimiento, $id_valoracion
     );
     
     if (mysqli_stmt_execute($stmt_update)) {
         echo json_encode([
             'success' => true,
-            'message' => 'Valoración pedagógica actualizada exitosamente'
+            'message' => 'Valoración pedagógica actualizada exitosamente',
+            'fecha_actualizacion' => $fecha_actual
         ]);
     } else {
         echo json_encode([
@@ -747,7 +773,6 @@ function actualizarValoracion($conexion, $rol) {
     
     mysqli_stmt_close($stmt_update);
 }
-
 function eliminarValoracion($conexion, $rol) {
     if (!isset($_POST['id_valoracion'])) {
         echo json_encode(['success' => false, 'message' => 'ID de valoración requerido']);
@@ -864,6 +889,21 @@ function obtenerEstadisticas($conexion, $rol) {
             'total_grupos' => $stats['total_grupos'] ?: 0
         ]
     ]);
+}
+
+
+//Generar URL de foto del estudiante
+function getPhotoUrl($urlFoto, $idEstudiante) {
+    // Si hay URL en la base de datos
+    if (!empty($urlFoto)) {
+        // Verificar si el archivo existe
+        if (file_exists("../$urlFoto")) {
+            return $urlFoto;
+        }
+    }
+    
+    // Si no hay URL o el archivo no existe, usar foto por defecto
+    return "photos/default.png";
 }
 
 ?>

@@ -30,6 +30,7 @@ body {
     flex: 1;
 }
 
+
 /* Ocultar formularios inicialmente */
 #form_admin,
 #form_docente,
@@ -44,19 +45,6 @@ body {
     align-items: center;
     position: relative;
 }
-
-/* LÍNEA MORADA ELIMINADA - Se comentó la regla ::before */
-/*
-.Inicio_sesion::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-*/
 
 /* Título mejorado */
 .Sesion_titulo {
@@ -119,11 +107,16 @@ body {
 /* Botones de selección - REDISEÑO COMPLETO */
 .Botones_usuarios {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 40px;
+    justify-content: space-evenly;
+    align-items: center;
     flex-wrap: nowrap;
+    /* 🔥 evita que bajen */
+    gap: 25px;
+    margin-bottom: 40px;
+    width: 100%;
 }
+
+
 
 .Botones_usuarios button {
     width: 150px;
@@ -176,6 +169,44 @@ body {
     background: rgba(254, 215, 170, 0.4);
     border: 3px solid rgba(254, 215, 170, 0.8);
     color: #1e293b;
+}
+
+.btn_dir {
+    background: rgba(252, 165, 243, 0.4);
+    border: 3px solid rgba(252, 165, 243, 0.8);
+    color: #1e293b;
+}
+
+.form_directivo {
+    background: rgba(252, 165, 243, 0.25);
+    border-color: rgba(252, 165, 243, 0.8);
+}
+
+.form_directivo .input-group input {
+    background: rgba(252, 165, 243, 0.15);
+    border-color: rgba(244, 114, 182, 0.3);
+}
+
+.form_directivo .input-group input:focus {
+    border-color: #f472b6;
+    background: rgba(252, 165, 243, 0.25);
+    box-shadow: 0 4px 15px rgba(244, 114, 182, 0.2);
+}
+
+#form_directivo {
+    background: rgba(252, 165, 243, 0.25);
+    border-color: rgba(252, 165, 243, 0.8);
+}
+
+#form_directivo .input-group input {
+    background: rgba(252, 165, 243, 0.15);
+    border-color: rgba(244, 114, 182, 0.3);
+}
+
+#form_directivo .input-group input:focus {
+    border-color: #f472b6;
+    background: rgba(252, 165, 243, 0.25);
+    box-shadow: 0 4px 15px rgba(244, 114, 182, 0.2);
 }
 
 /* Mensaje inicial mejorado */
@@ -527,5 +558,47 @@ body {
         padding: 10px 16px;
         font-size: 13px;
         border-radius: 12px;
+    }
+}
+
+/* Ajuste input con ojito */
+.input-group {
+    position: relative;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 45px 15px 15px;
+    /* espacio a la derecha para el ojito */
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    font-size: 1rem;
+}
+
+/* Estilo del ojito */
+.toggle-pass {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #64748b;
+    transition: color 0.3s ease;
+    user-select: none;
+}
+
+.toggle-pass:hover {
+    color: #4f46e5;
+}
+
+@media (max-width: 900px) {
+    .Botones_usuarios {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .Botones_usuarios button {
+        width: 45%;
     }
 }

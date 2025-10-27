@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Cuentas</title>
+    <title>Crear Cuentas - LUDIK</title>
     <link rel="icon" href="img/Ludik2.png" type="image/x-icon">
     <link rel="stylesheet" href="Css/Crear_cuentas.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Header con menú extraíble -->
     <div class="header">
         <div class="left-section">
             <label class="burger" for="burger">
@@ -23,16 +23,20 @@
             <span class="menu-text">MENÚ</span>
         </div>
 
-        <div class="center-section">
-            <div class="title">LUDIK</div>
+        <div class="centro">
+            <h1 class="titulo-ludik">
+                <img src="img\LUDIK_texto.png" alt="LUDIK" class="imagen-ludik-header">
+            </h1>
         </div>
 
         <div class="right-section">
             <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+            <img src="img/sistemas.png" alt="Sistemas" class="logo-institucion">
+            <img src="img/logoguanenta.png" alt="Colegio" class="logo-institucion">
         </div>
     </div>
 
-    <!-- Overlay para cerrar menu -->
+    <!-- Overlay para cerrar menú -->
     <div class="overlay" id="overlay"></div>
 
     <!-- Menú lateral -->
@@ -42,47 +46,49 @@
         </div>
         <div class="menu-buttons">
             <button class="menu-button">
+                <span class="menu-icon">🏠</span>
+                Volver a Interfaz
+            </button>
+            <button class="menu-button">
                 <span class="menu-icon">👤</span>
                 Perfil
-            </button>
-            <button class="menu-button">
-                <span class="menu-icon">👥</span>
-                Estudiantes
-            </button>
-            <button class="menu-button" id="btnCrearCuentas">
-                <span class="menu-icon">➕</span>
-                Crear Cuentas
-            </button>
-            <button class="menu-button">
-                <span class="menu-icon">📚</span>
-                Actividades
-            </button>
-            <button class="menu-button">
-                <span class="menu-icon">📝</span>
-                Registrar un nuevo estudiante
-            </button>
-            <button class="menu-button">
-                <span class="menu-icon">📋</span>
-                Registrar un PIAR y diagnóstico médico
-            </button>
-            <button class="menu-button">
-                <span class="menu-icon">📊</span>
-                Crear una Valoración Pedagógica
-            </button>
-            <button class="menu-button">
-                <span class="menu-icon">💬</span>
-                Comunicate
-            </button>
-            <button class="menu-button">
-                <span class="menu-icon">❓</span>
-                Ayuda
-            </button>
-        </div>
-        <div class="menu-bottom">
-            <button class="menu-button close-session">
-                <span class="menu-icon">🚪</span>
-                Cerrar Sesión
-            </button>
+                <button class="menu-button">
+                    <span class="menu-icon">👥</span>
+                    Estudiantes
+                </button>
+                <button class="menu-button">
+                    <span class="menu-icon">📚</span>
+                    Actividades
+                </button>
+                <button class="menu-button">
+                    <span class="menu-icon">📝</span>
+                    Registrar un nuevo estudiante
+                </button>
+                <button class="menu-button">
+                    <span class="menu-icon">📋</span>
+                    Registrar un PIAR y diagnóstico médico
+                </button>
+                <button class="menu-button">
+                    <span class="menu-icon">📊</span>
+                    Crear una Valoración Pedagógica
+                </button>
+                <button class="menu-button">
+                    <span class="menu-icon">💬</span>
+                    Comunicate
+                </button>
+                <a href="manual.pdf" download class="menu-button">
+                    <span class="menu-icon">📘</span>
+                    Manual de Usuario
+                </a>
+
+                <button class="menu-button">
+                    <span class="menu-icon">❓</span>
+                    Ayuda
+                </button>
+                <button class="menu-button close-session">
+                    <span class="menu-icon">🚪</span>
+                    Cerrar Sesión
+                </button>
         </div>
     </div>
 
@@ -109,7 +115,7 @@
             <!-- Formularios -->
             <section class="formularios">
                 <!-- Formulario Administrador -->
-                <form id="form_admin" class="form" method="POST" action="php/Crear_cuentas.php">
+                <form id="form_admin" class="form" method="POST">
                     <h2>Crear cuenta de Administrador</h2>
                     <input type="hidden" name="rol" value="admin">
 
@@ -137,7 +143,7 @@
                 </form>
 
                 <!-- Formulario docente -->
-                <form id="form_docente" class="form" method="POST" action="php/Crear_cuentas.php" style="display:none;">
+                <form id="form_docente" class="form" method="POST" style="display:none;">
                     <h2>Crear cuenta de docente</h2>
                     <input type="hidden" name="rol" value="docente">
 
@@ -192,7 +198,7 @@
                 </form>
 
                 <!-- Formulario Directivos -->
-                <form id="form_directivos" class="form" method="POST" action="php/Crear_cuentas.php">
+                <form id="form_directivos" class="form" method="POST">
                     <h2>Crear cuenta de directivo</h2>
                     <input type="hidden" name="rol" value="directivos">
 
@@ -233,6 +239,7 @@
     </div>
 
     <script src="Js/Crear_cuentas.js"></script>
+    <script src="js/Roles_menu.js"></script>
 </body>
 
 </html>

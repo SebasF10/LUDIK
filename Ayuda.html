@@ -23,22 +23,32 @@
             <span class="menu-text">MENÚ</span>
         </div>
 
-        <div class="center-section">
-            <div class="title">LUDIK</div>
+        <div class="centro">
+            <h1 class="titulo-ludik">
+                <img src="img\LUDIK_texto.png" alt="LUDIK" class="imagen-ludik-header">
+            </h1>
         </div>
 
         <div class="right-section">
             <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+            <img src="img/sistemas.png" alt="Sistemas" class="logo-institucion">
+            <img src="img/logoguanenta.png" alt="Colegio" class="logo-institucion">
         </div>
     </div>
 
+    <!-- Overlay para cerrar menú -->
     <div class="overlay" id="overlay"></div>
 
+    <!-- Menú lateral -->
     <div class="side-menu" id="sideMenu">
         <div class="menu-header">
             <div class="menu-title">Panel De Control</div>
         </div>
         <div class="menu-buttons">
+            <button class="menu-button">
+                <span class="menu-icon">🏠</span>
+                Volver a Interfaz
+            </button>
             <button class="menu-button">
                 <span class="menu-icon">👤</span>
                 Perfil
@@ -50,6 +60,10 @@
             <button class="menu-button" id="btnCrearCuentas">
                 <span class="menu-icon">➕</span>
                 Crear Cuentas
+            </button>
+            <button class="menu-button" id="btnIA">
+                <span class="menu-icon">🤖</span>
+                Asistente IA
             </button>
             <button class="menu-button">
                 <span class="menu-icon">📚</span>
@@ -67,16 +81,18 @@
                 <span class="menu-icon">📊</span>
                 Crear una Valoración Pedagógica
             </button>
+            <button class="menu-button" id="btnDocumentos">
+                <span class="menu-icon">📁</span>
+                Documentos
+            </button>
             <button class="menu-button">
                 <span class="menu-icon">💬</span>
                 Comunicate
             </button>
-            <button class="menu-button">
-                <span class="menu-icon">❓</span>
-                Ayuda
-            </button>
-        </div>
-        <div class="menu-bottom">
+            <a href="manual.pdf" download class="menu-button">
+                <span class="menu-icon">📘</span>
+                Manual de Usuario
+            </a>
             <button class="menu-button close-session">
                 <span class="menu-icon">🚪</span>
                 Cerrar Sesión
@@ -101,7 +117,7 @@
                     <div class="faq-answer">
                         <p>LUDIK es una plataforma educativa inclusiva diseñada para el Colegio San José de Guanentá.
                             Permite a
-                            docentes, padres y administradores gestionar actividades, dar seguimiento a estudiantes con
+                            docentes, padres y administrador gestionar actividades, dar seguimiento a estudiantes con
                             necesidades diversas y fortalecer la comunicación educativa.</p>
                     </div>
                 </div>
@@ -176,31 +192,9 @@
         <p>Copyright © 2025 Todos los derechos reservados | Sistemas 11 | Colegio San José de Guanentá</p>
     </footer>
 
-    <script>
-        // VERIFICAR ROL INMEDIATAMENTE - SIMPLIFICADO
-        document.addEventListener('DOMContentLoaded', function () {
-            const rol = localStorage.getItem('rol');
-            console.log('Rol en localStorage:', rol);
-
-            // Eliminar cualquier HR o línea que pueda existir
-            const lineas = document.querySelectorAll('hr, .separator, .line, .divider');
-            lineas.forEach(linea => {
-                console.log('Eliminando');
-                linea.remove();
-            });
-
-            // Si NO es admin, ocultar el botón
-            if (rol !== 'admin') {
-                const botonCrear = document.getElementById('btnCrearCuentas');
-                if (botonCrear) {
-                    botonCrear.style.display = 'none';
-                    console.log('Botón ocultado para rol:', rol);
-                }
-            }
-        });
-    </script>
-    <script src="Js\Menu.js"></script>
     <script src="Js\Ayuda.js"></script>
+    <script src="js/Roles_menu.js"></script>
+
 </body>
 
 </html>

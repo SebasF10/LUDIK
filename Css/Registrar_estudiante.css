@@ -1,7 +1,6 @@
-/* ============================================ */
-/* ESTILOS DEL MENÚ EXTRAÍBLE - COPIADOS DE MENU.CSS */
-/* ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* RESET Y BASE */
 * {
     margin: 0;
     padding: 0;
@@ -11,14 +10,15 @@
 }
 
 body {
-    font-family: 'Inter', Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    color: #2c3e50;
+    color: #333;
+    overflow-x: hidden;
     line-height: 1.6;
 }
 
-/* Header mejorado con estética moderna */
+/* ======= ESTILOS DEL HEADER Y MENÚ ======= */
 .header {
     display: flex;
     align-items: center;
@@ -31,7 +31,6 @@ body {
     position: sticky;
     top: 0;
     z-index: 1001;
-    position: relative;
 }
 
 .left-section {
@@ -55,6 +54,54 @@ body {
     align-items: center;
     flex: 1;
     justify-content: flex-end;
+    gap: 24px;
+    /* Espacio entre los logos */
+}
+
+
+.centro {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Cambia flex-end por center */
+    margin: 0;
+    /* Asegúrate de que no tenga margen */
+    padding: 0;
+}
+
+
+.titulo-ludik {
+    margin: 0;
+    /* Elimina margen extra */
+    padding: 0;
+}
+
+
+.imagen-ludik-header {
+    height: 80px;
+    width: auto;
+    display: inline-block;
+    margin: 0;
+    /* Elimina margen extra */
+    padding: 0;
+    vertical-align: middle;
+}
+
+.logo-institucion,
+.logo-ludik {
+    width: 50px;
+    height: auto;
+    /* mantiene proporción natural */
+    object-fit: contain;
+    /* muestra la imagen completa sin recortes */
+    border-radius: 0;
+    /* elimina bordes redondeados */
+    box-shadow: none;
+    /* elimina la sombra blanca alrededor */
 }
 
 .menu-text {
@@ -83,12 +130,7 @@ body {
     border: none !important;
 }
 
-.header-logo:hover {
-    transform: scale(1.05) rotate(5deg);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    outline: none !important;
-    border: none !important;
-}
+
 
 .title {
     font-size: 3.2rem;
@@ -185,14 +227,12 @@ body {
     /* Línea más larga */
 }
 
-/* MENÚ LATERAL - ARREGLADO PARA EVITAR LA BARRA AZUL */
+/* MENÚ LATERAL - CON SCROLL */
 .side-menu {
     position: fixed;
     top: 89px;
     left: -380px;
-    /* AUMENTADO de 350px a 380px */
     width: 380px;
-    /* AUMENTADO de 350px a 380px */
     height: calc(100vh - 89px);
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
@@ -200,11 +240,9 @@ body {
     z-index: 1000;
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
     outline: none !important;
-    border-bottom: none !important;
-    border-top: none !important;
-    border-left: none !important;
 }
 
 .side-menu.active {
@@ -212,6 +250,7 @@ body {
 }
 
 .menu-header {
+    flex-shrink: 0;
     padding: 35px 40px 35px 40px;
     border-bottom: none !important;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
@@ -234,21 +273,45 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* CONTENEDOR DE BOTONES CON SCROLL */
 .menu-buttons {
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 35px 0 35px 0;
-    height: auto !important;
-    min-height: calc(100vh - 300px);
-    overflow: visible !important;
-    overflow-x: visible !important;
-    overflow-y: visible !important;
+    padding: 20px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+    /* Scroll personalizado */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
+/* Scroll personalizado para webkit */
+.menu-buttons::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu-buttons::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.menu-buttons::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
+
+/* BOTONES DEL MENÚ */
 .menu-button {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -268,6 +331,7 @@ body {
     overflow: hidden !important;
     width: 100% !important;
     max-width: 380px !important;
+    margin: 2px 0;
 }
 
 .menu-button:focus,
@@ -287,6 +351,7 @@ body {
     box-shadow: none !important;
 }
 
+/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
     content: '';
     position: absolute;
@@ -320,37 +385,9 @@ body {
     filter: grayscale(0);
 }
 
-/* Overlay para cerrar menu */
-.overlay {
-    position: fixed;
-    top: 89px;
-    left: 0;
-    width: 100vw;
-    height: calc(100vh - 89px);
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    display: none;
-    z-index: 999;
-    transition: all 0.3s ease;
-}
-
-.overlay.active {
-    display: block;
-}
-
-.menu-bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 0;
-    background: transparent;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-}
-
+/* CERRAR SESIÓN COMO BOTÓN NORMAL */
 .menu-button.close-session {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -364,9 +401,8 @@ body {
     transition: all 0.3s ease;
     position: relative;
     font-family: 'Inter', Arial, sans-serif;
-    justify-content: center;
     width: 100%;
-    margin: 0;
+    margin: 2px 0;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -407,19 +443,32 @@ body {
     content: none !important;
 }
 
+/* Overlay para cerrar menu */
+.overlay {
+    position: fixed;
+    top: 89px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 89px);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: none;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.overlay.active {
+    display: block;
+}
+
 /* ============================================ */
-/* ESTILOS ORIGINALES DE REGISTRAR ESTUDIANTE - MODIFICADOS */
+/* ESTILOS ORIGINALES DE REGISTRAR ESTUDIANTE */
 /* ============================================ */
 
 /* Wrapper para el contenido después del header */
 .content-wrapper {
     min-height: calc(100vh - 89px);
     padding-top: 0;
-}
-
-/* Reset y configuración base */
-.content-wrapper * {
-    box-sizing: border-box;
 }
 
 /* Contenido principal */
@@ -808,19 +857,24 @@ textarea {
     backdrop-filter: blur(10px);
 }
 
-/* Responsive Design */
+/* RESPONSIVE - MOBILE */
 @media (max-width: 768px) {
     .header {
         padding: 15px 20px;
     }
 
     .title {
-        font-size: 2rem;
+        font-size: 2.5rem;
         letter-spacing: 2px;
     }
 
     .menu-text {
-        font-size: 0.9rem;
+        font-size: 1.5rem;
+    }
+
+    .header-logo {
+        width: 50px !important;
+        height: 50px !important;
     }
 
     .side-menu {
@@ -828,23 +882,9 @@ textarea {
         left: -320px;
     }
 
-    .menu-header {
-        padding: 30px 25px 30px 25px;
-        min-height: 70px;
-    }
-
-    .menu-title {
-        font-size: 1.2rem;
-    }
-
     .menu-button {
-        padding: 15px 25px;
+        padding: 16px 25px;
         font-size: 0.95rem;
-        min-width: 320px !important;
-    }
-
-    .menu-button.close-session {
-        padding: 15px 25px;
     }
 
     .section {
@@ -881,186 +921,480 @@ textarea {
     }
 }
 
-@media (max-width: 480px) {
-    .menu-text {
-        display: none;
-    }
+/* ==================== ESTILOS PARA FUNCIONALIDAD DE FOTO ==================== */
 
-    .title {
-        font-size: 1.8rem;
-        letter-spacing: 1px;
-    }
-
-    .progress-indicator {
-        flex-wrap: wrap;
-        max-width: 100%;
-    }
-
-    .step-indicator {
-        width: 30px;
-        height: 30px;
-        font-size: 0.7rem;
-    }
-
-    .step-indicator:not(:last-child)::after {
-        display: none;
-    }
-
-    .section h1 {
-        font-size: 1.8rem;
-    }
-}
-
-/* Mejoras de accesibilidad */
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* Modo oscuro (opcional) */
-@media (prefers-color-scheme: dark) {
-    .content-wrapper {
-        background: linear-gradient(135deg, #2c3e50 0%, #4a6741 100%);
-    }
-
-    .section {
-        background: rgba(52, 58, 64, 0.95);
-        color: #f8f9fa;
-    }
-
-    .section h1,
-    .form-step h2 {
-        color: #f8f9fa;
-    }
-
-    label {
-        color: #ced4da;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="password"],
-    input[type="date"],
-    input[type="number"],
-    select,
-    textarea {
-        background: rgba(73, 80, 87, 0.8);
-        border-color: #495057;
-        color: #f8f9fa;
-    }
-
-    input[type="text"]:focus,
-    input[type="email"]:focus,
-    input[type="tel"]:focus,
-    input[type="password"]:focus,
-    input[type="date"]:focus,
-    input[type="number"]:focus,
-    select:focus,
-    textarea:focus {
-        background: rgba(73, 80, 87, 1);
-        border-color: #667eea;
-    }
-}
-
-/* Estilos adicionales para campos específicos */
-.required-field::after {
-    content: ' *';
-    color: #dc3545;
-    font-weight: bold;
-}
-
-/* Animaciones suaves */
-.form-step {
+.photo-section {
+    background: rgba(102, 126, 234, 0.05);
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
     transition: all 0.3s ease;
 }
 
-/* Mejoras visuales para select */
-select {
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1rem;
-    padding-right: 3rem;
+.photo-section:hover {
+    background: rgba(102, 126, 234, 0.08);
+    border-color: rgba(102, 126, 234, 0.3);
 }
 
-/* Estilos para campos de fecha */
-input[type="date"] {
+.photo-section h3 {
+    color: #667eea;
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border: none;
+    padding: 0;
+}
+
+.photo-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.photo-preview {
+    width: 200px;
+    height: 200px;
+    border: 3px dashed #667eea;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+}
+
+.photo-preview:hover {
+    border-color: #764ba2;
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.photo-preview img:hover {
+    transform: scale(1.05);
+}
+
+.photo-placeholder {
+    color: #667eea;
+    font-size: 3rem;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.photo-preview:hover .photo-placeholder {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.file-input-wrapper input[type=file] {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+}
+
+.file-input-label {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    outline: none;
+}
+
+.file-input-label::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.file-input-label:hover::before {
+    left: 100%;
+}
+
+.file-input-label:hover {
+    background: linear-gradient(45deg, #5a6fd8, #6a4190);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.file-input-label:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(102, 126, 234, 0.2);
+}
+
+.photo-info {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin: 0.5rem 0;
+    line-height: 1.4;
+    max-width: 300px;
+}
+
+.remove-photo-btn {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+}
+
+.remove-photo-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.remove-photo-btn:hover::before {
+    left: 100%;
+}
+
+.remove-photo-btn:hover {
+    background: linear-gradient(45deg, #c82333, #a71e2a);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.remove-photo-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.2);
+}
+
+.photo-upload-error {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: none;
+    background: rgba(220, 53, 69, 0.1);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #dc3545;
+    max-width: 400px;
+    text-align: left;
+}
+
+.photo-upload-success {
+    color: #28a745 !important;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: none;
+    background: rgba(40, 167, 69, 0.1);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #28a745;
+    max-width: 400px;
+    text-align: left;
+}
+
+/* Efectos de carga para la foto */
+.photo-loading {
     position: relative;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+.photo-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(102, 126, 234, 0.3);
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    animation: photoSpin 1s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes photoSpin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Animación de fade-in para preview de foto */
+.photo-preview img {
+    animation: photoFadeIn 0.5s ease-in;
+}
+
+@keyframes photoFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive para la sección de foto */
+@media (max-width: 768px) {
+    .photo-section {
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+    }
+
+    .photo-preview {
+        width: 150px;
+        height: 150px;
+    }
+
+    .file-input-label {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .photo-info {
+        font-size: 0.8rem;
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .photo-preview {
+        width: 120px;
+        height: 120px;
+    }
+
+    .file-input-label {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .photo-placeholder {
+        font-size: 2rem;
+    }
+}
+
+.skip-section {
+    background: rgba(255, 193, 7, 0.1);
+    border: 2px solid #ffc107;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+}
+
+.skip-btn {
+    background: linear-gradient(45deg, #ffc107, #fd7e14);
+    color: #212529;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
     cursor: pointer;
-    filter: invert(0.5);
+    transition: all 0.3s ease;
+    margin: 0.5rem;
 }
 
-/* Hover effects mejorados */
-input:hover:not(:focus),
-select:hover:not(:focus),
-textarea:hover:not(:focus) {
-    border-color: rgba(102, 126, 234, 0.5);
-    transform: translateY(-1px);
+.skip-btn:hover {
+    background: linear-gradient(45deg, #e0a800, #e8650e);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
 }
 
-/* Estilos para campos numéricos */
-input[type="number"] {
+.skip-options {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+}
+
+.skip-options.active {
+    display: block;
+}
+
+.skip-radio {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.skip-radio input[type="radio"] {
+    margin-right: 0.5rem;
+}
+
+.skipped-info {
+    background: rgba(40, 167, 69, 0.1);
+    border: 2px solid #28a745;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+    color: #155724;
+    display: none;
+}
+
+.form-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.warning-text {
+    color: #856404;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+/* Estilos para la funcionalidad de foto */
+.photo-section {
+    background: rgba(102, 126, 234, 0.05);
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem 0;
     text-align: center;
 }
 
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.photo-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
-input[type="number"] {
-    -moz-appearance: textfield;
+.photo-preview {
+    width: 200px;
+    height: 200px;
+    border: 3px dashed #667eea;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
-/* Estilos para placeholder mejorados */
-::placeholder {
-    color: #6c757d;
-    font-style: italic;
-    opacity: 0.8;
+.photo-preview:hover {
+    border-color: #764ba2;
+    background: rgba(255, 255, 255, 0.9);
 }
 
-/* Transiciones suaves para todos los elementos interactivos */
-.content-wrapper * {
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out;
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
 }
 
-/* Estilos para focus visible (accesibilidad) */
-*:focus-visible {
-    outline: 2px solid #667eea;
-    outline-offset: 2px;
+.photo-placeholder {
+    color: #667eea;
+    font-size: 3rem;
+    opacity: 0.5;
 }
 
-/* Estilos específicos para campos de contraseña */
-input[type="password"] {
-    font-family: monospace;
-    letter-spacing: 2px;
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
 }
 
-/* Mejoras en la tipografía */
-h1,
-h2,
-h3 {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+.file-input-wrapper input[type=file] {
+    position: absolute;
+    left: -9999px;
+}
+
+.file-input-label {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
     font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
 }
 
-/* Estilos para pantallas de alta densidad */
-@media (-webkit-min-device-pixel-ratio: 2),
-(min-resolution: 192dpi) {
-    .header-logo {
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: crisp-edges;
-    }
+.file-input-label:hover {
+    background: linear-gradient(45deg, #5a6fd8, #6a4190);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.photo-info {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+}
+
+.remove-photo-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.remove-photo-btn:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+.photo-upload-error {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: none;
 }
