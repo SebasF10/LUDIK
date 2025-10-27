@@ -229,6 +229,7 @@ body {
 /* CONTENEDOR DE BOTONES CON SCROLL */
 .menu-buttons {
     flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     padding: 20px 0;
@@ -413,6 +414,49 @@ body {
     display: block;
 }
 
+.centro {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Cambia flex-end por center */
+    margin: 0;
+    /* Asegúrate de que no tenga margen */
+    padding: 0;
+}
+
+.titulo-ludik {
+    margin: 0;
+    /* Elimina margen extra */
+    padding: 0;
+}
+
+.imagen-ludik-header {
+    height: 80px;
+    width: auto;
+    display: inline-block;
+    margin: 0;
+    /* Elimina margen extra */
+    padding: 0;
+    vertical-align: middle;
+}
+
+.logo-institucion,
+.logo-ludik {
+    width: 50px;
+    height: auto;
+    /* mantiene proporción natural */
+    object-fit: contain;
+    /* muestra la imagen completa sin recortes */
+    border-radius: 0;
+    /* elimina bordes redondeados */
+    box-shadow: none;
+    /* elimina la sombra blanca alrededor */
+}
+
 /* ======= ESTILOS DEL PERFIL (ACTUALIZADOS) ======= */
 .perfil-container {
     display: grid;
@@ -424,14 +468,6 @@ body {
     padding: 20px;
     margin-top: 20px;
     /* Espaciado del header */
-}
-
-@media (max-width: 768px) {
-    .perfil-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 10px;
-    }
 }
 
 /* CARD PRINCIPAL */
@@ -735,63 +771,254 @@ body {
     background: rgba(237, 137, 54, 0.1);
 }
 
-.side-menu {
-    display: flex;
-    flex-direction: column;
+/* ======= RESPONSIVE DESIGN ======= */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 1024px) {
+    .header {
+        padding: 0 30px;
+        min-height: 75px;
+    }
+    
+    .imagen-ludik-header {
+        height: 65px;
+    }
+    
+    .header-logo,
+    .logo-institucion,
+    .logo-ludik {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+    .menu-text {
+        font-size: 1.5rem;
+    }
+    
+    .right-section {
+        gap: 20px;
+    }
+    
+    .side-menu {
+        top: 75px;
+        height: calc(100vh - 75px);
+    }
+    
+    .overlay {
+        top: 75px;
+        height: calc(100vh - 75px);
+    }
 }
 
-.menu-buttons {
-    flex: 1;
-    min-height: 0;
-    /* 👈 evita que se bloquee el scroll */
-    overflow-y: auto;
+/* Tablets pequeñas */
+@media (max-width: 768px) {
+    .header {
+        padding: 0 20px;
+        min-height: 70px;
+    }
+
+    .title {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+    }
+
+    .menu-text {
+        font-size: 1.3rem;
+    }
+    
+    .imagen-ludik-header {
+        height: 55px;
+    }
+
+    .header-logo,
+    .logo-institucion,
+    .logo-ludik {
+        width: 45px !important;
+        height: 45px !important;
+    }
+    
+    .right-section {
+        gap: 15px;
+    }
+
+    .side-menu {
+        width: 320px;
+        left: -320px;
+        top: 70px;
+        height: calc(100vh - 70px);
+    }
+    
+    .overlay {
+        top: 70px;
+        height: calc(100vh - 70px);
+    }
+
+    .menu-header {
+        padding: 30px 25px 30px 25px;
+        min-height: 70px;
+    }
+
+    .menu-title {
+        font-size: 1.2rem;
+    }
+
+    .menu-button {
+        padding: 16px 25px;
+        font-size: 0.95rem;
+        max-width: 320px !important;
+    }
+
+    .menu-button.close-session {
+        padding: 16px 25px;
+        max-width: 320px !important;
+    }
+    
+    .burger {
+        width: 50px;
+        height: 45px;
+    }
+    
+    .perfil-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 10px;
+    }
 }
 
+/* Móviles */
+@media (max-width: 600px) {
+    .header {
+        padding: 0 15px;
+        min-height: 65px;
+    }
+    
+    /* Ocultar el texto "colegio San Jose de Guanenta" */
+    .menu-text {
+        display: none;
+    }
+    
+    /* Agrupar las 3 imágenes centrales más juntas */
+    .right-section {
+        gap: 8px;
+        padding-right: 5px;
+    }
+    
+    /* Reducir tamaño de todas las imágenes */
+    .imagen-ludik-header {
+        height: 40px;
+        margin: 0 6px;
+    }
+    
+    .header-logo,
+    .logo-institucion,
+    .logo-ludik {
+        width: 38px !important;
+        height: 38px !important;
+    }
+    
+    .title {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+    }
+    
+    .burger {
+        width: 45px;
+        height: 40px;
+        padding: 3px;
+    }
+    
+    .burger span {
+        height: 3px;
+    }
+    
+    .burger span:nth-of-type(1) {
+        width: 40px;
+        top: 10px;
+    }
 
-.centro {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Cambia flex-end por center */
-    margin: 0;
-    /* Asegúrate de que no tenga margen */
-    padding: 0;
+    .burger span:nth-of-type(2) {
+        width: 40px;
+        top: 19px;
+    }
+
+    .burger span:nth-of-type(3) {
+        width: 40px;
+        top: 28px;
+    }
+    
+    .side-menu {
+        top: 65px;
+        height: calc(100vh - 65px);
+    }
+    
+    .overlay {
+        top: 65px;
+        height: calc(100vh - 65px);
+    }
 }
 
+/* Móviles pequeños */
+@media (max-width: 480px) {
+    .header {
+        padding: 0 10px;
+        min-height: 60px;
+    }
+    
+    .imagen-ludik-header {
+        height: 35px;
+        margin: 0 4px;
+    }
+    
+    .header-logo,
+    .logo-institucion,
+    .logo-ludik {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    
+    .right-section {
+        gap: 6px;
+        padding-right: 3px;
+    }
+    
+    .title {
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .burger {
+        width: 40px;
+        height: 38px;
+    }
+    
+    .side-menu {
+        width: 280px;
+        left: -280px;
+        top: 60px;
+        height: calc(100vh - 60px);
+    }
+    
+    .overlay {
+        top: 60px;
+        height: calc(100vh - 60px);
+    }
+    
+    .menu-button {
+        max-width: 280px !important;
+    }
 
-.titulo-ludik {
-    margin: 0;
-    /* Elimina margen extra */
-    padding: 0;
+    .menu-button.close-session {
+        max-width: 280px !important;
+    }
 }
 
-
-.imagen-ludik-header {
-    height: 80px;
-    width: auto;
-    display: inline-block;
-    margin: 0;
-    /* Elimina margen extra */
-    padding: 0;
-    vertical-align: middle;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
-
-
-
-.logo-institucion,
-.logo-ludik {
-    width: 50px;
-    height: auto;
-    /* mantiene proporción natural */
-    object-fit: contain;
-    /* muestra la imagen completa sin recortes */
-    border-radius: 0;
-    /* elimina bordes redondeados */
-    box-shadow: none;
-    /* elimina la sombra blanca alrededor */
-}
-

@@ -1,4 +1,4 @@
-/* CSS para Index.html - Página de información con estética moderna mejorada */
+/* CSS para Index.html - Versión Responsive Mejorada */
 
 /* Reset y configuración base */
 * {
@@ -101,7 +101,6 @@ header {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-
 .encabezado-ludik {
     display: flex;
     justify-content: space-between;
@@ -128,15 +127,10 @@ header {
 .logo-ludik {
     width: 50px;
     height: auto;
-    /* mantiene proporción natural */
     object-fit: contain;
-    /* muestra la imagen completa sin recortes */
     border-radius: 0;
-    /* elimina bordes redondeados */
     box-shadow: none;
-    /* elimina la sombra blanca alrededor */
 }
-
 
 .no-hover {
     transition: none !important;
@@ -153,6 +147,7 @@ header {
     background: rgba(99, 102, 241, 0.1);
     padding: 6px 12px;
     border-radius: 20px;
+    white-space: nowrap;
 }
 
 .centro {
@@ -184,6 +179,7 @@ header {
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .btn-login:hover {
@@ -210,6 +206,7 @@ header {
     padding: 30px 40px;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
 }
 
 .nav-btn {
@@ -269,12 +266,10 @@ header {
         transform: scale(1);
         opacity: 0.3;
     }
-
     50% {
         transform: scale(1.05);
         opacity: 0.1;
     }
-
     100% {
         transform: scale(1);
         opacity: 0.3;
@@ -530,7 +525,7 @@ header {
 /* Principios de inclusión */
 .principios-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
     margin: 30px 0;
 }
@@ -591,7 +586,7 @@ header {
 .causas-container,
 .consecuencias-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
     margin: 30px 0;
 }
@@ -633,7 +628,7 @@ header {
 /* Funcionalidades de LUDIK */
 .funcionalidades-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
     margin: 30px 0;
 }
@@ -735,7 +730,6 @@ header {
         opacity: 0;
         transform: translateY(30px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -746,202 +740,8 @@ header {
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
-    }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .encabezado-ludik {
-        flex-direction: column;
-        gap: 15px;
-        padding: 20px;
-    }
-
-    .titulo-ludik {
-        font-size: 2rem;
-        letter-spacing: 2px;
-    }
-
-    .lado-izq,
-    .lado-der {
-        justify-content: center;
-        flex: none;
-    }
-
-    .centro {
-        order: -1;
-    }
-
-    .nav-interno {
-        flex-direction: column;
-        gap: 15px;
-        padding: 25px 20px;
-    }
-
-    .nav-btn {
-        width: 100%;
-        text-align: center;
-    }
-
-    .section {
-        padding: 40px 30px;
-    }
-
-    .section h1 {
-        font-size: 2rem !important;
-    }
-
-    .main-content {
-        margin: 20px 15px;
-        margin-top: 160px;
-        border-radius: 16px;
-    }
-
-    .logo-institucion,
-    .logo-ludik {
-        width: 40px;
-        height: 50px;
-    }
-
-    .imagen-colegio {
-        max-width: 95%;
-    }
-
-    .imagen-mediana {
-        max-width: 250px !important;
-    }
-
-    .imagen-logo-header {
-        width: 100px !important;
-    }
-
-    .especialidad {
-        font-size: 0.8rem;
-        padding: 4px 8px;
-    }
-
-    .btn-login {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-
-    .ludik-header {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 20px;
-    }
-
-    .ludik-logo {
-        order: -1;
-    }
-
-    .quote-content {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-    }
-
-    .athlete-image {
-        width: 100px !important;
-        height: 130px !important;
-    }
-
-    .cita {
-        font-size: 1.1rem !important;
-    }
-
-    .law-btn {
-        padding: 20px 25px;
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-
-    .law-title h4 {
-        font-size: 1.1rem !important;
-    }
-
-    .causas-container,
-    .consecuencias-container,
-    .funcionalidades-container,
-    .principios-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .titulo-ludik {
-        font-size: 1.8rem;
-        letter-spacing: 1px;
-    }
-
-    .section {
-        padding: 30px 20px;
-    }
-
-    .section h1 {
-        font-size: 1.8rem !important;
-    }
-
-    .parrafo-principal {
-        font-size: 1rem !important;
-    }
-
-    .btn-login {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-
-    .main-content {
-        margin-top: 180px;
-    }
-
-    .imagen-mediana {
-        max-width: 200px !important;
-    }
-
-    .imagen-logo-header {
-        width: 80px !important;
-    }
-
-    .nav-interno {
-        padding: 20px 15px;
-    }
-
-    .nav-btn {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-
-    .cita {
-        font-size: 1rem !important;
-    }
-
-    .athlete-image {
-        width: 80px !important;
-        height: 110px !important;
-    }
-
-    .inclusion-stats,
-    .santander-stats,
-    .inclusion-definition,
-    .reality-check,
-    .ludik-objective {
-        padding: 20px;
-        margin: 20px 0;
-    }
-
-    .law-btn {
-        padding: 18px 20px;
-    }
-
-    .law-body {
-        padding: 25px 20px;
     }
 }
 
@@ -988,18 +788,6 @@ header {
     transform: scale(1.05);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .student-card {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .student-image {
-        margin-top: 15px;
-    }
-}
-
 /* Estilo para el collage */
 .collage-space {
     margin: 40px 0;
@@ -1021,7 +809,639 @@ header {
 
 .imagen-ludik-header {
     height: 80px;
-    /* ajusta tamaño según tu preferencia */
     width: auto;
     display: inline-block;
+}
+
+/* ===============================================
+   RESPONSIVE DESIGN - MEJORAS COMPLETAS
+   =============================================== */
+
+/* Tablets grandes y pantallas medianas (hasta 1024px) */
+@media (max-width: 1024px) {
+    .encabezado-ludik {
+        padding: 20px 30px;
+    }
+
+    .main-content {
+        margin: 30px 20px;
+        margin-top: 110px;
+    }
+
+    .section {
+        padding: 40px 35px;
+    }
+
+    .nav-interno {
+        padding: 25px 30px;
+    }
+}
+
+/* Tablets (hasta 768px) */
+@media (max-width: 768px) {
+    /* Header responsive - MEJORADO Y OPTIMIZADO */
+    .encabezado-ludik {
+        flex-direction: row;
+        padding: 10px 15px;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+    }
+
+    .lado-izq {
+        width: auto;
+        justify-content: flex-start;
+        gap: 8px;
+        flex: 0 0 auto;
+    }
+
+    /* Ocultar el texto de especialidad en móviles */
+    .especialidad {
+        display: none;
+    }
+
+    .centro {
+        width: auto;
+        order: 0;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .lado-izq {
+        order: 0;
+    }
+
+    .lado-der {
+        width: auto;
+        order: 0;
+        justify-content: flex-end;
+        gap: 8px;
+        flex: 0 0 auto;
+    }
+
+    .titulo-ludik {
+        font-size: 1.8rem;
+        letter-spacing: 1.5px;
+    }
+
+    .imagen-ludik-header {
+        height: 40px;
+    }
+
+    .logo-institucion,
+    .logo-ludik {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+    }
+
+    .btn-login {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+
+    /* Navegación interna */
+    .nav-interno {
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px;
+    }
+
+    .nav-btn {
+        width: 100%;
+        text-align: center;
+        padding: 12px 20px;
+    }
+
+    /* Contenido principal - AJUSTE CRÍTICO */
+    .main-content {
+        margin: 20px 15px;
+        margin-top: 90px; /* Reducido para evitar superposición */
+        border-radius: 16px;
+    }
+
+    .section {
+        padding: 35px 25px;
+    }
+
+    .section h1 {
+        font-size: 2rem !important;
+    }
+
+    .titulo-seccion {
+        font-size: 1.6rem !important;
+    }
+
+    .subtitulo {
+        font-size: 1.2rem !important;
+    }
+
+    .parrafo-principal {
+        font-size: 1.05rem !important;
+    }
+
+    /* Imágenes */
+    .imagen-colegio {
+        max-width: 95%;
+    }
+
+    .imagen-mediana {
+        max-width: 250px !important;
+    }
+
+    .imagen-logo-header {
+        width: 100px !important;
+    }
+
+    .collage-img {
+        max-width: 95%;
+    }
+
+    /* Citas con imagen */
+    .quote-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .quote-image {
+        order: -1;
+    }
+
+    .athlete-image {
+        width: 100px !important;
+        height: 130px !important;
+    }
+
+    .cita {
+        font-size: 1.1rem !important;
+    }
+
+    /* Header de LUDIK */
+    .ludik-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .ludik-logo {
+        order: -1;
+    }
+
+    /* Botones de leyes */
+    .law-btn {
+        padding: 20px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .law-title h4 {
+        font-size: 1.15rem !important;
+    }
+
+    .law-title p {
+        font-size: 0.95rem !important;
+    }
+   
+    .law-body {
+        padding: 25px 20px;
+    }
+
+    .law-body h5 {
+        font-size: 1.1rem !important;
+    }
+
+    /* Tarjetas de estudiantes */
+    .student-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .student-image {
+        order: -1;
+        margin-bottom: 15px;
+    }
+
+    /* Contenedores grid */
+    .principios-container,
+    .causas-container,
+    .consecuencias-container,
+    .funcionalidades-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* Cajas de información */
+    .inclusion-stats,
+    .santander-stats,
+    .inclusion-definition,
+    .reality-check,
+    .ludik-objective {
+        padding: 20px;
+        margin: 25px 0;
+    }
+
+    .stat-highlight {
+        padding: 18px;
+        font-size: 1.05rem;
+    }
+}
+
+/* Móviles grandes (hasta 576px) */
+@media (max-width: 576px) {
+    /* Header */
+    .encabezado-ludik {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+
+    .titulo-ludik {
+        font-size: 1.4rem;
+        letter-spacing: 1px;
+    }
+
+    .imagen-ludik-header {
+        height: 35px;
+    }
+
+    .logo-institucion,
+    .logo-ludik {
+        width: 28px;
+        height: 28px;
+    }
+
+    .especialidad {
+        display: none;
+    }
+
+    .btn-login {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
+
+    /* Contenido principal */
+    .main-content {
+        margin: 15px 10px;
+        margin-top: 75px; /* Ajustado para móviles pequeños */
+        border-radius: 12px;
+    }
+
+    .section {
+        padding: 30px 20px;
+    }
+
+    .section h1 {
+        font-size: 1.8rem !important;
+    }
+
+    .titulo-seccion {
+        font-size: 1.5rem !important;
+        margin: 35px 0 20px 0 !important;
+    }
+
+    .subtitulo {
+        font-size: 1.15rem !important;
+        margin: 25px 0 12px 0 !important;
+    }
+
+    .parrafo-principal {
+        font-size: 1rem !important;
+        line-height: 1.7 !important;
+        margin-bottom: 18px !important;
+    }
+
+    /* Navegación */
+    .nav-interno {
+        padding: 18px 15px;
+        gap: 10px;
+    }
+
+    .nav-btn {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+    }
+
+    /* Imágenes */
+    .imagen-colegio {
+        max-width: 98%;
+    }
+
+    .imagen-mediana {
+        max-width: 200px !important;
+    }
+
+    .imagen-logo-header {
+        width: 80px !important;
+    }
+
+    .collage-img {
+        max-width: 98%;
+    }
+
+    /* Citas */
+    .cita {
+        font-size: 1rem !important;
+        line-height: 1.5 !important;
+    }
+
+    .autor-cita {
+        font-size: 0.95rem !important;
+    }
+
+    .athlete-image {
+        width: 90px !important;
+        height: 120px !important;
+    }
+
+    .student-photo {
+        width: 100px;
+        height: 140px;
+    }
+
+    /* Botones de leyes */
+    .law-btn {
+        padding: 18px 15px;
+    }
+
+    .law-title h4 {
+        font-size: 1.05rem !important;
+    }
+
+    .law-title p {
+        font-size: 0.9rem !important;
+    }
+
+    .law-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1.3rem;
+    }
+
+    .law-body {
+        padding: 20px 15px;
+    }
+
+    .law-body h5 {
+        font-size: 1.05rem !important;
+    }
+
+    /* Tarjetas y contenedores */
+    .causa-item,
+    .consecuencia-item,
+    .funcionalidad-item,
+    .principio-item {
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .causa-icono,
+    .consecuencia-icono,
+    .funcionalidad-icono {
+        font-size: 1.8rem;
+        padding: 10px;
+    }
+
+    .causa-content h4,
+    .consecuencia-content h4,
+    .funcionalidad-content h4,
+    .principio-titulo {
+        font-size: 1.1rem !important;
+    }
+
+    /* Cajas de información */
+    .inclusion-stats,
+    .santander-stats,
+    .inclusion-definition,
+    .reality-check,
+    .ludik-objective,
+    .quote-section {
+        padding: 18px;
+        margin: 20px 0;
+    }
+
+    .stat-highlight {
+        padding: 16px;
+        font-size: 1rem;
+    }
+
+    .numero-destacado {
+        font-size: 1.15em !important;
+    }
+
+    /* Footer */
+    .pie-pagina {
+        padding: 25px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Móviles pequeños (hasta 375px) */
+@media (max-width: 375px) {
+    .encabezado-ludik {
+        padding: 6px 8px;
+    }
+
+    .titulo-ludik {
+        font-size: 1.2rem;
+        letter-spacing: 0.8px;
+    }
+
+    .imagen-ludik-header {
+        height: 30px;
+    }
+
+    .logo-institucion,
+    .logo-ludik {
+        width: 24px;
+        height: 24px;
+    }
+
+    .btn-login {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+
+    .main-content {
+        margin: 10px 8px;
+        margin-top: 70px;
+    }
+
+    .section {
+        padding: 25px 15px;
+    }
+
+    .section h1 {
+        font-size: 1.6rem !important;
+    }
+
+    .titulo-seccion {
+        font-size: 1.4rem !important;
+    }
+
+    .subtitulo {
+        font-size: 1.1rem !important;
+    }
+
+    .parrafo-principal {
+        font-size: 0.95rem !important;
+    }
+
+    .nav-interno {
+        padding: 15px 12px;
+    }
+
+    .nav-btn {
+        padding: 9px 16px;
+        font-size: 0.85rem;
+    }
+
+    .imagen-mediana {
+        max-width: 180px !important;
+    }
+
+    .imagen-logo-header {
+        width: 70px !important;
+    }
+
+    .athlete-image {
+        width: 80px !important;
+        height: 110px !important;
+    }
+
+    .student-photo {
+        width: 90px;
+        height: 130px;
+    }
+
+    .law-btn {
+        padding: 16px 12px;
+    }
+
+    .law-title h4 {
+        font-size: 1rem !important;
+    }
+
+    .law-title p {
+        font-size: 0.85rem !important;
+    }
+
+    .law-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 1.2rem;
+    }
+
+    .law-body {
+        padding: 18px 12px;
+    }
+
+    .causa-item,
+    .consecuencia-item,
+    .funcionalidad-item,
+    .principio-item {
+        padding: 18px;
+    }
+
+    .causa-icono,
+    .consecuencia-icono,
+    .funcionalidad-icono {
+        font-size: 1.6rem;
+        padding: 8px;
+    }
+
+    .inclusion-stats,
+    .santander-stats,
+    .inclusion-definition,
+    .reality-check,
+    .ludik-objective,
+    .quote-section {
+        padding: 16px;
+    }
+
+    .stat-highlight {
+        padding: 14px;
+        font-size: 0.95rem;
+    }
+
+    .pie-pagina {
+        padding: 20px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Pantallas muy pequeñas (hasta 320px) */
+@media (max-width: 320px) {
+    .titulo-ludik {
+        font-size: 1.4rem;
+    }
+
+    .section h1 {
+        font-size: 1.5rem !important;
+    }
+
+    .titulo-seccion {
+        font-size: 1.3rem !important;
+    }
+
+    .nav-btn {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+
+    .parrafo-principal {
+        font-size: 0.9rem !important;
+    }
+
+    .cita {
+        font-size: 0.95rem !important;
+    }
+}
+
+/* Ajustes para orientación horizontal en móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+    .main-content {
+        margin-top: 140px;
+    }
+
+    .section {
+        padding: 30px 25px;
+    }
+
+    .encabezado-ludik {
+        padding: 10px 20px;
+    }
+}
+
+/* Optimización para impresión */
+@media print {
+    header {
+        position: relative;
+    }
+
+    .main-content {
+        margin-top: 0;
+        box-shadow: none;
+    }
+
+    .nav-interno,
+    .btn-login {
+        display: none;
+    }
+
+    .section {
+        display: block !important;
+        page-break-inside: avoid;
+    }
+
+    .law-content {
+        display: block !important;
+    }
 }
