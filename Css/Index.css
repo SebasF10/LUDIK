@@ -839,67 +839,67 @@ header {
 
 /* Tablets (hasta 768px) */
 @media (max-width: 768px) {
-    /* Header responsive - MEJORADO */
+    /* Header responsive - MEJORADO Y OPTIMIZADO */
     .encabezado-ludik {
-        flex-direction: column;
-        padding: 15px 20px;
-        gap: 15px;
+        flex-direction: row;
+        padding: 10px 15px;
+        gap: 10px;
         align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
     }
 
     .lado-izq {
-        width: 100%;
-        justify-content: space-between;
-        gap: 10px;
+        width: auto;
+        justify-content: flex-start;
+        gap: 8px;
+        flex: 0 0 auto;
     }
 
-    .lado-izq .logo-institucion:first-child,
-    .lado-izq .logo-institucion:nth-child(2) {
-        flex-shrink: 0;
-    }
-
+    /* Ocultar el texto de especialidad en móviles */
     .especialidad {
-        flex: 1;
-        text-align: center;
-        font-size: 0.8rem;
-        padding: 5px 8px;
-        white-space: normal;
-        line-height: 1.3;
+        display: none;
     }
 
     .centro {
-        width: 100%;
-        order: 1;
+        width: auto;
+        order: 0;
+        flex: 1;
+        min-width: 0;
     }
 
     .lado-izq {
-        order: 2;
+        order: 0;
     }
 
     .lado-der {
-        width: 100%;
-        order: 3;
-        justify-content: center;
-        gap: 12px;
+        width: auto;
+        order: 0;
+        justify-content: flex-end;
+        gap: 8px;
+        flex: 0 0 auto;
     }
 
     .titulo-ludik {
-        font-size: 2rem;
-        letter-spacing: 2px;
+        font-size: 1.8rem;
+        letter-spacing: 1.5px;
     }
 
     .imagen-ludik-header {
-        height: 60px;
+        height: 40px;
     }
 
     .logo-institucion,
     .logo-ludik {
-        width: 45px;
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
     }
 
     .btn-login {
-        padding: 10px 20px;
-        font-size: 0.9rem;
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        white-space: nowrap;
     }
 
     /* Navegación interna */
@@ -915,10 +915,10 @@ header {
         padding: 12px 20px;
     }
 
-    /* Contenido principal */
+    /* Contenido principal - AJUSTE CRÍTICO */
     .main-content {
         margin: 20px 15px;
-        margin-top: 180px;
+        margin-top: 90px; /* Reducido para evitar superposición */
         border-radius: 16px;
     }
 
@@ -1008,7 +1008,7 @@ header {
     .law-title p {
         font-size: 0.95rem !important;
     }
-
+   
     .law-body {
         padding: 25px 20px;
     }
@@ -1059,38 +1059,38 @@ header {
 @media (max-width: 576px) {
     /* Header */
     .encabezado-ludik {
-        padding: 12px 15px;
-        gap: 10px;
+        padding: 8px 10px;
+        gap: 6px;
     }
 
     .titulo-ludik {
-        font-size: 1.8rem;
-        letter-spacing: 1.5px;
+        font-size: 1.4rem;
+        letter-spacing: 1px;
     }
 
     .imagen-ludik-header {
-        height: 50px;
+        height: 35px;
     }
 
     .logo-institucion,
     .logo-ludik {
-        width: 40px;
+        width: 28px;
+        height: 28px;
     }
 
     .especialidad {
-        font-size: 0.8rem;
-        padding: 4px 8px;
+        display: none;
     }
 
     .btn-login {
-        padding: 9px 18px;
-        font-size: 0.85rem;
+        padding: 6px 12px;
+        font-size: 0.75rem;
     }
 
     /* Contenido principal */
     .main-content {
         margin: 15px 10px;
-        margin-top: 190px;
+        margin-top: 75px; /* Ajustado para móviles pequeños */
         border-radius: 12px;
     }
 
@@ -1246,36 +1246,32 @@ header {
 /* Móviles pequeños (hasta 375px) */
 @media (max-width: 375px) {
     .encabezado-ludik {
-        padding: 10px 12px;
+        padding: 6px 8px;
     }
 
     .titulo-ludik {
-        font-size: 1.6rem;
-        letter-spacing: 1px;
+        font-size: 1.2rem;
+        letter-spacing: 0.8px;
     }
 
     .imagen-ludik-header {
-        height: 45px;
+        height: 30px;
     }
 
     .logo-institucion,
     .logo-ludik {
-        width: 35px;
-    }
-
-    .especialidad {
-        font-size: 0.75rem;
-        padding: 3px 6px;
+        width: 24px;
+        height: 24px;
     }
 
     .btn-login {
-        padding: 8px 16px;
-        font-size: 0.8rem;
+        padding: 5px 10px;
+        font-size: 0.7rem;
     }
 
     .main-content {
         margin: 10px 8px;
-        margin-top: 200px;
+        margin-top: 70px;
     }
 
     .section {
