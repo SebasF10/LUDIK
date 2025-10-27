@@ -45,7 +45,6 @@ function cargarApartados() {
   ];
   const cont = document.getElementById("menu-apartados");
   cont.innerHTML = `
-    <h2>Discalculia</h2>
     <div class="menu-opciones">
       ${apartados.map((a, i) => `
         <div class="categoria">
@@ -134,17 +133,30 @@ function cargarActividad() {
 }
 
 function validar(res, ok) {
+  const botones = document.querySelectorAll(".tarjeta-bonita");
+  
+  // Desactivar todos los botones para evitar múltiples clics
+  botones.forEach(btn => btn.disabled = true);
+
   if (res == ok) {
     reproducirSonido("correcto");
     mostrarFeedback("¡Bien hecho!", "correcto");
     correctos++;
     actividadIndex++;
-    setTimeout(cargarActividad, 700);
+    setTimeout(() => {
+      cargarActividad();
+    }, 700);
   } else {
     reproducirSonido("incorrecto");
     mostrarFeedback("Intenta otra vez", "incorrecto");
+
+    // Volver a activar botones después del error
+    setTimeout(() => {
+      botones.forEach(btn => btn.disabled = false);
+    }, 800);
   }
 }
+
 
 /* --- Feedback --- */
 function mostrarFeedback(msg, tipo) {

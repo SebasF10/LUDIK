@@ -11,27 +11,30 @@
     <h1>LUDIK</h1>
     <p>Actividades auditivas e inclusivas</p>
   </header>
+
+  <!-- Botón que regresa a la página general de ejercicios -->
   <a href="../../Ejercicios.html" class="btn--regresar">
     ⬅ Regresar
   </a>
+
   <!-- MENÚ PRINCIPAL -->
   <section id="menu" class="contenedor">
-    <h2>Selecciona una actividad</h2>
     <div class="menu-opciones">
       <div class="categoria">
         <h3>Sonidos del entorno</h3>
         <button data-actividad="entorno">Iniciar</button>
       </div>
       <div class="categoria">
-        <h3>Memoria auditiva</h3>
-        <button data-actividad="memoria">Iniciar</button>
+        <h3>Reconoce el animal</h3>
+        <button data-actividad="animal">Iniciar</button>
       </div>
       <div class="categoria">
-        <h3>Historia interactiva</h3>
-        <button data-actividad="historia">Iniciar</button>
+        <h3>Adivina el objeto</h3>
+        <button data-actividad="objeto">Iniciar</button>
       </div>
     </div>
   </section>
+  
 
   <!-- ZONA DE ACTIVIDAD -->
   <section id="actividad" class="contenedor" style="display:none;">
@@ -39,19 +42,26 @@
       <h2 id="instruccion"></h2>
       <div id="marcador"></div>
     </div>
+
     <div id="opciones" class="opciones"></div>
+
     <div class="controles">
       <button id="btn-repetir" disabled>Repetir</button>
       <button id="btn-siguiente" disabled>Siguiente</button>
+      <!-- SEGUNDO botón: vuelve SOLO al menú de las 3 actividades -->
       <button id="btn-volver">Volver al Menú</button>
     </div>
+
     <div id="retro" class="retro"></div>
   </section>
 
   <footer>
-    <p>© 2025 LUDIK - Actividades Inclusivas</p>
+    <p>© 2025 Actividades LUDIK</p>
   </footer>
 
   <script src="Ceguera.js"></script>
+    <!-- Cargar el sistema de accesibilidad global -->
+    <script src="../../Js/accesibilidad-global.js"></script>
+
 </body>
 </html>

@@ -37,7 +37,8 @@ function detenerSonido(tipo) {
  ********************/
 function mostrarDispraxia() {
   document.getElementById("pantalla-inicial").hidden = true;
-  document.getElementById("vista-actividad").hidden = false;
+  document.getElementById("menu-dispraxia").hidden = false;
+  document.getElementById("vista-actividad").hidden = true;
 
   cargarApartadosDispraxia("Dispraxia", [
     "Juegos de arrastre",
@@ -47,9 +48,10 @@ function mostrarDispraxia() {
 }
 
 function cargarApartadosDispraxia(titulo, apartados) {
-  const vista = document.getElementById("vista-actividad");
+  const menu = document.getElementById("menu-dispraxia");
   currentTitulo = titulo;
-  vista.innerHTML = `
+
+  menu.innerHTML = `
     <h2 id="instruccion">${titulo}</h2>
     <div class="menu-opciones">
       ${apartados.map((a, i) => `
@@ -62,10 +64,24 @@ function cargarApartadosDispraxia(titulo, apartados) {
   `;
 }
 
+
 function iniciarApartadoDispraxia(indice, titulo) {
   actividadDispraxiaIndex = 0;
   correctos = 0;
   currentIndice = indice;
+  // 🔹 Ocultar botón de regresar del menú principal
+document.getElementById("btn-menu-regresar").style.display = "none";
+
+
+  // 🔹 Oculta todo el menú principal
+  document.getElementById("menu-dispraxia").hidden = true;
+
+  // 🔹 Muestra el área de actividad
+  const vista = document.getElementById("vista-actividad");
+  vista.hidden = false;
+  vista.innerHTML = "";
+
+  // 🔹 Carga directamente la actividad
   cargarActividadesDispraxia(indice, titulo);
 }
 
@@ -124,9 +140,8 @@ function mostrarActividadDispraxia(actividad, indice, titulo) {
   const vista = document.getElementById("vista-actividad");
 
   let contenido = `
-    <button class="btn-regresar" onclick="cargarApartadosDispraxia('${titulo}', ['Juegos de arrastre','Trazado de figuras','Coordinación ojo-mano'])">⬅ Regresar</button>
+    <button class="btn-regresar" id="btn-regresar">⬅ Regresar</button>
     <p id="marcador">Completadas: ${correctos}/${LIMITE}</p>
-
     <div class="tarjeta-instruccion">
       <p>${actividad.texto}</p>
     </div>
@@ -165,6 +180,24 @@ function mostrarActividadDispraxia(actividad, indice, titulo) {
   }
 
   vista.innerHTML = contenido;
+  // 🔹 Detectar si estamos dentro de un apartado o en los tres apartados
+  const btnRegresar = document.getElementById("btn-regresar");
+  btnRegresar.addEventListener("click", () => {
+    // 🔹 Mostrar nuevamente el botón de regresar del menú principal
+document.getElementById("btn-menu-regresar").style.display = "inline-block";
+
+    // 🔹 Oculta la actividad y muestra el menú principal de nuevo
+    document.getElementById("vista-actividad").hidden = true;
+    document.getElementById("menu-dispraxia").hidden = false;
+  
+    cargarApartadosDispraxia("Dispraxia", [
+      "Juegos de arrastre",
+      "Trazado de figuras",
+      "Coordinación ojo-mano"
+    ]);
+  });
+  
+
 
   if (indice === 1) iniciarTrazado(actividad.figura);
   if (indice === 2) iniciarCoordinacion(actividad.objetivo);
@@ -289,3 +322,4 @@ function iniciarCoordinacion(objetivo) {
 document.addEventListener("DOMContentLoaded", () => {
   mostrarDispraxia();
 });
+

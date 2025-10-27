@@ -587,6 +587,20 @@ footer {
         font-size: 1.8rem;
     }
 }
+/* Botón regresar */
+.btn--regresar {
+    display: inline-block;
+    margin: 20px;
+    padding: 12px 20px;
+    font-size: 18px;
+    background: var(--color-principal);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
 
 .centro {
     position: absolute;

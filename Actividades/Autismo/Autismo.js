@@ -73,7 +73,7 @@ function sumarCorrecto(callback) {
       progress[currentActivity].bestScore = Math.max(progress[currentActivity].bestScore, correctos);
       localStorage.setItem('teaProgress', JSON.stringify(progress));
 
-      reproducirSonido('fin'); // 🔊 sonido final al cerrar actividad
+      reproducirSonido('fin');
       mostrarFeedback(`¡Has alcanzado ${getLimiteActual()}/${getLimiteActual()} correctos! 🎉`, "correcto");
 
       setTimeout(volverAlMenu, 2000);
@@ -118,7 +118,7 @@ function volverAlMenu() {
   vista.hidden = true;
   vista.classList.remove("activa");
 
-  document.getElementById('menu-principal').hidden = false;
+  document.getElementById('menu-principal').style.display = "block";
   currentActivity = null;
 }
 
@@ -149,18 +149,25 @@ function renderEmociones() {
     btn.className = 'tarjeta-bonita';
     btn.textContent = e.icono;
     btn.setAttribute('aria-label', `Emoción ${e.nombre}`);
-    btn.addEventListener('click', () => {
+
+    btn.addEventListener("click", () => {
+      const botones = document.querySelectorAll(".tarjeta-bonita");
+      botones.forEach(b => b.disabled = true); // 🔒 bloquea clics
+    
       if (e.nombre === target.nombre) {
-        btn.classList.add('correct');
-        reproducirSonido('correcto');
         mostrarFeedback("¡Correcto!", "correcto");
+        reproducirSonido("correcto");
         sumarCorrecto(renderEmociones);
       } else {
-        btn.classList.add('incorrecta');
-        reproducirSonido('incorrecto');
         mostrarFeedback("Intenta otra vez", "incorrecto");
+        reproducirSonido("incorrecto");
+    
+        // 🔓 si falló, vuelve a activar botones después de 0.8s
+        setTimeout(() => botones.forEach(b => b.disabled = false), 800);
       }
     });
+    
+
     opciones.appendChild(btn);
   });
 
@@ -291,25 +298,44 @@ function renderPares() {
 
   const grid = document.createElement('div');
   grid.className = 'opciones';
+
   actividadesTEA.pares.forEach(p => {
     const btn = document.createElement('button');
     btn.className = 'tarjeta-bonita';
     btn.innerHTML = `<span style="font-size:32px">${p.icono}</span><p>${p.texto}</p>`;
     btn.setAttribute('aria-label', `Opción ${p.texto}`);
-    btn.addEventListener('click', () => {
+
+    btn.addEventListener("click", () => {
+      const botones = grid.querySelectorAll("button");
+      botones.forEach(b => b.disabled = true); // 🔒 bloquea todos los botones
+    
       if (p.id === target.id) {
-        btn.classList.add('correct');
-        reproducirSonido('correcto');
+        btn.classList.add("correct");
+        reproducirSonido("correcto");
         mostrarFeedback("¡Correcto!", "correcto");
-        sumarCorrecto(renderPares);
+    
+        setTimeout(() => {
+          btn.classList.remove("correct");
+          botones.forEach(b => b.disabled = false); // 🔓 desbloquea
+          sumarCorrecto(renderPares);
+        }, 800);
       } else {
-        btn.classList.add('incorrecta');
-        reproducirSonido('incorrecto');
+        btn.classList.add("incorrecta");
+        reproducirSonido("incorrecto");
         mostrarFeedback("Intenta otra vez", "incorrecto");
+    
+        setTimeout(() => {
+          btn.classList.remove("incorrecta");
+          botones.forEach(b => b.disabled = false); // 🔓 desbloquea
+        }, 800);
       }
     });
+    
+    
+
     grid.appendChild(btn);
   });
+
   tabs.pares.appendChild(grid);
 }
 
@@ -326,31 +352,13 @@ function mostrarFeedback(mensaje, tipo) {
 }
 
 /********************
- * Funciones progreso
- ********************/
-function actualizarBarraAutismo() {
-  const progreso = Math.round((apartadosCompletadosAutismo / TOTAL_APARTADOS_AUTISMO) * 100);
-  document.getElementById("progress-bar-autismo").style.width = progreso + "%";
-  document.getElementById("progress-text-autismo").textContent =
-    `Progreso: ${apartadosCompletadosAutismo}/${TOTAL_APARTADOS_AUTISMO} apartados completados`;
-}
-
-/********************
- * Ejemplo al terminar apartado
- ********************/
-function terminarApartadoAutismo() {
-  apartadosCompletadosAutismo++;
-  actualizarBarraAutismo();
-  volverAlMenu();
-}
-/********************
  * Sonidos *
  ********************/
 const sonidos = {
   correcto: new Audio('Sounds_Autismo/correcto.mp3'),
   incorrecto: new Audio('Sounds_Autismo/incorrecto.mp3'),
   drag: new Audio('Sounds_Autismo/drag.mp3'),
-  fin: new Audio('Sounds_Autismo/fin.mp3') // 🔊 sonido final
+  fin: new Audio('Sounds_Autismo/fin.mp3')
 };
 
 sonidos.drag.loop = true;
@@ -373,9 +381,7 @@ function detenerSonido(tipo) {
  * Inicialización *
  ********************/
 document.addEventListener('DOMContentLoaded', () => {
-  Object.values(sonidos).forEach(audio => {
-    audio.load();
-  });
+  Object.values(sonidos).forEach(audio => audio.load());
 
   document.querySelectorAll('.menu-actividades button').forEach(btn => {
     btn.addEventListener('click', () => {
