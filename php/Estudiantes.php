@@ -227,7 +227,7 @@ function getStudentDetails($conexion, $rol, $usuario)
         // Información adicional según el rol
         $studentData['madre'] = getParentInfo($conexion, $studentData['id_madre'], 'madre');
         $studentData['padre'] = getParentInfo($conexion, $studentData['id_padre'], 'padre');
-        $studentData['acudiente'] = getParentInfo($conexion, $studentData['id_cuidador'], 'acudiente');
+        $studentData['acudiente'] = getParentInfo($conexion, $studentData['id_acudiente'], 'acudiente');
 
         // Solo roles educativos pueden ver información médica y académica completa
         if (in_array($rol, ['admin', 'directivo', 'docente_apoyo', 'docente'])) {
@@ -350,7 +350,7 @@ function getAccessControlClause($conexion, $rol, $usuario, $context = 'main')
         case 'acudiente':
             // Solo estudiantes bajo su cuidado
             $id_acudiente = mysqli_real_escape_string($conexion, $usuario['id_acudiente']);
-            return "WHERE e.id_cuidador = '$id_acudiente'";
+            return "WHERE e.id_acudiente = '$id_acudiente'";
 
         default:
             // Sin acceso por defecto
@@ -395,7 +395,7 @@ function hasAccessToStudent($conexion, $rol, $usuario, $studentId)
 
         case 'acudiente':
             $id_acudiente = mysqli_real_escape_string($conexion, $usuario['id_acudiente']);
-            $sql = "SELECT COUNT(*) as count FROM estudiante WHERE id_estudiante = '$studentId' AND id_cuidador = '$id_acudiente'";
+            $sql = "SELECT COUNT(*) as count FROM estudiante WHERE id_estudiante = '$studentId' AND id_acudiente = '$id_acudiente'";
             break;
 
         default:
@@ -809,4 +809,118 @@ function getCurrentGroup($conexion, $studentId)
     }
 
     return mysqli_fetch_assoc($result);
+}
+
+/**
+ * Obtener compromisos del estudiante desde el PIAR más reciente
+ */
+function getStudentCommitments($conexion, $studentId)
+{
+    try {
+        $studentId = mysqli_real_escape_string($conexion, $studentId);
+        
+        // Obtener el PIAR más reciente del estudiante
+        $sql = "
+            SELECT 
+                p.compromiso,
+            FROM piar p
+            WHERE p.id_estudiante = '$studentId'
+            ORDER BY p.fecha DESC, p.anio DESC
+            LIMIT 1
+        ";
+        
+        $result = mysqli_query($conexion, $sql);
+        
+        if (!$result) {
+            error_log("Error obteniendo compromisos: " . mysqli_error($conexion));
+            return null;
+        }
+        
+        if (mysqli_num_rows($result) == 0) {
+            return null;
+        }
+        
+        $data = mysqli_fetch_assoc($result);
+        
+        return [
+            'compromiso' => $data['compromiso'] ?? '',
+        ];
+        
+    } catch (Exception $e) {
+        error_log("Error en getStudentCommitments: " . $e->getMessage());
+        return null;
+    }
+}
+
+/**
+ * Obtener información completa para el Acta de Acuerdo
+ */
+function getActaAcuerdoInfo($conexion, $studentId, $rol, $usuario)
+{
+    try {
+        // Verificar acceso al estudiante
+        if (!hasAccessToStudent($conexion, $rol, $usuario, $studentId)) {
+            return [
+                'success' => false, 
+                'error' => 'No tiene acceso a este estudiante'
+            ];
+        }
+        
+        $studentId = mysqli_real_escape_string($conexion, $studentId);
+        
+        // Información básica del estudiante
+        $studentData = getBasicStudentInfo($conexion, $studentId);
+        
+        if (!$studentData) {
+            return [
+                'success' => false, 
+                'error' => 'Estudiante no encontrado'
+            ];
+        }
+        
+        // Procesar URL de foto
+        $studentData['foto_url'] = getPhotoUrl(
+            $studentData['url_foto'], 
+            $studentData['id_estudiante']
+        );
+        
+        // Obtener grupo actual
+        $groupInfo = getCurrentGroup($conexion, $studentId);
+        if ($groupInfo) {
+            $studentData['grado'] = $groupInfo['grado'];
+            $studentData['grupo'] = $groupInfo['grupo'];
+        }
+        
+        // Obtener compromisos del PIAR
+        $studentData['compromisos'] = getStudentCommitments($conexion, $studentId);
+        
+        // Obtener información de padres/acudientes
+        $studentData['madre'] = getParentInfo(
+            $conexion, 
+            $studentData['id_madre'], 
+            'madre'
+        );
+        $studentData['padre'] = getParentInfo(
+            $conexion, 
+            $studentData['id_padre'], 
+            'padre'
+        );
+        $studentData['acudiente'] = getParentInfo(
+            $conexion, 
+            $studentData['id_acudiente'], 
+            'acudiente'
+        );
+        
+        return [
+            'success' => true,
+            'student' => $studentData
+        ];
+        
+    } catch (Exception $e) {
+        error_log("Error en getActaAcuerdoInfo: " . $e->getMessage());
+        return [
+            'success' => false, 
+            'error' => 'Error obteniendo información del acta de acuerdo'
+        ];
+    }
 }

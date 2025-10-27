@@ -24,9 +24,10 @@ try {
     $ajuste = $_POST['ajuste'] ?? null;
     $apoyo = $_POST['apoyo'] ?? null;
     $barrera = $_POST['barrera'] ?? null;
+    $compromiso = $_POST['compromiso'] ?? null;
 
     // Validar datos obligatorios
-    if (!$id_estudiante || !$fecha || !$ajuste || !$apoyo || !$barrera) {
+    if (!$id_estudiante || !$fecha || !$ajuste || !$apoyo || !$barrera || !$compromiso) {
         throw new Exception('Todos los campos son obligatorios');
     }
 
@@ -42,9 +43,9 @@ try {
     $stmt_verificar->close();
 
     // Insertar el PIAR
-    $consulta = "INSERT INTO piar (id_estudiante, fecha, ajuste, apoyo, barrera) VALUES (?, ?, ?, ?, ?)";
+    $consulta = "INSERT INTO piar (id_estudiante, fecha, ajuste, apoyo, barrera, compromiso) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conexion->prepare($consulta);
-    $stmt->bind_param("issss", $id_estudiante, $fecha, $ajuste, $apoyo, $barrera);
+    $stmt->bind_param("isssss", $id_estudiante, $fecha, $ajuste, $apoyo, $barrera, $compromiso);
 
     if (!$stmt->execute()) {
         throw new Exception('Error al registrar el PIAR: ' . $stmt->error);
