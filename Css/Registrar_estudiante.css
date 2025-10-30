@@ -18,7 +18,7 @@ body {
     line-height: 1.6;
 }
 
-/* ======= ESTILOS DEL HEADER Y MENÚ ======= */
+/* ======= ESTILOS DEL HEADER Y MENÚ - RESPONSIVE ======= */
 .header {
     display: flex;
     align-items: center;
@@ -31,77 +31,74 @@ body {
     position: sticky;
     top: 0;
     z-index: 1001;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .left-section {
     display: flex;
     align-items: center;
     gap: 15px;
-    flex: 1;
+    flex-shrink: 0;
+    order: 1;
 }
 
-.center-section {
+.center-section,
+.centro {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    flex: 1;
     display: flex;
     justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    order: 2;
 }
 
 .right-section {
     display: flex;
     align-items: center;
-    flex: 1;
     justify-content: flex-end;
-    gap: 24px;
-    /* Espacio entre los logos */
+    gap: 20px;
+    flex-shrink: 0;
+    order: 3;
 }
-
-
-.centro {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Cambia flex-end por center */
-    margin: 0;
-    /* Asegúrate de que no tenga margen */
-    padding: 0;
-}
-
 
 .titulo-ludik {
     margin: 0;
-    /* Elimina margen extra */
     padding: 0;
 }
-
 
 .imagen-ludik-header {
     height: 80px;
     width: auto;
     display: inline-block;
     margin: 0;
-    /* Elimina margen extra */
     padding: 0;
     vertical-align: middle;
 }
 
 .logo-institucion,
-.logo-ludik {
+.logo-ludik,
+.header-logo {
     width: 50px;
-    height: auto;
-    /* mantiene proporción natural */
+    height: 50px;
     object-fit: contain;
-    /* muestra la imagen completa sin recortes */
     border-radius: 0;
-    /* elimina bordes redondeados */
     box-shadow: none;
-    /* elimina la sombra blanca alrededor */
+    flex-shrink: 0;
+}
+
+.header-logo {
+    width: 70px !important;
+    height: 70px !important;
+    transition: all 0.3s ease !important;
+    background: none !important;
+    padding: 0 !important;
+    cursor: default;
+    outline: none !important;
+    border: none !important;
 }
 
 .menu-text {
@@ -115,22 +112,6 @@ body {
     letter-spacing: 1px;
     text-transform: uppercase;
 }
-
-.header-logo {
-    width: 70px !important;
-    height: 70px !important;
-    object-fit: cover;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    transition: all 0.3s ease !important;
-    background: none !important;
-    padding: 0 !important;
-    cursor: default;
-    outline: none !important;
-    border: none !important;
-}
-
-
 
 .title {
     font-size: 3.2rem;
@@ -157,6 +138,7 @@ body {
     transition: all 0.3s ease;
     outline: none !important;
     border: none !important;
+    flex-shrink: 0;
 }
 
 .burger:hover {
@@ -212,7 +194,6 @@ body {
     transform: translate(-50%, -50%) rotate(45deg);
     top: 50%;
     width: 38px;
-    /* Línea más corta */
 }
 
 .burger input:checked~span:nth-of-type(2) {
@@ -224,7 +205,6 @@ body {
     transform: translate(-50%, -50%) rotate(-45deg);
     top: 50%;
     width: 48px;
-    /* Línea más larga */
 }
 
 /* MENÚ LATERAL - CON SCROLL */
@@ -285,12 +265,10 @@ body {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
-    /* Scroll personalizado */
     scrollbar-width: thin;
     scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
-/* Scroll personalizado para webkit */
 .menu-buttons::-webkit-scrollbar {
     width: 6px;
 }
@@ -351,7 +329,6 @@ body {
     box-shadow: none !important;
 }
 
-/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
     content: '';
     position: absolute;
@@ -465,13 +442,11 @@ body {
 /* ESTILOS ORIGINALES DE REGISTRAR ESTUDIANTE */
 /* ============================================ */
 
-/* Wrapper para el contenido después del header */
 .content-wrapper {
     min-height: calc(100vh - 89px);
     padding-top: 0;
 }
 
-/* Contenido principal */
 .main-content {
     max-width: 900px;
     margin: 2rem auto;
@@ -857,24 +832,106 @@ textarea {
     backdrop-filter: blur(10px);
 }
 
-/* RESPONSIVE - MOBILE */
-@media (max-width: 768px) {
+/* RESPONSIVE - TABLET */
+@media (max-width: 1024px) {
     .header {
-        padding: 15px 20px;
+        padding: 15px 30px;
     }
 
-    .title {
-        font-size: 2.5rem;
-        letter-spacing: 2px;
+    .imagen-ludik-header {
+        height: 70px;
     }
 
     .menu-text {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
 
     .header-logo {
-        width: 50px !important;
-        height: 50px !important;
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .logo-institucion {
+        width: 45px;
+        height: 45px;
+    }
+
+    .right-section {
+        gap: 15px;
+    }
+}
+
+/* RESPONSIVE - MOBILE */
+@media (max-width: 768px) {
+    .header {
+        padding: 12px 20px;
+        flex-wrap: nowrap;
+        gap: 10px;
+    }
+
+    .left-section {
+        gap: 10px;
+        flex: 0 0 auto;
+    }
+
+    .menu-text {
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+    }
+
+    .center-section,
+    .centro {
+        position: static;
+        transform: none;
+        flex: 1;
+        order: 2;
+    }
+
+    .imagen-ludik-header {
+        height: 50px;
+    }
+
+    .right-section {
+        gap: 12px;
+        flex: 0 0 auto;
+        order: 3;
+    }
+
+    .header-logo {
+        width: 45px !important;
+        height: 45px !important;
+    }
+
+    .logo-institucion {
+        width: 40px;
+        height: 40px;
+    }
+
+    .burger {
+        width: 50px;
+        height: 45px;
+    }
+
+    .burger span:nth-of-type(1),
+    .burger span:nth-of-type(2),
+    .burger span:nth-of-type(3) {
+        width: 40px;
+    }
+
+    .burger span:nth-of-type(1) {
+        top: 10px;
+    }
+
+    .burger span:nth-of-type(3) {
+        top: 30px;
+    }
+
+    .burger input:checked~span:nth-of-type(1) {
+        width: 32px;
+    }
+
+    .burger input:checked~span:nth-of-type(3) {
+        width: 40px;
     }
 
     .side-menu {
@@ -918,6 +975,62 @@ textarea {
     .btn-nav {
         width: 100%;
         max-width: 250px;
+    }
+}
+
+/* RESPONSIVE - MOBILE SMALL */
+@media (max-width: 480px) {
+    .header {
+        padding: 10px 15px;
+    }
+
+    .menu-text {
+        display: none;
+    }
+
+    .imagen-ludik-header {
+        height: 40px;
+    }
+
+    .header-logo {
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    .logo-institucion {
+        width: 35px;
+        height: 35px;
+    }
+
+    .right-section {
+        gap: 8px;
+    }
+
+    .burger {
+        width: 45px;
+        height: 40px;
+    }
+
+    .burger span:nth-of-type(1),
+    .burger span:nth-of-type(2),
+    .burger span:nth-of-type(3) {
+        width: 35px;
+    }
+
+    .burger span:nth-of-type(1) {
+        top: 9px;
+    }
+
+    .burger span:nth-of-type(3) {
+        top: 27px;
+    }
+
+    .burger input:checked~span:nth-of-type(1) {
+        width: 28px;
+    }
+
+    .burger input:checked~span:nth-of-type(3) {
+        width: 35px;
     }
 }
 
@@ -1136,7 +1249,6 @@ textarea {
     text-align: left;
 }
 
-/* Efectos de carga para la foto */
 .photo-loading {
     position: relative;
 }
@@ -1165,7 +1277,6 @@ textarea {
     }
 }
 
-/* Animación de fade-in para preview de foto */
 .photo-preview img {
     animation: photoFadeIn 0.5s ease-in;
 }
@@ -1182,7 +1293,6 @@ textarea {
     }
 }
 
-/* Responsive para la sección de foto */
 @media (max-width: 768px) {
     .photo-section {
         padding: 1.5rem;
@@ -1290,111 +1400,4 @@ textarea {
     font-weight: 600;
     font-size: 0.9rem;
     margin-top: 1rem;
-}
-
-/* Estilos para la funcionalidad de foto */
-.photo-section {
-    background: rgba(102, 126, 234, 0.05);
-    border: 2px solid rgba(102, 126, 234, 0.2);
-    border-radius: 15px;
-    padding: 2rem;
-    margin: 2rem 0;
-    text-align: center;
-}
-
-.photo-upload-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-}
-
-.photo-preview {
-    width: 200px;
-    height: 200px;
-    border: 3px dashed #667eea;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.8);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.photo-preview:hover {
-    border-color: #764ba2;
-    background: rgba(255, 255, 255, 0.9);
-}
-
-.photo-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-}
-
-.photo-placeholder {
-    color: #667eea;
-    font-size: 3rem;
-    opacity: 0.5;
-}
-
-.file-input-wrapper {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-}
-
-.file-input-wrapper input[type=file] {
-    position: absolute;
-    left: -9999px;
-}
-
-.file-input-label {
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
-    padding: 0.75rem 2rem;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    display: inline-block;
-}
-
-.file-input-label:hover {
-    background: linear-gradient(45deg, #5a6fd8, #6a4190);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-}
-
-.photo-info {
-    font-size: 0.9rem;
-    color: #6c757d;
-    margin-top: 0.5rem;
-}
-
-.remove-photo-btn {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.remove-photo-btn:hover {
-    background: #c82333;
-    transform: translateY(-1px);
-}
-
-.photo-upload-error {
-    color: #dc3545;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-    display: none;
 }

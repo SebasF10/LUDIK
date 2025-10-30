@@ -31,33 +31,36 @@ body {
     position: sticky;
     top: 0;
     z-index: 1001;
+    gap: 15px;
 }
 
 .left-section {
     display: flex;
     align-items: center;
     gap: 15px;
-    flex: 1;
+    flex-shrink: 0;
 }
 
-.center-section {
+.center-section,
+.centro {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    flex: 1;
     display: flex;
     justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
 }
 
 .right-section {
     display: flex;
     align-items: center;
-    flex: 1;
-    justify-content: flex-end;
     gap: 24px;
-    /* Espacio entre los logos */
+    flex-shrink: 0;
+    margin-left: auto;
 }
-
 
 .menu-text {
     font-size: 1.9rem;
@@ -69,6 +72,7 @@ body {
     font-family: 'Inter', Arial, sans-serif;
     letter-spacing: 1px;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .header-logo {
@@ -85,6 +89,28 @@ body {
     border: none !important;
 }
 
+.titulo-ludik {
+    margin: 0;
+    padding: 0;
+}
+
+.imagen-ludik-header {
+    height: 80px;
+    width: auto;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.logo-institucion,
+.logo-ludik {
+    width: 50px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0;
+    box-shadow: none;
+    flex-shrink: 0;
+}
 
 .title {
     font-size: 3.2rem;
@@ -98,7 +124,7 @@ body {
     filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.2));
 }
 
-/* Burger menu styles mejorado con X asimétrica */
+/* Burger menu styles */
 .burger {
     position: relative;
     width: 60px;
@@ -111,6 +137,7 @@ body {
     transition: all 0.3s ease;
     outline: none !important;
     border: none !important;
+    flex-shrink: 0;
 }
 
 .burger:hover {
@@ -139,7 +166,6 @@ body {
     border: none !important;
 }
 
-/* Líneas simétricas en estado normal */
 .burger span:nth-of-type(1) {
     width: 50px;
     top: 12px;
@@ -161,12 +187,10 @@ body {
     transform-origin: center;
 }
 
-/* Animación de transformación a X ASIMÉTRICA */
 .burger input:checked~span:nth-of-type(1) {
     transform: translate(-50%, -50%) rotate(45deg);
     top: 50%;
     width: 38px;
-    /* Línea más corta */
 }
 
 .burger input:checked~span:nth-of-type(2) {
@@ -178,7 +202,6 @@ body {
     transform: translate(-50%, -50%) rotate(-45deg);
     top: 50%;
     width: 48px;
-    /* Línea más larga */
 }
 
 /* MENÚ LATERAL - CON SCROLL */
@@ -239,12 +262,10 @@ body {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
-    /* Scroll personalizado */
     scrollbar-width: thin;
     scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
-/* Scroll personalizado para webkit */
 .menu-buttons::-webkit-scrollbar {
     width: 6px;
 }
@@ -305,7 +326,6 @@ body {
     box-shadow: none !important;
 }
 
-/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
     content: '';
     position: absolute;
@@ -339,7 +359,7 @@ body {
     filter: grayscale(0);
 }
 
-/* CERRAR SESIÓN COMO BOTÓN NORMAL */
+/* CERRAR SESIÓN */
 .menu-button.close-session {
     flex-shrink: 0;
     display: flex;
@@ -416,7 +436,7 @@ body {
 }
 
 /* ============================================ */
-/* ESTILOS ORIGINALES DE EJERCICIOS - MODIFICADOS */
+/* ESTILOS ORIGINALES DE EJERCICIOS */
 /* ============================================ */
 
 :root {
@@ -430,14 +450,12 @@ body {
     --radio: 20px;
 }
 
-/* Wrapper para el contenido después del header */
 .content-wrapper {
     background: var(--color-fondo);
     min-height: calc(100vh - 89px);
     padding-top: 0;
 }
 
-/* Header de ejercicios (ahora dentro del content-wrapper) */
 .ejercicios-header {
     background: linear-gradient(90deg, var(--color-principal), var(--color-secundario));
     color: white;
@@ -534,60 +552,6 @@ footer {
     gap: 20px;
 }
 
-/* RESPONSIVE - MOBILE */
-@media (max-width: 768px) {
-    .header {
-        padding: 15px 20px;
-    }
-
-    .title {
-        font-size: 2.5rem;
-        letter-spacing: 2px;
-    }
-
-    .menu-text {
-        font-size: 1.5rem;
-    }
-
-    .header-logo {
-        width: 50px !important;
-        height: 50px !important;
-    }
-
-    .side-menu {
-        width: 320px;
-        left: -320px;
-    }
-
-    .menu-button {
-        padding: 16px 25px;
-        font-size: 0.95rem;
-    }
-
-    .ejercicios-header h1 {
-        font-size: 2rem;
-    }
-
-    .ejercicios-header p {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .menu-text {
-        display: none;
-    }
-
-    .title {
-        font-size: 1.8rem;
-        letter-spacing: 1px;
-    }
-
-    .ejercicios-header h1 {
-        font-size: 1.8rem;
-    }
-}
-/* Botón regresar */
 .btn--regresar {
     display: inline-block;
     margin: 20px;
@@ -600,51 +564,353 @@ footer {
     cursor: pointer;
     font-weight: bold;
     transition: background 0.3s ease, transform 0.2s ease;
-  }
-
-.centro {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Cambia flex-end por center */
-    margin: 0;
-    /* Asegúrate de que no tenga margen */
-    padding: 0;
 }
 
+/* ===================== RESPONSIVE DESIGN ===================== */
 
-.titulo-ludik {
-    margin: 0;
-    /* Elimina margen extra */
-    padding: 0;
+/* Tablets (768px - 1024px) */
+@media (max-width: 1024px) {
+    .header {
+        padding: 18px 30px;
+    }
+
+    .menu-text {
+        font-size: 1.6rem;
+    }
+
+    .imagen-ludik-header {
+        height: 70px;
+    }
+
+    .header-logo {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .logo-institucion {
+        width: 45px;
+    }
 }
 
+/* Mobile Large (481px - 768px) */
+@media (max-width: 768px) {
+    .header {
+        padding: 15px 20px;
+        gap: 10px;
+    }
 
-.imagen-ludik-header {
-    height: 80px;
-    width: auto;
-    display: inline-block;
-    margin: 0;
-    /* Elimina margen extra */
-    padding: 0;
-    vertical-align: middle;
+    .left-section {
+        gap: 10px;
+    }
+
+    .menu-text {
+        font-size: 1.3rem;
+    }
+
+    .burger {
+        width: 50px;
+        height: 45px;
+    }
+
+    .burger span {
+        height: 3px;
+    }
+
+    .burger span:nth-of-type(1) {
+        width: 40px;
+        top: 10px;
+    }
+
+    .burger span:nth-of-type(2) {
+        width: 40px;
+    }
+
+    .burger span:nth-of-type(3) {
+        width: 40px;
+        top: 30px;
+    }
+
+    .imagen-ludik-header {
+        height: 60px;
+    }
+
+    .right-section {
+        gap: 15px;
+    }
+
+    .header-logo {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .logo-institucion {
+        width: 40px;
+    }
+
+    .side-menu {
+        width: 320px;
+        left: -320px;
+        top: 81px;
+        height: calc(100vh - 81px);
+    }
+
+    .menu-button {
+        padding: 16px 25px;
+        font-size: 0.95rem;
+    }
+
+    .overlay {
+        top: 81px;
+        height: calc(100vh - 81px);
+    }
+
+    .ejercicios-header h1 {
+        font-size: 2rem;
+    }
+
+    .ejercicios-header p {
+        font-size: 1rem;
+    }
 }
 
+/* Mobile Medium (376px - 480px) */
+@media (max-width: 480px) {
+    .header {
+        padding: 12px 15px;
+        gap: 8px;
+    }
 
+    .left-section {
+        gap: 8px;
+        flex: 0 0 auto;
+    }
 
-.logo-institucion,
-.logo-ludik {
-    width: 50px;
-    height: auto;
-    /* mantiene proporción natural */
-    object-fit: contain;
-    /* muestra la imagen completa sin recortes */
-    border-radius: 0;
-    /* elimina bordes redondeados */
-    box-shadow: none;
-    /* elimina la sombra blanca alrededor */
+    .menu-text {
+        font-size: 1.1rem;
+        letter-spacing: 0.5px;
+    }
+
+    .burger {
+        width: 45px;
+        height: 40px;
+    }
+
+    .burger span:nth-of-type(1) {
+        width: 35px;
+        top: 9px;
+    }
+
+    .burger span:nth-of-type(2) {
+        width: 35px;
+    }
+
+    .burger span:nth-of-type(3) {
+        width: 35px;
+        top: 27px;
+    }
+
+    .center-section,
+    .centro {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .imagen-ludik-header {
+        height: 50px;
+    }
+
+    .right-section {
+        gap: 10px;
+        flex: 0 0 auto;
+    }
+
+    .header-logo {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .logo-institucion {
+        width: 35px;
+    }
+
+    .side-menu {
+        width: 280px;
+        left: -280px;
+        top: 74px;
+        height: calc(100vh - 74px);
+    }
+
+    .menu-header {
+        padding: 25px 20px;
+        min-height: 70px;
+    }
+
+    .menu-title {
+        font-size: 1.2rem;
+    }
+
+    .menu-button {
+        padding: 14px 20px;
+        font-size: 0.9rem;
+    }
+
+    .overlay {
+        top: 74px;
+        height: calc(100vh - 74px);
+    }
+
+    .ejercicios-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .ejercicios-header p {
+        font-size: 0.95rem;
+    }
+}
+
+/* Mobile Small (320px - 375px) */
+@media (max-width: 375px) {
+    .header {
+        padding: 10px 12px;
+        gap: 6px;
+    }
+
+    .left-section {
+        gap: 6px;
+    }
+
+    .menu-text {
+        font-size: 0.95rem;
+        letter-spacing: 0.3px;
+    }
+
+    .burger {
+        width: 40px;
+        height: 36px;
+        padding: 3px;
+    }
+
+    .burger span {
+        height: 2.5px;
+    }
+
+    .burger span:nth-of-type(1) {
+        width: 30px;
+        top: 8px;
+    }
+
+    .burger span:nth-of-type(2) {
+        width: 30px;
+    }
+
+    .burger span:nth-of-type(3) {
+        width: 30px;
+        top: 24px;
+    }
+
+    .imagen-ludik-header {
+        height: 45px;
+    }
+
+    .right-section {
+        gap: 8px;
+    }
+
+    .header-logo {
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    .logo-institucion {
+        width: 30px;
+    }
+
+    .side-menu {
+        width: 260px;
+        left: -260px;
+        top: 68px;
+        height: calc(100vh - 68px);
+    }
+
+    .overlay {
+        top: 68px;
+        height: calc(100vh - 68px);
+    }
+
+    .ejercicios-header h1 {
+        font-size: 1.6rem;
+    }
+}
+
+/* Extra Small Mobile (< 320px) */
+@media (max-width: 320px) {
+    .header {
+        padding: 8px 10px;
+        gap: 5px;
+    }
+
+    .menu-text {
+        font-size: 0.85rem;
+    }
+
+    .burger {
+        width: 36px;
+        height: 32px;
+    }
+
+    .burger span:nth-of-type(1) {
+        width: 26px;
+        top: 7px;
+    }
+
+    .burger span:nth-of-type(2) {
+        width: 26px;
+    }
+
+    .burger span:nth-of-type(3) {
+        width: 26px;
+        top: 21px;
+    }
+
+    .imagen-ludik-header {
+        height: 40px;
+    }
+
+    .right-section {
+        gap: 6px;
+    }
+
+    .header-logo {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .logo-institucion {
+        width: 28px;
+    }
+
+    .side-menu {
+        width: 240px;
+        left: -240px;
+        top: 62px;
+        height: calc(100vh - 62px);
+    }
+
+    .menu-button {
+        padding: 12px 18px;
+        font-size: 0.85rem;
+    }
+
+    .overlay {
+        top: 62px;
+        height: calc(100vh - 62px);
+    }
+
+    .ejercicios-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .ejercicios-header p {
+        font-size: 0.85rem;
+    }
 }

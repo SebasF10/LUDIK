@@ -23,13 +23,16 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px;
-    background: rgba(255, 255, 255, 0.95);
+    padding: 0 40px;
+    min-height: 89px;
+    background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 1001;
 }
 
@@ -37,30 +40,45 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
-    flex: 1;
+    flex: 0 0 auto;
+    min-width: fit-content;
 }
 
-.center-section {
+.centro {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    flex: 1;
     display: flex;
     justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.titulo-ludik {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagen-ludik-header {
+    height: 70px;
+    width: auto;
+    display: block;
 }
 
 .right-section {
     display: flex;
     align-items: center;
-    flex: 1;
+    gap: 15px;
+    flex: 0 0 auto;
     justify-content: flex-end;
-    gap: 24px;
-    /* Espacio entre los logos */
+    min-width: fit-content;
 }
 
-
 .menu-text {
-    font-size: 1.9rem;
+    font-size: 1.5rem;
     font-weight: 600;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
@@ -69,12 +87,15 @@ body {
     font-family: 'Inter', Arial, sans-serif;
     letter-spacing: 1px;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
-.header-logo {
-    width: 70px !important;
-    height: 70px !important;
-    object-fit: cover;
+.header-logo,
+.logo-institucion,
+.logo-ludik {
+    width: 50px !important;
+    height: 50px !important;
+    object-fit: contain;
     border-radius: 0 !important;
     box-shadow: none !important;
     transition: all 0.3s ease !important;
@@ -83,27 +104,14 @@ body {
     cursor: default;
     outline: none !important;
     border: none !important;
+    flex-shrink: 0;
 }
 
-
-
-.title {
-    font-size: 3.2rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 3px;
-    text-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.2));
-}
-
-/* Burger menu styles mejorado con X asimétrica */
+/* Burger menu styles */
 .burger {
     position: relative;
-    width: 60px;
-    height: 50px;
+    width: 50px;
+    height: 45px;
     background: transparent;
     cursor: pointer;
     display: block;
@@ -112,62 +120,54 @@ body {
     transition: all 0.3s ease;
     outline: none !important;
     border: none !important;
+    flex-shrink: 0;
 }
 
 .burger:hover {
     background: rgba(102, 126, 234, 0.1);
     transform: scale(1.05);
-    outline: none !important;
-    border: none !important;
 }
 
 .burger input {
     display: none;
-    outline: none !important;
-    border: none !important;
 }
 
 .burger span {
     display: block;
     position: absolute;
-    height: 4px;
+    height: 3px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 3px;
     opacity: 1;
     left: 50%;
     transition: .25s ease-in-out;
-    outline: none !important;
-    border: none !important;
 }
 
-/* Líneas simétricas en estado normal */
 .burger span:nth-of-type(1) {
-    width: 50px;
+    width: 40px;
     top: 12px;
     transform: translateX(-50%);
     transform-origin: center;
 }
 
 .burger span:nth-of-type(2) {
-    width: 50px;
+    width: 40px;
     top: 50%;
     transform: translate(-50%, -50%);
     transform-origin: center;
 }
 
 .burger span:nth-of-type(3) {
-    width: 50px;
-    top: 33px;
+    width: 40px;
+    top: 28px;
     transform: translateX(-50%);
     transform-origin: center;
 }
 
-/* Animación de transformación a X ASIMÉTRICA */
 .burger input:checked~span:nth-of-type(1) {
     transform: translate(-50%, -50%) rotate(45deg);
     top: 50%;
-    width: 38px;
-    /* Línea más corta */
+    width: 32px;
 }
 
 .burger input:checked~span:nth-of-type(2) {
@@ -178,11 +178,10 @@ body {
 .burger input:checked~span:nth-of-type(3) {
     transform: translate(-50%, -50%) rotate(-45deg);
     top: 50%;
-    width: 48px;
-    /* Línea más larga */
+    width: 40px;
 }
 
-/* MENÚ LATERAL - CON SCROLL */
+/* MENÚ LATERAL */
 .side-menu {
     position: fixed;
     top: 89px;
@@ -197,7 +196,6 @@ body {
     border-right: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     flex-direction: column;
-    outline: none !important;
 }
 
 .side-menu.active {
@@ -206,46 +204,36 @@ body {
 
 .menu-header {
     flex-shrink: 0;
-    padding: 35px 40px 35px 40px;
-    border-bottom: none !important;
+    padding: 30px 35px;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 90px;
-    box-shadow: none !important;
-    border: none !important;
-    outline: none !important;
+    min-height: 80px;
 }
 
 .menu-title {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: #2c3e50;
     text-align: center;
-    margin: 25px 0 0 0;
+    margin: 0;
     line-height: 1.2;
     letter-spacing: 0.5px;
 }
 
-/* CONTENEDOR DE BOTONES CON SCROLL */
 .menu-buttons {
     flex: 1;
     min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 20px 0;
+    padding: 15px 0;
     overflow-y: auto;
     overflow-x: hidden;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    /* Scroll personalizado */
     scrollbar-width: thin;
     scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
-/* Scroll personalizado para webkit */
 .menu-buttons::-webkit-scrollbar {
     width: 6px;
 }
@@ -257,23 +245,21 @@ body {
 .menu-buttons::-webkit-scrollbar-thumb {
     background: rgba(102, 126, 234, 0.3);
     border-radius: 3px;
-    transition: background 0.3s ease;
 }
 
 .menu-buttons::-webkit-scrollbar-thumb:hover {
     background: rgba(102, 126, 234, 0.5);
 }
 
-/* BOTONES DEL MENÚ */
 .menu-button {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 18px 30px;
+    padding: 16px 25px;
     background: transparent !important;
     color: #667eea;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
     text-align: left;
@@ -283,30 +269,15 @@ body {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
-    overflow: hidden !important;
-    width: 100% !important;
-    max-width: 380px !important;
+    width: 100%;
     margin: 2px 0;
-}
-
-.menu-button:focus,
-.menu-button:active,
-.menu-button:visited {
-    outline: none !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
 .menu-button:hover {
     background: rgba(102, 126, 234, 0.1) !important;
-    color: #667eea;
     transform: translateX(8px);
-    outline: none !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
-/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
     content: '';
     position: absolute;
@@ -318,87 +289,26 @@ body {
     border-radius: 0 4px 4px 0;
 }
 
-.menu-button::after,
-.menu-button:hover::after,
-.menu-button:focus::after,
-.menu-button:active::after {
-    display: none !important;
-    content: none !important;
-    border: none !important;
-    background: none !important;
-}
-
 .menu-icon {
-    font-size: 1.2rem;
-    width: 24px;
+    font-size: 1.1rem;
+    width: 22px;
     text-align: center;
-    filter: grayscale(0);
-    transition: filter 0.3s ease;
 }
 
-.menu-button:hover .menu-icon {
-    filter: grayscale(0);
-}
-
-/* CERRAR SESIÓN COMO BOTÓN NORMAL */
 .menu-button.close-session {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 18px 30px;
-    background: transparent !important;
     color: #d32f2f;
-    font-size: 1rem;
     font-weight: 600;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.3s ease;
-    position: relative;
-    font-family: 'Inter', Arial, sans-serif;
-    width: 100%;
-    margin: 2px 0;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    overflow: hidden !important;
-    max-width: 380px !important;
-}
-
-.menu-button.close-session:focus,
-.menu-button.close-session:active {
-    outline: none !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
 .menu-button.close-session:hover {
     background: rgba(211, 47, 47, 0.1) !important;
     color: #b71c1c;
-    transform: translateX(8px);
-    outline: none !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
 .menu-button.close-session:hover::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
     background: #d32f2f;
-    border-radius: 0 4px 4px 0;
 }
 
-.menu-button.close-session::after,
-.menu-button.close-session:hover::after {
-    display: none !important;
-    content: none !important;
-}
-
-/* Overlay para cerrar menu */
 .overlay {
     position: fixed;
     top: 89px;
@@ -409,7 +319,6 @@ body {
     backdrop-filter: blur(5px);
     display: none;
     z-index: 999;
-    transition: all 0.3s ease;
 }
 
 .overlay.active {
@@ -673,24 +582,57 @@ body {
     font-size: 1.1em;
 }
 
-/* RESPONSIVE - MOBILE */
-@media (max-width: 768px) {
+/* ======= RESPONSIVE ======= */
+
+/* Tablets grandes */
+@media (max-width: 1024px) {
     .header {
-        padding: 15px 20px;
+        padding: 0 30px;
+        min-height: 80px;
     }
 
-    .title {
-        font-size: 2.5rem;
-        letter-spacing: 2px;
+    .imagen-ludik-header {
+        height: 60px;
+    }
+
+    .header-logo,
+    .logo-institucion {
+        width: 45px !important;
+        height: 45px !important;
     }
 
     .menu-text {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
 
-    .header-logo {
-        width: 50px !important;
-        height: 50px !important;
+    .docentes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+/* Tablets pequeñas */
+@media (max-width: 768px) {
+    .header {
+        padding: 0 20px;
+        min-height: 70px;
+    }
+
+    .imagen-ludik-header {
+        height: 50px;
+    }
+
+    .header-logo,
+    .logo-institucion {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    .menu-text {
+        font-size: 1.1rem;
+    }
+
+    .right-section {
+        gap: 10px;
     }
 
     .side-menu {
@@ -698,29 +640,114 @@ body {
         left: -320px;
     }
 
-    .menu-button {
-        padding: 16px 25px;
-        font-size: 0.95rem;
+    .container {
+        padding: 15px;
     }
 
-    .container {
-        padding: 10px;
+    .page-header {
+        padding: 25px 20px;
     }
 
     .page-header h1 {
         font-size: 2em;
     }
 
+    .page-header p {
+        font-size: 1.1em;
+    }
+
+    .controls {
+        padding: 20px;
+    }
+
     .search-container {
         flex-direction: column;
+    }
+
+    #searchInput {
+        width: 100%;
+        min-width: 100%;
     }
 
     .button-container {
         justify-content: center;
     }
 
+    .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+
     .docentes-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* Móviles */
+@media (max-width: 600px) {
+    .header {
+        padding: 0 15px;
+        min-height: 65px;
+    }
+
+    .menu-text {
+        display: none;
+    }
+
+    .left-section {
+        gap: 0;
+    }
+
+    .imagen-ludik-header {
+        height: 45px;
+    }
+
+    .header-logo,
+    .logo-institucion {
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    .right-section {
+        gap: 8px;
+    }
+
+    .burger {
+        width: 45px;
+        height: 40px;
+    }
+
+    .side-menu {
+        width: 280px;
+        left: -280px;
+        top: 65px;
+        height: calc(100vh - 65px);
+    }
+
+    .overlay {
+        top: 65px;
+        height: calc(100vh - 65px);
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .page-header {
+        padding: 20px 15px;
+    }
+
+    .page-header h1 {
+        font-size: 1.8em;
+    }
+
+    .page-header p {
+        font-size: 1em;
+    }
+
+    .controls {
+        padding: 15px;
     }
 
     .btn {
@@ -728,54 +755,55 @@ body {
         margin-bottom: 10px;
     }
 
-    .search-container .btn {
-        width: auto;
+    .button-container {
+        flex-direction: column;
+    }
+
+    .docente-card {
+        padding: 20px;
+    }
+
+    .docente-nombre {
+        font-size: 1.2em;
     }
 }
 
-.centro {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Cambia flex-end por center */
-    margin: 0;
-    /* Asegúrate de que no tenga margen */
-    padding: 0;
-}
+/* Móviles muy pequeños */
+@media (max-width: 400px) {
+    .header {
+        padding: 0 10px;
+        min-height: 60px;
+    }
 
+    .imagen-ludik-header {
+        height: 40px;
+    }
 
-.titulo-ludik {
-    margin: 0;
-    /* Elimina margen extra */
-    padding: 0;
-}
+    .header-logo,
+    .logo-institucion {
+        width: 30px !important;
+        height: 30px !important;
+    }
 
+    .right-section {
+        gap: 6px;
+    }
 
-.imagen-ludik-header {
-    height: 80px;
-    width: auto;
-    display: inline-block;
-    margin: 0;
-    /* Elimina margen extra */
-    padding: 0;
-    vertical-align: middle;
-}
+    .burger {
+        width: 40px;
+        height: 38px;
+    }
 
+    .side-menu {
+        width: 260px;
+        left: -260px;
+    }
 
+    .page-header h1 {
+        font-size: 1.5em;
+    }
 
-.logo-institucion,
-.logo-ludik {
-    width: 50px;
-    height: auto;
-    /* mantiene proporción natural */
-    object-fit: contain;
-    /* muestra la imagen completa sin recortes */
-    border-radius: 0;
-    /* elimina bordes redondeados */
-    box-shadow: none;
-    /* elimina la sombra blanca alrededor */
+    .docente-card {
+        padding: 15px;
+    }
 }

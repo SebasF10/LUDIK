@@ -23,7 +23,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px;
+    padding: 12px 40px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -31,35 +31,36 @@ body {
     position: sticky;
     top: 0;
     z-index: 1001;
+    min-height: 94px;
 }
 
 .left-section {
     display: flex;
     align-items: center;
     gap: 15px;
-    flex: 1;
+    flex: 0 0 auto;
+    min-width: 0;
 }
 
-.center-section {
+.center-section,
+.centro {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    flex: 1;
     display: flex;
     justify-content: center;
+    align-items: center;
+    z-index: 1;
 }
 
 .right-section {
     display: flex;
     align-items: center;
-    flex: 1;
+    gap: 24px;
+    flex: 0 0 auto;
     justify-content: flex-end;
-    gap: 32px;
-    /* Más separación entre logos */
-    padding-right: 8px;
-    /* Un poco de espacio a la derecha */
+    min-width: 0;
 }
-
 
 .menu-text {
     font-size: 1.9rem;
@@ -71,12 +72,15 @@ body {
     font-family: 'Inter', Arial, sans-serif;
     letter-spacing: 1px;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
-.header-logo {
+.header-logo,
+.logo-institucion,
+.logo-ludik {
     width: 70px !important;
     height: 70px !important;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 0 !important;
     box-shadow: none !important;
     transition: all 0.3s ease !important;
@@ -85,6 +89,7 @@ body {
     cursor: default;
     outline: none !important;
     border: none !important;
+    flex-shrink: 0;
 }
 
 .title {
@@ -99,7 +104,24 @@ body {
     filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.2));
 }
 
-/* Burger menu styles mejorado con X asimétrica */
+.titulo-ludik {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagen-ludik-header {
+    height: 80px;
+    width: auto;
+    display: block;
+    margin: 0;
+    padding: 0;
+    align-self: center;
+}
+
+/* Burger menu styles */
 .burger {
     position: relative;
     width: 60px;
@@ -112,19 +134,16 @@ body {
     transition: all 0.3s ease;
     outline: none !important;
     border: none !important;
+    flex-shrink: 0;
 }
 
 .burger:hover {
     background: rgba(102, 126, 234, 0.1);
     transform: scale(1.05);
-    outline: none !important;
-    border: none !important;
 }
 
 .burger input {
     display: none;
-    outline: none !important;
-    border: none !important;
 }
 
 .burger span {
@@ -136,11 +155,8 @@ body {
     opacity: 1;
     left: 50%;
     transition: .25s ease-in-out;
-    outline: none !important;
-    border: none !important;
 }
 
-/* Líneas simétricas en estado normal */
 .burger span:nth-of-type(1) {
     width: 50px;
     top: 12px;
@@ -162,12 +178,10 @@ body {
     transform-origin: center;
 }
 
-/* Animación de transformación a X ASIMÉTRICA */
 .burger input:checked~span:nth-of-type(1) {
     transform: translate(-50%, -50%) rotate(45deg);
     top: 50%;
     width: 38px;
-    /* Línea más corta */
 }
 
 .burger input:checked~span:nth-of-type(2) {
@@ -179,16 +193,15 @@ body {
     transform: translate(-50%, -50%) rotate(-45deg);
     top: 50%;
     width: 48px;
-    /* Línea más larga */
 }
 
-/* MENÚ LATERAL - CON SCROLL */
+/* MENÚ LATERAL */
 .side-menu {
     position: fixed;
-    top: 89px;
+    top: 94px;
     left: -380px;
     width: 380px;
-    height: calc(100vh - 89px);
+    height: calc(100vh - 94px);
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -197,7 +210,6 @@ body {
     border-right: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     flex-direction: column;
-    outline: none !important;
 }
 
 .side-menu.active {
@@ -206,16 +218,13 @@ body {
 
 .menu-header {
     flex-shrink: 0;
-    padding: 35px 40px 35px 40px;
+    padding: 35px 40px;
     border-bottom: none !important;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 90px;
-    box-shadow: none !important;
-    border: none !important;
-    outline: none !important;
 }
 
 .menu-title {
@@ -228,7 +237,6 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* CONTENEDOR DE BOTONES CON SCROLL */
 .menu-buttons {
     flex: 1;
     min-height: 0;
@@ -237,15 +245,10 @@ body {
     padding: 20px 0;
     overflow-y: auto;
     overflow-x: hidden;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    /* Scroll personalizado */
     scrollbar-width: thin;
     scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
 }
 
-/* Scroll personalizado para webkit */
 .menu-buttons::-webkit-scrollbar {
     width: 6px;
 }
@@ -257,14 +260,12 @@ body {
 .menu-buttons::-webkit-scrollbar-thumb {
     background: rgba(102, 126, 234, 0.3);
     border-radius: 3px;
-    transition: background 0.3s ease;
 }
 
 .menu-buttons::-webkit-scrollbar-thumb:hover {
     background: rgba(102, 126, 234, 0.5);
 }
 
-/* BOTONES DEL MENÚ */
 .menu-button {
     flex-shrink: 0;
     display: flex;
@@ -283,30 +284,16 @@ body {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
-    overflow: hidden !important;
     width: 100% !important;
-    max-width: 380px !important;
     margin: 2px 0;
-}
-
-.menu-button:focus,
-.menu-button:active,
-.menu-button:visited {
-    outline: none !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
 .menu-button:hover {
     background: rgba(102, 126, 234, 0.1) !important;
     color: #667eea;
     transform: translateX(8px);
-    outline: none !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
-/* SOLO LA LÍNEA VERTICAL IZQUIERDA EN HOVER */
 .menu-button:hover::before {
     content: '';
     position: absolute;
@@ -318,98 +305,36 @@ body {
     border-radius: 0 4px 4px 0;
 }
 
-.menu-button::after,
-.menu-button:hover::after,
-.menu-button:focus::after,
-.menu-button:active::after {
-    display: none !important;
-    content: none !important;
-    border: none !important;
-    background: none !important;
-}
-
 .menu-icon {
     font-size: 1.2rem;
     width: 24px;
     text-align: center;
-    filter: grayscale(0);
-    transition: filter 0.3s ease;
 }
 
-.menu-button:hover .menu-icon {
-    filter: grayscale(0);
-}
-
-/* CERRAR SESIÓN COMO BOTÓN NORMAL */
 .menu-button.close-session {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 18px 30px;
-    background: transparent !important;
     color: #d32f2f;
-    font-size: 1rem;
     font-weight: 600;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.3s ease;
-    position: relative;
-    font-family: 'Inter', Arial, sans-serif;
-    width: 100%;
-    margin: 2px 0;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    overflow: hidden !important;
-    max-width: 380px !important;
-}
-
-.menu-button.close-session:focus,
-.menu-button.close-session:active {
-    outline: none !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
 .menu-button.close-session:hover {
     background: rgba(211, 47, 47, 0.1) !important;
     color: #b71c1c;
-    transform: translateX(8px);
-    outline: none !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
 .menu-button.close-session:hover::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
     background: #d32f2f;
-    border-radius: 0 4px 4px 0;
 }
 
-.menu-button.close-session::after,
-.menu-button.close-session:hover::after {
-    display: none !important;
-    content: none !important;
-}
-
-/* Overlay para cerrar menu */
 .overlay {
     position: fixed;
-    top: 89px;
+    top: 94px;
     left: 0;
     width: 100vw;
-    height: calc(100vh - 89px);
+    height: calc(100vh - 94px);
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
     display: none;
     z-index: 999;
-    transition: all 0.3s ease;
 }
 
 .overlay.active {
@@ -467,6 +392,7 @@ body {
     justify-content: center;
     margin-bottom: 30px;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .step-indicator {
@@ -483,6 +409,7 @@ body {
     transition: all 0.3s ease;
     border: 3px solid #e9ecef;
     position: relative;
+    flex-shrink: 0;
 }
 
 .step-indicator.active {
@@ -584,6 +511,7 @@ textarea:focus {
     font-weight: 600;
     margin-bottom: 20px;
     transition: all 0.3s;
+    font-size: 1rem;
 }
 
 .btn-agregar:hover {
@@ -640,6 +568,7 @@ textarea:focus {
     margin-top: 2px;
     width: 18px;
     height: 18px;
+    flex-shrink: 0;
 }
 
 .checkbox-item label {
@@ -682,6 +611,7 @@ textarea:focus {
     justify-content: space-between;
     gap: 15px;
     margin-top: 30px;
+    flex-wrap: wrap;
 }
 
 .btn-nav {
@@ -772,39 +702,105 @@ footer.pie-pagina {
     box-shadow: 0 -2px 12px rgba(102, 126, 234, 0.07);
 }
 
-/* RESPONSIVE - MOBILE */
-@media (max-width: 768px) {
+/* ======= RESPONSIVE DESIGN ======= */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 1024px) {
     .header {
-        padding: 15px 20px;
+        padding: 10px 30px;
+        min-height: 80px;
     }
 
-    .title {
-        font-size: 2.5rem;
-        letter-spacing: 2px;
+    .imagen-ludik-header {
+        height: 65px;
+    }
+
+    .header-logo,
+    .logo-institucion,
+    .logo-ludik {
+        width: 55px !important;
+        height: 55px !important;
     }
 
     .menu-text {
         font-size: 1.5rem;
     }
 
-    .header-logo {
-        width: 50px !important;
-        height: 50px !important;
+    .right-section {
+        gap: 18px;
     }
 
     .side-menu {
-        width: 320px;
-        left: -320px;
+        top: 80px;
+        height: calc(100vh - 80px);
+        width: 350px;
+        left: -350px;
     }
 
-    .menu-button {
-        padding: 16px 25px;
-        font-size: 0.95rem;
+    .overlay {
+        top: 80px;
+        height: calc(100vh - 80px);
     }
 
     .section {
-        padding: 24px 16px;
+        padding: 35px 28px;
+    }
+}
+
+/* Tablets pequeñas */
+@media (max-width: 768px) {
+    .header {
+        padding: 8px 20px;
+        min-height: 70px;
+    }
+
+    .menu-text {
+        font-size: 1.2rem;
+    }
+
+    .imagen-ludik-header {
+        height: 55px;
+    }
+
+    .header-logo,
+    .logo-institucion,
+    .logo-ludik {
+        width: 45px !important;
+        height: 45px !important;
+    }
+
+    .right-section {
+        gap: 12px;
+    }
+
+    .side-menu {
+        width: 300px;
+        left: -300px;
+        top: 70px;
+        height: calc(100vh - 70px);
+    }
+
+    .overlay {
+        top: 70px;
+        height: calc(100vh - 70px);
+    }
+
+    .burger {
+        width: 50px;
+        height: 45px;
+    }
+
+    .section {
+        padding: 28px 20px;
         margin: 0 10px;
+    }
+
+    .section h1 {
+        font-size: 1.8rem;
+    }
+
+    .section h2 {
+        font-size: 1.2rem;
     }
 
     .navigation-buttons {
@@ -830,26 +826,110 @@ footer.pie-pagina {
     .tratamiento-item,
     .medicamento-item,
     .atencion-item {
-        padding: 15px;
+        padding: 18px;
+    }
+
+    .menu-button {
+        padding: 16px 25px;
+        font-size: 0.95rem;
     }
 }
 
-@media (max-width: 480px) {
+/* Móviles */
+@media (max-width: 600px) {
+    .header {
+        padding: 6px 12px;
+        min-height: 60px;
+    }
+
     .menu-text {
         display: none;
     }
 
-    .title {
-        font-size: 1.8rem;
-        letter-spacing: 1px;
+    .left-section {
+        gap: 0;
+        min-width: 50px;
+    }
+
+    .imagen-ludik-header {
+        height: 45px;
+    }
+
+    .header-logo,
+    .logo-institucion,
+    .logo-ludik {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    .right-section {
+        gap: 8px;
+    }
+
+    .burger {
+        width: 45px;
+        height: 40px;
+        padding: 3px;
+    }
+
+    .burger span {
+        height: 3px;
+    }
+
+    .burger span:nth-of-type(1) {
+        width: 40px;
+        top: 10px;
+    }
+
+    .burger span:nth-of-type(2) {
+        width: 40px;
+    }
+
+    .burger span:nth-of-type(3) {
+        width: 40px;
+        top: 28px;
+    }
+
+    .side-menu {
+        width: 280px;
+        left: -280px;
+        top: 60px;
+        height: calc(100vh - 60px);
+    }
+
+    .overlay {
+        top: 60px;
+        height: calc(100vh - 60px);
+    }
+
+    .menu-button {
+        padding: 14px 20px;
+        font-size: 0.9rem;
+    }
+
+    .main-content {
+        padding: 20px 10px;
+    }
+
+    .section {
+        padding: 24px 16px;
+        margin: 0 5px;
     }
 
     .section h1 {
         font-size: 1.6rem;
+        margin-bottom: 20px;
     }
 
-    .section {
-        padding: 20px 12px;
+    .section h2 {
+        font-size: 1.1rem;
+        margin-bottom: 16px;
+    }
+
+    .section h3 {
+        font-size: 1rem;
+        margin-top: 24px;
+        margin-bottom: 12px;
     }
 
     .step-indicator {
@@ -860,45 +940,486 @@ footer.pie-pagina {
 
     .progress-indicator {
         gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .tratamiento-item,
+    .medicamento-item,
+    .atencion-item {
+        padding: 15px;
+        padding-right: 35px;
+    }
+
+    .btn-eliminar {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+        top: 8px;
+        right: 8px;
+    }
+
+    .btn-agregar {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="url"],
+    select,
+    textarea {
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        margin-bottom: 16px;
+    }
+
+    label {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .checkboxes-container {
+        max-height: 250px;
+        padding: 12px;
+    }
+
+    .checkbox-item {
+        padding: 6px;
+        margin-bottom: 10px;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
+
+    .checkbox-item label {
+        font-size: 0.85rem;
+    }
+
+    .back-btn {
+        left: 10px;
+        bottom: 10px;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    footer.pie-pagina {
+        font-size: 0.85rem;
+        padding: 15px 10px;
+        margin-top: 30px;
     }
 }
 
-.centro {
-    flex: 1 1 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-    min-width: 0;
+/* Móviles pequeños */
+@media (max-width: 480px) {
+    .header {
+        padding: 5px 10px;
+        min-height: 55px;
+    }
+
+    .imagen-ludik-header {
+        height: 38px;
+    }
+
+    .header-logo,
+    .logo-institucion,
+    .logo-ludik {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .right-section {
+        gap: 6px;
+    }
+
+    .burger {
+        width: 40px;
+        height: 38px;
+    }
+
+    .burger span:nth-of-type(1) {
+        width: 35px;
+        top: 9px;
+    }
+
+    .burger span:nth-of-type(2) {
+        width: 35px;
+    }
+
+    .burger span:nth-of-type(3) {
+        width: 35px;
+        top: 26px;
+    }
+
+    .side-menu {
+        width: 260px;
+        left: -260px;
+        top: 55px;
+        height: calc(100vh - 55px);
+    }
+
+    .overlay {
+        top: 55px;
+        height: calc(100vh - 55px);
+    }
+
+    .menu-header {
+        padding: 25px 20px;
+        min-height: 70px;
+    }
+
+    .menu-title {
+        font-size: 1.2rem;
+        margin-top: 15px;
+    }
+
+    .menu-button {
+        padding: 12px 18px;
+        font-size: 0.85rem;
+        gap: 12px;
+    }
+
+    .menu-icon {
+        font-size: 1rem;
+        width: 20px;
+    }
+
+    .main-content {
+        padding: 15px 8px;
+    }
+
+    .section {
+        padding: 20px 12px;
+        margin: 0 3px;
+        border-radius: 12px;
+    }
+
+    .section h1 {
+        font-size: 1.4rem;
+        margin-bottom: 18px;
+    }
+
+    .section h2 {
+        font-size: 1rem;
+        margin-bottom: 14px;
+        padding-left: 12px;
+    }
+
+    .section h3 {
+        font-size: 0.95rem;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .step-indicator {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+        border-width: 2px;
+    }
+
+    .progress-indicator {
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+
+    .tratamiento-item,
+    .medicamento-item,
+    .atencion-item {
+        padding: 12px;
+        padding-right: 32px;
+        margin-bottom: 12px;
+    }
+
+    .btn-eliminar {
+        width: 26px;
+        height: 26px;
+        font-size: 13px;
+        top: 6px;
+        right: 6px;
+    }
+
+    .btn-agregar {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+
+    .navigation-buttons {
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .btn-nav {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+        min-width: 100px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="url"],
+    select,
+    textarea {
+        padding: 9px 12px;
+        font-size: 0.9rem;
+        margin-bottom: 14px;
+    }
+
+    textarea {
+        min-height: 70px;
+    }
+
+    label {
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+    }
+
+    .checkboxes-container {
+        max-height: 220px;
+        padding: 10px;
+    }
+
+    .checkbox-item {
+        padding: 5px;
+        margin-bottom: 8px;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        width: 15px;
+        height: 15px;
+        margin-right: 8px;
+    }
+
+    .checkbox-item label {
+        font-size: 0.8rem;
+        line-height: 1.3;
+    }
+
+    .mensaje {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        margin-bottom: 16px;
+    }
+
+    .back-btn {
+        left: 8px;
+        bottom: 8px;
+        padding: 7px 10px;
+        font-size: 12px;
+    }
+
+    footer.pie-pagina {
+        font-size: 0.8rem;
+        padding: 12px 8px;
+        margin-top: 25px;
+    }
 }
 
-.titulo-ludik {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+/* Móviles extra pequeños */
+@media (max-width: 360px) {
+    .header {
+        padding: 4px 8px;
+        min-height: 50px;
+    }
 
-.imagen-ludik-header {
-    height: 80px;
-    width: auto;
-    display: inline-block;
-    margin: 0 12px;
-    vertical-align: middle;
-    z-index: 2;
-    position: relative;
-}
+    .imagen-ludik-header {
+        height: 32px;
+    }
 
-.header-logo,
-.logo-institucion {
-    width: 56px;
-    height: auto;
-    object-fit: contain;
-    border-radius: 0;
-    box-shadow: none;
-    background: none;
-    padding: 0;
-    margin: 0;
+    .header-logo,
+    .logo-institucion,
+    .logo-ludik {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .right-section {
+        gap: 5px;
+    }
+
+    .burger {
+        width: 38px;
+        height: 35px;
+    }
+
+    .burger span:nth-of-type(1) {
+        width: 32px;
+        top: 8px;
+    }
+
+    .burger span:nth-of-type(2) {
+        width: 32px;
+    }
+
+    .burger span:nth-of-type(3) {
+        width: 32px;
+        top: 24px;
+    }
+
+    .side-menu {
+        width: 240px;
+        left: -240px;
+        top: 50px;
+        height: calc(100vh - 50px);
+    }
+
+    .overlay {
+        top: 50px;
+        height: calc(100vh - 50px);
+    }
+
+    .menu-header {
+        padding: 20px 15px;
+        min-height: 60px;
+    }
+
+    .menu-title {
+        font-size: 1.1rem;
+        margin-top: 10px;
+    }
+
+    .menu-button {
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        gap: 10px;
+    }
+
+    .menu-icon {
+        font-size: 0.95rem;
+        width: 18px;
+    }
+
+    .main-content {
+        padding: 12px 5px;
+    }
+
+    .section {
+        padding: 16px 10px;
+        margin: 0;
+        border-radius: 10px;
+    }
+
+    .section h1 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .section h2 {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+        padding-left: 10px;
+        border-left-width: 3px;
+    }
+
+    .section h3 {
+        font-size: 0.9rem;
+        margin-top: 18px;
+        margin-bottom: 8px;
+    }
+
+    .step-indicator {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+    }
+
+    .progress-indicator {
+        gap: 6px;
+        margin-bottom: 15px;
+    }
+
+    .tratamiento-item,
+    .medicamento-item,
+    .atencion-item {
+        padding: 10px;
+        padding-right: 30px;
+        margin-bottom: 10px;
+        border-left-width: 3px;
+    }
+
+    .btn-eliminar {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+        top: 5px;
+        right: 5px;
+    }
+
+    .btn-agregar {
+        padding: 9px 14px;
+        font-size: 0.85rem;
+    }
+
+    .navigation-buttons {
+        gap: 6px;
+        margin-top: 18px;
+    }
+
+    .btn-nav {
+        padding: 9px 16px;
+        font-size: 0.85rem;
+        min-width: 90px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="url"],
+    select,
+    textarea {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        margin-bottom: 12px;
+        border-radius: 6px;
+    }
+
+    textarea {
+        min-height: 65px;
+    }
+
+    label {
+        font-size: 0.8rem;
+    }
+
+    .checkboxes-container {
+        max-height: 200px;
+        padding: 8px;
+        border-radius: 6px;
+    }
+
+    .checkbox-item {
+        padding: 4px;
+        margin-bottom: 6px;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+        margin-right: 6px;
+    }
+
+    .checkbox-item label {
+        font-size: 0.75rem;
+    }
+
+    .mensaje {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+        margin-bottom: 14px;
+    }
+
+    .back-btn {
+        left: 6px;
+        bottom: 6px;
+        padding: 6px 9px;
+        font-size: 11px;
+        border-radius: 6px;
+    }
+
+    footer.pie-pagina {
+        font-size: 0.75rem;
+        padding: 10px 6px;
+        margin-top: 20px;
+    }
 }
