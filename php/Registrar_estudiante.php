@@ -253,7 +253,6 @@ function registerStudentAndFamily($conn) {
         'direccion' => trim($_POST['direccion'] ?? ''),
         'telefono' => trim($_POST['telefono'] ?? ''),
         'correo' => trim($_POST['correo'] ?? ''),
-        'contrasena' => trim($_POST['contrasena'] ?? ''),
         'victima_conflicto' => trim($_POST['victima_conflicto'] ?? ''),
         'victima_tipo' => isset($_POST['victima_tipo']) && $_POST['victima_conflicto'] === 'Si' ? trim($_POST['victima_tipo']) : null,
         'registro_victima' => isset($_POST['registro_victima']) ? trim($_POST['registro_victima']) : 'No',
@@ -288,17 +287,17 @@ function registerStudentAndFamily($conn) {
     
     $stmt = $conn->prepare("INSERT INTO estudiante (
         nombre, apellidos, tipo_documento, no_documento, lugar_nacimiento, fecha_nacimiento, 
-        sector, direccion, telefono, correo, contrasena, victima_conflicto, registro_victima, 
+        sector, direccion, telefono, correo, victima_conflicto, registro_victima, 
         centro_proteccion, grupo_etnico, no_hermanos, lugar_que_ocupa, con_quien_vive, 
-        quien_apoya_crianza, afiliacion_salud, id_madre, id_padre, id_cuidador, url_foto
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        quien_apoya_crianza, afiliacion_salud, id_madre, id_padre, id_acudiente, url_foto
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     $stmt->bind_param(
-        "sssssssssssssssissssiiii",
+        "ssssssssssssssissssiiii",
         $estudiante_data['nombre'], $estudiante_data['apellidos'], $estudiante_data['tipo_documento'], 
         $estudiante_data['no_documento'], $estudiante_data['lugar_nacimiento'], $estudiante_data['fecha_nacimiento'], 
         $estudiante_data['sector'], $estudiante_data['direccion'], $estudiante_data['telefono'], 
-        $estudiante_data['correo'], $estudiante_data['contrasena'], $estudiante_data['victima_conflicto'], 
+        $estudiante_data['correo'], $estudiante_data['victima_conflicto'], 
         $estudiante_data['registro_victima'], $estudiante_data['centro_proteccion'], $estudiante_data['grupo_etnico'], 
         $estudiante_data['no_hermanos'], $estudiante_data['lugar_que_ocupa'], $estudiante_data['con_quien_vive'], 
         $estudiante_data['quien_apoya_crianza'], $estudiante_data['afiliacion_salud'], 
@@ -440,7 +439,7 @@ function registerStudentAndFamily($conn) {
         'data' => [
             'id_madre' => $id_madre,
             'id_padre' => $id_padre,
-            'id_cuidador' => $id_cuidador,
+            'id_acudiente' => $id_cuidador,
             'id_entorno_educativo' => $id_entorno_educativo,
             'nombre_completo' => $estudiante_data['nombre'] . ' ' . $estudiante_data['apellidos']
         ]
