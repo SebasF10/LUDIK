@@ -4,8 +4,10 @@ session_start();
 header('Content-Type: application/json');
 
 // Verificar que el usuario esté logueado y tenga rol autorizado
-if (!isset($_SESSION['usuario']) || !isset($_SESSION['rol']) || 
-    !in_array($_SESSION['rol'], ['docente', 'admin', 'docente_apoyo'])) {
+if (
+    !isset($_SESSION['usuario']) || !isset($_SESSION['rol']) ||
+    !in_array($_SESSION['rol'], ['docente', 'admin', 'docente_apoyo'])
+) {
     echo json_encode(['success' => false, 'message' => 'No autorizado']);
     exit;
 }
@@ -56,35 +58,36 @@ mysqli_close($conexion);
 
 // ===== FUNCIONES =====
 
-function listarValoraciones($conexion, $rol) {
+function listarValoraciones($conexion, $rol)
+{
     $filtros = [];
     $params = [];
     $types = '';
-    
+
     // Construir filtros
     if (!empty($_GET['anio'])) {
         $filtros[] = "vp.anio = ?";
         $params[] = intval($_GET['anio']);
         $types .= 'i';
     }
-    
+
     if (!empty($_GET['periodo'])) {
         $filtros[] = "vp.periodo = ?";
         $params[] = $_GET['periodo'];
         $types .= 's';
     }
-    
+
     if (!empty($_GET['id_grupo'])) {
         $filtros[] = "ge.id_grupo = ?";
         $params[] = intval($_GET['id_grupo']);
         $types .= 'i';
     }
-    
+
     $whereClause = '';
     if (!empty($filtros)) {
         $whereClause = 'AND ' . implode(' AND ', $filtros);
     }
-    
+
     if ($rol === 'admin' || $rol === 'docente_apoyo') {
         // Admin y docente_apoyo pueden ver todas las valoraciones
         $query = "
@@ -120,7 +123,7 @@ function listarValoraciones($conexion, $rol) {
         $id_docente = $_SESSION['usuario']['id_docente'];
         $params = array_merge([$id_docente], $params);
         $types = 'i' . $types;
-        
+
         $query = "
             SELECT DISTINCT
                 vp.id_valoracion_pedagogica,
@@ -152,16 +155,16 @@ function listarValoraciones($conexion, $rol) {
             ORDER BY e.apellidos, e.nombre
         ";
     }
-    
+
     $stmt = mysqli_prepare($conexion, $query);
-    
+
     if (!empty($params)) {
         mysqli_stmt_bind_param($stmt, $types, ...$params);
     }
-    
+
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    
+
     $valoraciones = [];
     while ($row = mysqli_fetch_assoc($result)) {
         $valoraciones[] = [
@@ -182,16 +185,17 @@ function listarValoraciones($conexion, $rol) {
             'grado' => $row['grado']
         ];
     }
-    
+
     mysqli_stmt_close($stmt);
-    
+
     echo json_encode([
         'success' => true,
         'valoraciones' => $valoraciones
     ]);
 }
 
-function obtenerGrupos($conexion, $rol) {
+function obtenerGrupos($conexion, $rol)
+{
     if ($rol === 'admin' || $rol === 'docente_apoyo') {
         $query = "
             SELECT DISTINCT 
@@ -226,10 +230,10 @@ function obtenerGrupos($conexion, $rol) {
         $stmt = mysqli_prepare($conexion, $query);
         mysqli_stmt_bind_param($stmt, "i", $id_docente);
     }
-    
+
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    
+
     $grupos = [];
     while ($row = mysqli_fetch_assoc($result)) {
         $grupos[] = [
@@ -240,23 +244,24 @@ function obtenerGrupos($conexion, $rol) {
             'total_estudiantes' => $row['total_estudiantes']
         ];
     }
-    
+
     mysqli_stmt_close($stmt);
-    
+
     echo json_encode([
         'success' => true,
         'grupos' => $grupos
     ]);
 }
 
-function obtenerAsignaturas($conexion, $rol) {
+function obtenerAsignaturas($conexion, $rol)
+{
     if (!isset($_GET['id_grupo'])) {
         echo json_encode(['success' => false, 'message' => 'ID de grupo requerido']);
         return;
     }
-    
+
     $id_grupo = intval($_GET['id_grupo']);
-    
+
     if ($rol === 'admin' || $rol === 'docente_apoyo') {
         $query = "
             SELECT DISTINCT 
@@ -283,10 +288,10 @@ function obtenerAsignaturas($conexion, $rol) {
         $stmt = mysqli_prepare($conexion, $query);
         mysqli_stmt_bind_param($stmt, "ii", $id_docente, $id_grupo);
     }
-    
+
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    
+
     $asignaturas = [];
     while ($row = mysqli_fetch_assoc($result)) {
         $asignaturas[] = [
@@ -294,23 +299,24 @@ function obtenerAsignaturas($conexion, $rol) {
             'nombre_asig' => $row['nombre_asig']
         ];
     }
-    
+
     mysqli_stmt_close($stmt);
-    
+
     echo json_encode([
         'success' => true,
         'asignaturas' => $asignaturas
     ]);
 }
 
-function obtenerEstudiantes($conexion, $rol) {
+function obtenerEstudiantes($conexion, $rol)
+{
     if (!isset($_GET['id_grupo'])) {
         echo json_encode(['success' => false, 'message' => 'ID de grupo requerido']);
         return;
     }
-    
+
     $id_grupo = intval($_GET['id_grupo']);
-    
+
     if ($rol === 'admin' || $rol === 'docente_apoyo') {
         $query = "
             SELECT 
@@ -337,7 +343,7 @@ function obtenerEstudiantes($conexion, $rol) {
         mysqli_stmt_bind_param($stmt, "i", $id_grupo);
     } else {
         $id_docente = $_SESSION['usuario']['id_docente'];
-        
+
         // Verificar acceso del docente al grupo
         $query_verificacion = "
             SELECT COUNT(*) as count 
@@ -349,14 +355,14 @@ function obtenerEstudiantes($conexion, $rol) {
         mysqli_stmt_execute($stmt_verificacion);
         $result_verificacion = mysqli_stmt_get_result($stmt_verificacion);
         $row_verificacion = mysqli_fetch_assoc($result_verificacion);
-        
+
         if ($row_verificacion['count'] == 0) {
             echo json_encode(['success' => false, 'message' => 'No tienes acceso a este grupo']);
             return;
         }
-        
+
         mysqli_stmt_close($stmt_verificacion);
-        
+
         $query = "
             SELECT 
                 e.id_estudiante,
@@ -381,10 +387,10 @@ function obtenerEstudiantes($conexion, $rol) {
         $stmt = mysqli_prepare($conexion, $query);
         mysqli_stmt_bind_param($stmt, "i", $id_grupo);
     }
-    
+
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    
+
     $estudiantes = [];
     while ($row = mysqli_fetch_assoc($result)) {
         $estudiantes[] = [
@@ -400,16 +406,17 @@ function obtenerEstudiantes($conexion, $rol) {
             'url_foto' => $row['url_foto'] ?: 'No disponible'
         ];
     }
-    
+
     mysqli_stmt_close($stmt);
-    
+
     echo json_encode([
         'success' => true,
         'estudiantes' => $estudiantes
     ]);
 }
 
-function crearValoracion($conexion, $rol) {
+function crearValoracion($conexion, $rol)
+{
     // Verificar que sea una petición POST
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         echo json_encode(['success' => false, 'message' => 'Método no permitido']);
@@ -423,50 +430,52 @@ function crearValoracion($conexion, $rol) {
     $id_piar = intval($_POST['id_piar'] ?? 0);
     $periodo = mysqli_real_escape_string($conexion, $_POST['periodo'] ?? '');
     $anio = intval($_POST['anio'] ?? 0);
-    $objetivo = mysqli_real_escape_string($conexion, trim($_POST['objetivo'] ?? ''));
-    $barrera = mysqli_real_escape_string($conexion, trim($_POST['barrera'] ?? ''));
-    $tipo_ajuste = mysqli_real_escape_string($conexion, trim($_POST['tipo_ajuste'] ?? ''));
-    $apoyo_requerido = mysqli_real_escape_string($conexion, trim($_POST['apoyo_requerido'] ?? ''));
-    $seguimiento = mysqli_real_escape_string($conexion, trim($_POST['seguimiento'] ?? ''));
-    
+    $objetivo = trim($_POST['objetivo'] ?? '');
+    $barrera = trim($_POST['barrera'] ?? '');
+    $tipo_ajuste = trim($_POST['tipo_ajuste'] ?? '');
+    $apoyo_requerido = trim($_POST['apoyo_requerido'] ?? '');
+    $seguimiento = trim($_POST['seguimiento'] ?? '');
+
     // ⭐ NUEVO: CAPTURAR FECHA ACTUAL AUTOMÁTICAMENTE
     $fecha_actual = date('Y-m-d');
-    
+
     // Validar campos requeridos
-    if (empty($id_grupo) || empty($id_asignatura) || empty($id_estudiante) || 
-        empty($periodo) || empty($anio) || empty($objetivo) || empty($barrera) || 
-        empty($tipo_ajuste) || empty($apoyo_requerido) || empty($seguimiento)) {
+    if (
+        empty($id_grupo) || empty($id_asignatura) || empty($id_estudiante) ||
+        empty($periodo) || empty($anio) || empty($objetivo) || empty($barrera) ||
+        empty($tipo_ajuste) || empty($apoyo_requerido) || empty($seguimiento)
+    ) {
         echo json_encode(['success' => false, 'message' => 'Todos los campos son requeridos']);
         return;
     }
-    
+
     // Verificar permisos según el rol
     if ($rol === 'docente') {
         $id_docente = $_SESSION['usuario']['id_docente'];
-        
+
         $query_verificacion = "
             SELECT COUNT(*) as count 
             FROM asignatura_docente_grupo adg 
             WHERE adg.id_docente = ? AND adg.id_grupo = ? AND adg.id_asignatura = ?
         ";
-        
+
         $stmt_verificacion = mysqli_prepare($conexion, $query_verificacion);
         mysqli_stmt_bind_param($stmt_verificacion, "iii", $id_docente, $id_grupo, $id_asignatura);
         mysqli_stmt_execute($stmt_verificacion);
         $result_verificacion = mysqli_stmt_get_result($stmt_verificacion);
         $row_verificacion = mysqli_fetch_assoc($result_verificacion);
-        
+
         if ($row_verificacion['count'] == 0) {
             echo json_encode(['success' => false, 'message' => 'No tienes acceso a esta asignatura en este grupo']);
             return;
         }
-        
+
         mysqli_stmt_close($stmt_verificacion);
     }
-    
+
     // Iniciar transacción
     mysqli_autocommit($conexion, false);
-    
+
     try {
         // Si el estudiante no tiene PIAR, crear uno
         if (empty($id_piar)) {
@@ -474,36 +483,36 @@ function crearValoracion($conexion, $rol) {
                 INSERT INTO piar (id_estudiante, fecha, ajuste, apoyo, barrera) 
                 VALUES (?, ?, 'Ajuste inicial generado automáticamente', 'Apoyo inicial', 'Barrera inicial identificada')
             ";
-            
+
             $stmt_piar = mysqli_prepare($conexion, $query_piar);
             mysqli_stmt_bind_param($stmt_piar, "is", $id_estudiante, $fecha_actual);
-            
+
             if (!mysqli_stmt_execute($stmt_piar)) {
                 throw new Exception('Error al crear PIAR: ' . mysqli_error($conexion));
             }
-            
+
             $id_piar = mysqli_insert_id($conexion);
             mysqli_stmt_close($stmt_piar);
         }
-        
+
         // Verificar si ya existe una valoración para este estudiante, asignatura y período
         $query_existente = "
             SELECT id_valoracion_pedagogica 
             FROM valoracion_pedagogica 
             WHERE id_piar = ? AND id_asignatura = ? AND periodo = ? AND anio = ?
         ";
-        
+
         $stmt_existente = mysqli_prepare($conexion, $query_existente);
         mysqli_stmt_bind_param($stmt_existente, "issi", $id_piar, $id_asignatura, $periodo, $anio);
         mysqli_stmt_execute($stmt_existente);
         $result_existente = mysqli_stmt_get_result($stmt_existente);
-        
+
         if (mysqli_num_rows($result_existente) > 0) {
             throw new Exception('Ya existe una valoración pedagógica para este estudiante en esta asignatura y período');
         }
-        
+
         mysqli_stmt_close($stmt_existente);
-        
+
         // ⭐ MODIFICADO: Insertar la valoración pedagógica CON FECHA AUTOMÁTICA
         $query_valoracion = "
             INSERT INTO valoracion_pedagogica (
@@ -519,46 +528,45 @@ function crearValoracion($conexion, $rol) {
                 seguimiento
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ";
-        
+
         $stmt_valoracion = mysqli_prepare($conexion, $query_valoracion);
         mysqli_stmt_bind_param(
-            $stmt_valoracion, 
-            "isisssssss", 
-            $id_piar, 
-            $id_asignatura, 
-            $periodo, 
+            $stmt_valoracion,
+            "isisssssss",
+            $id_piar,
+            $id_asignatura,
+            $periodo,
             $anio,
             $fecha_actual,
-            $objetivo, 
-            $barrera, 
-            $tipo_ajuste, 
-            $apoyo_requerido, 
+            $objetivo,
+            $barrera,
+            $tipo_ajuste,
+            $apoyo_requerido,
             $seguimiento
         );
-        
+
         if (!mysqli_stmt_execute($stmt_valoracion)) {
             throw new Exception('Error al registrar la valoración pedagógica: ' . mysqli_error($conexion));
         }
-        
+
         $id_valoracion = mysqli_insert_id($conexion);
         mysqli_stmt_close($stmt_valoracion);
-        
+
         // Confirmar transacción
         mysqli_commit($conexion);
         mysqli_autocommit($conexion, true);
-        
+
         echo json_encode([
             'success' => true,
             'message' => 'Valoración pedagógica registrada exitosamente',
             'id_valoracion' => $id_valoracion,
             'fecha_registro' => $fecha_actual
         ]);
-        
     } catch (Exception $e) {
         // Revertir transacción en caso de error
         mysqli_rollback($conexion);
         mysqli_autocommit($conexion, true);
-        
+
         echo json_encode([
             'success' => false,
             'message' => $e->getMessage()
@@ -566,14 +574,15 @@ function crearValoracion($conexion, $rol) {
     }
 }
 
-function obtenerValoracion($conexion, $rol) {
+function obtenerValoracion($conexion, $rol)
+{
     if (!isset($_GET['id_valoracion'])) {
         echo json_encode(['success' => false, 'message' => 'ID de valoración requerido']);
         return;
     }
-    
+
     $id_valoracion = intval($_GET['id_valoracion']);
-    
+
     if ($rol === 'admin' || $rol === 'docente_apoyo') {
         $query = "
             SELECT 
@@ -638,14 +647,14 @@ function obtenerValoracion($conexion, $rol) {
         $stmt = mysqli_prepare($conexion, $query);
         mysqli_stmt_bind_param($stmt, "ii", $id_valoracion, $id_docente);
     }
-    
+
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    
+
     if ($row = mysqli_fetch_assoc($result)) {
         // Procesar la foto antes de enviar
         $row['foto_url'] = getPhotoUrl($row['url_foto'], $row['id_estudiante']);
-        
+
         echo json_encode([
             'success' => true,
             'valoracion' => $row
@@ -653,34 +662,37 @@ function obtenerValoracion($conexion, $rol) {
     } else {
         echo json_encode(['success' => false, 'message' => 'Valoración no encontrada o sin acceso']);
     }
-    
+
     mysqli_stmt_close($stmt);
 }
 
-function actualizarValoracion($conexion, $rol) {
+function actualizarValoracion($conexion, $rol)
+{
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         echo json_encode(['success' => false, 'message' => 'Método no permitido']);
         return;
     }
-    
+
     $id_valoracion = intval($_POST['id_valoracion'] ?? 0);
     $periodo = mysqli_real_escape_string($conexion, $_POST['periodo'] ?? '');
     $anio = intval($_POST['anio'] ?? 0);
-    $objetivo = mysqli_real_escape_string($conexion, trim($_POST['objetivo'] ?? ''));
-    $barrera = mysqli_real_escape_string($conexion, trim($_POST['barrera'] ?? ''));
-    $tipo_ajuste = mysqli_real_escape_string($conexion, trim($_POST['tipo_ajuste'] ?? ''));
-    $apoyo_requerido = mysqli_real_escape_string($conexion, trim($_POST['apoyo_requerido'] ?? ''));
-    $seguimiento = mysqli_real_escape_string($conexion, trim($_POST['seguimiento'] ?? ''));
-    
+    $objetivo = trim($_POST['objetivo'] ?? '');
+    $barrera = trim($_POST['barrera'] ?? '');
+    $tipo_ajuste = trim($_POST['tipo_ajuste'] ?? '');
+    $apoyo_requerido = trim($_POST['apoyo_requerido'] ?? '');
+    $seguimiento = trim($_POST['seguimiento'] ?? '');
+
     // ⭐ NUEVO: CAPTURAR FECHA ACTUAL AUTOMÁTICAMENTE
     $fecha_actual = date('Y-m-d');
-    
-    if (empty($id_valoracion) || empty($periodo) || empty($anio) || empty($objetivo) || 
-        empty($barrera) || empty($tipo_ajuste) || empty($apoyo_requerido) || empty($seguimiento)) {
+
+    if (
+        empty($id_valoracion) || empty($periodo) || empty($anio) || empty($objetivo) ||
+        empty($barrera) || empty($tipo_ajuste) || empty($apoyo_requerido) || empty($seguimiento)
+    ) {
         echo json_encode(['success' => false, 'message' => 'Todos los campos son requeridos']);
         return;
     }
-    
+
     // Verificar permisos y obtener datos actuales
     if ($rol === 'admin' || $rol === 'docente_apoyo') {
         $query_verificacion = "
@@ -707,17 +719,17 @@ function actualizarValoracion($conexion, $rol) {
         $stmt_verificacion = mysqli_prepare($conexion, $query_verificacion);
         mysqli_stmt_bind_param($stmt_verificacion, "ii", $id_valoracion, $id_docente);
     }
-    
+
     mysqli_stmt_execute($stmt_verificacion);
     $result_verificacion = mysqli_stmt_get_result($stmt_verificacion);
-    
+
     if (!$row_verificacion = mysqli_fetch_assoc($result_verificacion)) {
         echo json_encode(['success' => false, 'message' => 'Valoración no encontrada o sin acceso']);
         return;
     }
-    
+
     mysqli_stmt_close($stmt_verificacion);
-    
+
     // Verificar si existe otra valoración con los mismos datos (excepto la actual)
     $query_duplicado = "
         SELECT id_valoracion_pedagogica 
@@ -725,25 +737,27 @@ function actualizarValoracion($conexion, $rol) {
         WHERE id_piar = ? AND id_asignatura = ? AND periodo = ? AND anio = ? 
         AND id_valoracion_pedagogica != ?
     ";
-    
+
     $stmt_duplicado = mysqli_prepare($conexion, $query_duplicado);
-    mysqli_stmt_bind_param($stmt_duplicado, "issii", 
-        $row_verificacion['id_piar'], 
-        $row_verificacion['id_asignatura'], 
-        $periodo, 
-        $anio, 
+    mysqli_stmt_bind_param(
+        $stmt_duplicado,
+        "issii",
+        $row_verificacion['id_piar'],
+        $row_verificacion['id_asignatura'],
+        $periodo,
+        $anio,
         $id_valoracion
     );
     mysqli_stmt_execute($stmt_duplicado);
     $result_duplicado = mysqli_stmt_get_result($stmt_duplicado);
-    
+
     if (mysqli_num_rows($result_duplicado) > 0) {
         echo json_encode(['success' => false, 'message' => 'Ya existe otra valoración pedagógica para este estudiante en esta asignatura y período']);
         return;
     }
-    
+
     mysqli_stmt_close($stmt_duplicado);
-    
+
     // ⭐ MODIFICADO: Actualizar la valoración CON FECHA AUTOMÁTICA
     $query_update = "
         UPDATE valoracion_pedagogica 
@@ -751,13 +765,22 @@ function actualizarValoracion($conexion, $rol) {
             apoyo_requerido = ?, seguimiento = ?
         WHERE id_valoracion_pedagogica = ?
     ";
-    
+
     $stmt_update = mysqli_prepare($conexion, $query_update);
-    mysqli_stmt_bind_param($stmt_update, "sissssssi", 
-        $periodo, $anio, $fecha_actual, $objetivo, $barrera, $tipo_ajuste, 
-        $apoyo_requerido, $seguimiento, $id_valoracion
+    mysqli_stmt_bind_param(
+        $stmt_update,
+        "sissssssi",
+        $periodo,
+        $anio,
+        $fecha_actual,
+        $objetivo,
+        $barrera,
+        $tipo_ajuste,
+        $apoyo_requerido,
+        $seguimiento,
+        $id_valoracion
     );
-    
+
     if (mysqli_stmt_execute($stmt_update)) {
         echo json_encode([
             'success' => true,
@@ -770,17 +793,18 @@ function actualizarValoracion($conexion, $rol) {
             'message' => 'Error al actualizar la valoración pedagógica'
         ]);
     }
-    
+
     mysqli_stmt_close($stmt_update);
 }
-function eliminarValoracion($conexion, $rol) {
+function eliminarValoracion($conexion, $rol)
+{
     if (!isset($_POST['id_valoracion'])) {
         echo json_encode(['success' => false, 'message' => 'ID de valoración requerido']);
         return;
     }
-    
+
     $id_valoracion = intval($_POST['id_valoracion']);
-    
+
     // Verificar permisos
     if ($rol === 'admin' || $rol === 'docente_apoyo') {
         $query_verificacion = "
@@ -807,22 +831,22 @@ function eliminarValoracion($conexion, $rol) {
         $stmt_verificacion = mysqli_prepare($conexion, $query_verificacion);
         mysqli_stmt_bind_param($stmt_verificacion, "ii", $id_valoracion, $id_docente);
     }
-    
+
     mysqli_stmt_execute($stmt_verificacion);
     $result_verificacion = mysqli_stmt_get_result($stmt_verificacion);
-    
+
     if (mysqli_num_rows($result_verificacion) == 0) {
         echo json_encode(['success' => false, 'message' => 'Valoración no encontrada o sin acceso']);
         return;
     }
-    
+
     mysqli_stmt_close($stmt_verificacion);
-    
+
     // Eliminar la valoración
     $query_delete = "DELETE FROM valoracion_pedagogica WHERE id_valoracion_pedagogica = ?";
     $stmt_delete = mysqli_prepare($conexion, $query_delete);
     mysqli_stmt_bind_param($stmt_delete, "i", $id_valoracion);
-    
+
     if (mysqli_stmt_execute($stmt_delete)) {
         echo json_encode([
             'success' => true,
@@ -834,11 +858,12 @@ function eliminarValoracion($conexion, $rol) {
             'message' => 'Error al eliminar la valoración pedagógica'
         ]);
     }
-    
+
     mysqli_stmt_close($stmt_delete);
 }
 
-function obtenerEstadisticas($conexion, $rol) {
+function obtenerEstadisticas($conexion, $rol)
+{
     if ($rol === 'admin' || $rol === 'docente_apoyo') {
         $query_stats = "
             SELECT 
@@ -874,13 +899,13 @@ function obtenerEstadisticas($conexion, $rol) {
         $stmt_stats = mysqli_prepare($conexion, $query_stats);
         mysqli_stmt_bind_param($stmt_stats, "i", $id_docente);
     }
-    
+
     mysqli_stmt_execute($stmt_stats);
     $result_stats = mysqli_stmt_get_result($stmt_stats);
     $stats = mysqli_fetch_assoc($result_stats);
-    
+
     mysqli_stmt_close($stmt_stats);
-    
+
     echo json_encode([
         'success' => true,
         'estadisticas' => [
@@ -893,7 +918,8 @@ function obtenerEstadisticas($conexion, $rol) {
 
 
 //Generar URL de foto del estudiante
-function getPhotoUrl($urlFoto, $idEstudiante) {
+function getPhotoUrl($urlFoto, $idEstudiante)
+{
     // Si hay URL en la base de datos
     if (!empty($urlFoto)) {
         // Verificar si el archivo existe
@@ -901,9 +927,7 @@ function getPhotoUrl($urlFoto, $idEstudiante) {
             return $urlFoto;
         }
     }
-    
+
     // Si no hay URL o el archivo no existe, usar foto por defecto
     return "photos/default.png";
 }
-
-?>
