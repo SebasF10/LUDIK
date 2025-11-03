@@ -272,6 +272,8 @@ function cambiarTituloPanel(nuevoTitulo) {
     }
 }
 
+
+
 // ========== FUNCIONALIDAD ESPECÍFICA DE COMUNICACIÓN ==========
 
 class ComunicacionDocentes {
@@ -420,9 +422,12 @@ class ComunicacionDocentes {
                 ? docente.grupos.join(', ')
                 : 'Sin grupos asignados';
 
-            const directorBadge = docente.es_director
-                ? '<span class="director-badge">Director de Grupo</span>'
-                : '';
+            let directorBadge = '';
+            if (docente.es_director && docente.grupos.length > 0) {
+                directorBadge = `<span class="director-badge">Director del Grupo ${docente.grupos[0]}</span>`;
+            } else if (docente.es_director) {
+                directorBadge = '<span class="director-badge">Director de Grupo</span>';
+            }
 
             return `
                 <div class="docente-card">

@@ -605,6 +605,19 @@
                         <button type="submit" class="btn-nav btn-registrar" id="btnRegistrar" style="display: none;">
                             Completar Registro
                         </button>
+                        <!-- Botón opcional para crear PIAR -->
+                        <div id="btnCrearPiarContainer" style="display: none; text-align: center; margin-top: 2rem;">
+                            <p style="margin-bottom: 1rem; color: #495057; font-weight: 500;">
+                                ¿Deseas continuar creando el PIAR para este estudiante?
+                            </p>
+                            <button type="button" class="btn-nav btn-piar" onclick="redirigirAPiar()">
+                                Crear PIAR
+                            </button>
+                            <button type="button" class="btn-nav btn-siguiente" onclick="volverInicio()">
+                                Volver al inicio
+                            </button>
+                        </div>
+
                     </div>
 
                     <!-- Campos ocultos para manejar el estado de skip -->
@@ -718,6 +731,19 @@
             const photoError = document.getElementById('photoError');
             photoError.textContent = message;
             photoError.style.display = 'block';
+        }
+
+        function mostrarBotonCrearPiar() {
+            const contenedor = document.getElementById('btnCrearPiarContainer');
+            if (contenedor) contenedor.style.display = 'block';
+        }
+
+        function redirigirAPiar() {
+            window.location.href = "Registrar_PIAR.html"; // cambia por la ruta real
+        }
+
+        function volverInicio() {
+            window.location.href = "index.html"; // o la página principal del sistema
         }
     </script>
 

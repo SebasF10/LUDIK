@@ -1401,3 +1401,14 @@ textarea {
     font-size: 0.9rem;
     margin-top: 1rem;
 }
+
+.btn-piar {
+    background: linear-gradient(45deg, #ff9800, #ff5722);
+    color: white;
+}
+
+.btn-piar:hover {
+    background: linear-gradient(45deg, #e68900, #e64a19);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+}
