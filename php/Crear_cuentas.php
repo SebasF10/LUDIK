@@ -21,9 +21,12 @@ try {
     if ($rol === 'admin') {
         $nombre = mysqli_real_escape_string($conexion, $_POST['nombre'] ?? '');
         $email = mysqli_real_escape_string($conexion, $_POST['email'] ?? '');
-        $contrasena = mysqli_real_escape_string($conexion, $_POST['contrasena'] ?? '');
+        $contrasena_plain = $_POST['contrasena'] ?? '';
+        
+        // Encriptar contraseña
+        $contrasena_hash = password_hash($contrasena_plain, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO admin (nombre, email, contrasena) VALUES ('$nombre', '$email', '$contrasena')";
+        $sql = "INSERT INTO admin (nombre, email, contrasena) VALUES ('$nombre', '$email', '$contrasena_hash')";
         if (mysqli_query($conexion, $sql)) {
             echo json_encode(['status' => 'success', 'message' => 'Cuenta de administrador creada correctamente.']);
         } else {
@@ -35,12 +38,15 @@ try {
         try {
             $nombre = mysqli_real_escape_string($conexion, $_POST['nombre'] ?? '');
             $email = mysqli_real_escape_string($conexion, $_POST['email'] ?? '');
-            $contrasena = mysqli_real_escape_string($conexion, $_POST['contrasena'] ?? '');
+            $contrasena_plain = $_POST['contrasena'] ?? '';
             $telefono = mysqli_real_escape_string($conexion, $_POST['telefono'] ?? '');
             $es_director = mysqli_real_escape_string($conexion, $_POST['es_director'] ?? '0');
 
+            // Encriptar contraseña
+            $contrasena_hash = password_hash($contrasena_plain, PASSWORD_DEFAULT);
+
             $sql = "INSERT INTO docente (nombre_completo, email, contrasena, telefono, es_director) 
-                    VALUES ('$nombre', '$email', '$contrasena', '$telefono', '$es_director')";
+                    VALUES ('$nombre', '$email', '$contrasena_hash', '$telefono', '$es_director')";
             if (!mysqli_query($conexion, $sql)) {
                 throw new Exception("Error al insertar docente: " . mysqli_error($conexion));
             }
@@ -88,10 +94,13 @@ try {
         $nombre = mysqli_real_escape_string($conexion, $_POST['nombre'] ?? '');
         $cargo = mysqli_real_escape_string($conexion, $_POST['cargo'] ?? '');
         $email = mysqli_real_escape_string($conexion, $_POST['email'] ?? '');
-        $contrasena = mysqli_real_escape_string($conexion, $_POST['contrasena'] ?? '');
+        $contrasena_plain = $_POST['contrasena'] ?? '';
+
+        // Encriptar contraseña
+        $contrasena_hash = password_hash($contrasena_plain, PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO directivo (nombre, cargo, email, contrasena) 
-                VALUES ('$nombre', '$cargo', '$email', '$contrasena')";
+                VALUES ('$nombre', '$cargo', '$email', '$contrasena_hash')";
         if (mysqli_query($conexion, $sql)) {
             echo json_encode(['status' => 'success', 'message' => 'Cuenta de directivo creada correctamente.']);
         } else {

@@ -2,15 +2,18 @@
 /**
  * SCRIPT DE MIGRACIÓN DE CONTRASEÑAS
  * 
+ * Este script encripta todas las contraseñas en texto plano de la base de datos.
+ * 
  * INSTRUCCIONES:
- * 1. Cambiar el MIGRATION_TOKEN por algo único
- * 2. Subir este archivo al servidor
- * 3. Ejecutarlo desde el navegador con ?token=TU_TOKEN
- * 4. ELIMINAR este archivo después de ejecutarlo
+ * 1. Subir este archivo al servidor
+ * 2. Ejecutarlo UNA SOLA VEZ desde el navegador
+ * 3. ELIMINAR este archivo después de ejecutarlo por seguridad
+ * 
+ * IMPORTANTE: Hacer backup de la base de datos antes de ejecutar
  */
 
-// CAMBIA ESTE TOKEN POR UNO ALEATORIO Y SECRETO
-define('MIGRATION_TOKEN', 'CAMBIAME_por_algo_secreto_123xyz');
+// Configuración de seguridad: cambiar este token por uno aleatorio
+define('MIGRATION_TOKEN', 'ed5c4596-11a3-4975-acdb-0f6a7d2b16fb');
 
 // Verificar token de seguridad
 if (!isset($_GET['token']) || $_GET['token'] !== MIGRATION_TOKEN) {
@@ -19,13 +22,17 @@ if (!isset($_GET['token']) || $_GET['token'] !== MIGRATION_TOKEN) {
 
 require_once 'conexion.php';
 
-set_time_limit(300);
+// Configuración
+set_time_limit(300); // 5 minutos
 $conn = $conexion;
 
+// Función para verificar si una contraseña ya está encriptada
 function isPasswordHashed($password) {
+    // Los hashes de password_hash() siempre comienzan con $2y$ (bcrypt)
     return preg_match('/^\$2[ayb]\$.{56}$/i', $password);
 }
 
+// Función para migrar contraseñas de una tabla
 function migrateTablePasswords($conn, $tableName, $idField, $passwordField) {
     $results = [
         'table' => $tableName,
@@ -37,6 +44,7 @@ function migrateTablePasswords($conn, $tableName, $idField, $passwordField) {
     ];
     
     try {
+        // Obtener todos los registros
         $query = "SELECT $idField, $passwordField FROM $tableName";
         $result = $conn->query($query);
         
@@ -50,18 +58,22 @@ function migrateTablePasswords($conn, $tableName, $idField, $passwordField) {
             $id = $row[$idField];
             $password = $row[$passwordField];
             
+            // Saltar contraseñas vacías
             if (empty($password)) {
                 $results['empty']++;
                 continue;
             }
             
+            // Verificar si ya está encriptada
             if (isPasswordHashed($password)) {
                 $results['already_hashed']++;
                 continue;
             }
             
+            // Encriptar contraseña
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             
+            // Actualizar en la base de datos
             $stmt = $conn->prepare("UPDATE $tableName SET $passwordField = ? WHERE $idField = ?");
             if (!$stmt) {
                 $results['errors'][] = "Error preparando statement para ID $id: " . $conn->error;
@@ -88,6 +100,7 @@ function migrateTablePasswords($conn, $tableName, $idField, $passwordField) {
     return $results;
 }
 
+// HTML Header
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -195,8 +208,10 @@ function migrateTablePasswords($conn, $tableName, $idField, $passwordField) {
 
 <?php
 
+// Iniciar migración
 echo "<h2>Iniciando migración...</h2>";
 
+// Array de tablas a migrar
 $tables = [
     ['name' => 'admin', 'id' => 'id_admin', 'password' => 'contrasena'],
     ['name' => 'docente', 'id' => 'id_docente', 'password' => 'contrasena'],
@@ -215,15 +230,18 @@ $totalResults = [
     'total_errors' => 0
 ];
 
+// Migrar cada tabla
 foreach ($tables as $table) {
     $result = migrateTablePasswords($conn, $table['name'], $table['id'], $table['password']);
     
+    // Acumular totales
     $totalResults['total_records'] += $result['total'];
     $totalResults['total_migrated'] += $result['migrated'];
     $totalResults['total_already_hashed'] += $result['already_hashed'];
     $totalResults['total_empty'] += $result['empty'];
     $totalResults['total_errors'] += count($result['errors']);
     
+    // Mostrar resultados de la tabla
     echo "<div class='table-result'>";
     echo "<h3>📋 Tabla: {$result['table']}</h3>";
     echo "<div class='stats'>";
@@ -247,6 +265,7 @@ foreach ($tables as $table) {
     echo "</div>";
 }
 
+// Resumen final
 echo "<div class='summary'>";
 echo "<h2>✅ Resumen de Migración</h2>";
 echo "<div class='stats'>";
@@ -265,18 +284,36 @@ if ($totalResults['total_migrated'] > 0) {
 
 echo "</div>";
 
+// Instrucciones finales
 ?>
         <div class="warning-box">
             <h3>📋 Siguientes pasos:</h3>
             <ol>
                 <li>Verificar que todo funciona correctamente probando el login</li>
                 <li><strong>ELIMINAR este archivo</strong> (<span class="code">migrar_contraseñas.php</span>) del servidor</li>
-                <li>Asegurarse de que los archivos actualizados estén en producción</li>
+                <li>Asegurarse de que los archivos actualizados estén en producción:
+                    <ul>
+                        <li><span class="code">Crear_cuentas.php</span></li>
+                        <li><span class="code">Login.php</span></li>
+                        <li><span class="code">Registrar_estudiante.php</span></li>
+                    </ul>
+                </li>
             </ol>
+        </div>
+        
+        <div style="margin-top: 30px; padding: 15px; background: #e3f2fd; border-radius: 4px;">
+            <p><strong>ℹ️ Nota técnica:</strong></p>
+            <ul>
+                <li>Las contraseñas ahora usan <span class="code">bcrypt</span> (PASSWORD_DEFAULT)</li>
+                <li>Cada hash es único incluso para contraseñas idénticas</li>
+                <li>El sistema de login maneja automáticamente contraseñas antiguas durante la transición</li>
+                <li>Después de 1-2 semanas, todas las contraseñas estarán encriptadas</li>
+            </ul>
         </div>
     </div>
 </body>
 </html>
 <?php
+
 $conn->close();
 ?>
