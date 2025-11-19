@@ -487,6 +487,7 @@ function exportStudentsCSV($conexion, $rol, $usuario)
                 e.victima_conflicto,
                 e.grupo_etnico,
                 e.afiliacion_salud
+                e.regimen_salud
             FROM estudiante e
             LEFT JOIN grupo_estudiante ge ON e.id_estudiante = ge.id_estudiante 
                 AND (ge.anio = YEAR(CURDATE()) OR ge.anio IS NULL)
@@ -534,7 +535,8 @@ function exportStudentsCSV($conexion, $rol, $usuario)
             'Dirección',
             'Víctima Conflicto',
             'Grupo Étnico',
-            'Afiliación Salud'
+            'Afiliación Salud',
+            'Régimen de Afiliación'
         ]);
 
         // Datos
@@ -553,7 +555,8 @@ function exportStudentsCSV($conexion, $rol, $usuario)
                 $row['direccion'] ?? '',
                 $row['victima_conflicto'] ?? '',
                 $row['grupo_etnico'] ?? '',
-                $row['afiliacion_salud'] ?? ''
+                $row['afiliacion_salud'] ?? '',
+                $row['regimen_salud'] ?? ''
             ]);
         }
 
