@@ -369,7 +369,8 @@ function getPersonalDataForPDF(student) {
         'Fecha de Nacimiento': student.fecha_nacimiento || 'No registrada',
         'Teléfono': student.telefono || 'No registrado',
         'Correo': student.correo || 'No registrado',
-        'Afiliación de Salud': student.afiliacion_salud || 'No especificada'
+        'Afiliación de Salud': student.afiliacion_salud || 'No especificada',
+        'Regimen de Salud': student.regimen_salud || 'No especificado'
     };
 
     // Información completa solo para roles educativos
@@ -1532,7 +1533,8 @@ function fillPersonalInfo(student) {
         'victimaConflicto': student.victima_conflicto || 'No especificado',
         'grupoEtnico': student.grupo_etnico || 'No especificado',
         'conQuienVive': student.con_quien_vive || 'No especificado',
-        'afiliacionSalud': student.afiliacion_salud || 'No especificada'
+        'afiliacionSalud': student.afiliacion_salud || 'No especificada',
+        'regimenAfiliacion': student.regimen_salud || 'No especificado'
     };
 
     Object.keys(fields).forEach(fieldId => {
@@ -1553,7 +1555,8 @@ function fillPersonalInfoForParents(student) {
         'fechaNacimiento': student.fecha_nacimiento || 'No registrada',
         'telefono': student.telefono || 'No registrado',
         'correo': student.correo || 'No registrado',
-        'afiliacionSalud': student.afiliacion_salud || 'No especificada'
+        'afiliacionSalud': student.afiliacion_salud || 'No especificada',
+        'regimenAfiliacion': student.regimen_salud || 'No especificado'
     };
 
     // Campos restringidos para padres
@@ -2195,6 +2198,7 @@ async function downloadIndividualStudentPDF() {
         addSectionHeader('2. Entorno Salud');
 
         addText(`Afiliación al sistema de salud: ${currentStudentData.afiliacion_salud || 'No especificada'}`, 9);
+        addText(`Régimen de afiliación: ${currentStudentData.regimen_salud || 'No especificado'}`, 9);
 
         if (currentStudentData.info_medica) {
             const medicalInfo = currentStudentData.info_medica;
