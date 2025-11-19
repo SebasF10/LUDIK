@@ -814,6 +814,326 @@ header {
 }
 
 /* ===============================================
+   SECCIÓN DESARROLLADORES Y EQUIPO
+   =============================================== */
+
+/* Ajuste especial para sección desarrolladores - fondo blanco contenido */
+#desarrolladores {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    padding: 40px 20px !important;
+}
+
+.developers-content-wrapper {
+    background: white;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 50px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+/* Foto grupal del equipo */
+.team-photo-container {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.team-group-photo {
+    max-width: 90%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.team-group-photo:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
+
+/* Equipo de liderazgo */
+.leadership-team {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.team-member-card {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.team-member-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+}
+
+.mentor-card:hover {
+    border-color: #10b981;
+}
+
+.teacher-card:hover {
+    border-color: #ef4444;
+}
+
+.advisor-card:hover {
+    border-color: #667eea;
+}
+
+.member-photo-wrapper {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+    border-radius: 20px;
+    padding: 8px;
+    background: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.team-member-card:hover .member-photo-wrapper {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.green-border {
+    border: 4px solid #10b981;
+}
+
+.red-border {
+    border: 4px solid #ef4444;
+}
+
+.blue-border {
+    border: 4px solid #667eea;
+}
+
+.member-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.member-name {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin: 15px 0 10px 0 !important;
+}
+
+.member-role {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+.mentor-role {
+    background: #10b981;
+    color: white;
+}
+
+.teacher-role {
+    background: #ef4444;
+    color: white;
+}
+
+.advisor-role {
+    background: #667eea;
+    color: white;
+}
+
+.member-description {
+    font-size: 1rem !important;
+    color: #64748b !important;
+    line-height: 1.6 !important;
+    margin-top: 15px !important;
+}
+
+/* Equipo de desarrollo */
+.development-team {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin: 40px 0;
+}
+
+.dev-member-card {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.02) 0%, rgba(118, 75, 162, 0.01) 100%);
+    border-radius: 16px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.dev-member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    background: white;
+}
+
+.dev-photo-wrapper {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 15px;
+    border-radius: 16px;
+    padding: 6px;
+    background: white;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.dev-member-card:hover .dev-photo-wrapper {
+    transform: scale(1.08);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.orange-border {
+    border: 3px solid #ff6a00;
+}
+
+.green-dev-border {
+    border: 3px solid #00ff7b;
+}
+
+.pink-border {
+    border: 3px solid #ff0000;
+}
+
+.pink-dev-border {
+    border: 3px solid #ec4899;
+}
+
+.blue-dev-border {
+    border: 3px solid #667eea;
+}
+
+.dev-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.dev-name {
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin: 12px 0 8px 0 !important;
+}
+
+.dev-role {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 8px 0;
+}
+
+.designer-role {
+    background: #ff6a00;
+    color: white;
+}
+
+.fullstack-role {
+    background: #00ff7b;
+    color: white;
+}
+
+.scrum-role {
+    background: #ff0000;
+    color: white;
+}
+
+.backend-role {
+    background: #ec4899;
+    color: white;
+}
+
+.frontend-role {
+    background: #667eea;
+    color: white;
+}
+
+.dev-description {
+    font-size: 0.95rem !important;
+    color: #64748b !important;
+    line-height: 1.5 !important;
+    margin-top: 12px !important;
+}
+
+/* Sección de metodología */
+.methodology-section {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
+    border-radius: 16px;
+    padding: 30px;
+    margin: 40px 0;
+    border-left: 5px solid #667eea;
+}
+
+.methodology-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.methodology-item {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.methodology-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.methodology-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.methodology-item h4 {
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    color: #667eea !important;
+    margin-bottom: 12px !important;
+}
+
+/* Sección de patrocinadores */
+.sponsors-section {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.03) 100%);
+    border-radius: 16px;
+    padding: 30px;
+    margin: 40px 0;
+    border-left: 5px solid #10b981;
+}
+
+.sponsors-logos {
+    margin-top: 25px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* ===============================================
    RESPONSIVE DESIGN - MEJORAS COMPLETAS
    =============================================== */
 
@@ -918,7 +1238,7 @@ header {
     /* Contenido principal - AJUSTE CRÍTICO */
     .main-content {
         margin: 20px 15px;
-        margin-top: 90px; /* Reducido para evitar superposición */
+        margin-top: 90px;
         border-radius: 16px;
     }
 
@@ -1053,6 +1373,45 @@ header {
         padding: 18px;
         font-size: 1.05rem;
     }
+
+    /* Sección desarrolladores - RESPONSIVE */
+    .leadership-team {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .development-team {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .member-photo-wrapper {
+        width: 170px;
+        height: 170px;
+    }
+
+    .dev-photo-wrapper {
+        width: 140px;
+        height: 140px;
+    }
+
+    .team-group-photo {
+        max-width: 95%;
+    }
+
+    .methodology-highlights {
+        grid-template-columns: 1fr;
+    }
+
+    /* Ajuste contenedor desarrolladores */
+    #desarrolladores {
+        padding: 20px 15px !important;
+    }
+
+    .developers-content-wrapper {
+        padding: 35px 25px;
+        border-radius: 16px;
+    }
 }
 
 /* Móviles grandes (hasta 576px) */
@@ -1090,7 +1449,7 @@ header {
     /* Contenido principal */
     .main-content {
         margin: 15px 10px;
-        margin-top: 75px; /* Ajustado para móviles pequeños */
+        margin-top: 75px;
         border-radius: 12px;
     }
 
@@ -1241,6 +1600,42 @@ header {
         padding: 25px 15px;
         font-size: 0.9rem;
     }
+
+    /* Sección desarrolladores móviles */
+    .team-member-card {
+        padding: 25px 20px;
+    }
+
+    .dev-member-card {
+        padding: 20px 15px;
+    }
+
+    .member-photo-wrapper {
+        width: 150px;
+        height: 150px;
+    }
+
+    .dev-photo-wrapper {
+        width: 130px;
+        height: 130px;
+    }
+
+    .member-name {
+        font-size: 1.3rem !important;
+    }
+
+    .dev-name {
+        font-size: 1.2rem !important;
+    }
+
+    .methodology-section,
+    .sponsors-section {
+        padding: 25px 20px;
+    }
+
+    .methodology-icon {
+        font-size: 2.5rem;
+    }
 }
 
 /* Móviles pequeños (hasta 375px) */
@@ -1374,6 +1769,25 @@ header {
     .pie-pagina {
         padding: 20px 12px;
         font-size: 0.85rem;
+    }
+
+    /* Desarrolladores móviles pequeños */
+    .member-photo-wrapper {
+        width: 130px;
+        height: 130px;
+    }
+
+    .dev-photo-wrapper {
+        width: 120px;
+        height: 120px;
+    }
+
+    .team-member-card {
+        padding: 20px 15px;
+    }
+
+    .dev-member-card {
+        padding: 18px 12px;
     }
 }
 
