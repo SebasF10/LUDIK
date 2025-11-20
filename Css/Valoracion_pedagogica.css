@@ -1641,3 +1641,157 @@ footer.pie-pagina {
         font-size: 2rem;
     }
 }
+
+/* ===== ESTILOS PARA CATEGORÍAS DE GRADO ===== */
+
+/* Contenedor de categoría de grado */
+.grado-category {
+    margin-bottom: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.grado-category:hover {
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+}
+
+/* Encabezado de la categoría (clickeable) */
+.grado-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.grado-header:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+    transform: translateY(-1px);
+}
+
+.grado-header h3 {
+    color: white;
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-icon {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+/* Contenido de la categoría (grupos) */
+.grado-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    padding: 0 20px;
+    background: #f8fafc;
+}
+
+.grado-content.active {
+    max-height: 2000px;
+    /* Altura máxima suficiente */
+    padding: 20px;
+}
+
+/* Grid de grupos dentro de cada categoría */
+.grado-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+/* Ajuste para las cards de grupo */
+.grupo-card {
+    background: white;
+    margin: 0;
+}
+
+/* Animación de aparición suave */
+.grado-content.active .card {
+    animation: fadeInUp 0.4s ease forwards;
+    opacity: 0;
+}
+
+.grado-content.active .card:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.grado-content.active .card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.grado-content.active .card:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.grado-content.active .card:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.grado-content.active .card:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.grado-content.active .card:nth-child(n+6) {
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive para categorías de grado */
+@media (max-width: 768px) {
+    .grado-header {
+        padding: 15px 20px;
+    }
+
+    .grado-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .grado-content {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .grado-content.active {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .grado-header {
+        padding: 12px 15px;
+    }
+
+    .grado-header h3 {
+        font-size: 1rem;
+    }
+
+    .toggle-icon {
+        font-size: 1rem;
+    }
+}

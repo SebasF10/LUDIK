@@ -18,6 +18,19 @@ const burger = document.getElementById('burger');
 const sideMenu = document.getElementById('sideMenu');
 const overlay = document.getElementById('overlay');
 
+// ===== NUEVA FUNCIÓN: SCROLL AUTOMÁTICO AL BOTÓN SIGUIENTE =====
+function scrollToNextButton() {
+    const btnSiguiente = document.getElementById('btnSiguiente');
+    if (btnSiguiente && btnSiguiente.style.display !== 'none') {
+        setTimeout(() => {
+            btnSiguiente.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+        }, 300);
+    }
+}
+
 // ===== INICIALIZAR LA APLICACIÓN =====
 document.addEventListener('DOMContentLoaded', function () {
     inicializarMenu();
@@ -215,69 +228,6 @@ document.addEventListener('click', function (e) {
         }
     }
 });
-
-// ===== FUNCIONES ADICIONALES PARA PERSONALIZACIÓN DEL MENÚ =====
-
-// Función para cambiar el título del header
-function cambiarTitulo(nuevoTitulo) {
-    const titulo = document.querySelector('.title');
-    if (titulo) {
-        titulo.textContent = nuevoTitulo;
-    }
-}
-
-// Función para cambiar el logo
-function cambiarLogo(rutaLogo) {
-    const logo = document.querySelector('.header-logo');
-    if (logo) {
-        logo.src = rutaLogo;
-    }
-}
-
-// Función para añadir botón personalizado al menú
-function añadirBotonMenu(icono, texto, callback) {
-    const menuButtons = document.querySelector('.menu-buttons');
-    const botonCerrarSesion = document.querySelector('.close-session');
-
-    if (menuButtons) {
-        const nuevoBoton = document.createElement('button');
-        nuevoBoton.className = 'menu-button';
-        nuevoBoton.innerHTML = `
-            <span class="menu-icon">${icono}</span>
-            ${texto}
-        `;
-
-        // Insertar antes del botón de cerrar sesión
-        if (botonCerrarSesion) {
-            menuButtons.insertBefore(nuevoBoton, botonCerrarSesion);
-        } else {
-            menuButtons.appendChild(nuevoBoton);
-        }
-
-        // Añadir evento click
-        nuevoBoton.addEventListener('click', callback);
-
-        return nuevoBoton;
-    }
-}
-
-// Función para remover botón específico
-function removerBotonMenu(textoBoton) {
-    const botones = document.querySelectorAll('.menu-button');
-    botones.forEach(boton => {
-        if (boton.textContent.trim().toLowerCase().includes(textoBoton.toLowerCase())) {
-            boton.remove();
-        }
-    });
-}
-
-// Función para cambiar el título del panel de control
-function cambiarTituloPanel(nuevoTitulo) {
-    const menuTitle = document.querySelector('.menu-title');
-    if (menuTitle) {
-        menuTitle.textContent = nuevoTitulo;
-    }
-}
 
 // ===== EVENTOS PRINCIPALES =====
 function inicializarEventos() {
@@ -804,7 +754,7 @@ async function cargarGrupos() {
         const data = await response.json();
 
         if (data.success) {
-            mostrarGrupos(data.grupos);
+            mostrarGruposPorGrado(data.grupos);
         } else {
             mostrarMensaje(data.message || 'Error al cargar los grupos', 'error');
         }
@@ -848,8 +798,8 @@ async function cargarEstudiantes() {
     }
 }
 
-// ===== MOSTRAR DATOS EN CARDS =====
-function mostrarGrupos(grupos) {
+// ===== MOSTRAR GRUPOS POR GRADO CON CATEGORÍAS =====
+function mostrarGruposPorGrado(grupos) {
     const container = document.getElementById('grupoCards');
 
     if (grupos.length === 0) {
@@ -857,18 +807,77 @@ function mostrarGrupos(grupos) {
         return;
     }
 
-    container.innerHTML = grupos.map(grupo => `
-        <div class="card" onclick="seleccionarGrupo(${JSON.stringify(grupo).replace(/"/g, '&quot;')})">
-            <div class="card-title">${grupo.grupo}</div>
-            <div class="card-subtitle">Grado: ${grupo.grado}</div>
-            <div class="card-info">
-                <div>📚 Asignaturas: ${grupo.total_asignaturas || 0}</div>
-                <div>👥 Estudiantes: ${grupo.total_estudiantes || 0}</div>
+    // Agrupar por grado
+    const gruposPorGrado = {};
+    grupos.forEach(grupo => {
+        // Extraer el número del grado (ej: "Grado 6" -> 6)
+        const gradoNumero = grupo.grado.match(/\d+/)?.[0] || grupo.grado;
+        
+        if (!gruposPorGrado[gradoNumero]) {
+            gruposPorGrado[gradoNumero] = [];
+        }
+        gruposPorGrado[gradoNumero].push(grupo);
+    });
+
+    // Ordenar grados numéricamente
+    const gradosOrdenados = Object.keys(gruposPorGrado).sort((a, b) => {
+        const numA = parseInt(a) || 0;
+        const numB = parseInt(b) || 0;
+        return numA - numB;
+    });
+
+    // Generar HTML con acordeones
+    container.innerHTML = gradosOrdenados.map(gradoNum => {
+        const gruposDelGrado = gruposPorGrado[gradoNum];
+        const gradoId = `grado-${gradoNum}`;
+        
+        return `
+            <div class="grado-category">
+                <div class="grado-header" onclick="toggleGrado('${gradoId}')">
+                    <h3>📚 Grado ${gradoNum}</h3>
+                    <span class="toggle-icon" id="icon-${gradoId}">▼</span>
+                </div>
+                <div class="grado-content" id="${gradoId}">
+                    ${gruposDelGrado.map(grupo => `
+                        <div class="card grupo-card" onclick="seleccionarGrupo(${JSON.stringify(grupo).replace(/"/g, '&quot;')})">
+                            <div class="card-title">${grupo.grupo}</div>
+                            <div class="card-subtitle">Grado: ${grupo.grado}</div>
+                            <div class="card-info">
+                                <div>📚 Asignaturas: ${grupo.total_asignaturas || 0}</div>
+                                <div>👥 Estudiantes: ${grupo.total_estudiantes || 0}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
+// Función para alternar la visibilidad de las categorías de grado
+function toggleGrado(gradoId) {
+    const content = document.getElementById(gradoId);
+    const icon = document.getElementById(`icon-${gradoId}`);
+    
+    if (content.classList.contains('active')) {
+        content.classList.remove('active');
+        icon.textContent = '▼';
+    } else {
+        // Cerrar todas las demás categorías
+        document.querySelectorAll('.grado-content').forEach(el => {
+            el.classList.remove('active');
+        });
+        document.querySelectorAll('.toggle-icon').forEach(el => {
+            el.textContent = '▼';
+        });
+        
+        // Abrir la categoría seleccionada
+        content.classList.add('active');
+        icon.textContent = '▲';
+    }
+}
+
+// ===== MOSTRAR DATOS EN CARDS =====
 function mostrarAsignaturas(asignaturas) {
     const container = document.getElementById('asignaturaCards');
 
@@ -900,10 +909,8 @@ function mostrarEstudiantes(estudiantes) {
         const fullName = `${estudiante.nombre} ${estudiante.apellidos}`;
         const initials = getInitials(fullName);
 
-        // Ajustar la ruta de la foto para que apunte a la carpeta correcta
         let photoElement;
         if (estudiante.url_foto && estudiante.url_foto !== 'photos/default.png') {
-            // Si la ruta ya empieza por 'photos/', usarla tal cual, si no, anteponer 'photos/'
             const photoPath = estudiante.url_foto.startsWith('photos/') ? estudiante.url_foto : `photos/${estudiante.url_foto}`;
             photoElement = `<img src="${photoPath}" alt="Foto de ${fullName}" class="student-photo-card" onerror="this.outerHTML='<div class=\\'student-photo-card default\\'>${initials}</div>'">`;
         } else {
@@ -926,14 +933,18 @@ function mostrarEstudiantes(estudiantes) {
         `;
     }).join('');
 }
-// ===== FUNCIONES DE SELECCIÓN =====
+
+// ===== FUNCIONES DE SELECCIÓN CON SCROLL AUTOMÁTICO =====
 function seleccionarGrupo(grupo) {
-    document.querySelectorAll('#grupoCards .card').forEach(card => {
+    document.querySelectorAll('.grupo-card').forEach(card => {
         card.classList.remove('selected');
     });
     event.target.closest('.card').classList.add('selected');
     seleccion.grupo = grupo;
     mostrarMensaje(`Grupo ${grupo.grupo} seleccionado`, 'exito');
+    
+    // SCROLL AUTOMÁTICO AL BOTÓN SIGUIENTE
+    scrollToNextButton();
 }
 
 function seleccionarAsignatura(asignatura) {
@@ -943,6 +954,9 @@ function seleccionarAsignatura(asignatura) {
     event.target.closest('.card').classList.add('selected');
     seleccion.asignatura = asignatura;
     mostrarMensaje(`Asignatura ${asignatura.nombre_asig} seleccionada`, 'exito');
+    
+    // SCROLL AUTOMÁTICO AL BOTÓN SIGUIENTE
+    scrollToNextButton();
 }
 
 function seleccionarEstudiante(estudiante) {
@@ -958,6 +972,9 @@ function seleccionarEstudiante(estudiante) {
     }
 
     mostrarMensaje(`Estudiante ${estudiante.nombre} ${estudiante.apellidos} seleccionado`, 'exito');
+    
+    // SCROLL AUTOMÁTICO AL BOTÓN SIGUIENTE
+    scrollToNextButton();
 }
 
 function mostrarInformacionSeleccionada() {
@@ -1092,7 +1109,6 @@ function goBackOrRedirect(ruta) {
 }
 
 // Obtener iniciales de un nombre completo
-
 function getInitials(fullName) {
     if (!fullName) return '??';
 
