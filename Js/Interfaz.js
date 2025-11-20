@@ -252,6 +252,8 @@ document.addEventListener('click', function (e) {
             window.location.href = 'Descripción_general.html';
         } else if (textoLower.includes('valoración') || textoLower.includes('valoracion') || textoLower.includes('pedagogica') || textoLower.includes('pedagógica')) {
             window.location.href = 'Valoracion_pedagogica.html';
+        } else if (textoLower.includes('modificar asignacion de los docentes')) {
+            window.location.href = 'Modificar_asignacion_docentes.html';
         } else if (textoLower.includes('documentos')) {
             console.log("-> Redirigiendo a documentos");
             window.location.href = 'Documentos.html';
@@ -429,6 +431,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (btnIA) {
         btnIA.addEventListener('click', function () {
             window.open('https://ia-ludik-1.onrender.com/', '_blank');
+        });
+    }
+});
+
+// Handler explícito para redirigir a la página de modificar asignación de docentes
+document.addEventListener('DOMContentLoaded', function () {
+    const btnModificar = document.getElementById('btnModificarAsignacion');
+    if (btnModificar) {
+        btnModificar.addEventListener('click', function () {
+            window.location.href = 'Modificar_asignacion_docentes.html';
         });
     }
 });

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Asignación - LUDIK</title>
+    <link rel="icon" href="img/Ludik2.png" type="image/x-icon">
+    <link rel="stylesheet" href="Css/Modificar_asignacion_docentes.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="header">
+        <div class="left-section">
+            <label class="burger" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <span class="menu-text">MENÚ</span>
+        </div>
+
+        <div class="centro">
+            <h1 class="titulo-ludik">
+                <img src="img\LUDIK_texto.png" alt="LUDIK" class="imagen-ludik-header">
+            </h1>
+        </div>
+
+        <div class="right-section">
+            <img src="img/Ludik2.png" alt="Logo Ludik" class="header-logo">
+            <img src="img/sistemas.png" alt="Sistemas" class="logo-institucion">
+            <img src="img/logoguanenta.png" alt="Colegio" class="logo-institucion">
+        </div>
+    </div>
+
+    <!-- Overlay para cerrar menú -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Menú lateral -->
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-header">
+            <div class="menu-title">Panel De Control</div>
+        </div>
+        <div class="menu-buttons">
+            <button class="menu-button">
+                <span class="menu-icon">🏠</span>
+                Volver a Interfaz
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">👤</span>
+                Perfil
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">👥</span>
+                Estudiantes
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📚</span>
+                Actividades
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📝</span>
+                Registrar un nuevo estudiante
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📋</span>
+                Registrar un PIAR y diagnóstico médico
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">📊</span>
+                Crear una Valoración Pedagógica
+            </button>
+            <button class="menu-button">
+                <span class="menu-icon">💬</span>
+                Comunicate
+            </button>
+            <a href="manual.pdf" download class="menu-button">
+                <span class="menu-icon">📘</span>
+                Manual de Usuario
+            </a>
+            <button class="menu-button">
+                <span class="menu-icon">❓</span>
+                Ayuda
+            </button>
+            <button class="menu-button close-session">
+                <span class="menu-icon">🚪</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Título -->
+            <header class="header-content">
+                <h1>Modificar Asignación de Docentes</h1>
+                <p class="subtitle">Actualiza las asignaturas y grupos de los docentes</p>
+            </header>
+
+            <!-- Selector de año -->
+            <section class="year-selector-section">
+                <div class="form-group">
+                    <label for="anio_seleccionado">Selecciona el año académico:</label>
+                    <select id="anio_seleccionado" class="year-select">
+                        <!-- Opciones se llenan dinámicamente -->
+                    </select>
+                </div>
+            </section>
+
+            <!-- Buscador de docentes -->
+            <section class="search-section">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="buscar_docente" placeholder="Buscar docente por nombre o email..." class="search-input">
+                </div>
+            </section>
+
+            <!-- Lista de docentes -->
+            <section class="docentes-list" id="docentes_list">
+                <div class="loading-message">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Cargando docentes...</p>
+                </div>
+            </section>
+
+            <!-- Modal para editar asignación -->
+            <div id="modal_edicion" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Editar Asignación de Docente</h2>
+                        <span class="close-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="docente-info">
+                            <p><strong>Docente:</strong> <span id="modal_docente_nombre"></span></p>
+                            <p><strong>Email:</strong> <span id="modal_docente_email"></span></p>
+                            <p><strong>Año:</strong> <span id="modal_anio"></span></p>
+                        </div>
+
+                        <form id="form_modificar_asignacion">
+                            <input type="hidden" id="modal_id_docente" name="id_docente">
+                            <input type="hidden" id="modal_anio_hidden" name="anio">
+
+                            <!-- Selector de grupos -->
+                            <div class="form-group">
+                                <label>Grupos a los que dicta clases:</label>
+                                <div id="modal_checkbox_grupos" class="checkbox-list"></div>
+                            </div>
+
+                            <!-- Contenedor para asignaturas por grupo -->
+                            <div id="modal_asignaturas_por_grupo" class="asignaturas-container" style="display:none;">
+                                <h3>Asignaturas para cada grupo:</h3>
+                            </div>
+
+                            <!-- Director de grupo -->
+                            <div class="form-group">
+                                <label>¿Es director de grupo?</label>
+                                <select name="es_director" id="modal_es_director" onchange="mostrarSelectorGrupoDirectorModal()">
+                                    <option value="0">No</option>
+                                    <option value="1">Sí</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="modal_grupo_director_container" style="display:none;">
+                                <label>Grupo que dirige:</label>
+                                <select name="grupo_director" id="modal_grupo_director">
+                                    <option value="">Seleccione un grupo</option>
+                                </select>
+                            </div>
+
+                            <div class="modal-buttons">
+                                <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mensaje de resultado -->
+            <div id="mensaje_resultado" class="mensaje" style="display: none;">
+                <p id="texto_resultado"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="Js/Modificar_asignacion_docentes.js"></script>
+    <script src="Js/Roles_menu.js"></script>
+</body>
+
+</html>
